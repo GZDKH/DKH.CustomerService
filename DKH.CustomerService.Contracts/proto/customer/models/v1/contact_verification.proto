@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package customer.models.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
+
+message VerificationResult {
+  bool success = 1;
+  string error_message = 2;
+  string error_code = 3;
+}
+
+message VerificationInitiation {
+  bool success = 1;
+  string error_message = 2;
+  int32 expires_in_seconds = 3;
+}

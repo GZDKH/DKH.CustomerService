@@ -1,0 +1,38 @@
+using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Application.Mappers;
+using DKH.CustomerService.Contracts.Api.V1;
+using MediatR;
+
+namespace DKH.CustomerService.Application.Admin.ListCustomers;
+
+public class ListCustomersQueryHandler(ICustomerRepository repository)
+    : IRequestHandler<ListCustomersQuery, ListCustomersResponse>
+{
+    public async Task<ListCustomersResponse> Handle(ListCustomersQuery request, CancellationToken cancellationToken)
+    {
+        var page = Math.Max(1, request.Page);
+        var pageSize = Math.Clamp(request.PageSize, 1, 100);
+
+        var (items, totalCount) = await repository.ListAsync(
+            request.StorefrontId,
+            page,
+            pageSize,
+            request.SortBy,
+            request.SortDescending,
+            cancellationToken);
+
+        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+        var response = new ListCustomersResponse
+        {
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize,
+            TotalPages = totalPages,
+        };
+
+        response.Customers.AddRange(items.Select(c => c.ToContractModel()));
+
+        return response;
+    }
+}

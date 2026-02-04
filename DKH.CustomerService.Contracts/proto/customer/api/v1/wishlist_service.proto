@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package customer.api.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
+
+import "customer/models/v1/wishlist_item.proto";
+
+service WishlistService {
+  rpc GetWishlist(GetWishlistRequest) returns (GetWishlistResponse);
+  rpc AddToWishlist(AddToWishlistRequest) returns (AddToWishlistResponse);
+  rpc RemoveFromWishlist(RemoveFromWishlistRequest) returns (RemoveFromWishlistResponse);
+  rpc CheckProductInWishlist(CheckProductInWishlistRequest) returns (CheckProductInWishlistResponse);
+  rpc ClearWishlist(ClearWishlistRequest) returns (ClearWishlistResponse);
+  rpc GetWishlistCount(GetWishlistCountRequest) returns (GetWishlistCountResponse);
+}
+
+message GetWishlistRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message GetWishlistResponse {
+  customer.models.v1.Wishlist wishlist = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  int32 total_pages = 4;
+}
+
+message AddToWishlistRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string product_id = 3;
+  string product_sku_id = 4;
+  string note = 5;
+}
+
+message AddToWishlistResponse {
+  customer.models.v1.WishlistItem item = 1;
+  bool already_exists = 2;
+}
+
+message RemoveFromWishlistRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string product_id = 3;
+  string product_sku_id = 4;
+}
+
+message RemoveFromWishlistResponse {
+  bool success = 1;
+}
+
+message CheckProductInWishlistRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string product_id = 3;
+  string product_sku_id = 4;
+}
+
+message CheckProductInWishlistResponse {
+  bool in_wishlist = 1;
+  customer.models.v1.WishlistItem item = 2;
+}
+
+message ClearWishlistRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message ClearWishlistResponse {
+  int32 items_removed = 1;
+}
+
+message GetWishlistCountRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message GetWishlistCountResponse {
+  int32 count = 1;
+}

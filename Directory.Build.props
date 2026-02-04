@@ -1,0 +1,71 @@
+<Project>
+  <!-- ============================================ -->
+  <!-- Skip all settings for Docker Compose projects -->
+  <!-- ============================================ -->
+  <PropertyGroup Condition="$(MSBuildProjectExtension) == '.dcproj'">
+    <ImportProjectProps>false</ImportProjectProps>
+  </PropertyGroup>
+
+  <!-- ============================================ -->
+  <!-- 1. Repository root and project.props import -->
+  <!-- ============================================ -->
+  <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <ImportProjectProps Condition="'$(ImportProjectProps)' == ''">true</ImportProjectProps>
+  </PropertyGroup>
+
+  <!-- ============================================ -->
+  <!-- 2. C# 14 / .NET 10 Language settings        -->
+  <!-- ============================================ -->
+  <PropertyGroup Condition="'$(ImportProjectProps)' == 'true'">
+    <LangVersion>14.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>10.0-recommended</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Common settings for Contracts projects inside this service -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Contracts'))">
+    <PackageVersion>1.0.0</PackageVersion>
+    <Deterministic>true</Deterministic>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup Condition="$(MSBuildProjectName.EndsWith('.Contracts'))">
+    <Protobuf>
+      <ProtoRoot>proto</ProtoRoot>
+      <GrpcServices>Both</GrpcServices>
+    </Protobuf>
+  </ItemDefinitionGroup>
+
+  <Import Project="$(RepoRoot)project.props" Condition="'$(ImportProjectProps)' == 'true' And Exists('$(RepoRoot)project.props')"/>
+
+  <!-- ============================================ -->
+  <!-- 3. Code quality settings                    -->
+  <!-- ============================================ -->
+  <PropertyGroup Condition="'$(ImportProjectProps)' == 'true'">
+    <NoWarn>$(NoWarn);NU1507;NU5104;CS1591;CS8669</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <!-- Relax settings for Contracts projects (auto-generated protobuf code) -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Contracts'))">
+    <NoWarn>$(NoWarn);CS0108;CS8618;IDE0290</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Relax settings for Test projects -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <NoWarn>$(NoWarn);CA1707;IDE0290</NoWarn>
+  </PropertyGroup>
+
+  <!-- ============================================ -->
+</Project>

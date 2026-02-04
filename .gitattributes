@@ -1,0 +1,17 @@
+# Ensure consistent line endings (LF) per .editorconfig
+* text=auto eol=lf
+
+# Binaries
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.dll binary
+*.exe binary
+
+# Keep Windows line endings for specific files
+*.bat text eol=crlf
+*.cmd text eol=crlf

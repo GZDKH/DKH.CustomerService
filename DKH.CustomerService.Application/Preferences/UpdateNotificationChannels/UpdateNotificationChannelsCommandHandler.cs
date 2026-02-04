@@ -1,0 +1,31 @@
+using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Application.Mappers;
+using DKH.CustomerService.Contracts.Api.V1;
+using Grpc.Core;
+using MediatR;
+
+namespace DKH.CustomerService.Application.Preferences.UpdateNotificationChannels;
+
+public class UpdateNotificationChannelsCommandHandler(ICustomerRepository repository)
+    : IRequestHandler<UpdateNotificationChannelsCommand, UpdateNotificationChannelsResponse>
+{
+    public async Task<UpdateNotificationChannelsResponse> Handle(UpdateNotificationChannelsCommand request, CancellationToken cancellationToken)
+    {
+        var profile = await repository.GetByTelegramUserIdAsync(
+            request.StorefrontId,
+            request.TelegramUserId,
+            cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+
+        profile.Preferences.UpdateNotificationChannels(
+            request.EmailNotificationsEnabled,
+            request.TelegramNotificationsEnabled,
+            request.SmsNotificationsEnabled);
+
+        await repository.UpdateAsync(profile, cancellationToken);
+
+        return new UpdateNotificationChannelsResponse
+        {
+            Preferences = profile.Preferences.ToContractModel(profile.Id.ToString()),
+        };
+    }
+}

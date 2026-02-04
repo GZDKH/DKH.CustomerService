@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  customer-service:
+    image: dkh/customer-service:latest
+    container_name: dkh-customer-service
+    build:
+      context: .
+      dockerfile: DKH.CustomerService.Api/Dockerfile
+    ports:
+      - "5010:5010"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=dkh_customers;Username=dkh;Password=dev123
+    depends_on:
+      - postgres
+    networks:
+      - dkh-network
+
+  postgres:
+    image: postgres:17
+    container_name: dkh-postgres-customer
+    environment:
+      POSTGRES_USER: dkh
+      POSTGRES_PASSWORD: dev123
+      POSTGRES_DB: dkh_customers
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - dkh-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dkh -d dkh_customers"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  dkh-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package customer.api.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
+
+import "customer/models/v1/customer_profile.proto";
+
+service CustomerProfileService {
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc GetOrCreateProfile(GetOrCreateProfileRequest) returns (GetOrCreateProfileResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
+  rpc DeleteProfile(DeleteProfileRequest) returns (DeleteProfileResponse);
+}
+
+message GetProfileRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message GetProfileResponse {
+  customer.models.v1.CustomerProfile profile = 1;
+  bool found = 2;
+}
+
+message GetOrCreateProfileRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string username = 5;
+  string photo_url = 6;
+  string language_code = 7;
+}
+
+message GetOrCreateProfileResponse {
+  customer.models.v1.CustomerProfile profile = 1;
+  bool created = 2;
+}
+
+message UpdateProfileRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  optional string phone = 5;
+  optional string email = 6;
+  optional string language_code = 7;
+}
+
+message UpdateProfileResponse {
+  customer.models.v1.CustomerProfile profile = 1;
+}
+
+message DeleteProfileRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  bool hard_delete = 3;
+}
+
+message DeleteProfileResponse {
+  bool success = 1;
+}

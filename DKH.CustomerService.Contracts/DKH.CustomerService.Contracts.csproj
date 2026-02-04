@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Grpc.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="DKH.Platform.Grpc.Common"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="proto/customer/api/v1/customer_profile_service.proto"/>
+    <Protobuf Include="proto/customer/api/v1/customer_address_service.proto"/>
+    <Protobuf Include="proto/customer/api/v1/wishlist_service.proto"/>
+    <Protobuf Include="proto/customer/api/v1/customer_preferences_service.proto"/>
+    <Protobuf Include="proto/customer/api/v1/customer_admin_service.proto"/>
+    <Protobuf Include="proto/customer/api/v1/contact_verification_service.proto"/>
+    <Protobuf Include="proto/customer/models/v1/customer_profile.proto"/>
+    <Protobuf Include="proto/customer/models/v1/customer_address.proto"/>
+    <Protobuf Include="proto/customer/models/v1/wishlist_item.proto"/>
+    <Protobuf Include="proto/customer/models/v1/customer_preferences.proto"/>
+    <Protobuf Include="proto/customer/models/v1/account_status.proto"/>
+    <Protobuf Include="proto/customer/models/v1/contact_verification.proto"/>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package customer.api.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
+
+import "customer/models/v1/customer_address.proto";
+
+service CustomerAddressService {
+  rpc ListAddresses(ListAddressesRequest) returns (ListAddressesResponse);
+  rpc GetAddress(GetAddressRequest) returns (GetAddressResponse);
+  rpc CreateAddress(CreateAddressRequest) returns (CreateAddressResponse);
+  rpc UpdateAddress(UpdateAddressRequest) returns (UpdateAddressResponse);
+  rpc DeleteAddress(DeleteAddressRequest) returns (DeleteAddressResponse);
+  rpc SetDefaultAddress(SetDefaultAddressRequest) returns (SetDefaultAddressResponse);
+  rpc GetDefaultAddress(GetDefaultAddressRequest) returns (GetDefaultAddressResponse);
+}
+
+message ListAddressesRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message ListAddressesResponse {
+  repeated customer.models.v1.CustomerAddress addresses = 1;
+}
+
+message GetAddressRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string address_id = 3;
+}
+
+message GetAddressResponse {
+  customer.models.v1.CustomerAddress address = 1;
+  bool found = 2;
+}
+
+message CreateAddressRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string label = 3;
+  string country = 4;
+  string city = 5;
+  string street = 6;
+  string building = 7;
+  string apartment = 8;
+  string postal_code = 9;
+  string phone = 10;
+  bool is_default = 11;
+}
+
+message CreateAddressResponse {
+  customer.models.v1.CustomerAddress address = 1;
+}
+
+message UpdateAddressRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string address_id = 3;
+  optional string label = 4;
+  optional string country = 5;
+  optional string city = 6;
+  optional string street = 7;
+  optional string building = 8;
+  optional string apartment = 9;
+  optional string postal_code = 10;
+  optional string phone = 11;
+}
+
+message UpdateAddressResponse {
+  customer.models.v1.CustomerAddress address = 1;
+}
+
+message DeleteAddressRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string address_id = 3;
+}
+
+message DeleteAddressResponse {
+  bool success = 1;
+}
+
+message SetDefaultAddressRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string address_id = 3;
+}
+
+message SetDefaultAddressResponse {
+  bool success = 1;
+}
+
+message GetDefaultAddressRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message GetDefaultAddressResponse {
+  customer.models.v1.CustomerAddress address = 1;
+  bool found = 2;
+}

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package customer.api.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
+
+import "customer/models/v1/customer_preferences.proto";
+
+service CustomerPreferencesService {
+  rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
+  rpc UpdatePreferences(UpdatePreferencesRequest) returns (UpdatePreferencesResponse);
+  rpc UpdateNotificationChannels(UpdateNotificationChannelsRequest) returns (UpdateNotificationChannelsResponse);
+  rpc UpdateNotificationTypes(UpdateNotificationTypesRequest) returns (UpdateNotificationTypesResponse);
+}
+
+message GetPreferencesRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message GetPreferencesResponse {
+  customer.models.v1.CustomerPreferences preferences = 1;
+}
+
+message UpdatePreferencesRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  optional string preferred_language = 3;
+  optional string preferred_currency = 4;
+}
+
+message UpdatePreferencesResponse {
+  customer.models.v1.CustomerPreferences preferences = 1;
+}
+
+message UpdateNotificationChannelsRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  optional bool email_notifications_enabled = 3;
+  optional bool telegram_notifications_enabled = 4;
+  optional bool sms_notifications_enabled = 5;
+}
+
+message UpdateNotificationChannelsResponse {
+  customer.models.v1.CustomerPreferences preferences = 1;
+}
+
+message UpdateNotificationTypesRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  optional bool order_status_updates = 3;
+  optional bool promotional_offers = 4;
+}
+
+message UpdateNotificationTypesResponse {
+  customer.models.v1.CustomerPreferences preferences = 1;
+}

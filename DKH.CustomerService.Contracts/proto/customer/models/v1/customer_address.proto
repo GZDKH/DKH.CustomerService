@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package customer.models.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
+
+import "google/protobuf/timestamp.proto";
+
+message CustomerAddress {
+  string id = 1;
+  string customer_id = 2;
+  string label = 3;
+  string country = 4;
+  string city = 5;
+  string street = 6;
+  string building = 7;
+  string apartment = 8;
+  string postal_code = 9;
+  string phone = 10;
+  bool is_default = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}

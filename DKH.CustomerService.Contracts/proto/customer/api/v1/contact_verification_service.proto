@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package customer.api.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
+
+import "customer/models/v1/contact_verification.proto";
+
+service ContactVerificationService {
+  rpc InitiateEmailVerification(InitiateEmailVerificationRequest) returns (InitiateEmailVerificationResponse);
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
+  rpc InitiatePhoneVerification(InitiatePhoneVerificationRequest) returns (InitiatePhoneVerificationResponse);
+  rpc VerifyPhone(VerifyPhoneRequest) returns (VerifyPhoneResponse);
+}
+
+message InitiateEmailVerificationRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string email = 3;
+}
+
+message InitiateEmailVerificationResponse {
+  customer.models.v1.VerificationInitiation result = 1;
+}
+
+message VerifyEmailRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string email = 3;
+  string code = 4;
+}
+
+message VerifyEmailResponse {
+  customer.models.v1.VerificationResult result = 1;
+}
+
+message InitiatePhoneVerificationRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string phone = 3;
+}
+
+message InitiatePhoneVerificationResponse {
+  customer.models.v1.VerificationInitiation result = 1;
+}
+
+message VerifyPhoneRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string phone = 3;
+  string code = 4;
+}
+
+message VerifyPhoneResponse {
+  customer.models.v1.VerificationResult result = 1;
+}

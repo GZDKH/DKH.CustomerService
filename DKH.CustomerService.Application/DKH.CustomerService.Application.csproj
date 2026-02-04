@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="DKH.Platform"/>
+    <PackageReference Include="DKH.Platform.Application"/>
+    <PackageReference Include="DKH.Platform.DataExchange"/>
+    <PackageReference Include="DKH.Platform.Localization"/>
+    <PackageReference Include="FluentValidation"/>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
+    <PackageReference Include="JetBrains.Annotations"/>
+    <PackageReference Include="MediatR"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DKH.CustomerService.Contracts\DKH.CustomerService.Contracts.csproj"/>
+    <ProjectReference Include="..\DKH.CustomerService.Domain\DKH.CustomerService.Domain.csproj"/>
+  </ItemGroup>
+</Project>

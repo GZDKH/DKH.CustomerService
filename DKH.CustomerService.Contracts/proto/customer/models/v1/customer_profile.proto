@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package customer.models.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
+
+import "google/protobuf/timestamp.proto";
+
+message CustomerProfile {
+  string id = 1;
+  string storefront_id = 2;
+  string telegram_user_id = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string username = 6;
+  string photo_url = 7;
+  string phone = 8;
+  string email = 9;
+  string language_code = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp updated_at = 12;
+  bool is_deleted = 13;
+  google.protobuf.Timestamp deleted_at = 14;
+  AccountStatus account_status = 15;
+  ContactVerification contact_verification = 16;
+}
+
+message AccountStatus {
+  AccountStatusEnum status = 1;
+  google.protobuf.Timestamp blocked_at = 2;
+  string block_reason = 3;
+  string blocked_by = 4;
+  google.protobuf.Timestamp last_login_at = 5;
+  google.protobuf.Timestamp last_activity_at = 6;
+  int32 total_orders_count = 7;
+  string total_spent = 8;
+}
+
+enum AccountStatusEnum {
+  ACCOUNT_STATUS_ENUM_UNSPECIFIED = 0;
+  ACCOUNT_STATUS_ENUM_ACTIVE = 1;
+  ACCOUNT_STATUS_ENUM_BLOCKED = 2;
+  ACCOUNT_STATUS_ENUM_SUSPENDED = 3;
+  ACCOUNT_STATUS_ENUM_DELETED = 4;
+}
+
+message ContactVerification {
+  bool email_verified = 1;
+  google.protobuf.Timestamp email_verified_at = 2;
+  bool phone_verified = 3;
+  google.protobuf.Timestamp phone_verified_at = 4;
+}

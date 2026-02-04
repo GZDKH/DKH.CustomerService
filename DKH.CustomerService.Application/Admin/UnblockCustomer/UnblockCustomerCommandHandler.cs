@@ -1,0 +1,28 @@
+using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Application.Mappers;
+using DKH.CustomerService.Contracts.Api.V1;
+using Grpc.Core;
+using MediatR;
+
+namespace DKH.CustomerService.Application.Admin.UnblockCustomer;
+
+public class UnblockCustomerCommandHandler(ICustomerRepository repository)
+    : IRequestHandler<UnblockCustomerCommand, UnblockCustomerResponse>
+{
+    public async Task<UnblockCustomerResponse> Handle(UnblockCustomerCommand request, CancellationToken cancellationToken)
+    {
+        var profile = await repository.GetByTelegramUserIdAsync(
+            request.StorefrontId,
+            request.TelegramUserId,
+            cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+
+        profile.AccountStatus.Unblock();
+        await repository.UpdateAsync(profile, cancellationToken);
+
+        return new UnblockCustomerResponse
+        {
+            Success = true,
+            Profile = profile.ToContractModel(),
+        };
+    }
+}

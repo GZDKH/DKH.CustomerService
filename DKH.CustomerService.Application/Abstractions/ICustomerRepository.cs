@@ -1,0 +1,35 @@
+using DKH.CustomerService.Domain.Entities.CustomerProfile;
+
+namespace DKH.CustomerService.Application.Abstractions;
+
+public interface ICustomerRepository
+{
+    Task<CustomerProfileEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileEntity?> GetByTelegramUserIdAsync(Guid storefrontId, string telegramUserId, CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileEntity?> GetByTelegramUserIdWithAddressesAsync(Guid storefrontId, string telegramUserId, CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileEntity?> GetByTelegramUserIdWithWishlistAsync(Guid storefrontId, string telegramUserId, CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileEntity> AddAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default);
+
+    Task UpdateAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default);
+
+    Task DeleteAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default);
+
+    Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> SearchAsync(
+        Guid storefrontId,
+        string query,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default);
+
+    Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> ListAsync(
+        Guid storefrontId,
+        int page,
+        int pageSize,
+        string? sortBy,
+        bool sortDescending,
+        CancellationToken cancellationToken = default);
+}

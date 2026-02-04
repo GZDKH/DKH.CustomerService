@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package customer.api.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
+
+import "google/protobuf/timestamp.proto";
+import "customer/models/v1/customer_profile.proto";
+import "customer/models/v1/account_status.proto";
+
+service CustomerAdminService {
+  rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
+  rpc ListCustomers(ListCustomersRequest) returns (ListCustomersResponse);
+  rpc GetCustomerStats(GetCustomerStatsRequest) returns (GetCustomerStatsResponse);
+  rpc BlockCustomer(BlockCustomerRequest) returns (BlockCustomerResponse);
+  rpc UnblockCustomer(UnblockCustomerRequest) returns (UnblockCustomerResponse);
+  rpc SuspendCustomer(SuspendCustomerRequest) returns (SuspendCustomerResponse);
+  rpc ExportCustomerData(ExportCustomerDataRequest) returns (ExportCustomerDataResponse);
+  rpc DeleteCustomerData(DeleteCustomerDataRequest) returns (DeleteCustomerDataResponse);
+}
+
+message SearchCustomersRequest {
+  string storefront_id = 1;
+  string query = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message SearchCustomersResponse {
+  repeated customer.models.v1.CustomerProfile customers = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+}
+
+message ListCustomersRequest {
+  string storefront_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string sort_by = 4;
+  bool sort_descending = 5;
+  customer.models.v1.AccountStatusEnum status_filter = 6;
+}
+
+message ListCustomersResponse {
+  repeated customer.models.v1.CustomerProfile customers = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+}
+
+message GetCustomerStatsRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message GetCustomerStatsResponse {
+  customer.models.v1.CustomerStats stats = 1;
+}
+
+message BlockCustomerRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string reason = 3;
+  string blocked_by = 4;
+}
+
+message BlockCustomerResponse {
+  bool success = 1;
+  customer.models.v1.CustomerProfile profile = 2;
+}
+
+message UnblockCustomerRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+}
+
+message UnblockCustomerResponse {
+  bool success = 1;
+  customer.models.v1.CustomerProfile profile = 2;
+}
+
+message SuspendCustomerRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  google.protobuf.Timestamp suspend_until = 3;
+  string reason = 4;
+  string suspended_by = 5;
+}
+
+message SuspendCustomerResponse {
+  bool success = 1;
+  customer.models.v1.CustomerProfile profile = 2;
+}
+
+message ExportCustomerDataRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  string format = 3;
+}
+
+message ExportCustomerDataResponse {
+  bytes data = 1;
+  string content_type = 2;
+  string file_name = 3;
+}
+
+message DeleteCustomerDataRequest {
+  string storefront_id = 1;
+  string telegram_user_id = 2;
+  bool anonymize = 3;
+}
+
+message DeleteCustomerDataResponse {
+  bool success = 1;
+  string anonymized_id = 2;
+}
