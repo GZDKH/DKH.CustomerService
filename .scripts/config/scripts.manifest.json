@@ -1,0 +1,18 @@
+{
+  "capabilities": {
+    "dotnet": true,
+    "database": true,
+    "docker": true,
+    "node": false,
+    "frontend": {
+      "type": "none",
+      "path": "apps/frontend",
+      "buildCommand": "npm run build"
+    }
+  },
+  "hooks": {
+    "pre-build": [],
+    "post-build": [],
+    "pre-deploy": []
+  }
+}

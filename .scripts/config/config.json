@@ -1,0 +1,27 @@
+{
+  "PROJECT": {
+    "SOLUTION_NAME": "DKH.CustomerService",
+    "PROJECT_NAME": "DKH.CustomerService.Api",
+    "APPSETTINGS_FILE": "appsettings.json"
+  },
+  "DOCKER": {
+    "IMAGE_NAME": "dkh-customerservice",
+    "NETWORK_NAME": "dkh-network"
+  },
+  "NUGET": {
+    "SOURCES": [
+      {
+        "NAME": "nuget.org",
+        "URL": "https://api.nuget.org/v3/index.json",
+        "PROTOCOL_VERSION": "3"
+      },
+      {
+        "NAME": "github-dotnet-gzdkh",
+        "URL": "https://nuget.pkg.github.com/GZDKH/index.json",
+        "PROTOCOL_VERSION": "3",
+        "IS_PRIVATE": true
+      }
+    ]
+  }
+}
+
