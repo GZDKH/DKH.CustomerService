@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{11111111
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DKH.CustomerService.Application.Tests", "tests\DKH.CustomerService.Application.Tests\DKH.CustomerService.Application.Tests.csproj", "{11111111-1111-1111-1111-111111111006}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{FBB92647-C62F-4FAC-B997-972D7E626587}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{D7D55F22-24AA-464A-BD2D-4D9F004DE4EB}"
 	ProjectSection(SolutionItems) = preProject
 		.csharpierrc.json = .csharpierrc.json
 		.editorconfig = .editorconfig
@@ -29,17 +29,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{FBB9
 		project.props = project.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".scripts", ".scripts", "{63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E4FFE091-95EF-44FD-A308-E05E3966A976}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{F5390015-D948-4E00-A54E-0FF53F48FA00}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".scripts", ".scripts", "{62AC5DCC-6846-44AB-8D08-24C3C8DDB591}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\config.ps1 = .scripts\config.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{24386737-62C4-44CD-87CD-20964CFE3320}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{4E3044B6-510C-41B8-A92C-323F65AFE5E5}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\build\build.ps1 = .scripts\build\build.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{9F7843AB-D08C-421B-9E4F-24B2E98B9B4D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{D658807F-B966-4CAD-9F1B-DBD20B4105D9}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\config\config.json = .scripts\config\config.json
 		.scripts\config\environment-manager.ps1 = .scripts\config\environment-manager.ps1
@@ -47,36 +54,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{9F7843
 		.scripts\config\scripts.manifest.json = .scripts\config\scripts.manifest.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{D70CDF40-32A2-4629-8846-9DD125DEEC10}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{3185045B-0195-4DA8-9A46-F25CD5DEAF02}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\database\postgres-db.ps1 = .scripts\database\postgres-db.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{F565CCE4-B60F-4F16-BE7D-72694E65D14B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{AD07EF8E-2F80-4F79-8198-F7175D86301F}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\docker\build-docker-run.ps1 = .scripts\docker\build-docker-run.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "maintenance", "maintenance", "{E93751F8-FAD0-4AD7-B311-FD0C54ED49D9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "maintenance", "maintenance", "{35517E26-3963-4FC1-9F74-73D9CF2199CE}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\maintenance\clean-packages.ps1 = .scripts\maintenance\clean-packages.ps1
 		.scripts\maintenance\clean.ps1 = .scripts\maintenance\clean.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utilities", "utilities", "{FE8BACED-B49A-48BE-B1A0-1676A630EFA2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utilities", "utilities", "{62BD1BB2-6237-4B42-8A7F-6B80B8AFC89A}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\utilities\set-commit-date.ps1 = .scripts\utilities\set-commit-date.ps1
 		.scripts\utilities\setup-private-nuget.ps1 = .scripts\utilities\setup-private-nuget.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{0AFC56FE-B1CC-43D2-9885-F2EFE4F6176F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{904C5F65-6EA6-4B2D-B0E5-04C1395CEE51}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\modules\dkh.configuration.psm1 = .scripts\modules\dkh.configuration.psm1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{4581566D-5904-4F75-93A3-811AFF4E3C95}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{275127A3-FF9B-4104-B53B-AEAA00ACE9FD}"
 	ProjectSection(SolutionItems) = preProject
 		.scripts\tools\user-secrets.ps1 = .scripts\tools\user-secrets.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{655C55C9-99E7-40AE-BDBD-D99A5624F972}"
+	ProjectSection(SolutionItems) = preProject
+		docs\README.md = docs\README.md
 	EndProjectSection
 EndProject
 Global
@@ -115,13 +127,14 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{11111111-1111-1111-1111-111111111006} = {11111111-1111-1111-1111-111111111100}
-		{24386737-62C4-44CD-87CD-20964CFE3320} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{9F7843AB-D08C-421B-9E4F-24B2E98B9B4D} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{D70CDF40-32A2-4629-8846-9DD125DEEC10} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{F565CCE4-B60F-4F16-BE7D-72694E65D14B} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{E93751F8-FAD0-4AD7-B311-FD0C54ED49D9} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{FE8BACED-B49A-48BE-B1A0-1676A630EFA2} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{0AFC56FE-B1CC-43D2-9885-F2EFE4F6176F} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
-		{4581566D-5904-4F75-93A3-811AFF4E3C95} = {63C5D8AD-1B42-4A31-BFE2-5B64A19B495C}
+		{F5390015-D948-4E00-A54E-0FF53F48FA00} = {E4FFE091-95EF-44FD-A308-E05E3966A976}
+		{4E3044B6-510C-41B8-A92C-323F65AFE5E5} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{D658807F-B966-4CAD-9F1B-DBD20B4105D9} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{3185045B-0195-4DA8-9A46-F25CD5DEAF02} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{AD07EF8E-2F80-4F79-8198-F7175D86301F} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{35517E26-3963-4FC1-9F74-73D9CF2199CE} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{62BD1BB2-6237-4B42-8A7F-6B80B8AFC89A} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{904C5F65-6EA6-4B2D-B0E5-04C1395CEE51} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
+		{275127A3-FF9B-4104-B53B-AEAA00ACE9FD} = {62AC5DCC-6846-44AB-8D08-24C3C8DDB591}
 	EndGlobalSection
 EndGlobal
