@@ -758,3 +758,19 @@ dotnet_diagnostic.CA1707.severity = none
 
 [**/Resources/*.cs]
 dotnet_diagnostic.CA1707.severity = none
+
+
+###########################
+# EF Core Migrations      #
+###########################
+
+# Disable strict analyzers for auto-generated EF migrations
+[**/Migrations/*.cs]
+dotnet_diagnostic.IDE0005.severity = none
+dotnet_diagnostic.IDE0053.severity = none
+dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.IDE0161.severity = none
+dotnet_diagnostic.IDE0300.severity = none
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1861.severity = none
+generated_code = true
