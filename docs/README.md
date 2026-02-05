@@ -51,8 +51,16 @@ DKH.CustomerService manages Telegram Mini App customer data with multi-tenancy s
 └─────────────────────┘
 ```
 
+## Architecture Documentation
+
+Service documentation is maintained in the [DKH.Architecture](https://github.com/GZDKH/DKH.Architecture) repository:
+
+| Language | Link |
+|----------|------|
+| English | [en/services/backend/customer-service-index.md](https://github.com/GZDKH/DKH.Architecture/blob/main/en/services/backend/customer-service-index.md) |
+| Russian | [ru/services/backend/customer-service-index.md](https://github.com/GZDKH/DKH.Architecture/blob/main/ru/services/backend/customer-service-index.md) |
+
 ## Related Documentation
 
-- [Architecture Docs](https://github.com/GZDKH/DKH.Architecture/blob/main/en/services/backend/customer-service-index.md)
 - [StorefrontGateway](https://github.com/GZDKH/DKH.StorefrontGateway)
 - [OrderService](https://github.com/GZDKH/DKH.OrderService)
