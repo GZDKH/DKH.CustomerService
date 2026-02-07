@@ -8,6 +8,7 @@ using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
 using DKH.Platform.Logging;
+using DKH.Platform.Messaging;
 using DKH.Platform.MultiTenancy;
 
 await Platform
@@ -18,6 +19,7 @@ await Platform
         builder.Services.AddCustomerInfrastructure(builder.Configuration);
         builder.Services.AddApplication(builder.Configuration);
     })
+    .AddPlatformMessagingWithMediatR(typeof(DKH.CustomerService.Application.ConfigureServices).Assembly)
     .AddPlatformLogging()
     .AddPlatformPostgreSql<AppDbContext>(options => options.ConnectionStringKey = "Default")
     .AddPlatformRepositories<AppDbContext>()

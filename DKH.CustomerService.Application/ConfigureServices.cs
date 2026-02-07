@@ -12,7 +12,6 @@ public static class ConfigureServices
         _ = configuration;
         var assembly = Assembly.GetExecutingAssembly();
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
         services.AddValidatorsFromAssembly(assembly);
     }
 }
