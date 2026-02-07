@@ -46,6 +46,7 @@
     <PackageVersion Include="DKH.Platform.EntityFrameworkCore.Repositories" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.DataExchange" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.MultiTenancy" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Messaging" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.0.0" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.0.0" />
   </ItemGroup>
