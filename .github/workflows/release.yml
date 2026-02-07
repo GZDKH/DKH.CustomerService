@@ -7,6 +7,12 @@ on:
   pull_request:
     branches: [ main ]
     types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.1.0)'
+        required: true
+        type: string
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -53,16 +59,23 @@ jobs:
           dotnet build ${{ env.CONTRACTS_PROJECT }} -c Release --no-restore
 
   release-and-publish:
-    if: github.event_name == 'push' && startsWith(github.ref_name, 'release/')
+    if: |
+      (github.event_name == 'push' && startsWith(github.ref_name, 'release/'))
+      || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Extract version from branch name
+      - name: Determine version
         id: version
-        run: echo "value=${GITHUB_REF_NAME#release/}" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "value=${GITHUB_REF_NAME#release/}" >> $GITHUB_OUTPUT
+          fi
 
       - uses: actions/setup-dotnet@v4
         with:
