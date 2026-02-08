@@ -10,7 +10,7 @@ using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerAdminServi
 
 namespace DKH.CustomerService.Api.Services;
 
-public class CustomerAdminGrpcService(IMediator mediator, IStorefrontContext storefrontContext)
+public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerAdminServiceBase
 {
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)

@@ -12,7 +12,7 @@ using ContractsService = DKH.CustomerService.Contracts.Api.V1.WishlistService;
 
 namespace DKH.CustomerService.Api.Services;
 
-public class WishlistGrpcService(IMediator mediator, IStorefrontContext storefrontContext)
+public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.WishlistServiceBase
 {
     public override async Task<GetWishlistResponse> GetWishlist(GetWishlistRequest request, ServerCallContext context)

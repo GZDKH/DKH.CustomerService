@@ -9,7 +9,7 @@ namespace DKH.CustomerService.Domain.Entities.CustomerProfile;
 
 public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     IAggregateRoot,
-    IStorefrontScoped
+    IPlatformStorefrontScoped
 {
     private readonly List<IDomainEvent> _domainEvents = [];
     private readonly List<CustomerAddressEntity> _addresses = [];

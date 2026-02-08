@@ -13,7 +13,7 @@ using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerAddressSer
 
 namespace DKH.CustomerService.Api.Services;
 
-public class CustomerAddressGrpcService(IMediator mediator, IStorefrontContext storefrontContext)
+public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerAddressServiceBase
 {
     public override async Task<ListAddressesResponse> ListAddresses(ListAddressesRequest request, ServerCallContext context)

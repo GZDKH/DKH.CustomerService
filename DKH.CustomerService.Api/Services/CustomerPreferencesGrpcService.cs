@@ -10,7 +10,7 @@ using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerPreference
 
 namespace DKH.CustomerService.Api.Services;
 
-public class CustomerPreferencesGrpcService(IMediator mediator, IStorefrontContext storefrontContext)
+public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerPreferencesServiceBase
 {
     public override async Task<GetPreferencesResponse> GetPreferences(GetPreferencesRequest request, ServerCallContext context)
