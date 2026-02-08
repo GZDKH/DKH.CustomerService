@@ -3,6 +3,7 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+USER $APP_UID
 WORKDIR /app
 EXPOSE 5010
 
@@ -50,20 +51,16 @@ COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csp
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj"
 COPY . .
-WORKDIR "/src/DKH.CustomerService.Api"
-# Set Protobuf_ProtocPath for arm64 before build to avoid bundled protoc segfault
-# --no-restore prevents implicit restore (credentials not available in this layer)
-RUN if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
-  mkdir -p /root/.nuget/packages/grpc.tools/2.76.0/tools/linux_arm64 && \
-  ln -sf /usr/bin/protoc /root/.nuget/packages/grpc.tools/2.76.0/tools/linux_arm64/protoc && \
-  Protobuf_ProtocPath=/usr/bin/protoc dotnet build "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore; \
-  else \
-  dotnet build "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore; \
-  fi
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore
+WORKDIR "/src/DKH.CustomerService.Api"
+RUN if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
+    Protobuf_ProtocPath=/usr/bin/protoc \
+    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore; \
+    else \
+    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore; \
+    fi
 
 FROM base AS final
 WORKDIR /app
