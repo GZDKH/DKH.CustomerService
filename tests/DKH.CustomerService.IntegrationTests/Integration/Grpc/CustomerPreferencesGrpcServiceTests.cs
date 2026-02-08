@@ -1,0 +1,156 @@
+using DKH.CustomerService.Api.Services;
+using DKH.CustomerService.Application;
+using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Infrastructure;
+using DKH.CustomerService.Infrastructure.Persistence;
+using DKH.Platform.EntityFrameworkCore.Repositories;
+using DKH.Platform.Grpc.IntegrationTesting;
+using DKH.Platform.IntegrationTesting;
+using DKH.Platform.MultiTenancy;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NSubstitute;
+
+namespace DKH.CustomerService.IntegrationTests.Integration.Grpc;
+
+[Trait("Category", "Integration")]
+public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
+{
+    private readonly Guid _storefrontId = Guid.NewGuid();
+    private const string TelegramUserId = "tg-user-1";
+
+    private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(
+        Action<IServiceCollection>? configure = null)
+    {
+        var dbName = $"preferences-grpc-{Guid.NewGuid()}";
+        var emptyConfig = new ConfigurationBuilder().Build();
+
+        return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
+                platformBuilder => platformBuilder
+                    .AddPlatformRepositories<AppDbContext>(),
+                typeof(CustomerProfileGrpcService),
+                typeof(WishlistGrpcService),
+                typeof(CustomerAddressGrpcService),
+                typeof(CustomerPreferencesGrpcService))
+            .WithPlatformConfiguration(services =>
+            {
+                services.AddSingleton(new Dictionary<Type, object>());
+
+                services.AddMediatR(cfg =>
+                    cfg.RegisterServicesFromAssembly(typeof(ConfigureServices).Assembly));
+                services.AddApplication(emptyConfig);
+                services.AddCustomerInfrastructure(emptyConfig);
+
+                services.RemoveAll<DbContextOptions<AppDbContext>>();
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseInMemoryDatabase(dbName));
+                services.AddScoped<IAppDbContext>(sp =>
+                    sp.GetRequiredService<AppDbContext>());
+
+                services.AddSingleton(Substitute.For<IPlatformStorefrontContext>());
+
+                configure?.Invoke(services);
+            });
+    }
+
+    private async Task EnsureProfileExistsAsync(
+        CustomerProfileService.CustomerProfileServiceClient profileClient)
+    {
+        await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
+        {
+            StorefrontId = _storefrontId.ToString(),
+            TelegramUserId = TelegramUserId,
+            FirstName = "Test",
+        });
+    }
+
+    [Fact]
+    public async Task GetPreferences_ReturnsDefaultPreferencesAsync()
+    {
+        await using var factory = CreateFactory();
+        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+
+        await EnsureProfileExistsAsync(profileClient);
+
+        var response = await client.GetPreferencesAsync(new GetPreferencesRequest
+        {
+            StorefrontId = _storefrontId.ToString(),
+            TelegramUserId = TelegramUserId,
+        });
+
+        response.Preferences.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task UpdatePreferences_UpdatesLanguageAndCurrencyAsync()
+    {
+        await using var factory = CreateFactory();
+        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+
+        await EnsureProfileExistsAsync(profileClient);
+
+        var response = await client.UpdatePreferencesAsync(new UpdatePreferencesRequest
+        {
+            StorefrontId = _storefrontId.ToString(),
+            TelegramUserId = TelegramUserId,
+            PreferredLanguage = "ru",
+            PreferredCurrency = "RUB",
+        });
+
+        response.Preferences.Should().NotBeNull();
+        response.Preferences.PreferredLanguage.Should().Be("ru");
+        response.Preferences.PreferredCurrency.Should().Be("RUB");
+    }
+
+    [Fact]
+    public async Task UpdateNotificationChannels_UpdatesChannelsAsync()
+    {
+        await using var factory = CreateFactory();
+        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+
+        await EnsureProfileExistsAsync(profileClient);
+
+        var response = await client.UpdateNotificationChannelsAsync(new UpdateNotificationChannelsRequest
+        {
+            StorefrontId = _storefrontId.ToString(),
+            TelegramUserId = TelegramUserId,
+            EmailNotificationsEnabled = true,
+            TelegramNotificationsEnabled = true,
+            SmsNotificationsEnabled = false,
+        });
+
+        response.Preferences.Should().NotBeNull();
+        response.Preferences.EmailNotificationsEnabled.Should().BeTrue();
+        response.Preferences.TelegramNotificationsEnabled.Should().BeTrue();
+        response.Preferences.SmsNotificationsEnabled.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task UpdateNotificationTypes_UpdatesTypesAsync()
+    {
+        await using var factory = CreateFactory();
+        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+
+        await EnsureProfileExistsAsync(profileClient);
+
+        var response = await client.UpdateNotificationTypesAsync(new UpdateNotificationTypesRequest
+        {
+            StorefrontId = _storefrontId.ToString(),
+            TelegramUserId = TelegramUserId,
+            OrderStatusUpdates = true,
+            PromotionalOffers = false,
+        });
+
+        response.Preferences.Should().NotBeNull();
+        response.Preferences.OrderStatusUpdates.Should().BeTrue();
+        response.Preferences.PromotionalOffers.Should().BeFalse();
+    }
+}
