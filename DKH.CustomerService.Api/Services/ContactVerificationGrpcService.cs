@@ -10,7 +10,7 @@ namespace DKH.CustomerService.Api.Services;
 public class ContactVerificationGrpcService(
     IVerificationService verificationService,
     ICustomerRepository customerRepository,
-    IStorefrontContext storefrontContext)
+    IPlatformStorefrontContext storefrontContext)
     : ContractsService.ContactVerificationServiceBase
 {
     public override async Task<InitiateEmailVerificationResponse> InitiateEmailVerification(InitiateEmailVerificationRequest request, ServerCallContext context)

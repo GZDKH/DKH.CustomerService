@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IVerificationService, NullVerificationService>();
-        services.AddSingleton<IDomainEventDispatcher, NullDomainEventDispatcher>();
+        services.AddSingleton<IPlatformDomainEventDispatcher, NullDomainEventDispatcher>();
         return services;
     }
 }

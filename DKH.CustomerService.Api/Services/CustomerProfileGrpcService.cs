@@ -10,7 +10,7 @@ using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerProfileSer
 
 namespace DKH.CustomerService.Api.Services;
 
-public class CustomerProfileGrpcService(IMediator mediator, IStorefrontContext storefrontContext)
+public class CustomerProfileGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerProfileServiceBase
 {
     public override async Task<GetProfileResponse> GetProfile(GetProfileRequest request, ServerCallContext context)
