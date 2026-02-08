@@ -47,7 +47,8 @@ COPY ["DKH.CustomerService.Application/DKH.CustomerService.Application.csproj", 
 COPY ["DKH.CustomerService.Contracts/DKH.CustomerService.Contracts.csproj", "DKH.CustomerService.Contracts/"]
 COPY ["DKH.CustomerService.Domain/DKH.CustomerService.Domain.csproj", "DKH.CustomerService.Domain/"]
 COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csproj", "DKH.CustomerService.Infrastructure/"]
-RUN dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj"
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj"
 COPY . .
 WORKDIR "/src/DKH.CustomerService.Api"
 # Set Protobuf_ProtocPath for arm64 before build to avoid bundled protoc segfault
