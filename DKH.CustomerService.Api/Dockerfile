@@ -48,7 +48,7 @@ COPY ["DKH.CustomerService.Application/DKH.CustomerService.Application.csproj", 
 COPY ["DKH.CustomerService.Contracts/DKH.CustomerService.Contracts.csproj", "DKH.CustomerService.Contracts/"]
 COPY ["DKH.CustomerService.Domain/DKH.CustomerService.Domain.csproj", "DKH.CustomerService.Domain/"]
 COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csproj", "DKH.CustomerService.Infrastructure/"]
-RUN --mount=type=cache,target=/root/.nuget/packages \
+RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
     dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj"
 COPY . .
 
