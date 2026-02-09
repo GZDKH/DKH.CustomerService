@@ -17,7 +17,7 @@
     <PackageReference Include="DKH.Platform.Core"/>
     <PackageReference Include="DKH.Platform.Localization"/>
     <PackageReference Include="DKH.Platform.Logging"/>
-    <PackageReference Include="DKH.Platform.Messaging"/>
+    <PackageReference Include="DKH.Platform.Messaging.MediatR"/>
     <PackageReference Include="DKH.Platform.EntityFrameworkCore"/>
     <PackageReference Include="DKH.Platform.Grpc"/>
     <PackageReference Include="DKH.Platform.Grpc.Client"/>
