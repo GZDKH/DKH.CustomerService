@@ -8,7 +8,7 @@ using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
 using DKH.Platform.Logging;
-using DKH.Platform.Messaging;
+using DKH.Platform.Messaging.MediatR;
 using DKH.Platform.MultiTenancy;
 
 await Platform
