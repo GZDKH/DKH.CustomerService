@@ -1,0 +1,65 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/.config/">
+    <File Path=".csharpierrc.json" />
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="nuget.config" />
+    <File Path="project.props" />
+  </Folder>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/.scripts/">
+    <File Path=".scripts/config.ps1" />
+  </Folder>
+  <Folder Name="/.scripts/build/">
+    <File Path=".scripts/build/build.ps1" />
+  </Folder>
+  <Folder Name="/.scripts/config/">
+    <File Path=".scripts/config/config.json" />
+    <File Path=".scripts/config/environment-manager.ps1" />
+    <File Path=".scripts/config/project-finder.ps1" />
+    <File Path=".scripts/config/scripts.manifest.json" />
+  </Folder>
+  <Folder Name="/.scripts/database/">
+    <File Path=".scripts/database/postgres-db.ps1" />
+  </Folder>
+  <Folder Name="/.scripts/docker/">
+    <File Path=".scripts/docker/build-docker-run.ps1" />
+  </Folder>
+  <Folder Name="/.scripts/maintenance/">
+    <File Path=".scripts/maintenance/clean-packages.ps1" />
+    <File Path=".scripts/maintenance/clean.ps1" />
+  </Folder>
+  <Folder Name="/.scripts/modules/">
+    <File Path=".scripts/modules/dkh.configuration.psm1" />
+  </Folder>
+  <Folder Name="/.scripts/tools/">
+    <File Path=".scripts/tools/user-secrets.ps1" />
+  </Folder>
+  <Folder Name="/.scripts/utilities/">
+    <File Path=".scripts/utilities/set-commit-date.ps1" />
+    <File Path=".scripts/utilities/setup-private-nuget.ps1" />
+  </Folder>
+  <Folder Name="/docs/">
+    <File Path="docs/README.md" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DKH.CustomerService.Application.Tests/DKH.CustomerService.Application.Tests.csproj" />
+    <Project Path="tests/DKH.CustomerService.IntegrationTests/DKH.CustomerService.IntegrationTests.csproj" />
+  </Folder>
+  <Project Path="DKH.CustomerService.Api/DKH.CustomerService.Api.csproj" />
+  <Project Path="DKH.CustomerService.Application/DKH.CustomerService.Application.csproj" />
+  <Project Path="DKH.CustomerService.Contracts/DKH.CustomerService.Contracts.csproj" />
+  <Project Path="DKH.CustomerService.Domain/DKH.CustomerService.Domain.csproj" />
+  <Project Path="DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csproj" />
+</Solution>

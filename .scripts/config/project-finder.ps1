@@ -13,7 +13,8 @@ function Find-ProjectRoot
     {
         # Check for project markers in order of priority
         $markers = @(
-            "*.sln", # Solution files (highest priority)
+            "*.slnx", # XML solution files (highest priority)
+            "*.sln", # Legacy solution files
             "Directory.Build.props", # MSBuild directory props
             "global.json", # .NET global.json
             ".git", # Git repository
