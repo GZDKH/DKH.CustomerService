@@ -35,7 +35,8 @@ $context = Get-DkhProjectContext -EnvironmentName $Environment
 $manifestData = $context.Manifest.Data
 $solutionPath = $context.Config.SolutionPath
 $solutionName = $context.Config.SolutionName
-$slnPath = Join-Path $solutionPath "$solutionName.sln"
+$slnxPath = Join-Path $solutionPath "$solutionName.slnx"
+$slnPath = if (Test-Path $slnxPath) { $slnxPath } else { Join-Path $solutionPath "$solutionName.sln" }
 
 # Decide execution mode (interactive prompt when allowed and switches are not specified)
 $isCi = $env:CI -eq "true" -or $env:GITHUB_ACTIONS -eq "true"
