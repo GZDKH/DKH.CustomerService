@@ -58,9 +58,9 @@ WORKDIR "/src/DKH.CustomerService.Api"
 RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
     if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
     Protobuf_ProtocPath=/usr/bin/protoc \
-    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore; \
+    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:PublishReadyToRun=true --no-restore; \
     else \
-    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore; \
+    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:PublishReadyToRun=true --no-restore; \
     fi
 
 FROM base AS final
