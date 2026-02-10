@@ -49,18 +49,20 @@ COPY ["DKH.CustomerService.Contracts/DKH.CustomerService.Contracts.csproj", "DKH
 COPY ["DKH.CustomerService.Domain/DKH.CustomerService.Domain.csproj", "DKH.CustomerService.Domain/"]
 COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csproj", "DKH.CustomerService.Infrastructure/"]
 RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
-    dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj"
+    RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
+    dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj" -r $RUNTIME_ID
 COPY . .
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR "/src/DKH.CustomerService.Api"
 RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
+    RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
     if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
     Protobuf_ProtocPath=/usr/bin/protoc \
-    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:PublishReadyToRun=true --no-restore; \
+    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r $RUNTIME_ID /p:UseAppHost=false /p:PublishReadyToRun=true --no-restore; \
     else \
-    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:PublishReadyToRun=true --no-restore; \
+    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r $RUNTIME_ID /p:UseAppHost=false /p:PublishReadyToRun=true --no-restore; \
     fi
 
 FROM base AS final
