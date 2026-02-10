@@ -1,6 +1,4 @@
-using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Contracts.Api.V1;
-using MediatR;
 
 namespace DKH.CustomerService.Application.Profiles.DeleteProfile;
 

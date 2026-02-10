@@ -1,8 +1,6 @@
-using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Api.V1;
 using Grpc.Core;
-using MediatR;
 
 namespace DKH.CustomerService.Application.Admin.BlockCustomer;
 

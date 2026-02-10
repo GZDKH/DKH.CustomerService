@@ -1,10 +1,7 @@
-using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Api.V1;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using Grpc.Core;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace DKH.CustomerService.Application.Addresses.CreateAddress;
 

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace DKH.CustomerService.Application.Profiles.UpdateProfile;
 
 public class UpdateProfileCommandValidator : AbstractValidator<UpdateProfileCommand>

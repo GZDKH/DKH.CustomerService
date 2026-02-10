@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
 
 public class GetOrCreateProfileCommandValidator : AbstractValidator<GetOrCreateProfileCommand>

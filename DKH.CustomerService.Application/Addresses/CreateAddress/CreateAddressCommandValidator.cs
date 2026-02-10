@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace DKH.CustomerService.Application.Addresses.CreateAddress;
 
 public class CreateAddressCommandValidator : AbstractValidator<CreateAddressCommand>

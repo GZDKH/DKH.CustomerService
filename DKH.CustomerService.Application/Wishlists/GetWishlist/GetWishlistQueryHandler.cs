@@ -1,9 +1,6 @@
-using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Api.V1;
 using DKH.CustomerService.Contracts.Models.V1;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace DKH.CustomerService.Application.Wishlists.GetWishlist;
 
