@@ -33,6 +33,8 @@ await Platform
         grpc.MapService<CustomerPreferencesGrpcService>();
         grpc.MapService<CustomerAdminGrpcService>();
         grpc.MapService<ContactVerificationGrpcService>();
+        grpc.MapService<CustomerCrudGrpcService>();
+        grpc.MapService<CustomerManagementGrpcService>();
         grpc.ConfigureDefaultRoute("CustomerService gRPC is running.");
     })
     .Build()
