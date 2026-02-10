@@ -50,7 +50,7 @@ COPY ["DKH.CustomerService.Domain/DKH.CustomerService.Domain.csproj", "DKH.Custo
 COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csproj", "DKH.CustomerService.Infrastructure/"]
 RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
     RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
-    dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj" -r $RUNTIME_ID
+    dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj" -r $RUNTIME_ID /p:PublishReadyToRun=true
 COPY . .
 
 FROM build AS publish
