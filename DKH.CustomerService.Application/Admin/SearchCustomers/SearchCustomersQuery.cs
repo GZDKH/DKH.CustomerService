@@ -4,7 +4,7 @@ using MediatR;
 namespace DKH.CustomerService.Application.Admin.SearchCustomers;
 
 public sealed record SearchCustomersQuery(
-    Guid StorefrontId,
+    Guid? StorefrontId,  // Nullable for admin - returns all customers when null
     string Query,
     int Page,
     int PageSize)
