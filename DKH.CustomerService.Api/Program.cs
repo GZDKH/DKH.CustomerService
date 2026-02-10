@@ -1,12 +1,15 @@
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
+using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform;
 using DKH.Platform.Configuration;
+using DKH.Platform.DataExchange;
 using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
+using DKH.Platform.Localization;
 using DKH.Platform.Logging;
 using DKH.Platform.Messaging.MediatR;
 using DKH.Platform.MultiTenancy;
@@ -19,8 +22,14 @@ await Platform
         builder.Services.AddCustomerInfrastructure(builder.Configuration);
         builder.Services.AddApplication(builder.Configuration);
     })
-    .AddPlatformMessagingWithMediatR(typeof(DKH.CustomerService.Application.ConfigureServices).Assembly)
+    .AddPlatformMessagingWithMediatR(typeof(ConfigureServices).Assembly)
     .AddPlatformLogging()
+    .AddPlatformLocalization()
+    .AddPlatformDataExchangeFromAssemblyContaining<CustomerDataImportHandler>(options =>
+    {
+        options.Settings.BatchSize = 200;
+        options.Settings.PublishBatchEvents = true;
+    })
     .AddPlatformPostgreSql<AppDbContext>(options => options.ConnectionStringKey = "Default")
     .AddPlatformRepositories<AppDbContext>()
     .AddGrpcStorefrontContext()

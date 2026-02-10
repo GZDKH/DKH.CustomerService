@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace DKH.CustomerService.Application.Wishlists.AddToWishlist;
 
 public class AddToWishlistCommandValidator : AbstractValidator<AddToWishlistCommand>

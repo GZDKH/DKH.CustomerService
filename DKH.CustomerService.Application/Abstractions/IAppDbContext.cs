@@ -1,7 +1,6 @@
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
-using Microsoft.EntityFrameworkCore;
 
 namespace DKH.CustomerService.Application.Abstractions;
 

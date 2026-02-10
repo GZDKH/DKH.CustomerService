@@ -1,0 +1,14 @@
+global using DKH.CustomerService.Application.Abstractions;
+global using DKH.CustomerService.Application.Common.DataExchange;
+global using DKH.Platform.DataExchange;
+global using DKH.Platform.DataExchange.Export;
+global using DKH.Platform.DataExchange.Import;
+global using DKH.Platform.DataExchange.Import.Profiles;
+global using DKH.Platform.DataExchange.Localization;
+global using DKH.Platform.DataExchange.Profiles;
+global using DKH.Platform.DataExchange.Profiles.Schema;
+global using DKH.Platform.Localization;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Options;
