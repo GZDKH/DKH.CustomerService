@@ -20,7 +20,7 @@ service CustomerAdminService {
 }
 
 message SearchCustomersRequest {
-  string storefront_id = 1;
+  optional string storefront_id = 1;  // Optional for admin (returns all), required for storefront
   string query = 2;
   int32 page = 3;
   int32 page_size = 4;
@@ -35,7 +35,7 @@ message SearchCustomersResponse {
 }
 
 message ListCustomersRequest {
-  string storefront_id = 1;
+  optional string storefront_id = 1;  // Optional for admin (returns all), required for storefront
   int32 page = 2;
   int32 page_size = 3;
   string sort_by = 4;
