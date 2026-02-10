@@ -67,20 +67,26 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
     }
 
     public async Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> SearchAsync(
-        Guid storefrontId,
+        Guid? storefrontId,  // Nullable for admin - returns all customers when null
         string query,
         int page,
         int pageSize,
         CancellationToken cancellationToken = default)
     {
-        var baseQuery = dbContext.CustomerProfiles
-            .Where(p => p.StorefrontId == storefrontId)
-            .Where(p =>
-                EF.Functions.ILike(p.FirstName, $"%{query}%") ||
-                (p.LastName != null && EF.Functions.ILike(p.LastName, $"%{query}%")) ||
-                (p.Email != null && EF.Functions.ILike(p.Email, $"%{query}%")) ||
-                (p.Phone != null && EF.Functions.Like(p.Phone, $"%{query}%")) ||
-                EF.Functions.Like(p.TelegramUserId, $"%{query}%"));
+        var baseQuery = dbContext.CustomerProfiles.AsQueryable();
+
+        // Filter by storefront only if provided (for admin, null means all storefronts)
+        if (storefrontId.HasValue)
+        {
+            baseQuery = baseQuery.Where(p => p.StorefrontId == storefrontId.Value);
+        }
+
+        baseQuery = baseQuery.Where(p =>
+            EF.Functions.ILike(p.FirstName, $"%{query}%") ||
+            (p.LastName != null && EF.Functions.ILike(p.LastName, $"%{query}%")) ||
+            (p.Email != null && EF.Functions.ILike(p.Email, $"%{query}%")) ||
+            (p.Phone != null && EF.Functions.Like(p.Phone, $"%{query}%")) ||
+            EF.Functions.Like(p.TelegramUserId, $"%{query}%"));
 
         var totalCount = await baseQuery.CountAsync(cancellationToken);
 
@@ -94,15 +100,20 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
     }
 
     public async Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> ListAsync(
-        Guid storefrontId,
+        Guid? storefrontId,  // Nullable for admin - returns all customers when null
         int page,
         int pageSize,
         string? sortBy,
         bool sortDescending,
         CancellationToken cancellationToken = default)
     {
-        var baseQuery = dbContext.CustomerProfiles
-            .Where(p => p.StorefrontId == storefrontId);
+        var baseQuery = dbContext.CustomerProfiles.AsQueryable();
+
+        // Filter by storefront only if provided (for admin, null means all storefronts)
+        if (storefrontId.HasValue)
+        {
+            baseQuery = baseQuery.Where(p => p.StorefrontId == storefrontId.Value);
+        }
 
         baseQuery = (sortBy ?? string.Empty).ToUpperInvariant() switch
         {

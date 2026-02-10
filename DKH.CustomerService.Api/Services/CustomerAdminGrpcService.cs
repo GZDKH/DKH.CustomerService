@@ -15,7 +15,8 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
 {
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
     {
-        var storefrontId = ResolveStorefrontId(request.StorefrontId);
+        // For admin operations, storefront_id is optional (null means all storefronts)
+        var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
         return await mediator.Send(
             new SearchCustomersQuery(storefrontId, request.Query, request.Page, request.PageSize),
             context.CancellationToken);
@@ -23,7 +24,8 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
 
     public override async Task<ListCustomersResponse> ListCustomers(ListCustomersRequest request, ServerCallContext context)
     {
-        var storefrontId = ResolveStorefrontId(request.StorefrontId);
+        // For admin operations, storefront_id is optional (null means all storefronts)
+        var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
         return await mediator.Send(
             new ListCustomersQuery(storefrontId, request.Page, request.PageSize, request.SortBy, request.SortDescending),
             context.CancellationToken);
@@ -72,5 +74,17 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
 
         return storefrontContext.StorefrontId
                ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required"));
+    }
+
+    private Guid? ResolveStorefrontIdOptional(string requestStorefrontId)
+    {
+        // For admin operations, storefront_id is optional (null means all storefronts)
+        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        {
+            return parsed;
+        }
+
+        // Return storefront from context if available, otherwise null (admin mode)
+        return storefrontContext.StorefrontId;
     }
 }

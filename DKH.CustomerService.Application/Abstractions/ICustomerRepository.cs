@@ -19,14 +19,14 @@ public interface ICustomerRepository
     Task DeleteAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> SearchAsync(
-        Guid storefrontId,
+        Guid? storefrontId,  // Nullable for admin - returns all customers when null
         string query,
         int page,
         int pageSize,
         CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> ListAsync(
-        Guid storefrontId,
+        Guid? storefrontId,  // Nullable for admin - returns all customers when null
         int page,
         int pageSize,
         string? sortBy,
