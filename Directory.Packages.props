@@ -49,8 +49,8 @@
     <PackageVersion Include="DKH.Platform.MultiTenancy" Version="1.3.0" />
     <PackageVersion Include="DKH.Platform.Messaging.MediatR" Version="1.0.3" />
     <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.7.0" />
-    <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.3" />
+    <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.1.0" />
+    <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.1.0" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>

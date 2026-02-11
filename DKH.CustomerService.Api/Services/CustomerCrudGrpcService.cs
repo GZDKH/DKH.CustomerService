@@ -2,6 +2,7 @@ using DKH.CustomerService.Application.Admin.BlockCustomer;
 using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
+using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -13,7 +14,7 @@ namespace DKH.CustomerService.Api.Services;
 /// CustomerCrudService implementation for admin-level CRUD operations.
 /// All methods accept optional storefront_id - when null/empty, operates across all storefronts.
 /// </summary>
-public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
+public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext, IPlatformCurrentUser currentUser)
     : ContractsServices.CustomerCrudService.CustomerCrudServiceBase
 {
     private readonly IMediator _mediator = mediator;
@@ -81,7 +82,7 @@ public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefr
             : Guid.Parse(request.StorefrontId);
 
         var result = await _mediator.Send(
-            new BlockCustomerCommand(storefrontId, request.TelegramUserId, request.Reason, request.BlockedBy),
+            new BlockCustomerCommand(storefrontId, request.TelegramUserId, request.Reason, currentUser.Name!),
             context.CancellationToken);
         return new ContractsServices.BlockCustomerResponse
         {

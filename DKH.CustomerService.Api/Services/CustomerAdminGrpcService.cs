@@ -3,6 +3,7 @@ using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
 using DKH.CustomerService.Contracts.Api.V1;
+using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -10,7 +11,7 @@ using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerAdminServi
 
 namespace DKH.CustomerService.Api.Services;
 
-public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
+public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext, IPlatformCurrentUser currentUser)
     : ContractsService.CustomerAdminServiceBase
 {
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
@@ -40,7 +41,7 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(
-            new BlockCustomerCommand(storefrontId, request.TelegramUserId, request.Reason, request.BlockedBy),
+            new BlockCustomerCommand(storefrontId, request.TelegramUserId, request.Reason, currentUser.Name!),
             context.CancellationToken);
     }
 
