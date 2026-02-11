@@ -52,7 +52,10 @@ COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csp
 RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
     RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
     dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj" -r $RUNTIME_ID /p:PublishReadyToRun=true
+# Preserve authenticated nuget.config before COPY overwrites it
+RUN cp nuget.config /tmp/nuget.config.auth
 COPY . .
+RUN cp /tmp/nuget.config.auth nuget.config
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
