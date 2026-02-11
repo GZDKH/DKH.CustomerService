@@ -1,4 +1,5 @@
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Enums;
 
 namespace DKH.CustomerService.Application.CustomerProfiles.DataExchange;
 
@@ -98,11 +99,19 @@ public sealed class CustomerDataExportHandler(
             .Include(c => c.WishlistItems)
             .AsNoTracking();
 
-        // Try to get storefrontId from context parameters
+        // Filter by storefrontId if provided
         if (context.Parameters.TryGetValue("storefrontId", out var storefrontIdValue)
             && storefrontIdValue is Guid storefrontId)
         {
             query = query.Where(c => c.StorefrontId == storefrontId);
+        }
+
+        // Filter by account status
+        var status = context.GetStringParameter("status");
+        if (!string.IsNullOrWhiteSpace(status)
+            && Enum.TryParse<AccountStatusType>(status, ignoreCase: true, out var statusType))
+        {
+            query = query.Where(c => c.AccountStatus.Status == statusType);
         }
 
         if (!string.IsNullOrWhiteSpace(search))

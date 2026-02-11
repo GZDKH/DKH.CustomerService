@@ -41,6 +41,12 @@ public sealed class CustomerDataImportHandler(
         string key,
         CancellationToken cancellationToken)
     {
+        // Check in-memory cache first to handle duplicate keys within the same batch
+        if (_entityIds.ContainsKey(key))
+        {
+            return true;
+        }
+
         var existing = await dbContext.CustomerProfiles
             .AsNoTracking()
             .Where(c => c.TelegramUserId == key)
@@ -58,7 +64,7 @@ public sealed class CustomerDataImportHandler(
     }
 
     /// <inheritdoc />
-    protected override async Task CreateEntityAsync(
+    protected override Task CreateEntityAsync(
         string key,
         CustomerDataExchangeDto dto,
         IReadOnlyList<PlatformTranslationData> translations,
@@ -70,13 +76,13 @@ public sealed class CustomerDataImportHandler(
         if (dto.StorefrontId == Guid.Empty)
         {
             context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "storefrontId", "StorefrontId is required."));
-            return;
+            return Task.CompletedTask;
         }
 
         if (string.IsNullOrWhiteSpace(dto.FirstName))
         {
             context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "firstName", "FirstName is required."));
-            return;
+            return Task.CompletedTask;
         }
 
         // Create CustomerProfile entity
@@ -97,50 +103,15 @@ public sealed class CustomerDataImportHandler(
             email: dto.Email,
             languageCode: dto.LanguageCode);
 
-        // Update AccountStatus if provided
-        if (!string.IsNullOrWhiteSpace(dto.AccountStatus) && Enum.TryParse<AccountStatusType>(dto.AccountStatus, out var status))
-        {
-            if (status == AccountStatusType.Blocked && !string.IsNullOrWhiteSpace(dto.BlockReason))
-            {
-                customer.AccountStatus.Block(dto.BlockReason, "Import");
-            }
-            else if (status == AccountStatusType.Suspended && dto.SuspendedUntil.HasValue)
-            {
-                customer.AccountStatus.Suspend(dto.SuspendedUntil.Value, dto.BlockReason ?? "Import", "Import");
-            }
-        }
-
-        // Update order stats
+        ApplyAccountStatus(customer, dto, row, context);
         customer.AccountStatus.UpdateOrderStats(dto.TotalOrdersCount, dto.TotalSpent);
-
-        // Update contact verification
-        if (dto.EmailVerified)
-        {
-            customer.ContactVerification.VerifyEmail();
-        }
-
-        if (dto.PhoneVerified)
-        {
-            customer.ContactVerification.VerifyPhone();
-        }
-
-        // Update preferences
-        customer.Preferences.UpdateNotificationChannels(
-            dto.EmailNotificationsEnabled,
-            dto.TelegramNotificationsEnabled,
-            dto.SmsNotificationsEnabled);
-
-        customer.Preferences.UpdateNotificationTypes(
-            dto.OrderStatusUpdates,
-            dto.PromotionalOffers);
-
-        customer.Preferences.UpdateLanguage(dto.PreferredLanguage);
-        customer.Preferences.UpdateCurrency(dto.PreferredCurrency);
+        ApplyContactVerification(customer, dto);
+        ApplyPreferences(customer, dto);
 
         dbContext.CustomerProfiles.Add(customer);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
         _entityIds[key] = customer.Id;
+
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
@@ -173,51 +144,10 @@ public sealed class CustomerDataImportHandler(
             email: dto.Email,
             languageCode: dto.LanguageCode);
 
-        // Update AccountStatus
-        if (!string.IsNullOrWhiteSpace(dto.AccountStatus) && Enum.TryParse<AccountStatusType>(dto.AccountStatus, out var status))
-        {
-            if (status == AccountStatusType.Active && customer.AccountStatus.IsBlocked)
-            {
-                customer.AccountStatus.Unblock();
-            }
-            else if (status == AccountStatusType.Blocked && !string.IsNullOrWhiteSpace(dto.BlockReason))
-            {
-                customer.AccountStatus.Block(dto.BlockReason, "Import");
-            }
-            else if (status == AccountStatusType.Suspended && dto.SuspendedUntil.HasValue)
-            {
-                customer.AccountStatus.Suspend(dto.SuspendedUntil.Value, dto.BlockReason ?? "Import", "Import");
-            }
-        }
-
-        // Update order stats
+        ApplyAccountStatus(customer, dto, row, context);
         customer.AccountStatus.UpdateOrderStats(dto.TotalOrdersCount, dto.TotalSpent);
-
-        // Update contact verification
-        if (dto.EmailVerified && !customer.ContactVerification.EmailVerified)
-        {
-            customer.ContactVerification.VerifyEmail();
-        }
-
-        if (dto.PhoneVerified && !customer.ContactVerification.PhoneVerified)
-        {
-            customer.ContactVerification.VerifyPhone();
-        }
-
-        // Update preferences
-        customer.Preferences.UpdateNotificationChannels(
-            dto.EmailNotificationsEnabled,
-            dto.TelegramNotificationsEnabled,
-            dto.SmsNotificationsEnabled);
-
-        customer.Preferences.UpdateNotificationTypes(
-            dto.OrderStatusUpdates,
-            dto.PromotionalOffers);
-
-        customer.Preferences.UpdateLanguage(dto.PreferredLanguage);
-        customer.Preferences.UpdateCurrency(dto.PreferredCurrency);
-
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        ApplyContactVerification(customer, dto);
+        ApplyPreferences(customer, dto);
     }
 
     /// <inheritdoc />
@@ -240,12 +170,10 @@ public sealed class CustomerDataImportHandler(
             .ConfigureAwait(false);
 
         dbContext.WishlistItems.RemoveRange(existingWishlistItems);
-
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
-    protected override async Task AddCollectionItemsAsync(
+    protected override Task AddCollectionItemsAsync(
         string key,
         CustomerDataExchangeDto dto,
         PlatformImportRow row,
@@ -257,9 +185,15 @@ public sealed class CustomerDataImportHandler(
         // Add addresses
         foreach (var addressDto in dto.Addresses)
         {
-            if (string.IsNullOrWhiteSpace(addressDto.Label) || string.IsNullOrWhiteSpace(addressDto.Country) || string.IsNullOrWhiteSpace(addressDto.City))
+            if (string.IsNullOrWhiteSpace(addressDto.Label)
+                || string.IsNullOrWhiteSpace(addressDto.Country)
+                || string.IsNullOrWhiteSpace(addressDto.City))
             {
-                continue; // Skip invalid addresses
+                context.Errors.Add(new PlatformImportError(
+                    row.Raw.RowNumber,
+                    "address",
+                    $"Address skipped: Label, Country, and City are required (got Label='{addressDto.Label}', Country='{addressDto.Country}', City='{addressDto.City}')."));
+                continue;
             }
 
             var address = CustomerAddressEntity.Create(
@@ -282,7 +216,11 @@ public sealed class CustomerDataImportHandler(
         {
             if (wishlistDto.ProductId == Guid.Empty)
             {
-                continue; // Skip invalid items
+                context.Errors.Add(new PlatformImportError(
+                    row.Raw.RowNumber,
+                    "wishlistItem",
+                    "WishlistItem skipped: ProductId is required."));
+                continue;
             }
 
             var wishlistItem = WishlistItemEntity.Create(
@@ -294,6 +232,88 @@ public sealed class CustomerDataImportHandler(
             dbContext.WishlistItems.Add(wishlistItem);
         }
 
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return Task.CompletedTask;
+    }
+
+    private static void ApplyAccountStatus(
+        CustomerProfileEntity customer,
+        CustomerDataExchangeDto dto,
+        PlatformImportRow row,
+        PlatformImportContext context)
+    {
+        if (string.IsNullOrWhiteSpace(dto.AccountStatus))
+        {
+            return;
+        }
+
+        if (!Enum.TryParse<AccountStatusType>(dto.AccountStatus, ignoreCase: true, out var status))
+        {
+            context.Errors.Add(new PlatformImportError(
+                row.Raw.RowNumber,
+                "accountStatus",
+                $"Invalid AccountStatus value '{dto.AccountStatus}'. Expected: Active, Blocked, Suspended."));
+            return;
+        }
+
+        switch (status)
+        {
+            case AccountStatusType.Active when customer.AccountStatus.IsBlocked || customer.AccountStatus.IsSuspended:
+                customer.AccountStatus.Unblock();
+                break;
+
+            case AccountStatusType.Blocked:
+                customer.AccountStatus.Block(dto.BlockReason ?? "Imported as blocked", "Import");
+                break;
+
+            case AccountStatusType.Suspended:
+                customer.AccountStatus.Suspend(
+                    dto.SuspendedUntil ?? DateTime.UtcNow.AddDays(30),
+                    dto.BlockReason ?? "Imported as suspended",
+                    "Import");
+                break;
+        }
+    }
+
+    private static void ApplyContactVerification(CustomerProfileEntity customer, CustomerDataExchangeDto dto)
+    {
+        if (dto.EmailVerified && !customer.ContactVerification.EmailVerified)
+        {
+            customer.ContactVerification.VerifyEmail();
+        }
+        else if (!dto.EmailVerified && customer.ContactVerification.EmailVerified)
+        {
+            customer.ContactVerification.ResetEmailVerification();
+        }
+
+        if (dto.PhoneVerified && !customer.ContactVerification.PhoneVerified)
+        {
+            customer.ContactVerification.VerifyPhone();
+        }
+        else if (!dto.PhoneVerified && customer.ContactVerification.PhoneVerified)
+        {
+            customer.ContactVerification.ResetPhoneVerification();
+        }
+    }
+
+    private static void ApplyPreferences(CustomerProfileEntity customer, CustomerDataExchangeDto dto)
+    {
+        customer.Preferences.UpdateNotificationChannels(
+            dto.EmailNotificationsEnabled,
+            dto.TelegramNotificationsEnabled,
+            dto.SmsNotificationsEnabled);
+
+        customer.Preferences.UpdateNotificationTypes(
+            dto.OrderStatusUpdates,
+            dto.PromotionalOffers);
+
+        if (!string.IsNullOrWhiteSpace(dto.PreferredLanguage))
+        {
+            customer.Preferences.UpdateLanguage(dto.PreferredLanguage);
+        }
+
+        if (!string.IsNullOrWhiteSpace(dto.PreferredCurrency))
+        {
+            customer.Preferences.UpdateCurrency(dto.PreferredCurrency);
+        }
     }
 }
