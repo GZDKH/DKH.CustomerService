@@ -50,6 +50,10 @@
       "Read(**/secrets/**)",
       "Read(**/*.pem)",
       "Read(**/*.key)"
+    ],
+    "additionalDirectories": [
+      "../../libraries/DKH.Architecture",
+      "../../DKH.Infrastructure"
     ]
   },
   "hooks": {
