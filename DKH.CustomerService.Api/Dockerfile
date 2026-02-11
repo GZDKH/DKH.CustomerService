@@ -59,11 +59,12 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR "/src/DKH.CustomerService.Api"
 RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
     RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
+    dotnet restore "./DKH.CustomerService.Api.csproj" -r $RUNTIME_ID /p:PublishReadyToRun=true && \
     if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
     Protobuf_ProtocPath=/usr/bin/protoc \
-    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r $RUNTIME_ID /p:UseAppHost=false /p:PublishReadyToRun=true; \
+    dotnet publish "./DKH.CustomerService.Api.csproj" --no-restore -c $BUILD_CONFIGURATION -o /app/publish -r $RUNTIME_ID /p:UseAppHost=false /p:PublishReadyToRun=true; \
     else \
-    dotnet publish "./DKH.CustomerService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r $RUNTIME_ID /p:UseAppHost=false /p:PublishReadyToRun=true; \
+    dotnet publish "./DKH.CustomerService.Api.csproj" --no-restore -c $BUILD_CONFIGURATION -o /app/publish -r $RUNTIME_ID /p:UseAppHost=false /p:PublishReadyToRun=true; \
     fi
 
 FROM base AS final
