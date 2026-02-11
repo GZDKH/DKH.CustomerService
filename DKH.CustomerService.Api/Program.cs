@@ -1,4 +1,5 @@
 using DKH.CustomerService.Api.Services;
+using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
 using DKH.CustomerService.Infrastructure;
@@ -44,6 +45,7 @@ await Platform
         grpc.MapService<ContactVerificationGrpcService>();
         grpc.MapService<CustomerCrudGrpcService>();
         grpc.MapService<CustomerManagementGrpcService>();
+        grpc.MapService<DataExchangeService>();
         grpc.ConfigureDefaultRoute("CustomerService gRPC is running.");
     })
     .Build()

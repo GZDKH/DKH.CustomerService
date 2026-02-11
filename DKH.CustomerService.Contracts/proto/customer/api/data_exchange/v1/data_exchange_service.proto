@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.DataExchange.v1";
+
+package proto.customer.api.data_exchange.v1;
+
+// Generic data-exchange endpoints (import/export) for customer domain profiles.
+service DataExchangeService {
+  rpc Import (ImportRequest) returns (ImportResponse);
+  rpc Export (ExportRequest) returns (ExportResponse);
+  rpc ImportStream (stream ImportChunk) returns (ImportResponse);
+  rpc ExportStream (ExportRequest) returns (stream ExportChunk);
+  // Validate import file without saving to database.
+  rpc ValidateImport (ValidateImportRequest) returns (ValidateImportResponse);
+  // Get import template for a profile.
+  rpc GetImportTemplate (GetImportTemplateRequest) returns (GetImportTemplateResponse);
+}
+
+message ImportRequest {
+  // Profile name (e.g., customers).
+  string profile = 1;
+  // File format (Csv, Excel, etc., matches platform FileFormat enum names, case-insensitive).
+  string format = 2;
+  // Raw file content.
+  bytes content = 3;
+  // Optional URL to fetch file from (used when content is empty).
+  string source_url = 4;
+  // Optional import options.
+  ImportOptions options = 5;
+}
+
+message ImportResponse {
+  int32 processed = 1;
+  int32 failed = 2;
+  repeated string errors = 3;
+}
+
+message ExportRequest {
+  string profile = 1;
+  string format = 2;
+  // Optional language parameter for translations.
+  string language = 3;
+  // Optional search string (applied to Name/Email/Phone).
+  string search = 4;
+  // Optional account status filter (e.g., "Active", "Blocked").
+  string status = 5;
+  // order by format: "field:asc|desc" (e.g., "createdAt:desc", "firstName:asc").
+  string order_by = 6;
+  // 1-based page number and page size.
+  int32 page = 7;
+  int32 page_size = 8;
+  // Optional destination URL to upload resulting file (presigned URL expected). If set, server uploads and may return empty content.
+  string destination_url = 9;
+}
+
+message ExportResponse {
+  bytes content = 1;
+}
+
+// Streaming variants for large files
+message ImportChunk {
+  // Required on first chunk; optional on subsequent chunks.
+  string profile = 1;
+  string format = 2;
+  // Optional URL to fetch file from (only first chunk used).
+  string source_url = 4;
+  // File chunk payload.
+  bytes content = 3;
+  // Optional import options (only first chunk used).
+  ImportOptions options = 5;
+}
+
+message ExportChunk {
+  bytes content = 1;
+}
+
+// Validate import request
+message ValidateImportRequest {
+  // Profile name (e.g., customers).
+  string profile = 1;
+  // File format (json, csv, xlsx).
+  string format = 2;
+  // Raw file content.
+  bytes content = 3;
+}
+
+message ValidateImportResponse {
+  bool valid = 1;
+  int32 total_records = 2;
+  int32 valid_records = 3;
+  repeated ValidationError errors = 4;
+  repeated ValidationWarning warnings = 5;
+}
+
+message ValidationError {
+  int32 line = 1;
+  string field = 2;
+  string message = 3;
+  string value = 4;
+}
+
+message ValidationWarning {
+  int32 line = 1;
+  string field = 2;
+  string message = 3;
+}
+
+// Get import template request
+message GetImportTemplateRequest {
+  // Profile name (e.g., customers).
+  string profile = 1;
+  // File format (json, csv, xlsx).
+  string format = 2;
+  // Include example data in template.
+  bool include_example = 3;
+}
+
+message GetImportTemplateResponse {
+  bytes content = 1;
+  string content_type = 2;
+  string filename = 3;
+}
+
+// Import options for controlling import behavior
+message ImportOptions {
+  // Update existing records if they exist.
+  bool update_existing = 1;
+  // Skip records with errors instead of failing.
+  bool skip_errors = 2;
+  // Default language code for translations.
+  string default_language = 3;
+}
