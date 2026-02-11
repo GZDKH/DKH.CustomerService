@@ -16,6 +16,7 @@
     <Protobuf Include="proto/customer/api/v1/contact_verification_service.proto"/>
     <Protobuf Include="proto/customer/services/v1/customer_crud_service.proto"/>
     <Protobuf Include="proto/customer/services/v1/customer_management_service.proto"/>
+    <Protobuf Include="proto/customer/api/data_exchange/v1/data_exchange_service.proto"/>
     <Protobuf Include="proto/customer/models/v1/customer_profile.proto"/>
     <Protobuf Include="proto/customer/models/v1/customer_address.proto"/>
     <Protobuf Include="proto/customer/models/v1/wishlist_item.proto"/>
