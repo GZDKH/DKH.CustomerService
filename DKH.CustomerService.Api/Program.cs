@@ -10,6 +10,7 @@ using DKH.Platform.DataExchange;
 using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
+using DKH.Platform.Identity;
 using DKH.Platform.Localization;
 using DKH.Platform.Logging;
 using DKH.Platform.Messaging.MediatR;
@@ -34,6 +35,7 @@ await Platform
     .AddPlatformPostgreSql<AppDbContext>(options => options.ConnectionStringKey = "Default")
     .AddPlatformRepositories<AppDbContext>()
     .AddGrpcStorefrontContext()
+    .AddGrpcCurrentUser()
     .AddPlatformGrpc(grpc =>
     {
         grpc.ConfigureServer(options => options.EnableDetailedErrors = true);

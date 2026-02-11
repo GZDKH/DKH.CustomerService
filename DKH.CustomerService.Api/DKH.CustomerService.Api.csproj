@@ -21,6 +21,7 @@
     <PackageReference Include="DKH.Platform.EntityFrameworkCore"/>
     <PackageReference Include="DKH.Platform.Grpc"/>
     <PackageReference Include="DKH.Platform.Grpc.Client"/>
+    <PackageReference Include="DKH.Platform.Identity"/>
     <PackageReference Include="DKH.Platform.DataExchange"/>
     <PackageReference Include="DKH.Platform.MultiTenancy"/>
     <PackageReference Include="Grpc.AspNetCore"/>
