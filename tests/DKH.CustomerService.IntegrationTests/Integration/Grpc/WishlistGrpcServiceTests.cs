@@ -1,3 +1,4 @@
+using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
@@ -62,7 +63,7 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     {
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
             FirstName = "Test",
         });
@@ -80,9 +81,9 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         var productId = Guid.NewGuid().ToString();
         var response = await client.AddToWishlistAsync(new AddToWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = productId,
+            ProductId = new GuidValue { Value = productId },
         });
 
         response.Should().NotBeNull();
@@ -100,14 +101,14 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         var productId = Guid.NewGuid().ToString();
         await client.AddToWishlistAsync(new AddToWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = productId,
+            ProductId = new GuidValue { Value = productId },
         });
 
         var response = await client.GetWishlistAsync(new GetWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
             Page = 1,
             PageSize = 10,
@@ -129,16 +130,16 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         var productId = Guid.NewGuid().ToString();
         await client.AddToWishlistAsync(new AddToWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = productId,
+            ProductId = new GuidValue { Value = productId },
         });
 
         var response = await client.RemoveFromWishlistAsync(new RemoveFromWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = productId,
+            ProductId = new GuidValue { Value = productId },
         });
 
         response.Success.Should().BeTrue();
@@ -156,16 +157,16 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         var productId = Guid.NewGuid().ToString();
         await client.AddToWishlistAsync(new AddToWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = productId,
+            ProductId = new GuidValue { Value = productId },
         });
 
         var response = await client.CheckProductInWishlistAsync(new CheckProductInWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = productId,
+            ProductId = new GuidValue { Value = productId },
         });
 
         response.InWishlist.Should().BeTrue();
@@ -182,21 +183,21 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
 
         await client.AddToWishlistAsync(new AddToWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = Guid.NewGuid().ToString(),
+            ProductId = new GuidValue { Value = Guid.NewGuid().ToString() },
         });
 
         await client.AddToWishlistAsync(new AddToWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            ProductId = Guid.NewGuid().ToString(),
+            ProductId = new GuidValue { Value = Guid.NewGuid().ToString() },
         });
 
         var response = await client.ClearWishlistAsync(new ClearWishlistRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
         });
 
