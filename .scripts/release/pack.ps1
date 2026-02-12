@@ -34,7 +34,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Resolve paths relative to service root
-$serviceRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+$serviceRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 
 if (-not (Test-Path $ProjectPath)) {
     $ProjectPath = Join-Path $serviceRoot $ProjectPath

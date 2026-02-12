@@ -37,7 +37,7 @@ if ($DryRun) {
 }
 
 # Paths
-$serviceRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+$serviceRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $serviceName = Split-Path $serviceRoot -Leaf
 $contractsProject = "$serviceName.Contracts"
 $contractsProjectPath = "$contractsProject/$contractsProject.csproj"
