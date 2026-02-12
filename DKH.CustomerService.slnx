@@ -18,10 +18,7 @@
   <Folder Name="/.github/workflows/">
     <File Path=".github/workflows/release.yml" />
   </Folder>
-  <Folder Name="/.scripts/">
-    <File Path=".scripts/config.ps1" />
-  </Folder>
-  <Folder Name="/.scripts/modules/">
+    <Folder Name="/.scripts/modules/">
     <File Path=".scripts/modules/DotNet.psm1" />
     <File Path=".scripts/modules/Git.psm1" />
     <File Path=".scripts/modules/NuGet.psm1" />
