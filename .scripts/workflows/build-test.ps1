@@ -40,8 +40,11 @@ if (-not $ProjectPath) {
     $projectRoot = Get-ProjectRoot
     $serviceName = Get-ServiceName
 
-    # Try to find .sln file
-    $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.sln" -File | Select-Object -First 1
+    # Try to find .slnx or .sln file
+    $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.slnx" -File | Select-Object -First 1
+    if (-not $slnFile) {
+        $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.sln" -File | Select-Object -First 1
+    }
 
     if ($slnFile) {
         $ProjectPath = $slnFile.FullName

@@ -5,6 +5,8 @@ package customer.api.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
 
 import "customer/models/v1/wishlist_item.proto";
+import "types/guid.proto";
+import "types/pagination.proto";
 
 service WishlistService {
   rpc GetWishlist(GetWishlistRequest) returns (GetWishlistResponse);
@@ -16,24 +18,20 @@ service WishlistService {
 }
 
 message GetWishlistRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
-  int32 page = 3;
-  int32 page_size = 4;
+  proto.platform.grpc.common.types.PaginationRequest pagination = 3;
 }
 
 message GetWishlistResponse {
   customer.models.v1.Wishlist wishlist = 1;
-  int32 page = 2;
-  int32 page_size = 3;
-  int32 total_pages = 4;
 }
 
 message AddToWishlistRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
-  string product_id = 3;
-  string product_sku_id = 4;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
   string note = 5;
 }
 
@@ -43,10 +41,10 @@ message AddToWishlistResponse {
 }
 
 message RemoveFromWishlistRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
-  string product_id = 3;
-  string product_sku_id = 4;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
 }
 
 message RemoveFromWishlistResponse {
@@ -54,10 +52,10 @@ message RemoveFromWishlistResponse {
 }
 
 message CheckProductInWishlistRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
-  string product_id = 3;
-  string product_sku_id = 4;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
 }
 
 message CheckProductInWishlistResponse {
@@ -66,7 +64,7 @@ message CheckProductInWishlistResponse {
 }
 
 message ClearWishlistRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
 }
 
@@ -75,7 +73,7 @@ message ClearWishlistResponse {
 }
 
 message GetWishlistCountRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
 }
 

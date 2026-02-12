@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DKHPlatformGrpcCommonProtoPath>$(NuGetPackageRoot)dkh.platform.grpc.common/1.0.0/proto</DKHPlatformGrpcCommonProtoPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Grpc.Tools">
       <PrivateAssets>all</PrivateAssets>
@@ -8,20 +12,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="proto/customer/api/v1/customer_profile_service.proto"/>
-    <Protobuf Include="proto/customer/api/v1/customer_address_service.proto"/>
-    <Protobuf Include="proto/customer/api/v1/wishlist_service.proto"/>
-    <Protobuf Include="proto/customer/api/v1/customer_preferences_service.proto"/>
-    <Protobuf Include="proto/customer/api/v1/customer_admin_service.proto"/>
-    <Protobuf Include="proto/customer/api/v1/contact_verification_service.proto"/>
-    <Protobuf Include="proto/customer/services/v1/customer_crud_service.proto"/>
-    <Protobuf Include="proto/customer/services/v1/customer_management_service.proto"/>
-    <Protobuf Include="proto/customer/api/data_exchange/v1/data_exchange_service.proto"/>
-    <Protobuf Include="proto/customer/models/v1/customer_profile.proto"/>
-    <Protobuf Include="proto/customer/models/v1/customer_address.proto"/>
-    <Protobuf Include="proto/customer/models/v1/wishlist_item.proto"/>
-    <Protobuf Include="proto/customer/models/v1/customer_preferences.proto"/>
-    <Protobuf Include="proto/customer/models/v1/account_status.proto"/>
-    <Protobuf Include="proto/customer/models/v1/contact_verification.proto"/>
+    <Protobuf Include="proto/customer/api/v1/customer_profile_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/v1/customer_address_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/v1/wishlist_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/v1/customer_preferences_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/v1/customer_admin_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/v1/contact_verification_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/services/v1/customer_crud_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/services/v1/customer_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/data_exchange/v1/data_exchange_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/v1/customer_profile.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/v1/customer_address.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/v1/wishlist_item.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/v1/customer_preferences.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/v1/account_status.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/v1/contact_verification.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
   </ItemGroup>
 </Project>

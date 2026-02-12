@@ -1,0 +1,7 @@
+{
+  "$schema": "./version.schema.json",
+  "version": "1.0.0",
+  "publish": true,
+  "forceRepublish": true,
+  "delete": false
+}

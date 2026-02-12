@@ -5,6 +5,7 @@ package customer.api.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
 
 import "customer/models/v1/contact_verification.proto";
+import "types/guid.proto";
 
 service ContactVerificationService {
   rpc InitiateEmailVerification(InitiateEmailVerificationRequest) returns (InitiateEmailVerificationResponse);
@@ -14,7 +15,7 @@ service ContactVerificationService {
 }
 
 message InitiateEmailVerificationRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   string email = 3;
 }
@@ -24,7 +25,7 @@ message InitiateEmailVerificationResponse {
 }
 
 message VerifyEmailRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   string email = 3;
   string code = 4;
@@ -35,7 +36,7 @@ message VerifyEmailResponse {
 }
 
 message InitiatePhoneVerificationRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   string phone = 3;
 }
@@ -45,7 +46,7 @@ message InitiatePhoneVerificationResponse {
 }
 
 message VerifyPhoneRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   string phone = 3;
   string code = 4;

@@ -5,6 +5,7 @@ package customer.api.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
 
 import "customer/models/v1/customer_profile.proto";
+import "types/guid.proto";
 
 service CustomerProfileService {
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
@@ -14,7 +15,7 @@ service CustomerProfileService {
 }
 
 message GetProfileRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
 }
 
@@ -24,7 +25,7 @@ message GetProfileResponse {
 }
 
 message GetOrCreateProfileRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   string first_name = 3;
   string last_name = 4;
@@ -39,7 +40,7 @@ message GetOrCreateProfileResponse {
 }
 
 message UpdateProfileRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   optional string first_name = 3;
   optional string last_name = 4;
@@ -53,7 +54,7 @@ message UpdateProfileResponse {
 }
 
 message DeleteProfileRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   bool hard_delete = 3;
 }
