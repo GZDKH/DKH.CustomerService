@@ -3,6 +3,7 @@ using DKH.CustomerService.Application.Preferences.UpdateNotificationChannels;
 using DKH.CustomerService.Application.Preferences.UpdateNotificationTypes;
 using DKH.CustomerService.Application.Preferences.UpdatePreferences;
 using DKH.CustomerService.Contracts.Api.V1;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -56,11 +57,11 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
             context.CancellationToken);
     }
 
-    private Guid ResolveStorefrontId(string requestStorefrontId)
+    private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         return storefrontContext.StorefrontId

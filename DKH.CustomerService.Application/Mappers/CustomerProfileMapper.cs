@@ -2,6 +2,7 @@ using System.Globalization;
 using DKH.CustomerService.Contracts.Models.V1;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Enums;
+using DKH.Platform.Grpc.Common.Types;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DKH.CustomerService.Application.Mappers;
@@ -12,8 +13,8 @@ public static class CustomerProfileMapper
     {
         var profile = new CustomerProfile
         {
-            Id = entity.Id.ToString(),
-            StorefrontId = entity.StorefrontId.ToString(),
+            Id = GuidValue.FromGuid(entity.Id),
+            StorefrontId = GuidValue.FromGuid(entity.StorefrontId),
             TelegramUserId = entity.TelegramUserId,
             FirstName = entity.FirstName,
             LastName = entity.LastName ?? string.Empty,

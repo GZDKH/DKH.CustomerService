@@ -23,7 +23,7 @@ public class UpdateNotificationChannelsCommandHandler(ICustomerRepository reposi
 
         return new UpdateNotificationChannelsResponse
         {
-            Preferences = profile.Preferences.ToContractModel(profile.Id.ToString()),
+            Preferences = profile.Preferences.ToContractModel(profile.Id),
         };
     }
 }

@@ -2,6 +2,7 @@ using DKH.CustomerService.Application.Profiles.DeleteProfile;
 using DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
 using DKH.CustomerService.Application.Profiles.GetProfile;
 using DKH.CustomerService.Application.Profiles.UpdateProfile;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -89,11 +90,11 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
-    private Guid ResolveStorefrontId(string requestStorefrontId)
+    private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         return _storefrontContext.StorefrontId

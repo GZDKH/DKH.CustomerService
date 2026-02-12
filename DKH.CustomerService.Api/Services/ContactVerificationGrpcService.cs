@@ -1,6 +1,7 @@
 using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Contracts.Api.V1;
 using DKH.CustomerService.Contracts.Models.V1;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using ContractsService = DKH.CustomerService.Contracts.Api.V1.ContactVerificationService;
@@ -111,11 +112,11 @@ public class ContactVerificationGrpcService(
         };
     }
 
-    private Guid ResolveStorefrontId(string requestStorefrontId)
+    private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         return storefrontContext.StorefrontId
