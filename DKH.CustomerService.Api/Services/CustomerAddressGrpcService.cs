@@ -6,6 +6,7 @@ using DKH.CustomerService.Application.Addresses.ListAddresses;
 using DKH.CustomerService.Application.Addresses.SetDefaultAddress;
 using DKH.CustomerService.Application.Addresses.UpdateAddress;
 using DKH.CustomerService.Contracts.Api.V1;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -25,10 +26,8 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<GetAddressResponse> GetAddress(GetAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.AddressId, out var addressId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid address ID"));
-        }
+        var addressId = request.AddressId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
         return await mediator.Send(new GetAddressQuery(storefrontId, request.TelegramUserId, addressId), context.CancellationToken);
     }
@@ -55,10 +54,8 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<UpdateAddressResponse> UpdateAddress(UpdateAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.AddressId, out var addressId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid address ID"));
-        }
+        var addressId = request.AddressId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
         return await mediator.Send(
             new UpdateAddressCommand(
@@ -79,10 +76,8 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<DeleteAddressResponse> DeleteAddress(DeleteAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.AddressId, out var addressId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid address ID"));
-        }
+        var addressId = request.AddressId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
         return await mediator.Send(new DeleteAddressCommand(storefrontId, request.TelegramUserId, addressId), context.CancellationToken);
     }
@@ -90,10 +85,8 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<SetDefaultAddressResponse> SetDefaultAddress(SetDefaultAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.AddressId, out var addressId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid address ID"));
-        }
+        var addressId = request.AddressId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
         return await mediator.Send(new SetDefaultAddressCommand(storefrontId, request.TelegramUserId, addressId), context.CancellationToken);
     }
@@ -104,11 +97,11 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
     }
 
-    private Guid ResolveStorefrontId(string requestStorefrontId)
+    private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         return storefrontContext.StorefrontId

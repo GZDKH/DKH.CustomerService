@@ -22,7 +22,7 @@ public class UpdateNotificationTypesCommandHandler(ICustomerRepository repositor
 
         return new UpdateNotificationTypesResponse
         {
-            Preferences = profile.Preferences.ToContractModel(profile.Id.ToString()),
+            Preferences = profile.Preferences.ToContractModel(profile.Id),
         };
     }
 }

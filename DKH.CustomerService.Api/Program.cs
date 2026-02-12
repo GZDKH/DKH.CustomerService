@@ -1,5 +1,5 @@
-using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Api.Grpc.Services;
+using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
 using DKH.CustomerService.Infrastructure;

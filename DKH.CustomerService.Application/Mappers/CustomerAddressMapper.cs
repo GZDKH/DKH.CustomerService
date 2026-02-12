@@ -1,5 +1,6 @@
 using DKH.CustomerService.Contracts.Models.V1;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
+using DKH.Platform.Grpc.Common.Types;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DKH.CustomerService.Application.Mappers;
@@ -10,8 +11,8 @@ public static class CustomerAddressMapper
     {
         var address = new CustomerAddress
         {
-            Id = entity.Id.ToString(),
-            CustomerId = entity.CustomerId.ToString(),
+            Id = GuidValue.FromGuid(entity.Id),
+            CustomerId = GuidValue.FromGuid(entity.CustomerId),
             Label = entity.Label,
             Country = entity.Country,
             City = entity.City,

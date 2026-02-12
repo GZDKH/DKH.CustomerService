@@ -1,3 +1,4 @@
+using DKH.CustomerService.Application.Common;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Api.V1;
 
@@ -19,14 +20,9 @@ public class ListCustomersQueryHandler(ICustomerRepository repository)
             request.SortDescending,
             cancellationToken);
 
-        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
         var response = new ListCustomersResponse
         {
-            TotalCount = totalCount,
-            Page = page,
-            PageSize = pageSize,
-            TotalPages = totalPages,
+            Pagination = PaginationHelper.CreateMetadata(totalCount, page, pageSize),
         };
 
         response.Customers.AddRange(items.Select(c => c.ToContractModel()));

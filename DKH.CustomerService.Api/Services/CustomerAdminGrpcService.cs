@@ -3,6 +3,7 @@ using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
 using DKH.CustomerService.Contracts.Api.V1;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
@@ -19,7 +20,7 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
         // For admin operations, storefront_id is optional (null means all storefronts)
         var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
         return await mediator.Send(
-            new SearchCustomersQuery(storefrontId, request.Query, request.Page, request.PageSize),
+            new SearchCustomersQuery(storefrontId, request.Query, (request.Pagination?.Page ?? 1), (request.Pagination?.PageSize ?? 10)),
             context.CancellationToken);
     }
 
@@ -28,7 +29,7 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
         // For admin operations, storefront_id is optional (null means all storefronts)
         var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
         return await mediator.Send(
-            new ListCustomersQuery(storefrontId, request.Page, request.PageSize, request.SortBy, request.SortDescending),
+            new ListCustomersQuery(storefrontId, (request.Pagination?.Page ?? 1), (request.Pagination?.PageSize ?? 10), request.SortBy, request.SortDescending),
             context.CancellationToken);
     }
 
@@ -66,23 +67,23 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
         return Task.FromResult(new DeleteCustomerDataResponse { Success = false });
     }
 
-    private Guid ResolveStorefrontId(string requestStorefrontId)
+    private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         return storefrontContext.StorefrontId
                ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required"));
     }
 
-    private Guid? ResolveStorefrontIdOptional(string requestStorefrontId)
+    private Guid? ResolveStorefrontIdOptional(GuidValue? requestStorefrontId)
     {
         // For admin operations, storefront_id is optional (null means all storefronts)
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         // Return storefront from context if available, otherwise null (admin mode)

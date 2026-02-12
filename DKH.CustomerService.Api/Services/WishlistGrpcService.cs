@@ -5,6 +5,7 @@ using DKH.CustomerService.Application.Wishlists.GetWishlist;
 using DKH.CustomerService.Application.Wishlists.GetWishlistCount;
 using DKH.CustomerService.Application.Wishlists.RemoveFromWishlist;
 using DKH.CustomerService.Contracts.Api.V1;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -19,23 +20,17 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(
-            new GetWishlistQuery(storefrontId, request.TelegramUserId, request.Page, request.PageSize),
+            new GetWishlistQuery(storefrontId, request.TelegramUserId, (request.Pagination?.Page ?? 1), (request.Pagination?.PageSize ?? 10)),
             context.CancellationToken);
     }
 
     public override async Task<AddToWishlistResponse> AddToWishlist(AddToWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.ProductId, out var productId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid product ID"));
-        }
+        var productId = request.ProductId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Product ID is required"));
 
-        Guid? productSkuId = null;
-        if (!string.IsNullOrWhiteSpace(request.ProductSkuId) && Guid.TryParse(request.ProductSkuId, out var skuId))
-        {
-            productSkuId = skuId;
-        }
+        var productSkuId = request.ProductSkuId?.ToGuid();
 
         return await mediator.Send(
             new AddToWishlistCommand(storefrontId, request.TelegramUserId, productId, productSkuId, request.Note),
@@ -45,16 +40,10 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
     public override async Task<RemoveFromWishlistResponse> RemoveFromWishlist(RemoveFromWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.ProductId, out var productId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid product ID"));
-        }
+        var productId = request.ProductId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Product ID is required"));
 
-        Guid? productSkuId = null;
-        if (!string.IsNullOrWhiteSpace(request.ProductSkuId) && Guid.TryParse(request.ProductSkuId, out var skuId))
-        {
-            productSkuId = skuId;
-        }
+        var productSkuId = request.ProductSkuId?.ToGuid();
 
         return await mediator.Send(
             new RemoveFromWishlistCommand(storefrontId, request.TelegramUserId, productId, productSkuId),
@@ -64,16 +53,10 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
     public override async Task<CheckProductInWishlistResponse> CheckProductInWishlist(CheckProductInWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        if (!Guid.TryParse(request.ProductId, out var productId))
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid product ID"));
-        }
+        var productId = request.ProductId?.ToGuid()
+            ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Product ID is required"));
 
-        Guid? productSkuId = null;
-        if (!string.IsNullOrWhiteSpace(request.ProductSkuId) && Guid.TryParse(request.ProductSkuId, out var skuId))
-        {
-            productSkuId = skuId;
-        }
+        var productSkuId = request.ProductSkuId?.ToGuid();
 
         return await mediator.Send(
             new CheckProductInWishlistQuery(storefrontId, request.TelegramUserId, productId, productSkuId),
@@ -92,11 +75,11 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
         return await mediator.Send(new GetWishlistCountQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
     }
 
-    private Guid ResolveStorefrontId(string requestStorefrontId)
+    private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         return storefrontContext.StorefrontId

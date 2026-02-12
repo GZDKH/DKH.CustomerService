@@ -28,7 +28,7 @@ public class UpdatePreferencesCommandHandler(ICustomerRepository repository)
 
         return new UpdatePreferencesResponse
         {
-            Preferences = profile.Preferences.ToContractModel(profile.Id.ToString()),
+            Preferences = profile.Preferences.ToContractModel(profile.Id),
         };
     }
 }

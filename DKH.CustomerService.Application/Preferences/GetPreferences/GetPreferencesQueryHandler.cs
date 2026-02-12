@@ -24,7 +24,7 @@ public class GetPreferencesQueryHandler(ICustomerRepository repository)
 
         return new GetPreferencesResponse
         {
-            Preferences = profile.Preferences.ToContractModel(profile.Id.ToString()),
+            Preferences = profile.Preferences.ToContractModel(profile.Id),
         };
     }
 }

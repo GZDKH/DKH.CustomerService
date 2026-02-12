@@ -1,3 +1,4 @@
+using DKH.CustomerService.Application.Common;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Api.V1;
 using DKH.CustomerService.Contracts.Models.V1;
@@ -18,10 +19,10 @@ public class GetWishlistQueryHandler(ICustomerRepository repository, IAppDbConte
         {
             return new GetWishlistResponse
             {
-                Wishlist = new Wishlist { TotalCount = 0 },
-                Page = request.Page,
-                PageSize = request.PageSize,
-                TotalPages = 0,
+                Wishlist = new Wishlist
+                {
+                    Pagination = PaginationHelper.CreateMetadata(0, 1, 10),
+                },
             };
         }
 
@@ -33,22 +34,21 @@ public class GetWishlistQueryHandler(ICustomerRepository repository, IAppDbConte
             .OrderByDescending(w => w.AddedAt);
 
         var totalCount = await query.CountAsync(cancellationToken);
-        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
         var items = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        var wishlist = new Wishlist { TotalCount = totalCount };
+        var wishlist = new Wishlist
+        {
+            Pagination = PaginationHelper.CreateMetadata(totalCount, page, pageSize),
+        };
         wishlist.Items.AddRange(items.Select(i => i.ToContractModel()));
 
         return new GetWishlistResponse
         {
             Wishlist = wishlist,
-            Page = page,
-            PageSize = pageSize,
-            TotalPages = totalPages,
         };
     }
 }

@@ -2,6 +2,7 @@ using DKH.CustomerService.Application.Admin.BlockCustomer;
 using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
@@ -26,20 +27,21 @@ public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefr
     {
         // For admin operations, storefront_id is optional (null means all storefronts)
         var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
+        var page = request.Pagination?.Page ?? 1;
+        var pageSize = request.Pagination?.PageSize ?? 10;
+
         var result = await _mediator.Send(
-            new SearchCustomersQuery(storefrontId, request.Query, request.Page, request.PageSize),
+            new SearchCustomersQuery(storefrontId, request.Query, page, pageSize),
             context.CancellationToken);
 
-        return new ContractsServices.SearchCustomersResponse
+        // Map from Api.V1 to Services.V1 namespace
+        var response = new ContractsServices.SearchCustomersResponse
         {
-            Customers = { result.Customers },
-            TotalCount = result.TotalCount,
-            Page = result.Page,
-            PageSize = result.PageSize,
-            TotalPages = result.TotalPages,
-            HasNextPage = result.Page < result.TotalPages,
-            HasPreviousPage = result.Page > 1
+            Pagination = result.Pagination
         };
+        response.Customers.AddRange(result.Customers);
+
+        return response;
     }
 
     public override async Task<ContractsServices.ListCustomersResponse> ListCustomers(
@@ -48,20 +50,21 @@ public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefr
     {
         // For admin operations, storefront_id is optional (null means all storefronts)
         var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
+        var page = request.Pagination?.Page ?? 1;
+        var pageSize = request.Pagination?.PageSize ?? 10;
+
         var result = await _mediator.Send(
-            new ListCustomersQuery(storefrontId, request.Page, request.PageSize, request.SortBy, request.SortDescending),
+            new ListCustomersQuery(storefrontId, page, pageSize, request.SortBy, request.SortDescending),
             context.CancellationToken);
 
-        return new ContractsServices.ListCustomersResponse
+        // Map from Api.V1 to Services.V1 namespace
+        var response = new ContractsServices.ListCustomersResponse
         {
-            Customers = { result.Customers },
-            TotalCount = result.TotalCount,
-            Page = result.Page,
-            PageSize = result.PageSize,
-            TotalPages = result.TotalPages,
-            HasNextPage = result.Page < result.TotalPages,
-            HasPreviousPage = result.Page > 1
+            Pagination = result.Pagination
         };
+        response.Customers.AddRange(result.Customers);
+
+        return response;
     }
 
     public override Task<ContractsServices.GetCustomerStatsResponse> GetCustomerStats(
@@ -77,9 +80,9 @@ public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefr
         ServerCallContext context)
     {
         // For admin operations, storefront_id can be optional
-        var storefrontId = string.IsNullOrWhiteSpace(request.StorefrontId)
-            ? throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required for blocking"))
-            : Guid.Parse(request.StorefrontId);
+        var storefrontId = request.StorefrontId is not null
+            ? request.StorefrontId.ToGuid()
+            : throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required for blocking"));
 
         var result = await _mediator.Send(
             new BlockCustomerCommand(storefrontId, request.TelegramUserId, request.Reason, currentUser.Name!),
@@ -96,9 +99,9 @@ public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefr
         ServerCallContext context)
     {
         // For admin operations, storefront_id can be optional
-        var storefrontId = string.IsNullOrWhiteSpace(request.StorefrontId)
-            ? throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required for unblocking"))
-            : Guid.Parse(request.StorefrontId);
+        var storefrontId = request.StorefrontId is not null
+            ? request.StorefrontId.ToGuid()
+            : throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required for unblocking"));
 
         var result = await _mediator.Send(
             new UnblockCustomerCommand(storefrontId, request.TelegramUserId),
@@ -118,12 +121,12 @@ public sealed class CustomerCrudGrpcService(IMediator mediator, IPlatformStorefr
         return Task.FromResult(new ContractsServices.SuspendCustomerResponse { Success = false });
     }
 
-    private Guid? ResolveStorefrontIdOptional(string requestStorefrontId)
+    private Guid? ResolveStorefrontIdOptional(GuidValue? requestStorefrontId)
     {
         // For admin operations, storefront_id is optional (null means all storefronts)
-        if (!string.IsNullOrWhiteSpace(requestStorefrontId) && Guid.TryParse(requestStorefrontId, out var parsed))
+        if (requestStorefrontId is not null)
         {
-            return parsed;
+            return requestStorefrontId.ToGuid();
         }
 
         // Return storefront from context if available, otherwise null (admin mode)
