@@ -4,8 +4,10 @@ package customer.models.v1;
 
 option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
 
+import "types/guid.proto";
+
 message CustomerPreferences {
-  string customer_id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 1;
   bool email_notifications_enabled = 2;
   bool telegram_notifications_enabled = 3;
   bool sms_notifications_enabled = 4;

@@ -5,6 +5,9 @@ package customer.services.v1;
 import "google/protobuf/timestamp.proto";
 import "customer/models/v1/customer_profile.proto";
 import "customer/models/v1/account_status.proto";
+import "types/guid.proto";
+import "types/pagination.proto";
+import "types/pagination_metadata.proto";
 
 option csharp_namespace = "DKH.CustomerService.Contracts.Services.V1";
 
@@ -31,43 +34,31 @@ service CustomerCrudService {
 }
 
 message SearchCustomersRequest {
-  optional string storefront_id = 1;  // Optional for admin - searches all storefronts when null
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - searches all storefronts when null
   string query = 2;
-  int32 page = 3;
-  int32 page_size = 4;
+  proto.platform.grpc.common.types.PaginationRequest pagination = 3;
 }
 
 message SearchCustomersResponse {
   repeated customer.models.v1.CustomerProfile customers = 1;
-  int32 total_count = 2;
-  int32 page = 3;
-  int32 page_size = 4;
-  int32 total_pages = 5;
-  bool has_next_page = 6;
-  bool has_previous_page = 7;
+  proto.platform.grpc.common.types.PaginationMetadata pagination = 2;
 }
 
 message ListCustomersRequest {
-  optional string storefront_id = 1;  // Optional for admin - returns all customers when null
-  int32 page = 2;
-  int32 page_size = 3;
-  string sort_by = 4;
-  bool sort_descending = 5;
-  customer.models.v1.AccountStatusEnum status_filter = 6;
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - returns all customers when null
+  proto.platform.grpc.common.types.PaginationRequest pagination = 2;
+  string sort_by = 3;
+  bool sort_descending = 4;
+  customer.models.v1.AccountStatusEnum status_filter = 5;
 }
 
 message ListCustomersResponse {
   repeated customer.models.v1.CustomerProfile customers = 1;
-  int32 total_count = 2;
-  int32 page = 3;
-  int32 page_size = 4;
-  int32 total_pages = 5;
-  bool has_next_page = 6;
-  bool has_previous_page = 7;
+  proto.platform.grpc.common.types.PaginationMetadata pagination = 2;
 }
 
 message GetCustomerStatsRequest {
-  optional string storefront_id = 1;  // Optional for admin - can query stats from any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can query stats from any storefront
   string telegram_user_id = 2;
 }
 
@@ -76,7 +67,7 @@ message GetCustomerStatsResponse {
 }
 
 message BlockCustomerRequest {
-  optional string storefront_id = 1;  // Optional for admin - can block in any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can block in any storefront
   string telegram_user_id = 2;
   string reason = 3;
   string blocked_by = 4;
@@ -88,7 +79,7 @@ message BlockCustomerResponse {
 }
 
 message UnblockCustomerRequest {
-  optional string storefront_id = 1;  // Optional for admin - can unblock in any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can unblock in any storefront
   string telegram_user_id = 2;
 }
 
@@ -98,7 +89,7 @@ message UnblockCustomerResponse {
 }
 
 message SuspendCustomerRequest {
-  optional string storefront_id = 1;  // Optional for admin - can suspend in any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can suspend in any storefront
   string telegram_user_id = 2;
   google.protobuf.Timestamp suspend_until = 3;
   string reason = 4;

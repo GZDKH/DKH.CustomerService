@@ -32,25 +32,25 @@
     <PackageVersion Include="Grpc.Net.Client" Version="2.76.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="DKH.Platform" Version="1.0.5" />
-    <PackageVersion Include="DKH.Platform.Core" Version="1.0.4" />
-    <PackageVersion Include="DKH.Platform.Grpc" Version="1.3.0" />
-    <PackageVersion Include="DKH.Platform.Grpc.Client" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Grpc.Common" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Identity" Version="1.5.0" />
-    <PackageVersion Include="DKH.Platform.Domain" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Application" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Localization" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Logging" Version="1.3.0" />
-    <PackageVersion Include="DKH.Platform.EntityFrameworkCore" Version="1.3.0" />
-    <PackageVersion Include="DKH.Platform.EntityFrameworkCore.PostgreSQL" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.EntityFrameworkCore.Repositories" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.DataExchange" Version="1.3.0" />
-    <PackageVersion Include="DKH.Platform.MultiTenancy" Version="1.3.0" />
-    <PackageVersion Include="DKH.Platform.Messaging.MediatR" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.7.0" />
-    <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.1.0" />
-    <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.1.0" />
+    <PackageVersion Include="DKH.Platform" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Core" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Grpc" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Grpc.Client" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Grpc.Common" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Identity" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Domain" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Application" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Localization" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Logging" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.EntityFrameworkCore" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.EntityFrameworkCore.PostgreSQL" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.EntityFrameworkCore.Repositories" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.DataExchange" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.MultiTenancy" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Messaging.MediatR" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.0" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>

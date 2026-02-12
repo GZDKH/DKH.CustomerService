@@ -5,17 +5,19 @@ package customer.models.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
 
 import "google/protobuf/timestamp.proto";
+import "types/guid.proto";
+import "types/pagination_metadata.proto";
 
 message WishlistItem {
-  string id = 1;
-  string customer_id = 2;
-  string product_id = 3;
-  string product_sku_id = 4;
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
   google.protobuf.Timestamp added_at = 5;
   string note = 6;
 }
 
 message Wishlist {
   repeated WishlistItem items = 1;
-  int32 total_count = 2;
+  proto.platform.grpc.common.types.PaginationMetadata pagination = 2;
 }

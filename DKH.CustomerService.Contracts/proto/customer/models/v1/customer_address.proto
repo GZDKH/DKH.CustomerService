@@ -5,10 +5,11 @@ package customer.models.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
 
 import "google/protobuf/timestamp.proto";
+import "types/guid.proto";
 
 message CustomerAddress {
-  string id = 1;
-  string customer_id = 2;
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
   string label = 3;
   string country = 4;
   string city = 5;

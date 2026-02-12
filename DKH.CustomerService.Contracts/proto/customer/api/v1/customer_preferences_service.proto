@@ -5,6 +5,7 @@ package customer.api.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Api.V1";
 
 import "customer/models/v1/customer_preferences.proto";
+import "types/guid.proto";
 
 service CustomerPreferencesService {
   rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
@@ -14,7 +15,7 @@ service CustomerPreferencesService {
 }
 
 message GetPreferencesRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
 }
 
@@ -23,7 +24,7 @@ message GetPreferencesResponse {
 }
 
 message UpdatePreferencesRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   optional string preferred_language = 3;
   optional string preferred_currency = 4;
@@ -34,7 +35,7 @@ message UpdatePreferencesResponse {
 }
 
 message UpdateNotificationChannelsRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   optional bool email_notifications_enabled = 3;
   optional bool telegram_notifications_enabled = 4;
@@ -46,7 +47,7 @@ message UpdateNotificationChannelsResponse {
 }
 
 message UpdateNotificationTypesRequest {
-  string storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   optional bool order_status_updates = 3;
   optional bool promotional_offers = 4;

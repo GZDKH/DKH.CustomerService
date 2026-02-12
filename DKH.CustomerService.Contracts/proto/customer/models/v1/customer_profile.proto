@@ -5,10 +5,11 @@ package customer.models.v1;
 option csharp_namespace = "DKH.CustomerService.Contracts.Models.V1";
 
 import "google/protobuf/timestamp.proto";
+import "types/guid.proto";
 
 message CustomerProfile {
-  string id = 1;
-  string storefront_id = 2;
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 2;
   string telegram_user_id = 3;
   string first_name = 4;
   string last_name = 5;

@@ -40,10 +40,11 @@ if (-not $ProjectPath) {
     $projectRoot = Get-ProjectRoot
     $serviceName = Get-ServiceName
 
-    # Try to find .sln file (exclude .slnx)
-    $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.sln" -File |
-        Where-Object { $_.Extension -eq ".sln" } |
-        Select-Object -First 1
+    # Try to find .slnx or .sln file
+    $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.slnx" -File | Select-Object -First 1
+    if (-not $slnFile) {
+        $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.sln" -File | Select-Object -First 1
+    }
 
     if ($slnFile) {
         $ProjectPath = $slnFile.FullName
@@ -55,6 +56,21 @@ if (-not $ProjectPath) {
 }
 
 Write-Host "Configuration: $Configuration" -ForegroundColor White
+Write-Host ""
+
+# Step 0: Remove bin/obj directories
+Write-Host "Step 0/3: Remove build artifacts (bin/obj)" -ForegroundColor Cyan
+$projectRoot = if (Test-Path $ProjectPath -PathType Leaf) { Split-Path $ProjectPath -Parent } else { $ProjectPath }
+$binObjDirs = Get-ChildItem -Path $projectRoot -Recurse -Directory -Force |
+    Where-Object { $_.Name -eq "bin" -or $_.Name -eq "obj" }
+
+if ($binObjDirs) {
+    Write-Host "  Removing $($binObjDirs.Count) directories..." -ForegroundColor Gray
+    $binObjDirs | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force }
+    Write-Host "  Done" -ForegroundColor Green
+} else {
+    Write-Host "  No bin/obj directories found" -ForegroundColor Green
+}
 Write-Host ""
 
 # Step 1: Clean
