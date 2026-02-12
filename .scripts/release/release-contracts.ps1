@@ -2,20 +2,17 @@
 
 <#
 .SYNOPSIS
-    Releases Service Contracts package to GitLab Package Registry
+    Release Contracts package to GitLab Package Registry
 .DESCRIPTION
-    Builds, packs, and publishes the Contracts package for this service.
-    Uses the monorepo's modular release scripts.
+    Builds, packs, and publishes the Contracts package using local modular scripts.
+    All dependencies are self-contained - no Infrastructure required.
 .PARAMETER Version
     Version for the Contracts package (required)
 .PARAMETER DryRun
     Preview actions without making changes
 .EXAMPLE
-    # Release with version
-    ./.scripts/release/release-contracts.ps1 -Version 1.0.1
-
-    # Preview only
-    ./.scripts/release/release-contracts.ps1 -Version 1.0.1 -DryRun
+    ./.scripts/release/release-contracts.ps1 -Version 1.2.0
+    ./.scripts/release/release-contracts.ps1 -Version 1.2.0 -DryRun
 #>
 
 param(
@@ -28,29 +25,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# Paths
-$serviceRoot = Resolve-Path "$PSScriptRoot/.."
-$monoRepoRoot = Resolve-Path "$serviceRoot/../.."
-$serviceName = Split-Path -Leaf $serviceRoot
-$contractsProject = "$serviceName.Contracts"
-$nupkgDir = Join-Path $serviceRoot "nupkgs-release"
-
-# Load GitLab config from monorepo
-$gitlabConfig = Join-Path $monoRepoRoot ".scripts/config/gitlab.conf"
-if (-not (Test-Path $gitlabConfig)) {
-    Write-Error "GitLab config not found: $gitlabConfig"
-}
-
-# Parse config
-$config = @{}
-Get-Content $gitlabConfig | Where-Object { $_ -match '^\s*(\w+)="(.+)"' } | ForEach-Object {
-    $matches[1] | Out-Null
-    $config[$matches[1]] = $matches[2]
-}
-
 Write-Host ""
 Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "$contractsProject Release to GitLab" -ForegroundColor Cyan
+Write-Host "Contracts Release (GitLab)" -ForegroundColor Cyan
 Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""
 
@@ -59,24 +36,41 @@ if ($DryRun) {
     Write-Host ""
 }
 
-# Validate Contracts project exists
-$contractsPath = Join-Path $serviceRoot $contractsProject
-if (-not (Test-Path $contractsPath)) {
-    Write-Error "Contracts project not found: $contractsPath"
-}
+# Paths
+$serviceRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+$serviceName = Split-Path $serviceRoot -Leaf
+$contractsProject = "$serviceName.Contracts"
+$contractsProjectPath = "$contractsProject/$contractsProject.csproj"
+$nupkgDir = Join-Path $serviceRoot "nupkgs-release"
 
-# Step 1: Build
-Write-Host "Step 1/4: Build" -ForegroundColor Yellow
-if (-not $DryRun) {
-    & "$monoRepoRoot/DKH.Infrastructure/scripts/release/build-project.ps1" -ProjectPath $serviceRoot -Mode ContractsOnly
-}
-else {
-    Write-Host "  [DRY RUN] Would build $contractsProject" -ForegroundColor Gray
-}
+Write-Host "Service:  $serviceName" -ForegroundColor White
+Write-Host "Package:  $contractsProject" -ForegroundColor White
+Write-Host "Version:  $Version" -ForegroundColor White
 Write-Host ""
 
-# Step 2: Pack
-Write-Host "Step 2/4: Pack" -ForegroundColor Yellow
+# Validate Contracts project exists
+$contractsFullPath = Join-Path $serviceRoot $contractsProjectPath
+if (-not (Test-Path $contractsFullPath)) {
+    Write-Error "Contracts project not found: $contractsFullPath"
+}
+
+# ═══════════════════════════════════════════════════════════════════════
+# Step 1/4: Build
+# ═══════════════════════════════════════════════════════════════════════
+Write-Host "Step 1/4: Build" -ForegroundColor Cyan
+
+if (-not $DryRun) {
+    & "$PSScriptRoot/build.ps1" -ProjectPath $contractsProjectPath -Configuration Release
+} else {
+    Write-Host "  [DRY RUN] Would build $contractsProject" -ForegroundColor Gray
+}
+
+Write-Host ""
+
+# ═══════════════════════════════════════════════════════════════════════
+# Step 2/4: Pack
+# ═══════════════════════════════════════════════════════════════════════
+Write-Host "Step 2/4: Pack" -ForegroundColor Cyan
 
 if (-not $DryRun) {
     # Clean output directory
@@ -85,69 +79,65 @@ if (-not $DryRun) {
     }
     New-Item -ItemType Directory -Path $nupkgDir -Force | Out-Null
 
-    & "$monoRepoRoot/DKH.Infrastructure/scripts/release/pack-project.ps1" `
-        -ProjectPath $serviceRoot `
+    & "$PSScriptRoot/pack.ps1" `
+        -ProjectPath $contractsProjectPath `
         -OutputDir $nupkgDir `
         -Version $Version `
-        -Mode ContractsOnly
-}
-else {
+        -Configuration Release
+} else {
     Write-Host "  [DRY RUN] Would pack $contractsProject@$Version to $nupkgDir" -ForegroundColor Gray
 }
+
 Write-Host ""
 
-# Step 3: Publish to GitLab
-Write-Host "Step 3/4: Publish to GitLab" -ForegroundColor Yellow
+# ═══════════════════════════════════════════════════════════════════════
+# Step 3/4: Publish to GitLab
+# ═══════════════════════════════════════════════════════════════════════
+Write-Host "Step 3/4: Publish to GitLab" -ForegroundColor Cyan
+
 if (-not $DryRun) {
-    & "$monoRepoRoot/DKH.Infrastructure/scripts/release/publish-packages.ps1" `
-        -NupkgDir $nupkgDir `
-        -SourceName $config['GITLAB_SOURCE_NAME'] `
-        -SourceUrl $config['GITLAB_SOURCE_URL'] `
-        -ApiKey $config['GITLAB_TOKEN'] `
-        -Username $config['GITLAB_USERNAME']
-}
-else {
+    & "$PSScriptRoot/publish-gitlab.ps1" -NupkgDir $nupkgDir
+} else {
     Write-Host "  [DRY RUN] Would publish to GitLab Package Registry" -ForegroundColor Gray
-    Write-Host "    Source: $($config['GITLAB_SOURCE_NAME'])" -ForegroundColor Gray
-    Write-Host "    URL: $($config['GITLAB_SOURCE_URL'])" -ForegroundColor Gray
 }
+
 Write-Host ""
 
-# Step 4: Tag and Release
-Write-Host "Step 4/4: Tag and Release" -ForegroundColor Yellow
+# ═══════════════════════════════════════════════════════════════════════
+# Step 4/4: Tag
+# ═══════════════════════════════════════════════════════════════════════
+Write-Host "Step 4/4: Git Tag" -ForegroundColor Cyan
+
 $tag = "v$Version"
 
 if (-not $DryRun) {
-    & "$monoRepoRoot/DKH.Infrastructure/scripts/release/tag-and-release.ps1" `
-        -ProjectPath $serviceRoot `
-        -TagName $tag `
-        -NupkgDir $nupkgDir
+    & "$PSScriptRoot/tag.ps1" -Version $Version -Message "Release $contractsProject $tag"
+} else {
+    Write-Host "  [DRY RUN] Would create and push tag: $tag" -ForegroundColor Gray
 }
-else {
-    Write-Host "  [DRY RUN] Would create tag: $tag" -ForegroundColor Gray
-    Write-Host "  [DRY RUN] Would create GitHub Release with packages from $nupkgDir" -ForegroundColor Gray
-}
+
 Write-Host ""
 
+# ═══════════════════════════════════════════════════════════════════════
 # Summary
+# ═══════════════════════════════════════════════════════════════════════
 Write-Host "════════════════════════════════════════" -ForegroundColor Green
 Write-Host "✓ Release completed successfully!" -ForegroundColor Green
 Write-Host "════════════════════════════════════════" -ForegroundColor Green
 Write-Host ""
-Write-Host "Package:  $contractsProject"
-Write-Host "Version:  $Version"
-Write-Host "Tag:      $tag"
-Write-Host "Registry: https://gitlab.com/gzdkh/dkh-packages/-/packages"
+Write-Host "Package:   $contractsProject" -ForegroundColor White
+Write-Host "Version:   $Version" -ForegroundColor White
+Write-Host "Tag:       $tag" -ForegroundColor White
+Write-Host "Registry:  GitLab Package Registry (gitlab-gzdkh)" -ForegroundColor White
 Write-Host ""
 
 if (-not $DryRun) {
-    Write-Host "Next steps:"
-    Write-Host "  1. Update Directory.Build.props with new version (if not already done)"
-    Write-Host "  2. Commit: git add . && git commit -m 'chore(contracts): release v$Version'"
-    Write-Host "  3. Push tag: git push origin $tag"
-    Write-Host "  4. Test in consumer projects"
-}
-else {
+    Write-Host "Next steps:" -ForegroundColor Cyan
+    Write-Host "  1. Verify package: https://gitlab.com/gzdkh/dkh-packages/-/packages" -ForegroundColor Gray
+    Write-Host "  2. Update consumers with new version $Version" -ForegroundColor Gray
+    Write-Host "  3. Create GitHub Release (optional): gh release create $tag" -ForegroundColor Gray
+} else {
     Write-Host "This was a dry run. Run without -DryRun to execute." -ForegroundColor Yellow
 }
+
 Write-Host ""
