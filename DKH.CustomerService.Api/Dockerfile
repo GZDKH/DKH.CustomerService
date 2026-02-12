@@ -33,17 +33,20 @@ COPY ["nuget.config", "."]
 
 COPY ["project.props", "."]
 
-# Inject GitHub NuGet credentials via dotnet CLI (secure, no layer caching)
+# Copy NuGet authentication scripts from service directory
+# These scripts are synced from DKH.Infrastructure via sync-docker-scripts.ps1
+COPY [".docker-scripts/configure-nuget-sources.sh", "/tmp/"]
+COPY [".docker-scripts/configure-gitlab-nuget.sh", "/tmp/"]
+COPY [".docker-scripts/configure-github-nuget.sh", "/tmp/"]
+
+# Configure NuGet authentication using Docker secrets
+# Wrapper script reads secrets and calls modular scripts for GitHub + GitLab
+# Automatically falls back to global ~/.nuget/NuGet/NuGet.Config if secrets are empty
 RUN --mount=type=secret,id=github_nuget_username \
     --mount=type=secret,id=github_nuget_token \
-    if [ ! -s /run/secrets/github_nuget_username ] || [ ! -s /run/secrets/github_nuget_token ]; then \
-    echo "Missing GitHub NuGet secrets (GITHUB_NUGET_USERNAME/TOKEN)" && exit 1; \
-    fi && \
-    dotnet nuget update source github-dotnet-gzdkh \
-    --username "$(cat /run/secrets/github_nuget_username)" \
-    --password "$(cat /run/secrets/github_nuget_token)" \
-    --store-password-in-clear-text \
-    --configfile nuget.config
+    --mount=type=secret,id=gitlab_nuget_username \
+    --mount=type=secret,id=gitlab_nuget_token \
+    bash /tmp/configure-nuget-sources.sh nuget.config
 COPY ["DKH.CustomerService.Api/DKH.CustomerService.Api.csproj", "DKH.CustomerService.Api/"]
 COPY ["DKH.CustomerService.Application/DKH.CustomerService.Application.csproj", "DKH.CustomerService.Application/"]
 COPY ["DKH.CustomerService.Contracts/DKH.CustomerService.Contracts.csproj", "DKH.CustomerService.Contracts/"]
