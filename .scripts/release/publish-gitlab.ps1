@@ -43,7 +43,7 @@ if (-not (Test-Path $NupkgDir)) {
 }
 
 # Try to load GitLab config from .scripts/config/gitlab.conf
-$serviceRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+$serviceRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $gitlabConfigPath = Join-Path $serviceRoot ".scripts/config/gitlab.conf"
 
 if ((Test-Path $gitlabConfigPath) -and (-not $SourceUrl -or -not $Username -or -not $Token)) {

@@ -24,7 +24,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Resolve paths relative to service root (parent of .scripts/)
-$serviceRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+$serviceRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 
 if (-not (Test-Path $ProjectPath)) {
     # Try relative to service root
