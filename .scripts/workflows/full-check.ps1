@@ -109,7 +109,8 @@ $currentStep++
 
 # Step 4: Format (optional)
 if (-not $SkipFormat) {
-    Write-Host "Step $currentStep/${totalSteps}: Format Check" -ForegroundColor Cyan
+    Write-Host "Step $currentStep/${totalSteps}: Format" -ForegroundColor Cyan
+    Invoke-DotNetFormat -ProjectPath $ProjectPath
     Invoke-DotNetFormat -ProjectPath $ProjectPath -Verify
     Write-Host ""
     $currentStep++
