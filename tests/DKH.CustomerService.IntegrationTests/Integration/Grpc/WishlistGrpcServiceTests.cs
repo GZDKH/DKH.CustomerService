@@ -114,7 +114,7 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         });
 
         response.Wishlist.Items.Should().HaveCount(1);
-        response.Wishlist.Items[0].ProductId.Should().Be(productId);
+        response.Wishlist.Items[0].ProductId.Value.Should().Be(productId);
     }
 
     [Fact]
