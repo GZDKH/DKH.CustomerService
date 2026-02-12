@@ -110,8 +110,7 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
-            Page = 1,
-            PageSize = 10,
+            Pagination = new PaginationRequest { Page = 1, PageSize = 10 },
         });
 
         response.Wishlist.Items.Should().HaveCount(1);
