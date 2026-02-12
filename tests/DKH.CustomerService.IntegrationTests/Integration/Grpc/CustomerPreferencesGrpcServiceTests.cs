@@ -1,3 +1,4 @@
+using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
@@ -62,7 +63,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
     {
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
             FirstName = "Test",
         });
@@ -79,7 +80,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
 
         var response = await client.GetPreferencesAsync(new GetPreferencesRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
         });
 
@@ -97,7 +98,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
 
         var response = await client.UpdatePreferencesAsync(new UpdatePreferencesRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
             PreferredLanguage = "ru",
             PreferredCurrency = "RUB",
@@ -119,7 +120,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
 
         var response = await client.UpdateNotificationChannelsAsync(new UpdateNotificationChannelsRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
             EmailNotificationsEnabled = true,
             TelegramNotificationsEnabled = true,
@@ -143,7 +144,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
 
         var response = await client.UpdateNotificationTypesAsync(new UpdateNotificationTypesRequest
         {
-            StorefrontId = _storefrontId.ToString(),
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             TelegramUserId = TelegramUserId,
             OrderStatusUpdates = true,
             PromotionalOffers = false,
