@@ -1,5 +1,7 @@
 using DKH.CustomerService.Application.Profiles.CreateCustomer;
+using DKH.CustomerService.Application.Profiles.DeleteCustomerData;
 using DKH.CustomerService.Application.Profiles.DeleteProfile;
+using DKH.CustomerService.Application.Profiles.ExportCustomerData;
 using DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
 using DKH.CustomerService.Application.Profiles.GetProfile;
 using DKH.CustomerService.Application.Profiles.UpdateCustomer;
@@ -132,20 +134,30 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
             context.CancellationToken);
     }
 
-    public override Task<ContractsServices.ExportCustomerDataResponse> ExportCustomerData(
+    public override async Task<ContractsServices.ExportCustomerDataResponse> ExportCustomerData(
         ContractsServices.ExportCustomerDataRequest request,
         ServerCallContext context)
     {
-        // TODO: Implement ExportCustomerData (GDPR compliance)
-        throw new RpcException(new Status(StatusCode.Unimplemented, "ExportCustomerData not yet implemented"));
+        var storefrontId = ResolveStorefrontId(request.StorefrontId);
+        return await _mediator.Send(
+            new ExportCustomerDataCommand(
+                storefrontId,
+                request.TelegramUserId,
+                request.Format),
+            context.CancellationToken);
     }
 
-    public override Task<ContractsServices.DeleteCustomerDataResponse> DeleteCustomerData(
+    public override async Task<ContractsServices.DeleteCustomerDataResponse> DeleteCustomerData(
         ContractsServices.DeleteCustomerDataRequest request,
         ServerCallContext context)
     {
-        // TODO: Implement DeleteCustomerData (GDPR compliance)
-        throw new RpcException(new Status(StatusCode.Unimplemented, "DeleteCustomerData not yet implemented"));
+        var storefrontId = ResolveStorefrontId(request.StorefrontId);
+        return await _mediator.Send(
+            new DeleteCustomerDataCommand(
+                storefrontId,
+                request.TelegramUserId,
+                request.Anonymize),
+            context.CancellationToken);
     }
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
