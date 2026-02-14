@@ -1,6 +1,8 @@
+using DKH.CustomerService.Application.Profiles.CreateCustomer;
 using DKH.CustomerService.Application.Profiles.DeleteProfile;
 using DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
 using DKH.CustomerService.Application.Profiles.GetProfile;
+using DKH.CustomerService.Application.Profiles.UpdateCustomer;
 using DKH.CustomerService.Application.Profiles.UpdateProfile;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
@@ -90,20 +92,44 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
-    public override Task<ContractsServices.CreateCustomerResponse> CreateCustomer(
+    public override async Task<ContractsServices.CreateCustomerResponse> CreateCustomer(
         ContractsServices.CreateCustomerRequest request,
         ServerCallContext context)
     {
-        // TODO: Implement CreateCustomer (Task #8)
-        throw new RpcException(new Status(StatusCode.Unimplemented, "CreateCustomer not yet implemented"));
+        var storefrontId = ResolveStorefrontId(request.StorefrontId);
+        return await _mediator.Send(
+            new CreateCustomerCommand(
+                storefrontId,
+                request.TelegramUserId,
+                request.FirstName,
+                request.LastName,
+                request.Username,
+                request.Phone,
+                request.Email,
+                request.LanguageCode,
+                request.PhotoUrl,
+                request.IsPremium),
+            context.CancellationToken);
     }
 
-    public override Task<ContractsServices.UpdateCustomerResponse> UpdateCustomer(
+    public override async Task<ContractsServices.UpdateCustomerResponse> UpdateCustomer(
         ContractsServices.UpdateCustomerRequest request,
         ServerCallContext context)
     {
-        // TODO: Implement UpdateCustomer (Task #8)
-        throw new RpcException(new Status(StatusCode.Unimplemented, "UpdateCustomer not yet implemented"));
+        var storefrontId = ResolveStorefrontId(request.StorefrontId);
+        return await _mediator.Send(
+            new UpdateCustomerCommand(
+                storefrontId,
+                request.TelegramUserId,
+                request.HasFirstName ? request.FirstName : null,
+                request.HasLastName ? request.LastName : null,
+                request.HasUsername ? request.Username : null,
+                request.HasPhone ? request.Phone : null,
+                request.HasEmail ? request.Email : null,
+                request.HasLanguageCode ? request.LanguageCode : null,
+                request.HasPhotoUrl ? request.PhotoUrl : null,
+                request.HasIsPremium ? request.IsPremium : null),
+            context.CancellationToken);
     }
 
     public override Task<ContractsServices.ExportCustomerDataResponse> ExportCustomerData(
