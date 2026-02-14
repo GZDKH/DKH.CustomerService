@@ -90,6 +90,38 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
+    public override Task<ContractsServices.CreateCustomerResponse> CreateCustomer(
+        ContractsServices.CreateCustomerRequest request,
+        ServerCallContext context)
+    {
+        // TODO: Implement CreateCustomer (Task #8)
+        throw new RpcException(new Status(StatusCode.Unimplemented, "CreateCustomer not yet implemented"));
+    }
+
+    public override Task<ContractsServices.UpdateCustomerResponse> UpdateCustomer(
+        ContractsServices.UpdateCustomerRequest request,
+        ServerCallContext context)
+    {
+        // TODO: Implement UpdateCustomer (Task #8)
+        throw new RpcException(new Status(StatusCode.Unimplemented, "UpdateCustomer not yet implemented"));
+    }
+
+    public override Task<ContractsServices.ExportCustomerDataResponse> ExportCustomerData(
+        ContractsServices.ExportCustomerDataRequest request,
+        ServerCallContext context)
+    {
+        // TODO: Implement ExportCustomerData (GDPR compliance)
+        throw new RpcException(new Status(StatusCode.Unimplemented, "ExportCustomerData not yet implemented"));
+    }
+
+    public override Task<ContractsServices.DeleteCustomerDataResponse> DeleteCustomerData(
+        ContractsServices.DeleteCustomerDataRequest request,
+        ServerCallContext context)
+    {
+        // TODO: Implement DeleteCustomerData (GDPR compliance)
+        throw new RpcException(new Status(StatusCode.Unimplemented, "DeleteCustomerData not yet implemented"));
+    }
+
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
         if (requestStorefrontId is not null)
