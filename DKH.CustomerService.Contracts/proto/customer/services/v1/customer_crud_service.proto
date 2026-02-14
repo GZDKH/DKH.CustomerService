@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package customer.services.v1;
 
+option csharp_namespace = "DKH.CustomerService.Contracts.Services.V1";
+
 import "google/protobuf/timestamp.proto";
 import "customer/models/v1/customer_profile.proto";
 import "customer/models/v1/account_status.proto";
@@ -9,33 +11,37 @@ import "types/guid.proto";
 import "types/pagination.proto";
 import "types/pagination_metadata.proto";
 
-option csharp_namespace = "DKH.CustomerService.Contracts.Services.V1";
-
-// CustomerCrudService provides admin-level CRUD operations across all storefronts.
-// All methods accept optional storefront_id - when null/empty, returns data from all storefronts.
+// CustomerCrudService provides admin operations with optional storefront_id filtering.
+// When storefront_id is null/empty, admin sees data from all storefronts.
+// When storefront_id is provided, results are scoped to that storefront.
 service CustomerCrudService {
-  // Search customers by query (admin operation - searches across storefronts when storefront_id is null)
+  // Search customers by query (name, username, phone, email)
   rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
 
-  // List customers with filtering (admin operation - returns all when storefront_id is null)
+  // List customers with filtering and pagination
   rpc ListCustomers(ListCustomersRequest) returns (ListCustomersResponse);
 
-  // Get customer statistics (admin operation - can query across storefronts)
+  // Get customer statistics (orders, total spent, etc.)
   rpc GetCustomerStats(GetCustomerStatsRequest) returns (GetCustomerStatsResponse);
 
-  // Block customer (admin operation - can block customers from any storefront)
+  // Block customer account (prevent orders and interactions)
   rpc BlockCustomer(BlockCustomerRequest) returns (BlockCustomerResponse);
 
-  // Unblock customer (admin operation - can unblock customers from any storefront)
+  // Unblock previously blocked customer
   rpc UnblockCustomer(UnblockCustomerRequest) returns (UnblockCustomerResponse);
 
-  // Suspend customer temporarily (admin operation - can suspend customers from any storefront)
+  // Suspend customer temporarily (until specific date)
   rpc SuspendCustomer(SuspendCustomerRequest) returns (SuspendCustomerResponse);
 }
 
 message SearchCustomersRequest {
-  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - searches all storefronts when null
+  // Optional for admin (returns all storefronts), required for storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Search query (matches name, username, phone, email)
   string query = 2;
+
+  // Pagination settings
   proto.platform.grpc.common.types.PaginationRequest pagination = 3;
 }
 
@@ -45,10 +51,19 @@ message SearchCustomersResponse {
 }
 
 message ListCustomersRequest {
-  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - returns all customers when null
+  // Optional for admin (returns all storefronts), required for storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Pagination settings
   proto.platform.grpc.common.types.PaginationRequest pagination = 2;
+
+  // Sort field (e.g., "created_at", "last_name", "total_orders")
   string sort_by = 3;
+
+  // Sort direction
   bool sort_descending = 4;
+
+  // Filter by account status
   customer.models.v1.AccountStatusEnum status_filter = 5;
 }
 
@@ -58,7 +73,7 @@ message ListCustomersResponse {
 }
 
 message GetCustomerStatsRequest {
-  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can query stats from any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
 }
 
@@ -67,7 +82,7 @@ message GetCustomerStatsResponse {
 }
 
 message BlockCustomerRequest {
-  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can block in any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   string reason = 3;
   string blocked_by = 4;
@@ -79,7 +94,7 @@ message BlockCustomerResponse {
 }
 
 message UnblockCustomerRequest {
-  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can unblock in any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
 }
 
@@ -89,7 +104,7 @@ message UnblockCustomerResponse {
 }
 
 message SuspendCustomerRequest {
-  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin - can suspend in any storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string telegram_user_id = 2;
   google.protobuf.Timestamp suspend_until = 3;
   string reason = 4;
