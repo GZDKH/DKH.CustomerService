@@ -11,7 +11,6 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         Label = string.Empty;
         Country = string.Empty;
         City = string.Empty;
-        CreationTime = DateTime.UtcNow;
     }
 
     private CustomerAddressEntity(
@@ -37,7 +36,6 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         PostalCode = postalCode;
         Phone = phone;
         IsDefault = isDefault;
-        CreationTime = DateTime.UtcNow;
     }
 
     public Guid CustomerId { get; private set; }
@@ -126,14 +124,11 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         {
             Phone = phone;
         }
-
-        LastModificationTime = DateTime.UtcNow;
     }
 
     public void SetDefault(bool isDefault)
     {
         IsDefault = isDefault;
-        LastModificationTime = DateTime.UtcNow;
     }
 
     private static string Require(string value, string name)

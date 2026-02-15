@@ -9,7 +9,6 @@ public sealed class WishlistItemEntity : FullAuditedEntityWithKey<Guid>
         Id = Guid.Empty;
         CustomerId = Guid.Empty;
         ProductId = Guid.Empty;
-        CreationTime = DateTime.UtcNow;
     }
 
     private WishlistItemEntity(
@@ -24,7 +23,6 @@ public sealed class WishlistItemEntity : FullAuditedEntityWithKey<Guid>
         ProductSkuId = productSkuId;
         Note = note;
         AddedAt = DateTime.UtcNow;
-        CreationTime = DateTime.UtcNow;
     }
 
     public Guid CustomerId { get; private set; }
@@ -51,6 +49,5 @@ public sealed class WishlistItemEntity : FullAuditedEntityWithKey<Guid>
     public void UpdateNote(string? note)
     {
         Note = note;
-        LastModificationTime = DateTime.UtcNow;
     }
 }

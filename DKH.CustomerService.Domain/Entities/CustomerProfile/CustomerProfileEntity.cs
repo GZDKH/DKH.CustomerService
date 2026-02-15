@@ -21,7 +21,6 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         TelegramUserId = string.Empty;
         FirstName = string.Empty;
         LanguageCode = "en";
-        CreationTime = DateTime.UtcNow;
         AccountStatus = AccountStatus.CreateNew();
         ContactVerification = ContactVerification.CreateNew();
         Preferences = CustomerPreferences.CreateDefault();
@@ -44,7 +43,6 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         Username = username;
         PhotoUrl = photoUrl;
         LanguageCode = languageCode ?? "en";
-        CreationTime = DateTime.UtcNow;
         AccountStatus = AccountStatus.CreateNew();
         ContactVerification = ContactVerification.CreateNew();
         Preferences = CustomerPreferences.CreateDefault();
@@ -138,8 +136,6 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
             LanguageCode = languageCode;
             Preferences.UpdateLanguage(languageCode);
         }
-
-        LastModificationTime = DateTime.UtcNow;
     }
 
     public void UpdateFromTelegram(string firstName, string? lastName, string? username, string? photoUrl, string? languageCode)
@@ -152,14 +148,11 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         {
             LanguageCode = languageCode;
         }
-
-        LastModificationTime = DateTime.UtcNow;
     }
 
     public void SoftDelete()
     {
-        IsDeleted = true;
-        DeletionTime = DateTime.UtcNow;
+        MarkAsDeleted();
         AccountStatus.MarkDeleted();
     }
 
