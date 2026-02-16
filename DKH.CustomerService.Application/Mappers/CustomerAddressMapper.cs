@@ -1,4 +1,4 @@
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Models.CustomerAddress.v1;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.Platform.Grpc.Common.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -7,9 +7,9 @@ namespace DKH.CustomerService.Application.Mappers;
 
 public static class CustomerAddressMapper
 {
-    public static CustomerAddress ToContractModel(this CustomerAddressEntity entity)
+    public static CustomerAddressModel ToContractModel(this CustomerAddressEntity entity)
     {
-        var address = new CustomerAddress
+        var address = new CustomerAddressModel
         {
             Id = GuidValue.FromGuid(entity.Id),
             CustomerId = GuidValue.FromGuid(entity.CustomerId),

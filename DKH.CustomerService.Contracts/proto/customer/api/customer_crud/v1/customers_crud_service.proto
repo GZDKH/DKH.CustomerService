@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package proto.customer.api.customer_crud.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerCrud.v1";
+
+import "google/protobuf/timestamp.proto";
+import "customer/models/customer_profile/v1/customer_profile.proto";
+import "customer/models/account_status/v1/account_status.proto";
+import "types/guid.proto";
+import "types/pagination.proto";
+import "types/pagination_metadata.proto";
+
+// CustomerCrudService provides admin operations with optional storefront_id filtering.
+// When storefront_id is null/empty, admin sees data from all storefronts.
+// When storefront_id is provided, results are scoped to that storefront.
+service CustomerCrudService {
+  // Search customers by query (name, username, phone, email)
+  rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
+
+  // List customers with filtering and pagination
+  rpc ListCustomers(ListCustomersRequest) returns (ListCustomersResponse);
+
+  // Get customer statistics (orders, total spent, etc.)
+  rpc GetCustomerStats(GetCustomerStatsRequest) returns (GetCustomerStatsResponse);
+
+  // Block customer account (prevent orders and interactions)
+  rpc BlockCustomer(BlockCustomerRequest) returns (BlockCustomerResponse);
+
+  // Unblock previously blocked customer
+  rpc UnblockCustomer(UnblockCustomerRequest) returns (UnblockCustomerResponse);
+
+  // Suspend customer temporarily (until specific date)
+  rpc SuspendCustomer(SuspendCustomerRequest) returns (SuspendCustomerResponse);
+}
+
+message SearchCustomersRequest {
+  // Optional for admin (returns all storefronts), required for storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Search query (matches name, username, phone, email)
+  string query = 2;
+
+  // Pagination settings
+  proto.platform.grpc.common.types.PaginationRequest pagination = 3;
+}
+
+message SearchCustomersResponse {
+  repeated proto.customer.models.customer_profile.v1.CustomerProfileModel customers = 1;
+  proto.platform.grpc.common.types.PaginationMetadata pagination = 2;
+}
+
+message ListCustomersRequest {
+  // Optional for admin (returns all storefronts), required for storefront
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Pagination settings
+  proto.platform.grpc.common.types.PaginationRequest pagination = 2;
+
+  // Sort field (e.g., "created_at", "last_name", "total_orders")
+  string sort_by = 3;
+
+  // Sort direction
+  bool sort_descending = 4;
+
+  // Filter by account status
+  proto.customer.models.customer_profile.v1.AccountStatusEnum status_filter = 5;
+}
+
+message ListCustomersResponse {
+  repeated proto.customer.models.customer_profile.v1.CustomerProfileModel customers = 1;
+  proto.platform.grpc.common.types.PaginationMetadata pagination = 2;
+}
+
+message GetCustomerStatsRequest {
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message GetCustomerStatsResponse {
+  proto.customer.models.account_status.v1.CustomerStatsModel stats = 1;
+}
+
+message BlockCustomerRequest {
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  string reason = 3;
+  string blocked_by = 4;
+}
+
+message BlockCustomerResponse {
+  bool success = 1;
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 2;
+}
+
+message UnblockCustomerRequest {
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message UnblockCustomerResponse {
+  bool success = 1;
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 2;
+}
+
+message SuspendCustomerRequest {
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  google.protobuf.Timestamp suspend_until = 3;
+  string reason = 4;
+  string suspended_by = 5;
+}
+
+message SuspendCustomerResponse {
+  bool success = 1;
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 2;
+}

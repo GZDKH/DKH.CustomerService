@@ -1,4 +1,4 @@
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Models.WishlistItem.v1;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.Platform.Grpc.Common.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -7,9 +7,9 @@ namespace DKH.CustomerService.Application.Mappers;
 
 public static class WishlistMapper
 {
-    public static WishlistItem ToContractModel(this WishlistItemEntity entity)
+    public static WishlistItemModel ToContractModel(this WishlistItemEntity entity)
     {
-        return new WishlistItem
+        return new WishlistItemModel
         {
             Id = GuidValue.FromGuid(entity.Id),
             CustomerId = GuidValue.FromGuid(entity.CustomerId),

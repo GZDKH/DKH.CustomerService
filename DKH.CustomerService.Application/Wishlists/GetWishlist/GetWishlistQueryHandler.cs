@@ -1,7 +1,7 @@
 using DKH.CustomerService.Application.Common;
 using DKH.CustomerService.Application.Mappers;
-using DKH.CustomerService.Contracts.Api.V1;
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1;
+using DKH.CustomerService.Contracts.Customer.Models.WishlistItem.v1;
 
 namespace DKH.CustomerService.Application.Wishlists.GetWishlist;
 
@@ -19,7 +19,7 @@ public class GetWishlistQueryHandler(ICustomerRepository repository, IAppDbConte
         {
             return new GetWishlistResponse
             {
-                Wishlist = new Wishlist
+                Wishlist = new WishlistModel
                 {
                     Pagination = PaginationHelper.CreateMetadata(0, 1, 10),
                 },
@@ -40,7 +40,7 @@ public class GetWishlistQueryHandler(ICustomerRepository repository, IAppDbConte
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        var wishlist = new Wishlist
+        var wishlist = new WishlistModel
         {
             Pagination = PaginationHelper.CreateMetadata(totalCount, page, pageSize),
         };

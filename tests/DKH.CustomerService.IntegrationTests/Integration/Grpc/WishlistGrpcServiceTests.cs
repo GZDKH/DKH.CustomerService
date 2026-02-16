@@ -2,7 +2,8 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
+using DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform.EntityFrameworkCore.Repositories;
@@ -33,7 +34,7 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
                     .AddPlatformRepositories<AppDbContext>(),
-                typeof(CustomerProfileGrpcService),
+                typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),
                 typeof(CustomerPreferencesGrpcService))
@@ -59,7 +60,7 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     }
 
     private async Task EnsureProfileExistsAsync(
-        CustomerProfileService.CustomerProfileServiceClient profileClient)
+        CustomerManagementService.CustomerManagementServiceClient profileClient)
     {
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
@@ -73,8 +74,8 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     public async Task AddToWishlist_AddsProductAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<WishlistService.WishlistServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<WishlistManagementService.WishlistManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -93,8 +94,8 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     public async Task GetWishlist_ReturnsAddedItemsAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<WishlistService.WishlistServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<WishlistManagementService.WishlistManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -121,8 +122,8 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     public async Task RemoveFromWishlist_RemovesProductAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<WishlistService.WishlistServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<WishlistManagementService.WishlistManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -148,8 +149,8 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     public async Task CheckProductInWishlist_WhenExists_ReturnsTrueAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<WishlistService.WishlistServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<WishlistManagementService.WishlistManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -175,8 +176,8 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
     public async Task ClearWishlist_RemovesAllItemsAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<WishlistService.WishlistServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<WishlistManagementService.WishlistManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 

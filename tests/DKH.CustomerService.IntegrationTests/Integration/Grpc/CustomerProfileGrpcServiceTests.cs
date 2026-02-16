@@ -2,7 +2,7 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform.EntityFrameworkCore.Repositories;
@@ -33,7 +33,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
                     .AddPlatformRepositories<AppDbContext>(),
-                typeof(CustomerProfileGrpcService),
+                typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),
                 typeof(CustomerPreferencesGrpcService))
@@ -62,7 +62,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
     public async Task GetOrCreateProfile_NewCustomer_CreatesProfileAsync()
     {
         await using var factory = CreateFactory();
-        var client = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         var response = await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
@@ -84,7 +84,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
     public async Task GetOrCreateProfile_ExistingCustomer_ReturnsExistingAsync()
     {
         await using var factory = CreateFactory();
-        var client = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
@@ -109,7 +109,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
     public async Task GetProfile_WhenExists_ReturnsProfileAsync()
     {
         await using var factory = CreateFactory();
-        var client = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
@@ -132,7 +132,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
     public async Task GetProfile_WhenNotExists_ReturnsEmptyAsync()
     {
         await using var factory = CreateFactory();
-        var client = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         var response = await client.GetProfileAsync(new GetProfileRequest
         {
@@ -147,7 +147,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
     public async Task DeleteProfile_SoftDelete_MarksAsDeletedAsync()
     {
         await using var factory = CreateFactory();
-        var client = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {

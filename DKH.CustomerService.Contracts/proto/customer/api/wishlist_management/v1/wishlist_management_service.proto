@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package proto.customer.api.wishlist_management.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1";
+
+import "customer/models/wishlist_item/v1/wishlist_item.proto";
+import "types/guid.proto";
+import "types/pagination.proto";
+
+service WishlistManagementService {
+  rpc GetWishlist(GetWishlistRequest) returns (GetWishlistResponse);
+  rpc AddToWishlist(AddToWishlistRequest) returns (AddToWishlistResponse);
+  rpc RemoveFromWishlist(RemoveFromWishlistRequest) returns (RemoveFromWishlistResponse);
+  rpc CheckProductInWishlist(CheckProductInWishlistRequest) returns (CheckProductInWishlistResponse);
+  rpc ClearWishlist(ClearWishlistRequest) returns (ClearWishlistResponse);
+  rpc GetWishlistCount(GetWishlistCountRequest) returns (GetWishlistCountResponse);
+}
+
+message GetWishlistRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.PaginationRequest pagination = 3;
+}
+
+message GetWishlistResponse {
+  proto.customer.models.wishlist_item.v1.WishlistModel wishlist = 1;
+}
+
+message AddToWishlistRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
+  string note = 5;
+}
+
+message AddToWishlistResponse {
+  proto.customer.models.wishlist_item.v1.WishlistItemModel item = 1;
+  bool already_exists = 2;
+}
+
+message RemoveFromWishlistRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
+}
+
+message RemoveFromWishlistResponse {
+  bool success = 1;
+}
+
+message CheckProductInWishlistRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
+}
+
+message CheckProductInWishlistResponse {
+  bool in_wishlist = 1;
+  proto.customer.models.wishlist_item.v1.WishlistItemModel item = 2;
+}
+
+message ClearWishlistRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message ClearWishlistResponse {
+  int32 items_removed = 1;
+}
+
+message GetWishlistCountRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message GetWishlistCountResponse {
+  int32 count = 1;
+}

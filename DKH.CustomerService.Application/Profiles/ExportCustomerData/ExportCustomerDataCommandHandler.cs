@@ -1,6 +1,6 @@
 using System.Text;
 using DKH.CustomerService.Application.Mappers;
-using DKH.CustomerService.Contracts.Services.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using Google.Protobuf;
 using Grpc.Core;
 
@@ -27,7 +27,7 @@ public class ExportCustomerDataCommandHandler(ICustomerRepository repository)
         };
     }
 
-    private static ExportCustomerDataResponse ExportAsJson(Contracts.Models.V1.CustomerProfile profile, string userId)
+    private static ExportCustomerDataResponse ExportAsJson(Contracts.Customer.Models.CustomerProfile.v1.CustomerProfileModel profile, string userId)
     {
         // Convert protobuf to JSON
         var json = JsonFormatter.Default.Format(profile);

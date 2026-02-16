@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package proto.customer.models.customer_preferences.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.CustomerPreferences.v1";
+
+import "types/guid.proto";
+
+message CustomerPreferencesModel {
+  proto.platform.grpc.common.types.GuidValue customer_id = 1;
+  bool email_notifications_enabled = 2;
+  bool telegram_notifications_enabled = 3;
+  bool sms_notifications_enabled = 4;
+  bool order_status_updates = 5;
+  bool promotional_offers = 6;
+  string preferred_language = 7;
+  string preferred_currency = 8;
+}

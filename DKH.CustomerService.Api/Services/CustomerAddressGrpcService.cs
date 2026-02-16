@@ -5,17 +5,17 @@ using DKH.CustomerService.Application.Addresses.GetDefaultAddress;
 using DKH.CustomerService.Application.Addresses.ListAddresses;
 using DKH.CustomerService.Application.Addresses.SetDefaultAddress;
 using DKH.CustomerService.Application.Addresses.UpdateAddress;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
-using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerAddressService;
+using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1.CustomerAddressManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
 public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
-    : ContractsService.CustomerAddressServiceBase
+    : ContractsService.CustomerAddressManagementServiceBase
 {
     public override async Task<ListAddressesResponse> ListAddresses(ListAddressesRequest request, ServerCallContext context)
     {

@@ -10,7 +10,7 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
-using ContractsServices = DKH.CustomerService.Contracts.Services.V1;
+using ContractsServices = DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 
 namespace DKH.CustomerService.Api.Services;
 

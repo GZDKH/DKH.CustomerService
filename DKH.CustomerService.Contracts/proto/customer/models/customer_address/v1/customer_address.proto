@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto.customer.models.customer_address.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.CustomerAddress.v1";
+
+import "google/protobuf/timestamp.proto";
+import "types/guid.proto";
+
+message CustomerAddressModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
+  string label = 3;
+  string country = 4;
+  string city = 5;
+  string street = 6;
+  string building = 7;
+  string apartment = 8;
+  string postal_code = 9;
+  string phone = 10;
+  bool is_default = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}

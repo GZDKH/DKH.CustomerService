@@ -4,17 +4,17 @@ using DKH.CustomerService.Application.Wishlists.ClearWishlist;
 using DKH.CustomerService.Application.Wishlists.GetWishlist;
 using DKH.CustomerService.Application.Wishlists.GetWishlistCount;
 using DKH.CustomerService.Application.Wishlists.RemoveFromWishlist;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
-using ContractsService = DKH.CustomerService.Contracts.Api.V1.WishlistService;
+using ContractsService = DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1.WishlistManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
 public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
-    : ContractsService.WishlistServiceBase
+    : ContractsService.WishlistManagementServiceBase
 {
     public override async Task<GetWishlistResponse> GetWishlist(GetWishlistRequest request, ServerCallContext context)
     {

@@ -2,7 +2,8 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform.EntityFrameworkCore.Repositories;
@@ -33,7 +34,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
                     .AddPlatformRepositories<AppDbContext>(),
-                typeof(CustomerProfileGrpcService),
+                typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),
                 typeof(CustomerPreferencesGrpcService))
@@ -59,7 +60,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
     }
 
     private async Task EnsureProfileExistsAsync(
-        CustomerProfileService.CustomerProfileServiceClient profileClient)
+        CustomerManagementService.CustomerManagementServiceClient profileClient)
     {
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
@@ -73,8 +74,8 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
     public async Task CreateAddress_CreatesNewAddressAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerAddressService.CustomerAddressServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerAddressManagementService.CustomerAddressManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -99,8 +100,8 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
     public async Task ListAddresses_ReturnsCreatedAddressesAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerAddressService.CustomerAddressServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerAddressManagementService.CustomerAddressManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -129,8 +130,8 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
     public async Task GetAddress_WhenExists_ReturnsAddressAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerAddressService.CustomerAddressServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerAddressManagementService.CustomerAddressManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -160,8 +161,8 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
     public async Task SetDefaultAddress_SetsAddressAsDefaultAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerAddressService.CustomerAddressServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerAddressManagementService.CustomerAddressManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -199,8 +200,8 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
     public async Task DeleteAddress_ReturnsSuccessAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerAddressService.CustomerAddressServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerAddressManagementService.CustomerAddressManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package proto.customer.api.customer_preferences_management.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1";
+
+import "customer/models/customer_preferences/v1/customer_preferences.proto";
+import "types/guid.proto";
+
+service CustomerPreferencesManagementService {
+  rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
+  rpc UpdatePreferences(UpdatePreferencesRequest) returns (UpdatePreferencesResponse);
+  rpc UpdateNotificationChannels(UpdateNotificationChannelsRequest) returns (UpdateNotificationChannelsResponse);
+  rpc UpdateNotificationTypes(UpdateNotificationTypesRequest) returns (UpdateNotificationTypesResponse);
+}
+
+message GetPreferencesRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message GetPreferencesResponse {
+  proto.customer.models.customer_preferences.v1.CustomerPreferencesModel preferences = 1;
+}
+
+message UpdatePreferencesRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  optional string preferred_language = 3;
+  optional string preferred_currency = 4;
+}
+
+message UpdatePreferencesResponse {
+  proto.customer.models.customer_preferences.v1.CustomerPreferencesModel preferences = 1;
+}
+
+message UpdateNotificationChannelsRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  optional bool email_notifications_enabled = 3;
+  optional bool telegram_notifications_enabled = 4;
+  optional bool sms_notifications_enabled = 5;
+}
+
+message UpdateNotificationChannelsResponse {
+  proto.customer.models.customer_preferences.v1.CustomerPreferencesModel preferences = 1;
+}
+
+message UpdateNotificationTypesRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  optional bool order_status_updates = 3;
+  optional bool promotional_offers = 4;
+}
+
+message UpdateNotificationTypesResponse {
+  proto.customer.models.customer_preferences.v1.CustomerPreferencesModel preferences = 1;
+}

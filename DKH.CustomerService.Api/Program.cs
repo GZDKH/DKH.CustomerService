@@ -39,7 +39,6 @@ await Platform
     .AddPlatformGrpc(grpc =>
     {
         grpc.ConfigureServer(options => options.EnableDetailedErrors = true);
-        grpc.MapService<CustomerProfileGrpcService>();
         grpc.MapService<CustomerAddressGrpcService>();
         grpc.MapService<WishlistGrpcService>();
         grpc.MapService<CustomerPreferencesGrpcService>();

@@ -12,20 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="proto/customer/api/v1/customer_profile_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/api/v1/customer_address_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/api/v1/wishlist_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/api/v1/customer_preferences_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/api/v1/customer_admin_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/api/v1/contact_verification_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/services/v1/customer_crud_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/services/v1/customer_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/customer_crud/v1/customers_crud_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/customer_management/v1/customer_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/customer_address_management/v1/customer_address_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/wishlist_management/v1/wishlist_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/customer_preferences_management/v1/customer_preferences_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/contact_verification/v1/contact_verification_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
     <Protobuf Include="proto/customer/api/data_exchange/v1/data_exchange_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/models/v1/customer_profile.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/models/v1/customer_address.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/models/v1/wishlist_item.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/models/v1/customer_preferences.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/models/v1/account_status.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
-    <Protobuf Include="proto/customer/models/v1/contact_verification.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/customer_profile/v1/customer_profile.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/customer_address/v1/customer_address.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/wishlist_item/v1/wishlist_item.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/customer_preferences/v1/customer_preferences.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/account_status/v1/account_status.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/contact_verification/v1/contact_verification.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
   </ItemGroup>
 </Project>

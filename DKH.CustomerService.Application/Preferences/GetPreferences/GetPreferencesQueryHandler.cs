@@ -1,6 +1,6 @@
 using DKH.CustomerService.Application.Mappers;
-using DKH.CustomerService.Contracts.Api.V1;
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1;
+using DKH.CustomerService.Contracts.Customer.Models.CustomerPreferences.v1;
 
 namespace DKH.CustomerService.Application.Preferences.GetPreferences;
 
@@ -18,7 +18,7 @@ public class GetPreferencesQueryHandler(ICustomerRepository repository)
         {
             return new GetPreferencesResponse
             {
-                Preferences = new CustomerPreferences(),
+                Preferences = new CustomerPreferencesModel(),
             };
         }
 

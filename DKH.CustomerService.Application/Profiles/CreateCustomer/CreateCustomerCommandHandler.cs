@@ -1,5 +1,5 @@
 using DKH.CustomerService.Application.Mappers;
-using DKH.CustomerService.Contracts.Services.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using Grpc.Core;
 

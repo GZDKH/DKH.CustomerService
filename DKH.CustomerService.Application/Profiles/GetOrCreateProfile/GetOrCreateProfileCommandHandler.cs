@@ -1,5 +1,5 @@
 using DKH.CustomerService.Application.Mappers;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 
 namespace DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
