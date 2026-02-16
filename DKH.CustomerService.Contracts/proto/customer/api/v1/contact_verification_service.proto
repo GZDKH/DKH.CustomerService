@@ -16,7 +16,7 @@ service ContactVerificationService {
 
 message InitiateEmailVerificationRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string email = 3;
 }
 
@@ -26,7 +26,7 @@ message InitiateEmailVerificationResponse {
 
 message VerifyEmailRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string email = 3;
   string code = 4;
 }
@@ -37,7 +37,7 @@ message VerifyEmailResponse {
 
 message InitiatePhoneVerificationRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string phone = 3;
 }
 
@@ -47,7 +47,7 @@ message InitiatePhoneVerificationResponse {
 
 message VerifyPhoneRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string phone = 3;
   string code = 4;
 }

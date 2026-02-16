@@ -39,8 +39,8 @@ message CreateCustomerRequest {
   // Required - identifies the storefront for this customer
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
 
-  // Required - Telegram user ID (must be unique per storefront)
-  string telegram_user_id = 2;
+  // Required - User ID (must be unique per storefront)
+  string user_id = 2;
 
   // Required - Customer's first name
   string first_name = 3;
@@ -76,7 +76,7 @@ message UpdateCustomerRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
 
   // Required - identifies the customer
-  string telegram_user_id = 2;
+  string user_id = 2;
 
   // Optional - update first name (if provided)
   optional string first_name = 3;
@@ -112,7 +112,7 @@ message ExportCustomerDataRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
 
   // Required - identifies the customer
-  string telegram_user_id = 2;
+  string user_id = 2;
 
   // Export format: "json", "xml", "csv"
   string format = 3;
@@ -134,7 +134,7 @@ message DeleteCustomerDataRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
 
   // Required - identifies the customer
-  string telegram_user_id = 2;
+  string user_id = 2;
 
   // If true, anonymize instead of hard delete
   bool anonymize = 3;
@@ -151,7 +151,7 @@ message DeleteCustomerDataResponse {
 
 message GetProfileRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message GetProfileResponse {
@@ -161,7 +161,7 @@ message GetProfileResponse {
 
 message GetOrCreateProfileRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string first_name = 3;
   string last_name = 4;
   string username = 5;
@@ -176,7 +176,7 @@ message GetOrCreateProfileResponse {
 
 message UpdateProfileRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   optional string first_name = 3;
   optional string last_name = 4;
   optional string phone = 5;
@@ -190,7 +190,7 @@ message UpdateProfileResponse {
 
 message DeleteProfileRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   bool hard_delete = 3;
 }
 
