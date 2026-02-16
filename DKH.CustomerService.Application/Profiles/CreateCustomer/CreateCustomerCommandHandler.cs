@@ -11,27 +11,28 @@ public class CreateCustomerCommandHandler(ICustomerRepository repository)
     public async Task<CreateCustomerResponse> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         // Check if customer already exists
-        var existing = await repository.GetByTelegramUserIdAsync(
+        var existing = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (existing is not null)
         {
             throw new RpcException(new Status(
                 StatusCode.AlreadyExists,
-                $"Customer with TelegramUserId '{request.TelegramUserId}' already exists in storefront '{request.StorefrontId}'."));
+                $"Customer with UserId '{request.UserId}' already exists in storefront '{request.StorefrontId}'."));
         }
 
         // Create new customer profile
         var profile = CustomerProfileEntity.Create(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             request.FirstName,
             request.LastName,
             request.Username,
             request.PhotoUrl,
-            request.LanguageCode);
+            request.LanguageCode,
+            request.ProviderType);
 
         // Update with additional fields (phone, email) if provided
         profile.Update(

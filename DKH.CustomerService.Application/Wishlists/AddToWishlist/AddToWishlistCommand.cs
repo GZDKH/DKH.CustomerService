@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Wishlists.AddToWishlist;
 
 public sealed record AddToWishlistCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     Guid ProductId,
     Guid? ProductSkuId,
     string? Note)

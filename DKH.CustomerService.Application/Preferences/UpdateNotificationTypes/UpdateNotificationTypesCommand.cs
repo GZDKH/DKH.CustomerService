@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Preferences.UpdateNotificationTypes;
 
 public sealed record UpdateNotificationTypesCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     bool? OrderStatusUpdates,
     bool? PromotionalOffers)
     : IRequest<UpdateNotificationTypesResponse>;

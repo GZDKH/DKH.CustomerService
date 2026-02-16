@@ -10,7 +10,7 @@ import "types/guid.proto";
 message CustomerProfile {
   proto.platform.grpc.common.types.GuidValue id = 1;
   proto.platform.grpc.common.types.GuidValue storefront_id = 2;
-  string telegram_user_id = 3;
+  string user_id = 3;
   string first_name = 4;
   string last_name = 5;
   string username = 6;
@@ -24,6 +24,7 @@ message CustomerProfile {
   google.protobuf.Timestamp deleted_at = 14;
   AccountStatus account_status = 15;
   ContactVerification contact_verification = 16;
+  string provider_type = 17;
 }
 
 message AccountStatus {

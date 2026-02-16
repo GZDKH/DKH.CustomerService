@@ -29,7 +29,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var result = await _mediator.Send(new GetProfileQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
+        var result = await _mediator.Send(new GetProfileQuery(storefrontId, request.UserId), context.CancellationToken);
         return new ContractsServices.GetProfileResponse
         {
             Profile = result.Profile,
@@ -45,7 +45,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         var result = await _mediator.Send(
             new GetOrCreateProfileCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.FirstName,
                 request.LastName,
                 request.Username,
@@ -67,7 +67,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         var result = await _mediator.Send(
             new UpdateProfileCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.HasFirstName ? request.FirstName : null,
                 request.HasLastName ? request.LastName : null,
                 request.HasPhone ? request.Phone : null,
@@ -86,7 +86,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         var result = await _mediator.Send(
-            new DeleteProfileCommand(storefrontId, request.TelegramUserId, request.HardDelete),
+            new DeleteProfileCommand(storefrontId, request.UserId, request.HardDelete),
             context.CancellationToken);
         return new ContractsServices.DeleteProfileResponse
         {
@@ -102,7 +102,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         return await _mediator.Send(
             new CreateCustomerCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.FirstName,
                 request.LastName,
                 request.Username,
@@ -110,7 +110,8 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
                 request.Email,
                 request.LanguageCode,
                 request.PhotoUrl,
-                request.IsPremium),
+                request.IsPremium,
+                string.IsNullOrEmpty(request.ProviderType) ? "Telegram" : request.ProviderType),
             context.CancellationToken);
     }
 
@@ -122,7 +123,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         return await _mediator.Send(
             new UpdateCustomerCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.HasFirstName ? request.FirstName : null,
                 request.HasLastName ? request.LastName : null,
                 request.HasUsername ? request.Username : null,
@@ -142,7 +143,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         return await _mediator.Send(
             new ExportCustomerDataCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.Format),
             context.CancellationToken);
     }
@@ -155,7 +156,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         return await _mediator.Send(
             new DeleteCustomerDataCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.Anonymize),
             context.CancellationToken);
     }

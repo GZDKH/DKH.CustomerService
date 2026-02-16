@@ -10,9 +10,9 @@ public class GetWishlistQueryHandler(ICustomerRepository repository, IAppDbConte
 {
     public async Task<GetWishlistResponse> Handle(GetWishlistQuery request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (profile is null)

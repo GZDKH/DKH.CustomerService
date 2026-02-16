@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Addresses.UpdateAddress;
 
 public sealed record UpdateAddressCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     Guid AddressId,
     string? Label,
     string? Country,

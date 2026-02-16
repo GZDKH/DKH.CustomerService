@@ -11,23 +11,23 @@ public class ExportCustomerDataCommandHandler(ICustomerRepository repository)
 {
     public async Task<ExportCustomerDataResponse> Handle(ExportCustomerDataCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var profileModel = profile.ToContractModel();
 
         return request.Format.ToLowerInvariant() switch
         {
-            "json" => ExportAsJson(profileModel, request.TelegramUserId),
+            "json" => ExportAsJson(profileModel, request.UserId),
             "xml" => throw new RpcException(new Status(StatusCode.Unimplemented, "XML export not yet implemented")),
             "csv" => throw new RpcException(new Status(StatusCode.Unimplemented, "CSV export not yet implemented")),
             _ => throw new RpcException(new Status(StatusCode.InvalidArgument, $"Unsupported format: {request.Format}. Supported formats: json, xml, csv"))
         };
     }
 
-    private static ExportCustomerDataResponse ExportAsJson(Contracts.Models.V1.CustomerProfile profile, string telegramUserId)
+    private static ExportCustomerDataResponse ExportAsJson(Contracts.Models.V1.CustomerProfile profile, string userId)
     {
         // Convert protobuf to JSON
         var json = JsonFormatter.Default.Format(profile);
@@ -37,7 +37,7 @@ public class ExportCustomerDataCommandHandler(ICustomerRepository repository)
         {
             Data = ByteString.CopyFrom(bytes),
             ContentType = "application/json",
-            FileName = $"customer_{telegramUserId}_{DateTime.UtcNow:yyyyMMddHHmmss}.json"
+            FileName = $"customer_{userId}_{DateTime.UtcNow:yyyyMMddHHmmss}.json"
         };
     }
 }

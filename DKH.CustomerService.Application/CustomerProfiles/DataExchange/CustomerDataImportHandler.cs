@@ -34,7 +34,7 @@ public sealed class CustomerDataImportHandler(
 
     /// <inheritdoc />
     protected override string? GetEntityKey(CustomerDataExchangeDto dto)
-        => string.IsNullOrWhiteSpace(dto.TelegramUserId) ? null : dto.TelegramUserId;
+        => string.IsNullOrWhiteSpace(dto.UserId) ? null : dto.UserId;
 
     /// <inheritdoc />
     protected override async Task<bool> EntityExistsAsync(
@@ -49,7 +49,7 @@ public sealed class CustomerDataImportHandler(
 
         var existing = await dbContext.CustomerProfiles
             .AsNoTracking()
-            .Where(c => c.TelegramUserId == key)
+            .Where(c => c.UserId == key)
             .Select(c => new { c.Id })
             .FirstOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
@@ -88,7 +88,7 @@ public sealed class CustomerDataImportHandler(
         // Create CustomerProfile entity
         var customer = CustomerProfileEntity.Create(
             dto.StorefrontId,
-            dto.TelegramUserId,
+            dto.UserId,
             dto.FirstName,
             dto.LastName,
             dto.Username,
@@ -132,7 +132,7 @@ public sealed class CustomerDataImportHandler(
 
         if (customer is null)
         {
-            context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "telegramUserId", $"Customer with TelegramUserId '{key}' not found."));
+            context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "userId", $"Customer with UserId '{key}' not found."));
             return;
         }
 

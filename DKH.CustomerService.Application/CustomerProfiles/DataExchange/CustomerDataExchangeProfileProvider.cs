@@ -62,7 +62,7 @@ public sealed class CustomerDataExchangeProfileProvider(IOptions<PlatformLocaliz
             Customers,
             cultures,
             format,
-            [nameof(CustomerDataExchangeDto.TelegramUserId)],
+            [nameof(CustomerDataExchangeDto.UserId)],
             []);
     }
 

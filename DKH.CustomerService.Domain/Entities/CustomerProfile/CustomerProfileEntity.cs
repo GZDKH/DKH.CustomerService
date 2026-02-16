@@ -18,7 +18,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     private CustomerProfileEntity()
     {
         Id = Guid.Empty;
-        TelegramUserId = string.Empty;
+        UserId = string.Empty;
+        ProviderType = "Telegram";
         FirstName = string.Empty;
         LanguageCode = "en";
         AccountStatus = AccountStatus.CreateNew();
@@ -28,16 +29,18 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     private CustomerProfileEntity(
         Guid storefrontId,
-        string telegramUserId,
+        string userId,
         string firstName,
         string? lastName,
         string? username,
         string? photoUrl,
-        string languageCode)
+        string languageCode,
+        string providerType)
         : base(Guid.NewGuid())
     {
         StorefrontId = storefrontId;
-        TelegramUserId = Require(telegramUserId, nameof(telegramUserId));
+        UserId = Require(userId, nameof(userId));
+        ProviderType = providerType;
         FirstName = Require(firstName, nameof(firstName));
         LastName = lastName;
         Username = username;
@@ -50,7 +53,9 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     public Guid StorefrontId { get; private set; }
 
-    public string TelegramUserId { get; private set; }
+    public string UserId { get; private set; }
+
+    public string ProviderType { get; private set; }
 
     public string FirstName { get; private set; }
 
@@ -84,14 +89,15 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     public static CustomerProfileEntity Create(
         Guid storefrontId,
-        string telegramUserId,
+        string userId,
         string firstName,
         string? lastName = null,
         string? username = null,
         string? photoUrl = null,
-        string? languageCode = null)
+        string? languageCode = null,
+        string providerType = "Telegram")
     {
-        return new CustomerProfileEntity(storefrontId, telegramUserId, firstName, lastName, username, photoUrl, languageCode ?? "en");
+        return new CustomerProfileEntity(storefrontId, userId, firstName, lastName, username, photoUrl, languageCode ?? "en", providerType);
     }
 
     public void Update(

@@ -66,7 +66,7 @@ public class CustomerCrudGrpcService(
         var apiResponse = await mediator.Send(
             new BlockCustomerCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.Reason,
                 currentUser.Name!),
             context.CancellationToken);
@@ -80,7 +80,7 @@ public class CustomerCrudGrpcService(
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         var apiResponse = await mediator.Send(
-            new UnblockCustomerCommand(storefrontId, request.TelegramUserId),
+            new UnblockCustomerCommand(storefrontId, request.UserId),
             context.CancellationToken);
 
         return MapToServicesV1(apiResponse);

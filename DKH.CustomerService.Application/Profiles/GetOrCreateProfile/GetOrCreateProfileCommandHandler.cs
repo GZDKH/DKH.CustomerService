@@ -9,9 +9,9 @@ public class GetOrCreateProfileCommandHandler(ICustomerRepository repository)
 {
     public async Task<GetOrCreateProfileResponse> Handle(GetOrCreateProfileCommand request, CancellationToken cancellationToken)
     {
-        var existing = await repository.GetByTelegramUserIdAsync(
+        var existing = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (existing is not null)
@@ -33,7 +33,7 @@ public class GetOrCreateProfileCommandHandler(ICustomerRepository repository)
 
         var profile = CustomerProfileEntity.Create(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             request.FirstName,
             request.LastName,
             request.Username,

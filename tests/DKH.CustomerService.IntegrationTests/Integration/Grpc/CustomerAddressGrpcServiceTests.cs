@@ -22,7 +22,7 @@ namespace DKH.CustomerService.IntegrationTests.Integration.Grpc;
 public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
 {
     private readonly Guid _storefrontId = Guid.NewGuid();
-    private const string TelegramUserId = "tg-user-1";
+    private const string UserId = "tg-user-1";
 
     private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(
         Action<IServiceCollection>? configure = null)
@@ -64,7 +64,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "Test",
         });
     }
@@ -81,7 +81,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var response = await client.CreateAddressAsync(new CreateAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             Label = "Home",
             Country = "US",
             City = "New York",
@@ -107,7 +107,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         await client.CreateAddressAsync(new CreateAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             Label = "Home",
             Country = "US",
             City = "New York",
@@ -118,7 +118,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var response = await client.ListAddressesAsync(new ListAddressesRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
         });
 
         response.Addresses.Should().HaveCount(1);
@@ -137,7 +137,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var createResponse = await client.CreateAddressAsync(new CreateAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             Label = "Office",
             Country = "US",
             City = "Boston",
@@ -148,7 +148,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var response = await client.GetAddressAsync(new GetAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             AddressId = createResponse.Address.Id,
         });
 
@@ -168,7 +168,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var createResponse = await client.CreateAddressAsync(new CreateAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             Label = "Home",
             Country = "US",
             City = "Chicago",
@@ -179,7 +179,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var setResponse = await client.SetDefaultAddressAsync(new SetDefaultAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             AddressId = createResponse.Address.Id,
         });
 
@@ -188,7 +188,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var defaultResponse = await client.GetDefaultAddressAsync(new GetDefaultAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
         });
 
         defaultResponse.Found.Should().BeTrue();
@@ -207,7 +207,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var createResponse = await client.CreateAddressAsync(new CreateAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             Label = "Temp",
             Country = "US",
             City = "Miami",
@@ -218,7 +218,7 @@ public class CustomerAddressGrpcServiceTests : PlatformIntegrationTest
         var response = await client.DeleteAddressAsync(new DeleteAddressRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             AddressId = createResponse.Address.Id,
         });
 
