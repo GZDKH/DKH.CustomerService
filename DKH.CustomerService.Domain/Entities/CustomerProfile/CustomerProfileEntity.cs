@@ -34,7 +34,10 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         string? lastName,
         string? username,
         string? photoUrl,
+        string? phone,
+        string? email,
         string languageCode,
+        bool isPremium,
         string providerType)
         : base(Guid.NewGuid())
     {
@@ -45,7 +48,10 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         LastName = lastName;
         Username = username;
         PhotoUrl = photoUrl;
+        Phone = phone;
+        Email = email;
         LanguageCode = languageCode ?? "en";
+        IsPremium = isPremium;
         AccountStatus = AccountStatus.CreateNew();
         ContactVerification = ContactVerification.CreateNew();
         Preferences = CustomerPreferences.CreateDefault();
@@ -71,6 +77,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     public string LanguageCode { get; private set; }
 
+    public bool IsPremium { get; private set; }
+
     public AccountStatus AccountStatus { get; private set; }
 
     public ContactVerification ContactVerification { get; private set; }
@@ -94,18 +102,24 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         string? lastName = null,
         string? username = null,
         string? photoUrl = null,
+        string? phone = null,
+        string? email = null,
         string? languageCode = null,
+        bool isPremium = false,
         string providerType = "Telegram")
     {
-        return new CustomerProfileEntity(storefrontId, userId, firstName, lastName, username, photoUrl, languageCode ?? "en", providerType);
+        return new CustomerProfileEntity(storefrontId, userId, firstName, lastName, username, photoUrl, phone, email, languageCode ?? "en", isPremium, providerType);
     }
 
     public void Update(
         string? firstName = null,
         string? lastName = null,
+        string? username = null,
         string? phone = null,
         string? email = null,
-        string? languageCode = null)
+        string? languageCode = null,
+        string? photoUrl = null,
+        bool? isPremium = null)
     {
         if (!string.IsNullOrWhiteSpace(firstName))
         {
@@ -115,6 +129,11 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         if (lastName is not null)
         {
             LastName = lastName;
+        }
+
+        if (username is not null)
+        {
+            Username = username;
         }
 
         if (phone is not null)
@@ -141,6 +160,16 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         {
             LanguageCode = languageCode;
             Preferences.UpdateLanguage(languageCode);
+        }
+
+        if (photoUrl is not null)
+        {
+            PhotoUrl = photoUrl;
+        }
+
+        if (isPremium.HasValue)
+        {
+            IsPremium = isPremium.Value;
         }
     }
 

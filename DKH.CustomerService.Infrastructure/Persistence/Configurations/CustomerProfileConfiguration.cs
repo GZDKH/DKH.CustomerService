@@ -25,6 +25,7 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
         builder.Property(x => x.Phone).HasMaxLength(32);
         builder.Property(x => x.Email).HasMaxLength(256);
         builder.Property(x => x.LanguageCode).HasMaxLength(10).IsRequired();
+        builder.Property(x => x.IsPremium).HasColumnName("is_premium").HasDefaultValue(false);
 
         builder.OwnsOne(x => x.AccountStatus, status =>
         {

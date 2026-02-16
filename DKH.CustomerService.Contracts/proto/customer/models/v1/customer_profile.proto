@@ -25,6 +25,7 @@ message CustomerProfile {
   AccountStatus account_status = 15;
   ContactVerification contact_verification = 16;
   string provider_type = 17;
+  bool is_premium = 18;
 }
 
 message AccountStatus {

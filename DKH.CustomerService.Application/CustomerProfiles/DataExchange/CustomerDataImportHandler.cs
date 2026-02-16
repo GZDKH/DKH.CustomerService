@@ -85,7 +85,7 @@ public sealed class CustomerDataImportHandler(
             return Task.CompletedTask;
         }
 
-        // Create CustomerProfile entity
+        // Create CustomerProfile entity with all fields
         var customer = CustomerProfileEntity.Create(
             dto.StorefrontId,
             dto.UserId,
@@ -93,15 +93,9 @@ public sealed class CustomerDataImportHandler(
             dto.LastName,
             dto.Username,
             dto.PhotoUrl,
+            dto.Phone,
+            dto.Email,
             dto.LanguageCode);
-
-        // Update optional contact info
-        customer.Update(
-            firstName: dto.FirstName,
-            lastName: dto.LastName,
-            phone: dto.Phone,
-            email: dto.Email,
-            languageCode: dto.LanguageCode);
 
         ApplyAccountStatus(customer, dto, row, context);
         customer.AccountStatus.UpdateOrderStats(dto.TotalOrdersCount, dto.TotalSpent);

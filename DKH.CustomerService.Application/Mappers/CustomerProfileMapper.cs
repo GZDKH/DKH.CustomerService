@@ -24,6 +24,7 @@ public static class CustomerProfileMapper
             Email = entity.Email ?? string.Empty,
             LanguageCode = entity.LanguageCode,
             ProviderType = entity.ProviderType,
+            IsPremium = entity.IsPremium,
             CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(entity.CreationTime, DateTimeKind.Utc)),
             IsDeleted = entity.IsDeleted,
         };
