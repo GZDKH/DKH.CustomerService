@@ -16,7 +16,7 @@ service CustomerPreferencesService {
 
 message GetPreferencesRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message GetPreferencesResponse {
@@ -25,7 +25,7 @@ message GetPreferencesResponse {
 
 message UpdatePreferencesRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   optional string preferred_language = 3;
   optional string preferred_currency = 4;
 }
@@ -36,7 +36,7 @@ message UpdatePreferencesResponse {
 
 message UpdateNotificationChannelsRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   optional bool email_notifications_enabled = 3;
   optional bool telegram_notifications_enabled = 4;
   optional bool sms_notifications_enabled = 5;
@@ -48,7 +48,7 @@ message UpdateNotificationChannelsResponse {
 
 message UpdateNotificationTypesRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   optional bool order_status_updates = 3;
   optional bool promotional_offers = 4;
 }

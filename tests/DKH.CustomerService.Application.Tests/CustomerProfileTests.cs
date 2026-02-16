@@ -11,7 +11,7 @@ public class CustomerProfileTests
     {
         // Arrange
         var storefrontId = Guid.NewGuid();
-        var telegramUserId = "123456789";
+        var userId = "123456789";
         var firstName = "John";
         var lastName = "Doe";
         var username = "johndoe";
@@ -19,7 +19,7 @@ public class CustomerProfileTests
         // Act
         var profile = CustomerProfileEntity.Create(
             storefrontId,
-            telegramUserId,
+            userId,
             firstName,
             lastName,
             username);
@@ -28,7 +28,7 @@ public class CustomerProfileTests
         profile.Should().NotBeNull();
         profile.Id.Should().NotBeEmpty();
         profile.StorefrontId.Should().Be(storefrontId);
-        profile.TelegramUserId.Should().Be(telegramUserId);
+        profile.UserId.Should().Be(userId);
         profile.FirstName.Should().Be(firstName);
         profile.LastName.Should().Be(lastName);
         profile.Username.Should().Be(username);

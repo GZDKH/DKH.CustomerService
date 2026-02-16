@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
 
 public sealed record GetOrCreateProfileCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string FirstName,
     string? LastName,
     string? Username,

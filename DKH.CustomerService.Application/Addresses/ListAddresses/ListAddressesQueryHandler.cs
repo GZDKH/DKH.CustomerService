@@ -8,9 +8,9 @@ public class ListAddressesQueryHandler(ICustomerRepository repository)
 {
     public async Task<ListAddressesResponse> Handle(ListAddressesQuery request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdWithAddressesAsync(
+        var profile = await repository.GetByUserIdWithAddressesAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         var response = new ListAddressesResponse();

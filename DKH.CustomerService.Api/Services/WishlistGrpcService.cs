@@ -20,7 +20,7 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(
-            new GetWishlistQuery(storefrontId, request.TelegramUserId, (request.Pagination?.Page ?? 1), (request.Pagination?.PageSize ?? 10)),
+            new GetWishlistQuery(storefrontId, request.UserId, (request.Pagination?.Page ?? 1), (request.Pagination?.PageSize ?? 10)),
             context.CancellationToken);
     }
 
@@ -33,7 +33,7 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
         var productSkuId = request.ProductSkuId?.ToGuid();
 
         return await mediator.Send(
-            new AddToWishlistCommand(storefrontId, request.TelegramUserId, productId, productSkuId, request.Note),
+            new AddToWishlistCommand(storefrontId, request.UserId, productId, productSkuId, request.Note),
             context.CancellationToken);
     }
 
@@ -46,7 +46,7 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
         var productSkuId = request.ProductSkuId?.ToGuid();
 
         return await mediator.Send(
-            new RemoveFromWishlistCommand(storefrontId, request.TelegramUserId, productId, productSkuId),
+            new RemoveFromWishlistCommand(storefrontId, request.UserId, productId, productSkuId),
             context.CancellationToken);
     }
 
@@ -59,20 +59,20 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
         var productSkuId = request.ProductSkuId?.ToGuid();
 
         return await mediator.Send(
-            new CheckProductInWishlistQuery(storefrontId, request.TelegramUserId, productId, productSkuId),
+            new CheckProductInWishlistQuery(storefrontId, request.UserId, productId, productSkuId),
             context.CancellationToken);
     }
 
     public override async Task<ClearWishlistResponse> ClearWishlist(ClearWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new ClearWishlistCommand(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new ClearWishlistCommand(storefrontId, request.UserId), context.CancellationToken);
     }
 
     public override async Task<GetWishlistCountResponse> GetWishlistCount(GetWishlistCountRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new GetWishlistCountQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new GetWishlistCountQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)

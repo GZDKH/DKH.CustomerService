@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Addresses.CreateAddress;
 
 public sealed record CreateAddressCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string Label,
     string Country,
     string City,

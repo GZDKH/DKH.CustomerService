@@ -19,7 +19,7 @@ service CustomerAddressService {
 
 message ListAddressesRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message ListAddressesResponse {
@@ -28,7 +28,7 @@ message ListAddressesResponse {
 
 message GetAddressRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue address_id = 3;
 }
 
@@ -39,7 +39,7 @@ message GetAddressResponse {
 
 message CreateAddressRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string label = 3;
   string country = 4;
   string city = 5;
@@ -57,7 +57,7 @@ message CreateAddressResponse {
 
 message UpdateAddressRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue address_id = 3;
   optional string label = 4;
   optional string country = 5;
@@ -75,7 +75,7 @@ message UpdateAddressResponse {
 
 message DeleteAddressRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue address_id = 3;
 }
 
@@ -85,7 +85,7 @@ message DeleteAddressResponse {
 
 message SetDefaultAddressRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue address_id = 3;
 }
 
@@ -95,7 +95,7 @@ message SetDefaultAddressResponse {
 
 message GetDefaultAddressRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message GetDefaultAddressResponse {

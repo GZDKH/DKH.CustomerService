@@ -9,9 +9,9 @@ public class GetPreferencesQueryHandler(ICustomerRepository repository)
 {
     public async Task<GetPreferencesResponse> Handle(GetPreferencesQuery request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (profile is null)

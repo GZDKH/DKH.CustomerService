@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Preferences.UpdatePreferences;
 
 public sealed record UpdatePreferencesCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string? PreferredLanguage,
     string? PreferredCurrency)
     : IRequest<UpdatePreferencesResponse>;

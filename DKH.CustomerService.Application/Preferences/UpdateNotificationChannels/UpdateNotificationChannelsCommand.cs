@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Preferences.UpdateNotificationChannels
 
 public sealed record UpdateNotificationChannelsCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     bool? EmailNotificationsEnabled,
     bool? TelegramNotificationsEnabled,
     bool? SmsNotificationsEnabled)

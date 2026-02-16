@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Profiles.UpdateCustomer;
 
 public sealed record UpdateCustomerCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string? FirstName,
     string? LastName,
     string? Username,

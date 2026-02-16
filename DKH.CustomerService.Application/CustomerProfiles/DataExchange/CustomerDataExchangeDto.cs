@@ -13,8 +13,8 @@ public sealed class CustomerDataExchangeDto
     [JsonPropertyName("storefrontId")]
     public Guid StorefrontId { get; set; }
 
-    [JsonPropertyName("telegramUserId")]
-    public string TelegramUserId { get; set; } = string.Empty;
+    [JsonPropertyName("userId")]
+    public string UserId { get; set; } = string.Empty;
 
     [JsonPropertyName("firstName")]
     public string FirstName { get; set; } = string.Empty;

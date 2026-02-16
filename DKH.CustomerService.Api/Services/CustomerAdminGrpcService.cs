@@ -42,14 +42,14 @@ public class CustomerAdminGrpcService(IMediator mediator, IPlatformStorefrontCon
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(
-            new BlockCustomerCommand(storefrontId, request.TelegramUserId, request.Reason, currentUser.Name!),
+            new BlockCustomerCommand(storefrontId, request.UserId, request.Reason, currentUser.Name!),
             context.CancellationToken);
     }
 
     public override async Task<UnblockCustomerResponse> UnblockCustomer(UnblockCustomerRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new UnblockCustomerCommand(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new UnblockCustomerCommand(storefrontId, request.UserId), context.CancellationToken);
     }
 
     public override Task<SuspendCustomerResponse> SuspendCustomer(SuspendCustomerRequest request, ServerCallContext context)

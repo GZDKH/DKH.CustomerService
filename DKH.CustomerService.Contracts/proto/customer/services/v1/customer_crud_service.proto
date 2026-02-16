@@ -74,7 +74,7 @@ message ListCustomersResponse {
 
 message GetCustomerStatsRequest {
   optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message GetCustomerStatsResponse {
@@ -83,7 +83,7 @@ message GetCustomerStatsResponse {
 
 message BlockCustomerRequest {
   optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string reason = 3;
   string blocked_by = 4;
 }
@@ -95,7 +95,7 @@ message BlockCustomerResponse {
 
 message UnblockCustomerRequest {
   optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message UnblockCustomerResponse {
@@ -105,7 +105,7 @@ message UnblockCustomerResponse {
 
 message SuspendCustomerRequest {
   optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   google.protobuf.Timestamp suspend_until = 3;
   string reason = 4;
   string suspended_by = 5;

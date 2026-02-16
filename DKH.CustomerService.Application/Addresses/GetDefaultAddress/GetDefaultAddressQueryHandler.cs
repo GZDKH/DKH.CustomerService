@@ -8,9 +8,9 @@ public class GetDefaultAddressQueryHandler(ICustomerRepository repository, IAppD
 {
     public async Task<GetDefaultAddressResponse> Handle(GetDefaultAddressQuery request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (profile is null)

@@ -19,7 +19,7 @@ service WishlistService {
 
 message GetWishlistRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.PaginationRequest pagination = 3;
 }
 
@@ -29,7 +29,7 @@ message GetWishlistResponse {
 
 message AddToWishlistRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue product_id = 3;
   proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
   string note = 5;
@@ -42,7 +42,7 @@ message AddToWishlistResponse {
 
 message RemoveFromWishlistRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue product_id = 3;
   proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
 }
@@ -53,7 +53,7 @@ message RemoveFromWishlistResponse {
 
 message CheckProductInWishlistRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   proto.platform.grpc.common.types.GuidValue product_id = 3;
   proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
 }
@@ -65,7 +65,7 @@ message CheckProductInWishlistResponse {
 
 message ClearWishlistRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message ClearWishlistResponse {
@@ -74,7 +74,7 @@ message ClearWishlistResponse {
 
 message GetWishlistCountRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message GetWishlistCountResponse {

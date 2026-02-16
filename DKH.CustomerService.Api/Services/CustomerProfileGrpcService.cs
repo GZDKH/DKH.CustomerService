@@ -17,7 +17,7 @@ public class CustomerProfileGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<GetProfileResponse> GetProfile(GetProfileRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new GetProfileQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new GetProfileQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
     public override async Task<GetOrCreateProfileResponse> GetOrCreateProfile(GetOrCreateProfileRequest request, ServerCallContext context)
@@ -26,7 +26,7 @@ public class CustomerProfileGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(
             new GetOrCreateProfileCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.FirstName,
                 request.LastName,
                 request.Username,
@@ -41,7 +41,7 @@ public class CustomerProfileGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(
             new UpdateProfileCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.HasFirstName ? request.FirstName : null,
                 request.HasLastName ? request.LastName : null,
                 request.HasPhone ? request.Phone : null,
@@ -54,7 +54,7 @@ public class CustomerProfileGrpcService(IMediator mediator, IPlatformStorefrontC
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(
-            new DeleteProfileCommand(storefrontId, request.TelegramUserId, request.HardDelete),
+            new DeleteProfileCommand(storefrontId, request.UserId, request.HardDelete),
             context.CancellationToken);
     }
 

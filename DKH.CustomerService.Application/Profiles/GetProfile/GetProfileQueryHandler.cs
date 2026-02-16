@@ -8,9 +8,9 @@ public class GetProfileQueryHandler(ICustomerRepository repository)
 {
     public async Task<GetProfileResponse> Handle(GetProfileQuery request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (profile is null)

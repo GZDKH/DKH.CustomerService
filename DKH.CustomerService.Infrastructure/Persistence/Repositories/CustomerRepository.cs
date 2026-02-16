@@ -12,38 +12,38 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
-    public async Task<CustomerProfileEntity?> GetByTelegramUserIdAsync(
+    public async Task<CustomerProfileEntity?> GetByUserIdAsync(
         Guid storefrontId,
-        string telegramUserId,
+        string userId,
         CancellationToken cancellationToken = default)
     {
         return await dbContext.CustomerProfiles
             .FirstOrDefaultAsync(
-                p => p.StorefrontId == storefrontId && p.TelegramUserId == telegramUserId,
+                p => p.StorefrontId == storefrontId && p.UserId == userId,
                 cancellationToken);
     }
 
-    public async Task<CustomerProfileEntity?> GetByTelegramUserIdWithAddressesAsync(
+    public async Task<CustomerProfileEntity?> GetByUserIdWithAddressesAsync(
         Guid storefrontId,
-        string telegramUserId,
+        string userId,
         CancellationToken cancellationToken = default)
     {
         return await dbContext.CustomerProfiles
             .Include(p => p.Addresses)
             .FirstOrDefaultAsync(
-                p => p.StorefrontId == storefrontId && p.TelegramUserId == telegramUserId,
+                p => p.StorefrontId == storefrontId && p.UserId == userId,
                 cancellationToken);
     }
 
-    public async Task<CustomerProfileEntity?> GetByTelegramUserIdWithWishlistAsync(
+    public async Task<CustomerProfileEntity?> GetByUserIdWithWishlistAsync(
         Guid storefrontId,
-        string telegramUserId,
+        string userId,
         CancellationToken cancellationToken = default)
     {
         return await dbContext.CustomerProfiles
             .Include(p => p.WishlistItems)
             .FirstOrDefaultAsync(
-                p => p.StorefrontId == storefrontId && p.TelegramUserId == telegramUserId,
+                p => p.StorefrontId == storefrontId && p.UserId == userId,
                 cancellationToken);
     }
 
@@ -86,7 +86,7 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
             (p.LastName != null && EF.Functions.ILike(p.LastName, $"%{query}%")) ||
             (p.Email != null && EF.Functions.ILike(p.Email, $"%{query}%")) ||
             (p.Phone != null && EF.Functions.Like(p.Phone, $"%{query}%")) ||
-            EF.Functions.Like(p.TelegramUserId, $"%{query}%"));
+            EF.Functions.Like(p.UserId, $"%{query}%"));
 
         var totalCount = await baseQuery.CountAsync(cancellationToken);
 

@@ -8,9 +8,9 @@ public class DeleteCustomerDataCommandHandler(ICustomerRepository repository)
 {
     public async Task<DeleteCustomerDataResponse> Handle(DeleteCustomerDataCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         if (request.Anonymize)

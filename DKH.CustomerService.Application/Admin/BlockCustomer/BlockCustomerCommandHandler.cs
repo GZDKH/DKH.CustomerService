@@ -9,9 +9,9 @@ public class BlockCustomerCommandHandler(ICustomerRepository repository)
 {
     public async Task<BlockCustomerResponse> Handle(BlockCustomerCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         profile.AccountStatus.Block(request.Reason, request.BlockedBy);

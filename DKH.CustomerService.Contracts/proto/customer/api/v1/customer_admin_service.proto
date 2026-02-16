@@ -48,7 +48,7 @@ message ListCustomersResponse {
 
 message GetCustomerStatsRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message GetCustomerStatsResponse {
@@ -57,7 +57,7 @@ message GetCustomerStatsResponse {
 
 message BlockCustomerRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string reason = 3;
   string blocked_by = 4;
 }
@@ -69,7 +69,7 @@ message BlockCustomerResponse {
 
 message UnblockCustomerRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
 }
 
 message UnblockCustomerResponse {
@@ -79,7 +79,7 @@ message UnblockCustomerResponse {
 
 message SuspendCustomerRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   google.protobuf.Timestamp suspend_until = 3;
   string reason = 4;
   string suspended_by = 5;
@@ -92,7 +92,7 @@ message SuspendCustomerResponse {
 
 message ExportCustomerDataRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   string format = 3;
 }
 
@@ -104,7 +104,7 @@ message ExportCustomerDataResponse {
 
 message DeleteCustomerDataRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
-  string telegram_user_id = 2;
+  string user_id = 2;
   bool anonymize = 3;
 }
 
