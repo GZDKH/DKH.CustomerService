@@ -1,4 +1,4 @@
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1;
 
 namespace DKH.CustomerService.Application.Wishlists.CheckProductInWishlist;
 

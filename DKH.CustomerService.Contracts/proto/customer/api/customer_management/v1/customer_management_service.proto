@@ -1,0 +1,202 @@
+syntax = "proto3";
+
+package proto.customer.api.customer_management.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1";
+
+import "customer/models/customer_profile/v1/customer_profile.proto";
+import "types/guid.proto";
+
+// CustomerManagementService provides storefront-scoped operations with required storefront_id.
+// All operations are restricted to a single tenant (storefront).
+service CustomerManagementService {
+  // Get customer profile (existing method - storefront operation)
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+
+  // Get or create customer profile (existing method - storefront operation)
+  rpc GetOrCreateProfile(GetOrCreateProfileRequest) returns (GetOrCreateProfileResponse);
+
+  // Update customer profile (existing method - storefront operation)
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
+
+  // Delete customer profile (existing method - soft delete scoped to specific storefront)
+  rpc DeleteProfile(DeleteProfileRequest) returns (DeleteProfileResponse);
+
+  // Create a new customer (admin operation - new method for issue #16)
+  rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse);
+
+  // Update existing customer profile (admin operation - new method for issue #16)
+  rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
+
+  // Export customer data (GDPR compliance - new method)
+  rpc ExportCustomerData(ExportCustomerDataRequest) returns (ExportCustomerDataResponse);
+
+  // Delete customer data (GDPR compliance - soft delete or anonymize - new method)
+  rpc DeleteCustomerData(DeleteCustomerDataRequest) returns (DeleteCustomerDataResponse);
+}
+
+message CreateCustomerRequest {
+  // Required - identifies the storefront for this customer
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - User ID (must be unique per storefront)
+  string user_id = 2;
+
+  // Required - Customer's first name
+  string first_name = 3;
+
+  // Required - Customer's last name
+  string last_name = 4;
+
+  // Optional - Telegram username
+  string username = 5;
+
+  // Optional - Phone number (E.164 format recommended)
+  string phone = 6;
+
+  // Optional - Email address
+  string email = 7;
+
+  // Optional - Language code (ISO 639-1, e.g., "en", "ru")
+  string language_code = 8;
+
+  // Optional - Photo URL
+  string photo_url = 9;
+
+  // Optional - Is premium Telegram user
+  bool is_premium = 10;
+
+  // Optional - Identity provider type (default: "Telegram")
+  string provider_type = 11;
+}
+
+message CreateCustomerResponse {
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 1;
+}
+
+message UpdateCustomerRequest {
+  // Required - identifies the storefront
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - identifies the customer
+  string user_id = 2;
+
+  // Optional - update first name (if provided)
+  optional string first_name = 3;
+
+  // Optional - update last name (if provided)
+  optional string last_name = 4;
+
+  // Optional - update username (if provided)
+  optional string username = 5;
+
+  // Optional - update phone (if provided)
+  optional string phone = 6;
+
+  // Optional - update email (if provided)
+  optional string email = 7;
+
+  // Optional - update language code (if provided)
+  optional string language_code = 8;
+
+  // Optional - update photo URL (if provided)
+  optional string photo_url = 9;
+
+  // Optional - update premium status (if provided)
+  optional bool is_premium = 10;
+}
+
+message UpdateCustomerResponse {
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 1;
+}
+
+message ExportCustomerDataRequest {
+  // Required - identifies the storefront
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - identifies the customer
+  string user_id = 2;
+
+  // Export format: "json", "xml", "csv"
+  string format = 3;
+}
+
+message ExportCustomerDataResponse {
+  // Exported data as bytes
+  bytes data = 1;
+
+  // MIME type (e.g., "application/json", "text/csv")
+  string content_type = 2;
+
+  // Suggested filename
+  string file_name = 3;
+}
+
+message DeleteCustomerDataRequest {
+  // Required - identifies the storefront
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - identifies the customer
+  string user_id = 2;
+
+  // If true, anonymize instead of hard delete
+  bool anonymize = 3;
+}
+
+message DeleteCustomerDataResponse {
+  bool success = 1;
+
+  // If anonymized, returns the anonymized ID
+  string anonymized_id = 2;
+}
+
+// ========== Existing Profile Management Messages ==========
+
+message GetProfileRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message GetProfileResponse {
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 1;
+  bool found = 2;
+}
+
+message GetOrCreateProfileRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string username = 5;
+  string photo_url = 6;
+  string language_code = 7;
+}
+
+message GetOrCreateProfileResponse {
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 1;
+  bool created = 2;
+}
+
+message UpdateProfileRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  optional string phone = 5;
+  optional string email = 6;
+  optional string language_code = 7;
+}
+
+message UpdateProfileResponse {
+  proto.customer.models.customer_profile.v1.CustomerProfileModel profile = 1;
+}
+
+message DeleteProfileRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  bool hard_delete = 3;
+}
+
+message DeleteProfileResponse {
+  bool success = 1;
+}

@@ -1,13 +1,13 @@
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Models.CustomerPreferences.v1;
 using DKH.Platform.Grpc.Common.Types;
 
 namespace DKH.CustomerService.Application.Mappers;
 
 public static class CustomerPreferencesMapper
 {
-    public static CustomerPreferences ToContractModel(this Domain.ValueObjects.CustomerPreferences prefs, Guid customerId)
+    public static CustomerPreferencesModel ToContractModel(this Domain.ValueObjects.CustomerPreferences prefs, Guid customerId)
     {
-        return new CustomerPreferences
+        return new CustomerPreferencesModel
         {
             CustomerId = GuidValue.FromGuid(customerId),
             EmailNotificationsEnabled = prefs.EmailNotificationsEnabled,

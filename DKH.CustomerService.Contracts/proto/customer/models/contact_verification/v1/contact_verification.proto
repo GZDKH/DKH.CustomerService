@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto.customer.models.contact_verification.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.ContactVerification.v1";
+
+message VerificationResultModel {
+  bool success = 1;
+  string error_message = 2;
+  string error_code = 3;
+}
+
+message VerificationInitiationModel {
+  bool success = 1;
+  string error_message = 2;
+  int32 expires_in_seconds = 3;
+}

@@ -1,10 +1,10 @@
 using DKH.CustomerService.Application.Abstractions;
-using DKH.CustomerService.Contracts.Api.V1;
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Api.ContactVerification.v1;
+using DKH.CustomerService.Contracts.Customer.Models.ContactVerification.v1;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
-using ContractsService = DKH.CustomerService.Contracts.Api.V1.ContactVerificationService;
+using ContractsService = DKH.CustomerService.Contracts.Customer.Api.ContactVerification.v1.ContactVerificationService;
 
 namespace DKH.CustomerService.Api.Services;
 
@@ -26,7 +26,7 @@ public class ContactVerificationGrpcService(
 
         return new InitiateEmailVerificationResponse
         {
-            Result = new VerificationInitiation
+            Result = new VerificationInitiationModel
             {
                 Success = success,
                 ErrorMessage = errorMessage ?? string.Empty,
@@ -54,7 +54,7 @@ public class ContactVerificationGrpcService(
 
         return new VerifyEmailResponse
         {
-            Result = new VerificationResult
+            Result = new VerificationResultModel
             {
                 Success = success,
                 ErrorMessage = errorMessage ?? string.Empty,
@@ -75,7 +75,7 @@ public class ContactVerificationGrpcService(
 
         return new InitiatePhoneVerificationResponse
         {
-            Result = new VerificationInitiation
+            Result = new VerificationInitiationModel
             {
                 Success = success,
                 ErrorMessage = errorMessage ?? string.Empty,
@@ -103,7 +103,7 @@ public class ContactVerificationGrpcService(
 
         return new VerifyPhoneResponse
         {
-            Result = new VerificationResult
+            Result = new VerificationResultModel
             {
                 Success = success,
                 ErrorMessage = errorMessage ?? string.Empty,

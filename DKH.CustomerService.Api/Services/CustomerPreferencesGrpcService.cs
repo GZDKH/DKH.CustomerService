@@ -2,17 +2,17 @@ using DKH.CustomerService.Application.Preferences.GetPreferences;
 using DKH.CustomerService.Application.Preferences.UpdateNotificationChannels;
 using DKH.CustomerService.Application.Preferences.UpdateNotificationTypes;
 using DKH.CustomerService.Application.Preferences.UpdatePreferences;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
-using ContractsService = DKH.CustomerService.Contracts.Api.V1.CustomerPreferencesService;
+using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1.CustomerPreferencesManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
 public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
-    : ContractsService.CustomerPreferencesServiceBase
+    : ContractsService.CustomerPreferencesManagementServiceBase
 {
     public override async Task<GetPreferencesResponse> GetPreferences(GetPreferencesRequest request, ServerCallContext context)
     {

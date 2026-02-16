@@ -1,5 +1,5 @@
 using System.Globalization;
-using DKH.CustomerService.Contracts.Models.V1;
+using DKH.CustomerService.Contracts.Customer.Models.CustomerProfile.v1;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Enums;
 using DKH.Platform.Grpc.Common.Types;
@@ -9,9 +9,9 @@ namespace DKH.CustomerService.Application.Mappers;
 
 public static class CustomerProfileMapper
 {
-    public static CustomerProfile ToContractModel(this CustomerProfileEntity entity)
+    public static CustomerProfileModel ToContractModel(this CustomerProfileEntity entity)
     {
-        var profile = new CustomerProfile
+        var profile = new CustomerProfileModel
         {
             Id = GuidValue.FromGuid(entity.Id),
             StorefrontId = GuidValue.FromGuid(entity.StorefrontId),
@@ -45,9 +45,9 @@ public static class CustomerProfileMapper
         return profile;
     }
 
-    public static AccountStatus ToContractModel(this Domain.ValueObjects.AccountStatus status)
+    public static AccountStatusModel ToContractModel(this Domain.ValueObjects.AccountStatus status)
     {
-        var result = new AccountStatus
+        var result = new AccountStatusModel
         {
             Status = status.Status.ToContractEnum(),
             BlockReason = status.BlockReason ?? string.Empty,
@@ -74,9 +74,9 @@ public static class CustomerProfileMapper
         return result;
     }
 
-    public static ContactVerification ToContractModel(this Domain.ValueObjects.ContactVerification verification)
+    public static ContactVerificationModel ToContractModel(this Domain.ValueObjects.ContactVerification verification)
     {
-        var result = new ContactVerification
+        var result = new ContactVerificationModel
         {
             EmailVerified = verification.EmailVerified,
             PhoneVerified = verification.PhoneVerified,

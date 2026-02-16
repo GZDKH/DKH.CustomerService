@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package proto.customer.api.customer_address_management.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1";
+
+import "customer/models/customer_address/v1/customer_address.proto";
+import "types/guid.proto";
+
+service CustomerAddressManagementService {
+  rpc ListAddresses(ListAddressesRequest) returns (ListAddressesResponse);
+  rpc GetAddress(GetAddressRequest) returns (GetAddressResponse);
+  rpc CreateAddress(CreateAddressRequest) returns (CreateAddressResponse);
+  rpc UpdateAddress(UpdateAddressRequest) returns (UpdateAddressResponse);
+  rpc DeleteAddress(DeleteAddressRequest) returns (DeleteAddressResponse);
+  rpc SetDefaultAddress(SetDefaultAddressRequest) returns (SetDefaultAddressResponse);
+  rpc GetDefaultAddress(GetDefaultAddressRequest) returns (GetDefaultAddressResponse);
+}
+
+message ListAddressesRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message ListAddressesResponse {
+  repeated proto.customer.models.customer_address.v1.CustomerAddressModel addresses = 1;
+}
+
+message GetAddressRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue address_id = 3;
+}
+
+message GetAddressResponse {
+  proto.customer.models.customer_address.v1.CustomerAddressModel address = 1;
+  bool found = 2;
+}
+
+message CreateAddressRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  string label = 3;
+  string country = 4;
+  string city = 5;
+  string street = 6;
+  string building = 7;
+  string apartment = 8;
+  string postal_code = 9;
+  string phone = 10;
+  bool is_default = 11;
+}
+
+message CreateAddressResponse {
+  proto.customer.models.customer_address.v1.CustomerAddressModel address = 1;
+}
+
+message UpdateAddressRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue address_id = 3;
+  optional string label = 4;
+  optional string country = 5;
+  optional string city = 6;
+  optional string street = 7;
+  optional string building = 8;
+  optional string apartment = 9;
+  optional string postal_code = 10;
+  optional string phone = 11;
+}
+
+message UpdateAddressResponse {
+  proto.customer.models.customer_address.v1.CustomerAddressModel address = 1;
+}
+
+message DeleteAddressRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue address_id = 3;
+}
+
+message DeleteAddressResponse {
+  bool success = 1;
+}
+
+message SetDefaultAddressRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+  proto.platform.grpc.common.types.GuidValue address_id = 3;
+}
+
+message SetDefaultAddressResponse {
+  bool success = 1;
+}
+
+message GetDefaultAddressRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  string user_id = 2;
+}
+
+message GetDefaultAddressResponse {
+  proto.customer.models.customer_address.v1.CustomerAddressModel address = 1;
+  bool found = 2;
+}

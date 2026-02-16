@@ -1,4 +1,4 @@
-using DKH.CustomerService.Contracts.Services.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 
 namespace DKH.CustomerService.Application.Profiles.DeleteCustomerData;
 

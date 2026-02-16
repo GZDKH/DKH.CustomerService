@@ -2,7 +2,8 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform.EntityFrameworkCore.Repositories;
@@ -33,7 +34,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
                     .AddPlatformRepositories<AppDbContext>(),
-                typeof(CustomerProfileGrpcService),
+                typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),
                 typeof(CustomerPreferencesGrpcService))
@@ -59,7 +60,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
     }
 
     private async Task EnsureProfileExistsAsync(
-        CustomerProfileService.CustomerProfileServiceClient profileClient)
+        CustomerManagementService.CustomerManagementServiceClient profileClient)
     {
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
@@ -73,8 +74,8 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
     public async Task GetPreferences_ReturnsDefaultPreferencesAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesManagementService.CustomerPreferencesManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -91,8 +92,8 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
     public async Task UpdatePreferences_UpdatesLanguageAndCurrencyAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesManagementService.CustomerPreferencesManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -113,8 +114,8 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
     public async Task UpdateNotificationChannels_UpdatesChannelsAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesManagementService.CustomerPreferencesManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 
@@ -137,8 +138,8 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
     public async Task UpdateNotificationTypes_UpdatesTypesAsync()
     {
         await using var factory = CreateFactory();
-        var profileClient = this.CreateGrpcClient<CustomerProfileService.CustomerProfileServiceClient, GrpcTestExceptionPolicy>(factory);
-        var client = this.CreateGrpcClient<CustomerPreferencesService.CustomerPreferencesServiceClient, GrpcTestExceptionPolicy>(factory);
+        var profileClient = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+        var client = this.CreateGrpcClient<CustomerPreferencesManagementService.CustomerPreferencesManagementServiceClient, GrpcTestExceptionPolicy>(factory);
 
         await EnsureProfileExistsAsync(profileClient);
 

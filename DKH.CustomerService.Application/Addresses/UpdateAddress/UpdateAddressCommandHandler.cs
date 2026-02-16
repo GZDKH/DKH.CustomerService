@@ -1,5 +1,5 @@
 using DKH.CustomerService.Application.Mappers;
-using DKH.CustomerService.Contracts.Api.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1;
 using Grpc.Core;
 
 namespace DKH.CustomerService.Application.Addresses.UpdateAddress;

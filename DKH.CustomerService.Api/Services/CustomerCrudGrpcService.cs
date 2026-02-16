@@ -2,7 +2,7 @@ using DKH.CustomerService.Application.Admin.BlockCustomer;
 using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
-using DKH.CustomerService.Contracts.Services.V1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerCrud.v1;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
@@ -22,15 +22,13 @@ public class CustomerCrudGrpcService(
         ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
-        var apiResponse = await mediator.Send(
+        return await mediator.Send(
             new SearchCustomersQuery(
                 storefrontId,
                 request.Query,
                 request.Pagination?.Page ?? 1,
                 request.Pagination?.PageSize ?? 10),
             context.CancellationToken);
-
-        return MapToServicesV1(apiResponse);
     }
 
     public override async Task<ListCustomersResponse> ListCustomers(
@@ -38,7 +36,7 @@ public class CustomerCrudGrpcService(
         ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
-        var apiResponse = await mediator.Send(
+        return await mediator.Send(
             new ListCustomersQuery(
                 storefrontId,
                 request.Pagination?.Page ?? 1,
@@ -46,8 +44,6 @@ public class CustomerCrudGrpcService(
                 request.SortBy,
                 request.SortDescending),
             context.CancellationToken);
-
-        return MapToServicesV1(apiResponse);
     }
 
     public override Task<GetCustomerStatsResponse> GetCustomerStats(
@@ -63,15 +59,13 @@ public class CustomerCrudGrpcService(
         ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var apiResponse = await mediator.Send(
+        return await mediator.Send(
             new BlockCustomerCommand(
                 storefrontId,
                 request.UserId,
                 request.Reason,
                 currentUser.Name!),
             context.CancellationToken);
-
-        return MapToServicesV1(apiResponse);
     }
 
     public override async Task<UnblockCustomerResponse> UnblockCustomer(
@@ -79,11 +73,9 @@ public class CustomerCrudGrpcService(
         ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var apiResponse = await mediator.Send(
+        return await mediator.Send(
             new UnblockCustomerCommand(storefrontId, request.UserId),
             context.CancellationToken);
-
-        return MapToServicesV1(apiResponse);
     }
 
     public override Task<SuspendCustomerResponse> SuspendCustomer(
@@ -114,42 +106,5 @@ public class CustomerCrudGrpcService(
 
         // For admin operations, return context storefront if available, or null (all storefronts)
         return storefrontContext.StorefrontId;
-    }
-
-    // Mappers: Api.V1 -> Services.V1
-    private static SearchCustomersResponse MapToServicesV1(Contracts.Api.V1.SearchCustomersResponse apiResponse)
-    {
-        return new SearchCustomersResponse
-        {
-            Customers = { apiResponse.Customers },
-            Pagination = apiResponse.Pagination
-        };
-    }
-
-    private static ListCustomersResponse MapToServicesV1(Contracts.Api.V1.ListCustomersResponse apiResponse)
-    {
-        return new ListCustomersResponse
-        {
-            Customers = { apiResponse.Customers },
-            Pagination = apiResponse.Pagination
-        };
-    }
-
-    private static BlockCustomerResponse MapToServicesV1(Contracts.Api.V1.BlockCustomerResponse apiResponse)
-    {
-        return new BlockCustomerResponse
-        {
-            Success = apiResponse.Success,
-            Profile = apiResponse.Profile
-        };
-    }
-
-    private static UnblockCustomerResponse MapToServicesV1(Contracts.Api.V1.UnblockCustomerResponse apiResponse)
-    {
-        return new UnblockCustomerResponse
-        {
-            Success = apiResponse.Success,
-            Profile = apiResponse.Profile
-        };
     }
 }
