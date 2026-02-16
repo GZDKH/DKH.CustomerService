@@ -110,7 +110,8 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
                 request.Email,
                 request.LanguageCode,
                 request.PhotoUrl,
-                request.IsPremium),
+                request.IsPremium,
+                string.IsNullOrEmpty(request.ProviderType) ? "Telegram" : request.ProviderType),
             context.CancellationToken);
     }
 
