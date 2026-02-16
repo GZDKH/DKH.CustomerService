@@ -15,11 +15,11 @@ public class UpdateProfileCommandHandler(ICustomerRepository repository)
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         profile.Update(
-            request.FirstName,
-            request.LastName,
-            request.Phone,
-            request.Email,
-            request.LanguageCode);
+            firstName: request.FirstName,
+            lastName: request.LastName,
+            phone: request.Phone,
+            email: request.Email,
+            languageCode: request.LanguageCode);
 
         await repository.UpdateAsync(profile, cancellationToken);
 

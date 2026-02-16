@@ -31,16 +31,11 @@ public class CreateCustomerCommandHandler(ICustomerRepository repository)
             request.LastName,
             request.Username,
             request.PhotoUrl,
+            request.Phone,
+            request.Email,
             request.LanguageCode,
+            request.IsPremium,
             request.ProviderType);
-
-        // Update with additional fields (phone, email) if provided
-        profile.Update(
-            firstName: null, // Already set in Create
-            lastName: null,  // Already set in Create
-            phone: request.Phone,
-            email: request.Email,
-            languageCode: null); // Already set in Create
 
         await repository.AddAsync(profile, cancellationToken);
 
