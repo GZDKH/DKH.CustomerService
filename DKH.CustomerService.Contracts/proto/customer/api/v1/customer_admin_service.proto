@@ -11,16 +11,8 @@ import "types/guid.proto";
 import "types/pagination.proto";
 import "types/pagination_metadata.proto";
 
-service CustomerAdminService {
-  rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
-  rpc ListCustomers(ListCustomersRequest) returns (ListCustomersResponse);
-  rpc GetCustomerStats(GetCustomerStatsRequest) returns (GetCustomerStatsResponse);
-  rpc BlockCustomer(BlockCustomerRequest) returns (BlockCustomerResponse);
-  rpc UnblockCustomer(UnblockCustomerRequest) returns (UnblockCustomerResponse);
-  rpc SuspendCustomer(SuspendCustomerRequest) returns (SuspendCustomerResponse);
-  rpc ExportCustomerData(ExportCustomerDataRequest) returns (ExportCustomerDataResponse);
-  rpc DeleteCustomerData(DeleteCustomerDataRequest) returns (DeleteCustomerDataResponse);
-}
+// CustomerAdminService was removed — use CustomerCrudService (services/v1) and CustomerManagementService (services/v1) instead.
+// Message types below are retained for internal Application layer compatibility.
 
 message SearchCustomersRequest {
   optional proto.platform.grpc.common.types.GuidValue storefront_id = 1;  // Optional for admin (returns all), required for storefront
