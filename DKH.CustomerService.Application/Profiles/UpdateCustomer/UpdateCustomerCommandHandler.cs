@@ -16,14 +16,14 @@ public class UpdateCustomerCommandHandler(ICustomerRepository repository)
 
         // Update profile with provided fields
         profile.Update(
-            request.FirstName,
-            request.LastName,
-            request.Phone,
-            request.Email,
-            request.LanguageCode);
-
-        // TODO: Add support for updating Username, PhotoUrl, IsPremium
-        // These fields are not supported by the current Update method in CustomerProfileEntity
+            firstName: request.FirstName,
+            lastName: request.LastName,
+            username: request.Username,
+            phone: request.Phone,
+            email: request.Email,
+            languageCode: request.LanguageCode,
+            photoUrl: request.PhotoUrl,
+            isPremium: request.IsPremium);
 
         await repository.UpdateAsync(profile, cancellationToken);
 

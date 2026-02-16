@@ -38,7 +38,7 @@ public class GetOrCreateProfileCommandHandler(ICustomerRepository repository)
             request.LastName,
             request.Username,
             request.PhotoUrl,
-            request.LanguageCode);
+            languageCode: request.LanguageCode);
 
         await repository.AddAsync(profile, cancellationToken);
 
