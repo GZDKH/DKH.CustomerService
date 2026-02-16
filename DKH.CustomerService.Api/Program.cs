@@ -43,7 +43,6 @@ await Platform
         grpc.MapService<CustomerAddressGrpcService>();
         grpc.MapService<WishlistGrpcService>();
         grpc.MapService<CustomerPreferencesGrpcService>();
-        grpc.MapService<CustomerAdminGrpcService>();
         grpc.MapService<ContactVerificationGrpcService>();
         grpc.MapService<CustomerCrudGrpcService>();
         grpc.MapService<CustomerManagementGrpcService>();
