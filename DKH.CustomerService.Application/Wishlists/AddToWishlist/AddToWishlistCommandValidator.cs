@@ -8,7 +8,7 @@ public class AddToWishlistCommandValidator : AbstractValidator<AddToWishlistComm
             .NotEmpty()
             .WithMessage("Storefront ID is required");
 
-        RuleFor(x => x.TelegramUserId)
+        RuleFor(x => x.UserId)
             .NotEmpty()
             .MaximumLength(64)
             .WithMessage("Telegram User ID is required");

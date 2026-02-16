@@ -4,6 +4,6 @@ namespace DKH.CustomerService.Application.Profiles.DeleteProfile;
 
 public sealed record DeleteProfileCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     bool HardDelete)
     : IRequest<DeleteProfileResponse>;

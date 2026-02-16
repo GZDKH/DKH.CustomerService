@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Admin.BlockCustomer;
 
 public sealed record BlockCustomerCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string Reason,
     string BlockedBy)
     : IRequest<BlockCustomerResponse>;

@@ -10,9 +10,9 @@ public class AddToWishlistCommandHandler(ICustomerRepository repository, IAppDbC
 {
     public async Task<AddToWishlistResponse> Handle(AddToWishlistCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var existing = await dbContext.WishlistItems

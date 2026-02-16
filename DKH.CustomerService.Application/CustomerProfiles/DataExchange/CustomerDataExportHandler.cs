@@ -30,7 +30,7 @@ public sealed class CustomerDataExportHandler(
     {
         Id = entity.Id,
         StorefrontId = entity.StorefrontId,
-        TelegramUserId = entity.TelegramUserId,
+        UserId = entity.UserId,
         FirstName = entity.FirstName,
         LastName = entity.LastName,
         Username = entity.Username,
@@ -117,7 +117,7 @@ public sealed class CustomerDataExportHandler(
         if (!string.IsNullOrWhiteSpace(search))
         {
             query = query.Where(c =>
-                EF.Functions.Like(c.TelegramUserId, $"%{search}%")
+                EF.Functions.Like(c.UserId, $"%{search}%")
                 || EF.Functions.Like(c.FirstName, $"%{search}%")
                 || (c.LastName != null && EF.Functions.Like(c.LastName, $"%{search}%"))
                 || (c.Username != null && EF.Functions.Like(c.Username, $"%{search}%"))
@@ -125,7 +125,7 @@ public sealed class CustomerDataExportHandler(
                 || (c.Email != null && EF.Functions.Like(c.Email, $"%{search}%")));
         }
 
-        query = query.OrderBy(c => c.CreationTime).ThenBy(c => c.TelegramUserId);
+        query = query.OrderBy(c => c.CreationTime).ThenBy(c => c.UserId);
 
         return ApplyPaging(query, context);
     }

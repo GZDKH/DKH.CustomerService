@@ -10,7 +10,7 @@ public static class CustomerDataExchangeProfile
     /// </summary>
     public static PlatformDataExchangeProfile<CustomerDataExchangeDto> Profile { get; } =
         PlatformDataExchangeProfile.For<CustomerDataExchangeDto>()
-            .Key(c => c.TelegramUserId)
+            .Key(c => c.UserId)
             .Field(c => c.Id)
             .Field(c => c.StorefrontId).Required()
             .Field(c => c.FirstName).Required()

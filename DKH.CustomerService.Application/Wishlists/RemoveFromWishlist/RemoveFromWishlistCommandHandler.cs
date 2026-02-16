@@ -7,9 +7,9 @@ public class RemoveFromWishlistCommandHandler(ICustomerRepository repository, IA
 {
     public async Task<RemoveFromWishlistResponse> Handle(RemoveFromWishlistCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (profile is null)

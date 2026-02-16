@@ -20,7 +20,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<ListAddressesResponse> ListAddresses(ListAddressesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new ListAddressesQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new ListAddressesQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
     public override async Task<GetAddressResponse> GetAddress(GetAddressRequest request, ServerCallContext context)
@@ -29,7 +29,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(new GetAddressQuery(storefrontId, request.TelegramUserId, addressId), context.CancellationToken);
+        return await mediator.Send(new GetAddressQuery(storefrontId, request.UserId, addressId), context.CancellationToken);
     }
 
     public override async Task<CreateAddressResponse> CreateAddress(CreateAddressRequest request, ServerCallContext context)
@@ -38,7 +38,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(
             new CreateAddressCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.Label,
                 request.Country,
                 request.City,
@@ -60,7 +60,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(
             new UpdateAddressCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 addressId,
                 request.HasLabel ? request.Label : null,
                 request.HasCountry ? request.Country : null,
@@ -79,7 +79,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(new DeleteAddressCommand(storefrontId, request.TelegramUserId, addressId), context.CancellationToken);
+        return await mediator.Send(new DeleteAddressCommand(storefrontId, request.UserId, addressId), context.CancellationToken);
     }
 
     public override async Task<SetDefaultAddressResponse> SetDefaultAddress(SetDefaultAddressRequest request, ServerCallContext context)
@@ -88,13 +88,13 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(new SetDefaultAddressCommand(storefrontId, request.TelegramUserId, addressId), context.CancellationToken);
+        return await mediator.Send(new SetDefaultAddressCommand(storefrontId, request.UserId, addressId), context.CancellationToken);
     }
 
     public override async Task<GetDefaultAddressResponse> GetDefaultAddress(GetDefaultAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)

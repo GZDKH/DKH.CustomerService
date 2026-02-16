@@ -22,7 +22,7 @@ namespace DKH.CustomerService.IntegrationTests.Integration.Grpc;
 public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
 {
     private readonly Guid _storefrontId = Guid.NewGuid();
-    private const string TelegramUserId = "tg-user-1";
+    private const string UserId = "tg-user-1";
 
     private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(
         Action<IServiceCollection>? configure = null)
@@ -67,7 +67,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         var response = await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "John",
             LastName = "Doe",
             Username = "johndoe",
@@ -89,7 +89,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "John",
             LastName = "Doe",
         });
@@ -97,7 +97,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         var response = await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "Jane",
         });
 
@@ -114,14 +114,14 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "John",
         });
 
         var response = await client.GetProfileAsync(new GetProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
         });
 
         response.Profile.Should().NotBeNull();
@@ -137,7 +137,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         var response = await client.GetProfileAsync(new GetProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = "nonexistent-user",
+            UserId = "nonexistent-user",
         });
 
         response.Profile.Should().BeNull();
@@ -152,14 +152,14 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
         await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "John",
         });
 
         var response = await client.DeleteProfileAsync(new DeleteProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             HardDelete = false,
         });
 

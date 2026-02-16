@@ -22,7 +22,7 @@ namespace DKH.CustomerService.IntegrationTests.Integration.Grpc;
 public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
 {
     private readonly Guid _storefrontId = Guid.NewGuid();
-    private const string TelegramUserId = "tg-user-1";
+    private const string UserId = "tg-user-1";
 
     private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(
         Action<IServiceCollection>? configure = null)
@@ -64,7 +64,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         await profileClient.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             FirstName = "Test",
         });
     }
@@ -81,7 +81,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         var response = await client.GetPreferencesAsync(new GetPreferencesRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
         });
 
         response.Preferences.Should().NotBeNull();
@@ -99,7 +99,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         var response = await client.UpdatePreferencesAsync(new UpdatePreferencesRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             PreferredLanguage = "ru",
             PreferredCurrency = "RUB",
         });
@@ -121,7 +121,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         var response = await client.UpdateNotificationChannelsAsync(new UpdateNotificationChannelsRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             EmailNotificationsEnabled = true,
             TelegramNotificationsEnabled = true,
             SmsNotificationsEnabled = false,
@@ -145,7 +145,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         var response = await client.UpdateNotificationTypesAsync(new UpdateNotificationTypesRequest
         {
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
-            TelegramUserId = TelegramUserId,
+            UserId = UserId,
             OrderStatusUpdates = true,
             PromotionalOffers = false,
         });

@@ -17,7 +17,7 @@ public class ContactVerificationGrpcService(
     public override async Task<InitiateEmailVerificationResponse> InitiateEmailVerification(InitiateEmailVerificationRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var profile = await customerRepository.GetByTelegramUserIdAsync(storefrontId, request.TelegramUserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+        var profile = await customerRepository.GetByUserIdAsync(storefrontId, request.UserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var (success, errorMessage, expiresIn) = await verificationService.SendEmailVerificationAsync(
             request.Email,
@@ -38,7 +38,7 @@ public class ContactVerificationGrpcService(
     public override async Task<VerifyEmailResponse> VerifyEmail(VerifyEmailRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var profile = await customerRepository.GetByTelegramUserIdAsync(storefrontId, request.TelegramUserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+        var profile = await customerRepository.GetByUserIdAsync(storefrontId, request.UserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var (success, errorMessage, errorCode) = await verificationService.VerifyEmailCodeAsync(
             request.Email,
@@ -66,7 +66,7 @@ public class ContactVerificationGrpcService(
     public override async Task<InitiatePhoneVerificationResponse> InitiatePhoneVerification(InitiatePhoneVerificationRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var profile = await customerRepository.GetByTelegramUserIdAsync(storefrontId, request.TelegramUserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+        var profile = await customerRepository.GetByUserIdAsync(storefrontId, request.UserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var (success, errorMessage, expiresIn) = await verificationService.SendPhoneVerificationAsync(
             request.Phone,
@@ -87,7 +87,7 @@ public class ContactVerificationGrpcService(
     public override async Task<VerifyPhoneResponse> VerifyPhone(VerifyPhoneRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        var profile = await customerRepository.GetByTelegramUserIdAsync(storefrontId, request.TelegramUserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+        var profile = await customerRepository.GetByUserIdAsync(storefrontId, request.UserId, context.CancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var (success, errorMessage, errorCode) = await verificationService.VerifyPhoneCodeAsync(
             request.Phone,

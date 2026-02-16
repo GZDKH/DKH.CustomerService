@@ -6,11 +6,11 @@ public interface ICustomerRepository
 {
     Task<CustomerProfileEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<CustomerProfileEntity?> GetByTelegramUserIdAsync(Guid storefrontId, string telegramUserId, CancellationToken cancellationToken = default);
+    Task<CustomerProfileEntity?> GetByUserIdAsync(Guid storefrontId, string userId, CancellationToken cancellationToken = default);
 
-    Task<CustomerProfileEntity?> GetByTelegramUserIdWithAddressesAsync(Guid storefrontId, string telegramUserId, CancellationToken cancellationToken = default);
+    Task<CustomerProfileEntity?> GetByUserIdWithAddressesAsync(Guid storefrontId, string userId, CancellationToken cancellationToken = default);
 
-    Task<CustomerProfileEntity?> GetByTelegramUserIdWithWishlistAsync(Guid storefrontId, string telegramUserId, CancellationToken cancellationToken = default);
+    Task<CustomerProfileEntity?> GetByUserIdWithWishlistAsync(Guid storefrontId, string userId, CancellationToken cancellationToken = default);
 
     Task<CustomerProfileEntity> AddAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default);
 

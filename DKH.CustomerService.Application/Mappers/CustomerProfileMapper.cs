@@ -15,7 +15,7 @@ public static class CustomerProfileMapper
         {
             Id = GuidValue.FromGuid(entity.Id),
             StorefrontId = GuidValue.FromGuid(entity.StorefrontId),
-            TelegramUserId = entity.TelegramUserId,
+            UserId = entity.UserId,
             FirstName = entity.FirstName,
             LastName = entity.LastName ?? string.Empty,
             Username = entity.Username ?? string.Empty,
@@ -23,6 +23,7 @@ public static class CustomerProfileMapper
             Phone = entity.Phone ?? string.Empty,
             Email = entity.Email ?? string.Empty,
             LanguageCode = entity.LanguageCode,
+            ProviderType = entity.ProviderType,
             CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(entity.CreationTime, DateTimeKind.Utc)),
             IsDeleted = entity.IsDeleted,
         };

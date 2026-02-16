@@ -7,9 +7,9 @@ public class ClearWishlistCommandHandler(ICustomerRepository repository, IAppDbC
 {
     public async Task<ClearWishlistResponse> Handle(ClearWishlistCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken);
 
         if (profile is null)

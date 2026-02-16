@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Wishlists.CheckProductInWishlist;
 
 public sealed record CheckProductInWishlistQuery(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     Guid ProductId,
     Guid? ProductSkuId)
     : IRequest<CheckProductInWishlistResponse>;

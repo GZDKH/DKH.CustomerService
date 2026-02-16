@@ -4,7 +4,7 @@ namespace DKH.CustomerService.Application.Profiles.CreateCustomer;
 
 public sealed record CreateCustomerCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string FirstName,
     string LastName,
     string? Username,
@@ -12,5 +12,6 @@ public sealed record CreateCustomerCommand(
     string? Email,
     string? LanguageCode,
     string? PhotoUrl,
-    bool IsPremium)
+    bool IsPremium,
+    string ProviderType = "Telegram")
     : IRequest<CreateCustomerResponse>;

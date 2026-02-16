@@ -16,7 +16,8 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
 
         builder.Property(x => x.Id).IsRequired();
         builder.Property(x => x.StorefrontId).IsRequired();
-        builder.Property(x => x.TelegramUserId).HasMaxLength(64).IsRequired();
+        builder.Property(x => x.UserId).HasColumnName("user_id").HasMaxLength(64).IsRequired();
+        builder.Property(x => x.ProviderType).HasColumnName("provider_type").HasMaxLength(50).HasDefaultValue("Telegram").IsRequired();
         builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.LastName).HasMaxLength(100);
         builder.Property(x => x.Username).HasMaxLength(100);
@@ -71,7 +72,7 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
             .HasForeignKey(x => x.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.StorefrontId, x.TelegramUserId }).IsUnique();
+        builder.HasIndex(x => new { x.StorefrontId, x.UserId }).IsUnique();
         builder.HasIndex(x => x.Email);
         builder.HasIndex(x => x.Phone);
 

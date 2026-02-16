@@ -17,7 +17,7 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
     public override async Task<GetPreferencesResponse> GetPreferences(GetPreferencesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new GetPreferencesQuery(storefrontId, request.TelegramUserId), context.CancellationToken);
+        return await mediator.Send(new GetPreferencesQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
     public override async Task<UpdatePreferencesResponse> UpdatePreferences(UpdatePreferencesRequest request, ServerCallContext context)
@@ -26,7 +26,7 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
         return await mediator.Send(
             new UpdatePreferencesCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.HasPreferredLanguage ? request.PreferredLanguage : null,
                 request.HasPreferredCurrency ? request.PreferredCurrency : null),
             context.CancellationToken);
@@ -38,7 +38,7 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
         return await mediator.Send(
             new UpdateNotificationChannelsCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.HasEmailNotificationsEnabled ? request.EmailNotificationsEnabled : null,
                 request.HasTelegramNotificationsEnabled ? request.TelegramNotificationsEnabled : null,
                 request.HasSmsNotificationsEnabled ? request.SmsNotificationsEnabled : null),
@@ -51,7 +51,7 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
         return await mediator.Send(
             new UpdateNotificationTypesCommand(
                 storefrontId,
-                request.TelegramUserId,
+                request.UserId,
                 request.HasOrderStatusUpdates ? request.OrderStatusUpdates : null,
                 request.HasPromotionalOffers ? request.PromotionalOffers : null),
             context.CancellationToken);

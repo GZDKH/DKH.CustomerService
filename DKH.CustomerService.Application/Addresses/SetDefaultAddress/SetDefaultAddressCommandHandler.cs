@@ -8,9 +8,9 @@ public class SetDefaultAddressCommandHandler(ICustomerRepository repository, IAp
 {
     public async Task<SetDefaultAddressResponse> Handle(SetDefaultAddressCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByTelegramUserIdAsync(
+        var profile = await repository.GetByUserIdAsync(
             request.StorefrontId,
-            request.TelegramUserId,
+            request.UserId,
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
         var address = await dbContext.CustomerAddresses.FindAsync([request.AddressId], cancellationToken);

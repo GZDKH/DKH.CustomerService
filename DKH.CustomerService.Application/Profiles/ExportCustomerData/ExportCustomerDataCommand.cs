@@ -4,6 +4,6 @@ namespace DKH.CustomerService.Application.Profiles.ExportCustomerData;
 
 public sealed record ExportCustomerDataCommand(
     Guid StorefrontId,
-    string TelegramUserId,
+    string UserId,
     string Format)
     : IRequest<ExportCustomerDataResponse>;
