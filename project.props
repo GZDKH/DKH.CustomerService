@@ -6,7 +6,5 @@
     <Product>DKH.CustomerService</Product>
     <Copyright>Copyright (c) GZDKH 2024-2025</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <!-- Disable default **/*.resx glob to prevent MSB3552 in Docker (dotnet/sdk#8239) -->
-    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
 </Project>
