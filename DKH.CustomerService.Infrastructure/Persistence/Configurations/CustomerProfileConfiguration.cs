@@ -33,7 +33,8 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
                 .HasColumnName("account_status")
                 .HasConversion<string>()
                 .HasMaxLength(20)
-                .HasDefaultValue(AccountStatusType.Active);
+                .HasDefaultValue(AccountStatusType.Active)
+                .HasSentinel(AccountStatusType.None);
             status.Property(s => s.BlockedAt).HasColumnName("blocked_at");
             status.Property(s => s.BlockReason).HasColumnName("block_reason").HasMaxLength(512);
             status.Property(s => s.BlockedBy).HasColumnName("blocked_by").HasMaxLength(256);
