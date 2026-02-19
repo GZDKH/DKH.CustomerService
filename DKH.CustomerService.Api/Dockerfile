@@ -52,7 +52,7 @@ COPY ["DKH.CustomerService.Application/DKH.CustomerService.Application.csproj", 
 COPY ["DKH.CustomerService.Contracts/DKH.CustomerService.Contracts.csproj", "DKH.CustomerService.Contracts/"]
 COPY ["DKH.CustomerService.Domain/DKH.CustomerService.Domain.csproj", "DKH.CustomerService.Domain/"]
 COPY ["DKH.CustomerService.Infrastructure/DKH.CustomerService.Infrastructure.csproj", "DKH.CustomerService.Infrastructure/"]
-RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
+RUN --mount=type=cache,target=/root/.nuget/packages,sharing=shared \
     RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
     if [ -f /usr/bin/protoc ]; then export PROTOBUF_PROTOC=/usr/bin/protoc; fi && \
     dotnet restore "DKH.CustomerService.Api/DKH.CustomerService.Api.csproj" -r $RUNTIME_ID /p:PublishReadyToRun=true
@@ -64,7 +64,7 @@ RUN cp /tmp/nuget.config.auth nuget.config
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR "/src/DKH.CustomerService.Api"
-RUN --mount=type=cache,target=/root/.nuget/packages,sharing=locked \
+RUN --mount=type=cache,target=/root/.nuget/packages,sharing=shared \
     RUNTIME_ID=$(if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then echo "linux-arm64"; else echo "linux-x64"; fi) && \
     if [ -f /usr/bin/protoc ]; then export PROTOBUF_PROTOC=/usr/bin/protoc; fi && \
     dotnet restore "./DKH.CustomerService.Api.csproj" -r $RUNTIME_ID /p:PublishReadyToRun=true && \
