@@ -19,6 +19,8 @@
     <Protobuf Include="proto/customer/api/customer_preferences_management/v1/customer_preferences_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
     <Protobuf Include="proto/customer/api/contact_verification/v1/contact_verification_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
     <Protobuf Include="proto/customer/api/data_exchange/v1/data_exchange_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/api/identity_linking/v1/identity_linking_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
+    <Protobuf Include="proto/customer/models/external_identity/v1/external_identity.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
     <Protobuf Include="proto/customer/models/customer_profile/v1/customer_profile.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
     <Protobuf Include="proto/customer/models/customer_address/v1/customer_address.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>
     <Protobuf Include="proto/customer/models/wishlist_item/v1/wishlist_item.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoPath)"/>

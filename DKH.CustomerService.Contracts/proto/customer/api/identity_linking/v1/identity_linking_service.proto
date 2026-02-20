@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package proto.customer.api.identity_linking.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.IdentityLinking.v1";
+
+import "google/protobuf/empty.proto";
+import "customer/models/external_identity/v1/external_identity.proto";
+import "customer/models/customer_profile/v1/customer_profile.proto";
+import "types/guid.proto";
+
+// IdentityLinkingService manages external identity linking for customer profiles.
+service IdentityLinkingService {
+  // Link an external identity to a customer profile
+  rpc LinkIdentity(LinkIdentityRequest) returns (proto.customer.models.external_identity.v1.ExternalIdentityModel);
+
+  // Unlink an external identity from a customer profile
+  rpc UnlinkIdentity(UnlinkIdentityRequest) returns (google.protobuf.Empty);
+
+  // List all external identities linked to a customer profile
+  rpc ListIdentities(ListIdentitiesRequest) returns (ListIdentitiesResponse);
+
+  // Find a customer profile by external identity (provider + providerUserId)
+  rpc FindByExternalIdentity(FindByExternalIdentityRequest) returns (proto.customer.models.customer_profile.v1.CustomerProfileModel);
+
+  // Merge two customer profiles (source into target)
+  rpc MergeProfiles(MergeProfilesRequest) returns (proto.customer.models.customer_profile.v1.CustomerProfileModel);
+}
+
+message LinkIdentityRequest {
+  // Required - storefront scope
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - user ID of the customer to link to
+  string user_id = 2;
+
+  // Required - identity provider name (e.g., "Telegram", "Google", "Microsoft")
+  string provider = 3;
+
+  // Required - user ID from the external provider
+  string provider_user_id = 4;
+
+  // Optional - email associated with this external identity
+  string email = 5;
+
+  // Optional - display name from the external provider
+  string display_name = 6;
+
+  // Whether this should be the primary identity
+  bool is_primary = 7;
+}
+
+message UnlinkIdentityRequest {
+  // Required - storefront scope
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - user ID of the customer
+  string user_id = 2;
+
+  // Required - ID of the external identity to unlink
+  proto.platform.grpc.common.types.GuidValue identity_id = 3;
+}
+
+message ListIdentitiesRequest {
+  // Required - storefront scope
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - user ID of the customer
+  string user_id = 2;
+}
+
+message ListIdentitiesResponse {
+  repeated proto.customer.models.external_identity.v1.ExternalIdentityModel items = 1;
+}
+
+message FindByExternalIdentityRequest {
+  // Required - storefront scope
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - identity provider name
+  string provider = 2;
+
+  // Required - user ID from the external provider
+  string provider_user_id = 3;
+}
+
+message MergeProfilesRequest {
+  // Required - storefront scope
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+
+  // Required - user ID of the source profile (will be soft-deleted)
+  string source_user_id = 2;
+
+  // Required - user ID of the target profile (will receive merged data)
+  string target_user_id = 3;
+}

@@ -1,4 +1,5 @@
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
+using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.CustomerService.Domain.ValueObjects;
 using DKH.Platform.Domain.Entities.Auditing;
@@ -14,6 +15,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     private readonly List<IDomainEvent> _domainEvents = [];
     private readonly List<CustomerAddressEntity> _addresses = [];
     private readonly List<WishlistItemEntity> _wishlistItems = [];
+    private readonly List<CustomerExternalIdentityEntity> _externalIdentities = [];
 
     private CustomerProfileEntity()
     {
@@ -88,6 +90,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     public IReadOnlyCollection<CustomerAddressEntity> Addresses => _addresses.AsReadOnly();
 
     public IReadOnlyCollection<WishlistItemEntity> WishlistItems => _wishlistItems.AsReadOnly();
+
+    public IReadOnlyCollection<CustomerExternalIdentityEntity> ExternalIdentities => _externalIdentities.AsReadOnly();
 
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
@@ -182,6 +186,159 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         if (!string.IsNullOrWhiteSpace(languageCode))
         {
             LanguageCode = languageCode;
+        }
+    }
+
+    public CustomerExternalIdentityEntity AddExternalIdentity(
+        string provider,
+        string providerUserId,
+        string? email = null,
+        string? displayName = null,
+        bool isPrimary = false)
+    {
+        var existing = _externalIdentities.FirstOrDefault(
+            e => e.Provider == provider && e.ProviderUserId == providerUserId && !e.IsDeleted);
+
+        if (existing is not null)
+        {
+            throw new InvalidOperationException(
+                $"External identity for provider '{provider}' with user ID '{providerUserId}' is already linked.");
+        }
+
+        if (isPrimary)
+        {
+            foreach (var identity in _externalIdentities.Where(e => e.IsPrimary && !e.IsDeleted))
+            {
+                identity.SetPrimary(false);
+            }
+
+            ProviderType = provider;
+        }
+
+        var newIdentity = CustomerExternalIdentityEntity.Create(Id, provider, providerUserId, email, displayName, isPrimary);
+        _externalIdentities.Add(newIdentity);
+        return newIdentity;
+    }
+
+    public void RemoveExternalIdentity(Guid identityId)
+    {
+        var identity = _externalIdentities.FirstOrDefault(e => e.Id == identityId && !e.IsDeleted)
+                       ?? throw new InvalidOperationException($"External identity '{identityId}' not found.");
+
+        if (identity.IsPrimary)
+        {
+            throw new InvalidOperationException("Cannot remove the primary external identity.");
+        }
+
+        var activeCount = _externalIdentities.Count(e => !e.IsDeleted);
+        if (activeCount <= 1)
+        {
+            throw new InvalidOperationException("Cannot remove the last external identity.");
+        }
+
+        identity.MarkAsDeleted();
+    }
+
+    public void SetPrimaryIdentity(Guid identityId)
+    {
+        var identity = _externalIdentities.FirstOrDefault(e => e.Id == identityId && !e.IsDeleted)
+                       ?? throw new InvalidOperationException($"External identity '{identityId}' not found.");
+
+        foreach (var existing in _externalIdentities.Where(e => e.IsPrimary && !e.IsDeleted))
+        {
+            existing.SetPrimary(false);
+        }
+
+        identity.SetPrimary(true);
+        ProviderType = identity.Provider;
+    }
+
+    public void MergeFrom(CustomerProfileEntity source)
+    {
+        // Merge addresses: transfer source addresses, deduplicate by label
+        var existingLabels = new HashSet<string>(
+            _addresses.Where(a => !a.IsDeleted).Select(a => a.Label),
+            StringComparer.OrdinalIgnoreCase);
+
+        foreach (var sourceAddress in source.Addresses.Where(a => !a.IsDeleted))
+        {
+            if (existingLabels.Contains(sourceAddress.Label))
+            {
+                continue;
+            }
+
+            var newAddress = CustomerAddressEntity.Create(
+                Id,
+                sourceAddress.Label,
+                sourceAddress.Country,
+                sourceAddress.City,
+                sourceAddress.Street,
+                sourceAddress.Building,
+                sourceAddress.Apartment,
+                sourceAddress.PostalCode,
+                sourceAddress.Phone,
+                isDefault: false);
+
+            _addresses.Add(newAddress);
+            existingLabels.Add(sourceAddress.Label);
+        }
+
+        // Merge wishlist items: deduplicate by ProductId+ProductSkuId
+        var existingProducts = new HashSet<string>(
+            _wishlistItems.Where(w => !w.IsDeleted)
+                .Select(w => $"{w.ProductId}:{w.ProductSkuId}"));
+
+        foreach (var sourceItem in source.WishlistItems.Where(w => !w.IsDeleted))
+        {
+            var key = $"{sourceItem.ProductId}:{sourceItem.ProductSkuId}";
+            if (existingProducts.Contains(key))
+            {
+                continue;
+            }
+
+            var newItem = WishlistItemEntity.Create(
+                Id,
+                sourceItem.ProductId,
+                sourceItem.ProductSkuId,
+                sourceItem.Note);
+
+            _wishlistItems.Add(newItem);
+            existingProducts.Add(key);
+        }
+
+        // Merge external identities: transfer non-duplicate identities
+        foreach (var sourceIdentity in source.ExternalIdentities.Where(e => !e.IsDeleted))
+        {
+            var exists = _externalIdentities.Any(
+                e => e.Provider == sourceIdentity.Provider
+                     && e.ProviderUserId == sourceIdentity.ProviderUserId
+                     && !e.IsDeleted);
+
+            if (exists)
+            {
+                continue;
+            }
+
+            var newIdentity = CustomerExternalIdentityEntity.Create(
+                Id,
+                sourceIdentity.Provider,
+                sourceIdentity.ProviderUserId,
+                sourceIdentity.Email,
+                sourceIdentity.DisplayName,
+                isPrimary: false);
+
+            _externalIdentities.Add(newIdentity);
+        }
+
+        // Accumulate account stats
+        AccountStatus.UpdateOrderStats(
+            AccountStatus.TotalOrdersCount + source.AccountStatus.TotalOrdersCount,
+            AccountStatus.TotalSpent + source.AccountStatus.TotalSpent);
+
+        // Premium status: if either is premium, target becomes premium
+        if (source.IsPremium)
+        {
+            IsPremium = true;
         }
     }
 

@@ -74,6 +74,11 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
             .HasForeignKey(x => x.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.ExternalIdentities)
+            .WithOne()
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasIndex(x => new { x.StorefrontId, x.UserId }).IsUnique();
         builder.HasIndex(x => x.Email);
         builder.HasIndex(x => x.Phone);
