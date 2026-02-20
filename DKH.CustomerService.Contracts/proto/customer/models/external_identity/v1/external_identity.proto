@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package proto.customer.models.external_identity.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.ExternalIdentity.v1";
+
+import "google/protobuf/timestamp.proto";
+import "types/guid.proto";
+
+message ExternalIdentityModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
+  string provider = 3;
+  string provider_user_id = 4;
+  string email = 5;
+  string display_name = 6;
+  bool is_primary = 7;
+  google.protobuf.Timestamp linked_at = 8;
+}

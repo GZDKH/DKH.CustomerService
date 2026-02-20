@@ -6,6 +6,7 @@ option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.Custome
 
 import "google/protobuf/timestamp.proto";
 import "types/guid.proto";
+import "customer/models/external_identity/v1/external_identity.proto";
 
 message CustomerProfileModel {
   proto.platform.grpc.common.types.GuidValue id = 1;
@@ -26,6 +27,7 @@ message CustomerProfileModel {
   ContactVerificationModel contact_verification = 16;
   string provider_type = 17;
   bool is_premium = 18;
+  repeated proto.customer.models.external_identity.v1.ExternalIdentityModel external_identities = 19;
 }
 
 message AccountStatusModel {
