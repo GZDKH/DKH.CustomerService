@@ -47,6 +47,45 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
                 cancellationToken);
     }
 
+    public async Task<CustomerProfileEntity?> GetByExternalIdentityAsync(
+        Guid storefrontId,
+        string provider,
+        string providerUserId,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CustomerProfiles
+            .Include(p => p.ExternalIdentities)
+            .FirstOrDefaultAsync(
+                p => p.StorefrontId == storefrontId &&
+                     p.ExternalIdentities.Any(e => e.Provider == provider && e.ProviderUserId == providerUserId),
+                cancellationToken);
+    }
+
+    public async Task<CustomerProfileEntity?> GetByUserIdWithExternalIdentitiesAsync(
+        Guid storefrontId,
+        string userId,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CustomerProfiles
+            .Include(p => p.ExternalIdentities)
+            .FirstOrDefaultAsync(
+                p => p.StorefrontId == storefrontId && p.UserId == userId,
+                cancellationToken);
+    }
+
+    public async Task<CustomerProfileEntity?> FindByEmailAcrossProvidersAsync(
+        Guid storefrontId,
+        string email,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CustomerProfiles
+            .Include(p => p.ExternalIdentities)
+            .FirstOrDefaultAsync(
+                p => p.StorefrontId == storefrontId &&
+                     (p.Email == email || p.ExternalIdentities.Any(e => e.Email == email)),
+                cancellationToken);
+    }
+
     public async Task<CustomerProfileEntity> AddAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default)
     {
         dbContext.CustomerProfiles.Add(entity);

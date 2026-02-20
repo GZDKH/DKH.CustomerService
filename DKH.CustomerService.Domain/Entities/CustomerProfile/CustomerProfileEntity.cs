@@ -1,4 +1,5 @@
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
+using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.CustomerService.Domain.ValueObjects;
 using DKH.Platform.Domain.Entities.Auditing;
@@ -14,6 +15,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     private readonly List<IDomainEvent> _domainEvents = [];
     private readonly List<CustomerAddressEntity> _addresses = [];
     private readonly List<WishlistItemEntity> _wishlistItems = [];
+    private readonly List<CustomerExternalIdentityEntity> _externalIdentities = [];
 
     private CustomerProfileEntity()
     {
@@ -88,6 +90,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     public IReadOnlyCollection<CustomerAddressEntity> Addresses => _addresses.AsReadOnly();
 
     public IReadOnlyCollection<WishlistItemEntity> WishlistItems => _wishlistItems.AsReadOnly();
+
+    public IReadOnlyCollection<CustomerExternalIdentityEntity> ExternalIdentities => _externalIdentities.AsReadOnly();
 
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
@@ -183,6 +187,70 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         {
             LanguageCode = languageCode;
         }
+    }
+
+    public CustomerExternalIdentityEntity AddExternalIdentity(
+        string provider,
+        string providerUserId,
+        string? email = null,
+        string? displayName = null,
+        bool isPrimary = false)
+    {
+        var existing = _externalIdentities.FirstOrDefault(
+            e => e.Provider == provider && e.ProviderUserId == providerUserId && !e.IsDeleted);
+
+        if (existing is not null)
+        {
+            throw new InvalidOperationException(
+                $"External identity for provider '{provider}' with user ID '{providerUserId}' is already linked.");
+        }
+
+        if (isPrimary)
+        {
+            foreach (var identity in _externalIdentities.Where(e => e.IsPrimary && !e.IsDeleted))
+            {
+                identity.SetPrimary(false);
+            }
+
+            ProviderType = provider;
+        }
+
+        var newIdentity = CustomerExternalIdentityEntity.Create(Id, provider, providerUserId, email, displayName, isPrimary);
+        _externalIdentities.Add(newIdentity);
+        return newIdentity;
+    }
+
+    public void RemoveExternalIdentity(Guid identityId)
+    {
+        var identity = _externalIdentities.FirstOrDefault(e => e.Id == identityId && !e.IsDeleted)
+                       ?? throw new InvalidOperationException($"External identity '{identityId}' not found.");
+
+        if (identity.IsPrimary)
+        {
+            throw new InvalidOperationException("Cannot remove the primary external identity.");
+        }
+
+        var activeCount = _externalIdentities.Count(e => !e.IsDeleted);
+        if (activeCount <= 1)
+        {
+            throw new InvalidOperationException("Cannot remove the last external identity.");
+        }
+
+        identity.MarkAsDeleted();
+    }
+
+    public void SetPrimaryIdentity(Guid identityId)
+    {
+        var identity = _externalIdentities.FirstOrDefault(e => e.Id == identityId && !e.IsDeleted)
+                       ?? throw new InvalidOperationException($"External identity '{identityId}' not found.");
+
+        foreach (var existing in _externalIdentities.Where(e => e.IsPrimary && !e.IsDeleted))
+        {
+            existing.SetPrimary(false);
+        }
+
+        identity.SetPrimary(true);
+        ProviderType = identity.Provider;
     }
 
     public void SoftDelete()

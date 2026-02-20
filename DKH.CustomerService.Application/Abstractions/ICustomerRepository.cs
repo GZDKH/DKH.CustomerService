@@ -18,6 +18,22 @@ public interface ICustomerRepository
 
     Task DeleteAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default);
 
+    Task<CustomerProfileEntity?> GetByExternalIdentityAsync(
+        Guid storefrontId,
+        string provider,
+        string providerUserId,
+        CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileEntity?> GetByUserIdWithExternalIdentitiesAsync(
+        Guid storefrontId,
+        string userId,
+        CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileEntity?> FindByEmailAcrossProvidersAsync(
+        Guid storefrontId,
+        string email,
+        CancellationToken cancellationToken = default);
+
     Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> SearchAsync(
         Guid? storefrontId,  // Nullable for admin - returns all customers when null
         string query,
