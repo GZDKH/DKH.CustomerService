@@ -86,6 +86,20 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
                 cancellationToken);
     }
 
+    public async Task<CustomerProfileEntity?> GetByUserIdWithAllRelationsAsync(
+        Guid storefrontId,
+        string userId,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CustomerProfiles
+            .Include(p => p.Addresses)
+            .Include(p => p.WishlistItems)
+            .Include(p => p.ExternalIdentities)
+            .FirstOrDefaultAsync(
+                p => p.StorefrontId == storefrontId && p.UserId == userId,
+                cancellationToken);
+    }
+
     public async Task<CustomerProfileEntity> AddAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default)
     {
         dbContext.CustomerProfiles.Add(entity);

@@ -253,6 +253,95 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         ProviderType = identity.Provider;
     }
 
+    public void MergeFrom(CustomerProfileEntity source)
+    {
+        // Merge addresses: transfer source addresses, deduplicate by label
+        var existingLabels = new HashSet<string>(
+            _addresses.Where(a => !a.IsDeleted).Select(a => a.Label),
+            StringComparer.OrdinalIgnoreCase);
+
+        foreach (var sourceAddress in source.Addresses.Where(a => !a.IsDeleted))
+        {
+            if (existingLabels.Contains(sourceAddress.Label))
+            {
+                continue;
+            }
+
+            var newAddress = CustomerAddressEntity.Create(
+                Id,
+                sourceAddress.Label,
+                sourceAddress.Country,
+                sourceAddress.City,
+                sourceAddress.Street,
+                sourceAddress.Building,
+                sourceAddress.Apartment,
+                sourceAddress.PostalCode,
+                sourceAddress.Phone,
+                isDefault: false);
+
+            _addresses.Add(newAddress);
+            existingLabels.Add(sourceAddress.Label);
+        }
+
+        // Merge wishlist items: deduplicate by ProductId+ProductSkuId
+        var existingProducts = new HashSet<string>(
+            _wishlistItems.Where(w => !w.IsDeleted)
+                .Select(w => $"{w.ProductId}:{w.ProductSkuId}"));
+
+        foreach (var sourceItem in source.WishlistItems.Where(w => !w.IsDeleted))
+        {
+            var key = $"{sourceItem.ProductId}:{sourceItem.ProductSkuId}";
+            if (existingProducts.Contains(key))
+            {
+                continue;
+            }
+
+            var newItem = WishlistItemEntity.Create(
+                Id,
+                sourceItem.ProductId,
+                sourceItem.ProductSkuId,
+                sourceItem.Note);
+
+            _wishlistItems.Add(newItem);
+            existingProducts.Add(key);
+        }
+
+        // Merge external identities: transfer non-duplicate identities
+        foreach (var sourceIdentity in source.ExternalIdentities.Where(e => !e.IsDeleted))
+        {
+            var exists = _externalIdentities.Any(
+                e => e.Provider == sourceIdentity.Provider
+                     && e.ProviderUserId == sourceIdentity.ProviderUserId
+                     && !e.IsDeleted);
+
+            if (exists)
+            {
+                continue;
+            }
+
+            var newIdentity = CustomerExternalIdentityEntity.Create(
+                Id,
+                sourceIdentity.Provider,
+                sourceIdentity.ProviderUserId,
+                sourceIdentity.Email,
+                sourceIdentity.DisplayName,
+                isPrimary: false);
+
+            _externalIdentities.Add(newIdentity);
+        }
+
+        // Accumulate account stats
+        AccountStatus.UpdateOrderStats(
+            AccountStatus.TotalOrdersCount + source.AccountStatus.TotalOrdersCount,
+            AccountStatus.TotalSpent + source.AccountStatus.TotalSpent);
+
+        // Premium status: if either is premium, target becomes premium
+        if (source.IsPremium)
+        {
+            IsPremium = true;
+        }
+    }
+
     public void SoftDelete()
     {
         MarkAsDeleted();
