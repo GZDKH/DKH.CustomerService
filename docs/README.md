@@ -1,5 +1,16 @@
-# DKH.CustomerService — Documentation
+# DKH.CustomerService -- Documentation
 
-## Contents
+## Table of Contents
 
-No detailed documentation files yet. See the root [README.md](../README.md) and [CLAUDE.md](../CLAUDE.md) for service overview.
+| Document | Description |
+|----------|-------------|
+| [Domain Model](domain-model.md) | Entities, value objects, enums, domain events |
+| [gRPC API](grpc-api.md) | Service definitions, methods, request/response types |
+| [Database](database.md) | Schema, tables, indexes, migrations |
+| [Architecture](architecture.md) | Project structure, architecture decisions |
+
+## Translations
+
+- [Russian (RU)](ru/) -- *Translation pending*
+
+*Last updated: February 2026*
