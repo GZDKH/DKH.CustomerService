@@ -1,0 +1,7 @@
+include:
+  - project: 'gzdkh/DKH.Infrastructure'
+    file: '/ci-cd/gitlab/dotnet-service.gitlab-ci.yml'
+
+variables:
+  COMPOSE_SERVICE_NAME: "customer"
+  NUGET_PROJECT_ID: "79414535"
