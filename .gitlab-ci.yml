@@ -1,5 +1,5 @@
 include:
-  - project: 'gzdkh/DKH.Infrastructure'
+  - project: 'gzdkh/infra/DKH.Infrastructure'
     file: '/ci-cd/gitlab/dotnet-service.gitlab-ci.yml'
 
 variables:
