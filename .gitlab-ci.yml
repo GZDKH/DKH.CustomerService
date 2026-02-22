@@ -3,4 +3,4 @@ include:
     file: '/ci-cd/gitlab/dotnet-service.gitlab-ci.yml'
 
 variables:
-  COMPOSE_SERVICE_NAME: "customer"
+  COMPOSE_SERVICE_NAME: "customer-service"
