@@ -39,6 +39,13 @@ COPY [".docker-scripts/configure-nuget-sources.sh", "/tmp/"]
 COPY [".docker-scripts/configure-gitlab-nuget.sh", "/tmp/"]
 COPY [".docker-scripts/configure-github-nuget.sh", "/tmp/"]
 
+# Install Cloudflare Origin CA cert (if provided) for HTTPS trust to GitLab registry
+RUN --mount=type=secret,id=cloudflare_ca \
+    if [ -f /run/secrets/cloudflare_ca ]; then \
+        cp /run/secrets/cloudflare_ca /usr/local/share/ca-certificates/cloudflare-origin-ca.crt && \
+        update-ca-certificates 2>/dev/null; \
+    fi
+
 # Configure NuGet authentication using Docker secrets
 # Wrapper script reads secrets and calls modular scripts for GitHub + GitLab
 # Automatically falls back to global ~/.nuget/NuGet/NuGet.Config if secrets are empty
