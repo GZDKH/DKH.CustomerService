@@ -1,4 +1,3 @@
-using DKH.Platform.Grpc.Common.Types;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
@@ -6,6 +5,7 @@ using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform.EntityFrameworkCore.Repositories;
+using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Grpc.IntegrationTesting;
 using DKH.Platform.IntegrationTesting;
 using DKH.Platform.MultiTenancy;
