@@ -32,10 +32,10 @@
     <PackageVersion Include="Grpc.Net.Client" Version="2.76.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="DKH.Platform" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform" Version="1.0.1" />
     <PackageVersion Include="DKH.Platform.Core" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.Grpc" Version="1.0.0" />
-    <PackageVersion Include="DKH.Platform.Grpc.Client" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Grpc.Client" Version="1.1.0" />
     <PackageVersion Include="DKH.Platform.Grpc.Common" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.Identity" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.Domain" Version="1.0.0" />
