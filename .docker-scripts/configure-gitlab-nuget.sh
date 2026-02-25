@@ -60,10 +60,10 @@ get_global_credentials() {
         return 1
     fi
 
-    # Extract username and password for gitlab-gzdkh source
-    local username=$(grep -A 10 "<gitlab-gzdkh>" "$config_file" 2>/dev/null | \
+    # Extract username and password for gitlab-gzdkh-group source
+    local username=$(grep -A 10 "<gitlab-gzdkh-group>" "$config_file" 2>/dev/null | \
         grep -o 'Username="[^"]*"' | sed 's/Username="\(.*\)"/\1/' | head -1)
-    local password=$(grep -A 10 "<gitlab-gzdkh>" "$config_file" 2>/dev/null | \
+    local password=$(grep -A 10 "<gitlab-gzdkh-group>" "$config_file" 2>/dev/null | \
         grep -o 'ClearTextPassword="[^"]*"' | sed 's/ClearTextPassword="\(.*\)"/\1/' | head -1)
 
     if [ -n "$username" ] && [ -n "$password" ]; then
@@ -92,13 +92,13 @@ if [ ! -f "$NUGET_CONFIG" ]; then
 fi
 
 # Configure GitLab Package Registry
-dotnet nuget update source gitlab-gzdkh \
+dotnet nuget update source gitlab-gzdkh-group \
     --username "$GITLAB_USER" \
     --password "$GITLAB_TOKEN" \
     --store-password-in-clear-text \
     --configfile "$NUGET_CONFIG" 2>/dev/null || \
-dotnet nuget add source https://gitlab.com/api/v4/projects/79414535/packages/nuget/index.json \
-    --name gitlab-gzdkh \
+dotnet nuget add source "${GITLAB_NUGET_SOURCE_URL:-https://gitlab.thetea.app/api/v4/groups/2/-/packages/nuget/index.json}" \
+    --name gitlab-gzdkh-group \
     --username "$GITLAB_USER" \
     --password "$GITLAB_TOKEN" \
     --store-password-in-clear-text \
