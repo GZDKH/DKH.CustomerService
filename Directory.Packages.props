@@ -41,7 +41,7 @@
     <PackageVersion Include="DKH.Platform.Domain" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.Application" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.Localization" Version="1.0.0" />
-    <PackageVersion Include="DKH.Platform.Logging" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Logging" Version="1.2.0" />
     <PackageVersion Include="DKH.Platform.EntityFrameworkCore" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.EntityFrameworkCore.PostgreSQL" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.EntityFrameworkCore.Repositories" Version="1.0.0" />
