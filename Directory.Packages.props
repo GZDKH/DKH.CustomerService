@@ -33,7 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="DKH.Platform" Version="1.0.3" />
-    <PackageVersion Include="DKH.Platform.Core" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Core" Version="1.1.0" />
     <PackageVersion Include="DKH.Platform.Grpc" Version="1.0.0" />
     <PackageVersion Include="DKH.Platform.Grpc.Client" Version="1.1.0" />
     <PackageVersion Include="DKH.Platform.Grpc.Common" Version="1.0.0" />
