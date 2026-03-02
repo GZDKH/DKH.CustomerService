@@ -28,6 +28,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.codex/rules/github-tasks.md`
 - `.codex/rules/gitlab-workflow.md`
 - `.codex/rules/no-duplication.md`
+- `.codex/rules/platform-release.md`
 - `.codex/rules/prod-config.md`
 - `.codex/rules/security.md`
 

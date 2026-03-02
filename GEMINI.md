@@ -28,6 +28,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.gemini/rules/github-tasks.md`
 - `.gemini/rules/gitlab-workflow.md`
 - `.gemini/rules/no-duplication.md`
+- `.gemini/rules/platform-release.md`
 - `.gemini/rules/prod-config.md`
 - `.gemini/rules/security.md`
 
