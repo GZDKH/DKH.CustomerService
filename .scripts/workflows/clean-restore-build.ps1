@@ -6,7 +6,7 @@
 .DESCRIPTION
     Executes full clean build pipeline using modular scripts.
 .PARAMETER ProjectPath
-    Path to .csproj or .sln file (default: auto-detect solution)
+    Path to .csproj or .slnx file (default: auto-detect solution)
 .PARAMETER Configuration
     Build configuration (default: Release)
 .EXAMPLE
@@ -40,7 +40,7 @@ if (-not $ProjectPath) {
     $projectRoot = Get-ProjectRoot
     $serviceName = Get-ServiceName
 
-    # Try to find .slnx or .sln file
+    # Find solution file (.slnx preferred, .sln as legacy fallback)
     $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.slnx" -File | Select-Object -First 1
     if (-not $slnFile) {
         $slnFile = Get-ChildItem -Path $projectRoot -Filter "*.sln" -File | Select-Object -First 1

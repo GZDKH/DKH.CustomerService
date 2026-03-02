@@ -57,9 +57,9 @@ $defaultPorts = @{
     "Grafana" = @{ external = 3030; internal = 3000; container = "dkh-grafana"; endpoint = "/"; protocol = "http" }
     "Seq (API)" = @{ external = 5341; internal = 5341; container = "dkh-seq"; endpoint = "/api/events"; protocol = "http" }
     "Seq (UI)" = @{ external = 8081; internal = 80; container = "dkh-seq"; endpoint = "/"; protocol = "http" }
-    "Telegram Bot" = @{ external = 5001; internal = 5001; container = "dkh-telegram-bot"; endpoint = "/health"; protocol = "http" }
+    "Telegram Bot" = @{ external = 5001; internal = 5001; container = "dkh-telegram-bot-service"; endpoint = "/health"; protocol = "http" }
     "Notification Service" = @{ external = 5002; internal = 5002; container = "dkh-notification-service"; endpoint = "/health"; protocol = "http" }
-    "Product Catalog" = @{ external = 5003; internal = 5003; container = "dkh-product-catalog"; endpoint = "/health"; protocol = "http" }
+    "Product Catalog" = @{ external = 5003; internal = 5003; container = "dkh-product-catalog-service"; endpoint = "/health"; protocol = "http" }
     "Reference Service" = @{ external = 5004; internal = 5004; container = "dkh-reference-service"; endpoint = "/health"; protocol = "http" }
     "Admin Gateway" = @{ external = 5005; internal = 5005; container = "dkh-admin-gateway"; endpoint = "/health"; protocol = "http" }
     "Storefront Gateway" = @{ external = 5006; internal = 5006; container = "dkh-storefront-gateway"; endpoint = "/health"; protocol = "http" }

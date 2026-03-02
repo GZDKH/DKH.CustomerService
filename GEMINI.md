@@ -1,5 +1,7 @@
 # GEMINI.md
 
+<!-- BEGIN REQUIRED-READING -->
+
 ## Required Reading (MUST read before working)
 
 Before starting any task in this repository, you MUST read these files from DKH.Architecture:
@@ -12,7 +14,9 @@ These files are located in the DKH.Architecture repository (located in the sibli
 
 ---
 
-<!-- BEGIN LOCAL-CLAUDE-RULES -->
+<!-- END REQUIRED-READING -->
+
+<!-- BEGIN LOCAL-GEMINI-RULES -->
 
 ## Additional Local Rules (.gemini/rules)
 
@@ -20,6 +24,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 
 - `.gemini/rules/build-before-commit.md`
 - `.gemini/rules/commits.md`
+- `.gemini/rules/contracts.md`
 - `.gemini/rules/github-tasks.md`
 - `.gemini/rules/gitlab-workflow.md`
 - `.gemini/rules/no-duplication.md`
@@ -27,7 +32,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 
 These rules are mandatory and complement the baseline `AGENTS.md` and `DKH.Architecture` guidance.
 
-<!-- END LOCAL-CLAUDE-RULES -->
+<!-- END LOCAL-GEMINI-RULES -->
 
 
 

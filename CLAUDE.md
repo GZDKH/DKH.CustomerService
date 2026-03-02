@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+<!-- BEGIN REQUIRED-READING -->
+
 ## Required Reading (MUST read before working)
 
 Before starting any task in this repository, you MUST read these files from DKH.Architecture:
@@ -12,6 +14,8 @@ These files are located in the DKH.Architecture repository (located in the sibli
 
 ---
 
+<!-- END REQUIRED-READING -->
+
 <!-- BEGIN LOCAL-CLAUDE-RULES -->
 
 ## Additional Local Rules (.claude/rules)
@@ -20,6 +24,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 
 - `.claude/rules/build-before-commit.md`
 - `.claude/rules/commits.md`
+- `.claude/rules/contracts.md`
 - `.claude/rules/github-tasks.md`
 - `.claude/rules/gitlab-workflow.md`
 - `.claude/rules/no-duplication.md`

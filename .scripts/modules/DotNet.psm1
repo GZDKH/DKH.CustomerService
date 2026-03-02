@@ -11,7 +11,7 @@ function Invoke-DotNetClean {
     .SYNOPSIS
         Clean build artifacts
     .PARAMETER ProjectPath
-        Path to .csproj or .sln file
+        Path to .csproj or .slnx file
     .PARAMETER Configuration
         Build configuration (Debug/Release)
     #>
@@ -39,7 +39,7 @@ function Invoke-DotNetRestore {
     .SYNOPSIS
         Restore NuGet packages
     .PARAMETER ProjectPath
-        Path to .csproj or .sln file
+        Path to .csproj or .slnx file
     #>
     param(
         [Parameter(Mandatory=$false)]
@@ -62,7 +62,7 @@ function Invoke-DotNetBuild {
     .SYNOPSIS
         Build project
     .PARAMETER ProjectPath
-        Path to .csproj or .sln file
+        Path to .csproj or .slnx file
     .PARAMETER Configuration
         Build configuration (Debug/Release)
     .PARAMETER NoRestore
@@ -149,7 +149,7 @@ function Invoke-DotNetTest {
     .SYNOPSIS
         Run unit tests
     .PARAMETER ProjectPath
-        Path to test .csproj or .sln
+        Path to test .csproj or .slnx
     .PARAMETER Configuration
         Build configuration
     .PARAMETER NoBuild
@@ -188,7 +188,7 @@ function Invoke-DotNetFormat {
     .SYNOPSIS
         Format code with dotnet format
     .PARAMETER ProjectPath
-        Path to .csproj or .sln
+        Path to .csproj or .slnx
     .PARAMETER Verify
         Check formatting without applying changes
     #>

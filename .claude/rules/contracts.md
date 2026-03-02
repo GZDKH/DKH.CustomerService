@@ -1,0 +1,1 @@
+../../../../libraries/DKH.Architecture/.claude/shared-rules/contracts.md
