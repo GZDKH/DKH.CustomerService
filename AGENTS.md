@@ -25,6 +25,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.codex/rules/build-before-commit.md`
 - `.codex/rules/commits.md`
 - `.codex/rules/contracts.md`
+- `.codex/rules/docs-after-impl.md`
 - `.codex/rules/github-tasks.md`
 - `.codex/rules/gitlab-workflow.md`
 - `.codex/rules/no-duplication.md`

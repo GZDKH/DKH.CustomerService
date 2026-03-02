@@ -25,6 +25,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.claude/rules/build-before-commit.md`
 - `.claude/rules/commits.md`
 - `.claude/rules/contracts.md`
+- `.claude/rules/docs-after-impl.md`
 - `.claude/rules/github-tasks.md`
 - `.claude/rules/gitlab-workflow.md`
 - `.claude/rules/no-duplication.md`
