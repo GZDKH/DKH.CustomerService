@@ -130,3 +130,6 @@ _ReSharper.Caches/
 .gemini
 .claude/settings.local.json
 nupkgs/
+
+# Ralph Loop task file (local only)
+PROMPT.md
