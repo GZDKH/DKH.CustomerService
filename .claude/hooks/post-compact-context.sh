@@ -1,0 +1,1 @@
+../../../../libraries/DKH.Architecture/.claude/hooks/post-compact-context.sh

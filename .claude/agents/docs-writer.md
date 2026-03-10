@@ -1,0 +1,1 @@
+../../../../libraries/DKH.Architecture/.claude/agents/docs-writer.md

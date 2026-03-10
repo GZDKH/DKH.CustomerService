@@ -1,0 +1,1 @@
+../../../../libraries/DKH.Architecture/.claude/hooks/block-co-authored-by.sh

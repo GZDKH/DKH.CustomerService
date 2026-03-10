@@ -31,6 +31,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.claude/rules/no-duplication.md`
 - `.claude/rules/platform-release.md`
 - `.claude/rules/prod-config.md`
+- `.claude/rules/ralph-loop.md`
 - `.claude/rules/security.md`
 
 These rules are mandatory and complement the baseline `AGENTS.md` and `DKH.Architecture` guidance.
