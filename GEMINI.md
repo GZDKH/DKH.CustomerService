@@ -39,7 +39,7 @@ These rules are mandatory and complement the baseline `AGENTS.md` and `DKH.Archi
 
 
 
-This file provides guidance to Gemini Code when working in this repository.
+This file provides guidance to Gemini CLI when working in this repository.
 
 > **Baseline rules**: See `AGENTS.md` for unified GZDKH rules (SOLID, DDD, commits, code style, quality guardrails). This file adds service-specific context only.
 

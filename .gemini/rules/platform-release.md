@@ -1,0 +1,1 @@
+../../../../libraries/DKH.Architecture/.gemini/shared-rules/platform-release.md
