@@ -31,6 +31,7 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.codex/rules/no-duplication.md`
 - `.codex/rules/platform-release.md`
 - `.codex/rules/prod-config.md`
+- `.codex/rules/ralph-loop.md`
 - `.codex/rules/security.md`
 
 These rules are mandatory and complement the baseline `AGENTS.md` and `DKH.Architecture` guidance.
