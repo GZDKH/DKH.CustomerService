@@ -7,12 +7,14 @@ using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform;
 using DKH.Platform.Configuration;
 using DKH.Platform.DataExchange;
+using DKH.Platform.Domain.Events;
 using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
 using DKH.Platform.Identity;
 using DKH.Platform.Localization;
 using DKH.Platform.Logging;
+using DKH.Platform.Messaging;
 using DKH.Platform.Messaging.MediatR;
 using DKH.Platform.MultiTenancy;
 
@@ -24,7 +26,13 @@ await Platform
         builder.Services.AddCustomerInfrastructure(builder.Configuration);
         builder.Services.AddApplication(builder.Configuration);
     })
+    .AddPlatformMessaging(messaging =>
+    {
+        messaging.UseOutbox(outbox => outbox.ConnectionStringKey = "Default");
+        messaging.EnableIntegrationEvents();
+    })
     .AddPlatformMessagingWithMediatR(typeof(ConfigureServices).Assembly)
+    .AddPlatformDomainEvents()
     .AddPlatformLogging()
     .AddPlatformLocalization()
     .AddPlatformDataExchangeFromAssemblyContaining<CustomerDataImportHandler>(options =>

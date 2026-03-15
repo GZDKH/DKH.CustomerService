@@ -1,6 +1,7 @@
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
+using DKH.CustomerService.Domain.Events;
 using DKH.CustomerService.Domain.ValueObjects;
 using DKH.Platform.Domain.Entities.Auditing;
 using DKH.Platform.Domain.Events;
@@ -112,7 +113,15 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         bool isPremium = false,
         string providerType = "Telegram")
     {
-        return new CustomerProfileEntity(storefrontId, userId, firstName, lastName, username, photoUrl, phone, email, languageCode ?? "en", isPremium, providerType);
+        var entity = new CustomerProfileEntity(storefrontId, userId, firstName, lastName, username, photoUrl, phone, email, languageCode ?? "en", isPremium, providerType);
+
+        entity._domainEvents.Add(new CustomerCreatedDomainEvent(
+            entity.Id,
+            storefrontId,
+            userId,
+            firstName));
+
+        return entity;
     }
 
     public void Update(
@@ -175,6 +184,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         {
             IsPremium = isPremium.Value;
         }
+
+        _domainEvents.Add(new CustomerUpdatedDomainEvent(Id, StorefrontId, UserId));
     }
 
     public void UpdateFromTelegram(string firstName, string? lastName, string? username, string? photoUrl, string? languageCode)
@@ -187,6 +198,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         {
             LanguageCode = languageCode;
         }
+
+        _domainEvents.Add(new CustomerUpdatedDomainEvent(Id, StorefrontId, UserId));
     }
 
     public CustomerExternalIdentityEntity AddExternalIdentity(
