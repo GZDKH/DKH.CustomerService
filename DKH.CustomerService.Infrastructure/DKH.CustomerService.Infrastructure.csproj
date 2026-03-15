@@ -5,6 +5,8 @@
     <PackageReference Include="DKH.Platform.EntityFrameworkCore.Repositories"/>
     <PackageReference Include="DKH.Platform.Identity"/>
     <PackageReference Include="DKH.Platform.Logging"/>
+    <PackageReference Include="DKH.Platform.Outbox"/>
+    <PackageReference Include="DKH.Platform.Outbox.PostgreSql"/>
     <PackageReference Include="DKH.Platform.RabbitMq"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>
