@@ -564,6 +564,11 @@ dotnet_diagnostic.IDE0303.severity = warning
 dotnet_diagnostic.IDE0304.severity = warning
 dotnet_diagnostic.IDE0305.severity = warning
 
+# IDE0370: Use null-forgiving operator — suggestion only
+# null! for late-initialized fields (EF Core entities, DI-injected) conflicts with CS8625/CS8618;
+# genuine fixes (e.g. removing ! after null-checks) are already applied.
+dotnet_diagnostic.IDE0370.severity = suggestion
+
 # IDE1005: Delegate invocation can be simplified
 dotnet_diagnostic.IDE1005.severity = warning
 
