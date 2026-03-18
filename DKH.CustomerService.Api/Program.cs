@@ -17,6 +17,7 @@ using DKH.Platform.Logging;
 using DKH.Platform.Messaging;
 using DKH.Platform.Messaging.MediatR;
 using DKH.Platform.MultiTenancy;
+using DKH.Platform.Telemetry;
 
 await Platform
     .CreateWeb(args)
@@ -34,6 +35,7 @@ await Platform
     .AddPlatformMessagingWithMediatR(typeof(ConfigureServices).Assembly)
     .AddPlatformDomainEvents()
     .AddPlatformLogging()
+    .AddPlatformTelemetry()
     .AddPlatformLocalization()
     .AddPlatformDataExchangeFromAssemblyContaining<CustomerDataImportHandler>(options =>
     {

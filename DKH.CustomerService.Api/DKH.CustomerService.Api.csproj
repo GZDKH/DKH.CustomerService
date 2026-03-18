@@ -25,6 +25,7 @@
     <PackageReference Include="DKH.Platform.Identity"/>
     <PackageReference Include="DKH.Platform.DataExchange"/>
     <PackageReference Include="DKH.Platform.MultiTenancy"/>
+    <PackageReference Include="DKH.Platform.Telemetry" />
     <PackageReference Include="Grpc.AspNetCore"/>
     <PackageReference Include="Grpc.Tools">
       <PrivateAssets>all</PrivateAssets>

@@ -54,6 +54,7 @@
     <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.1.2" />
     <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.1" />
     <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.1" />
+    <PackageVersion Include="DKH.Platform.Telemetry" Version="1.0.2" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
