@@ -3,11 +3,16 @@ using DKH.CustomerService.Application.Addresses.DeleteAddress;
 using DKH.CustomerService.Application.Addresses.GetAddress;
 using DKH.CustomerService.Application.Addresses.GetDefaultAddress;
 using DKH.CustomerService.Application.Addresses.ListAddresses;
+using DKH.CustomerService.Application.Addresses.PermanentlyDeleteAddress;
+using DKH.CustomerService.Application.Addresses.RestoreAddress;
 using DKH.CustomerService.Application.Addresses.SetDefaultAddress;
 using DKH.CustomerService.Application.Addresses.UpdateAddress;
+using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1;
 using DKH.Platform.Grpc.Common.Types;
+using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.MultiTenancy;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1.CustomerAddressManagementService;
@@ -20,7 +25,14 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<ListAddressesResponse> ListAddresses(ListAddressesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new ListAddressesQuery(storefrontId, request.UserId), context.CancellationToken);
+        return await mediator.Send(
+            new ListAddressesQuery(
+                storefrontId,
+                request.UserId,
+                request.HasSoftDeleteFilter
+                    ? request.SoftDeleteFilter.ToDomain()
+                    : Platform.Domain.Enums.PlatformSoftDeleteFilter.ActiveOnly),
+            context.CancellationToken);
     }
 
     public override async Task<GetAddressResponse> GetAddress(GetAddressRequest request, ServerCallContext context)
@@ -95,6 +107,24 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.UserId), context.CancellationToken);
+    }
+
+    public override async Task<Contracts.Customer.Models.CustomerAddress.v1.CustomerAddressModel> RestoreAddress(
+        RestoreAddressRequest request,
+        ServerCallContext context)
+    {
+        var addressId = request.AddressId.ToGuid();
+        var entity = await mediator.Send(new RestoreAddressCommand(addressId), context.CancellationToken);
+        return entity.ToContractModel();
+    }
+
+    public override async Task<Empty> PermanentlyDeleteAddress(
+        PermanentlyDeleteAddressRequest request,
+        ServerCallContext context)
+    {
+        var addressId = request.AddressId.ToGuid();
+        await mediator.Send(new PermanentlyDeleteAddressCommand(addressId), context.CancellationToken);
+        return new Empty();
     }
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)

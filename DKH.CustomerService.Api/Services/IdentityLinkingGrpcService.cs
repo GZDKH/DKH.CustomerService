@@ -2,8 +2,12 @@ using DKH.CustomerService.Application.ExternalIdentities.FindByExternalIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.LinkIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.ListIdentities;
 using DKH.CustomerService.Application.ExternalIdentities.MergeProfiles;
+using DKH.CustomerService.Application.ExternalIdentities.PermanentlyDeleteIdentity;
+using DKH.CustomerService.Application.ExternalIdentities.RestoreIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.UnlinkIdentity;
+using DKH.CustomerService.Application.Mappers;
 using DKH.Platform.Grpc.Common.Types;
+using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.MultiTenancy;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -56,7 +60,12 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await _mediator.Send(
-            new ListIdentitiesQuery(storefrontId, request.UserId),
+            new ListIdentitiesQuery(
+                storefrontId,
+                request.UserId,
+                request.HasSoftDeleteFilter
+                    ? request.SoftDeleteFilter.ToDomain()
+                    : Platform.Domain.Enums.PlatformSoftDeleteFilter.ActiveOnly),
             context.CancellationToken);
     }
 
@@ -84,6 +93,24 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
                 request.SourceUserId,
                 request.TargetUserId),
             context.CancellationToken);
+    }
+
+    public override async Task<ContractsModels.ExternalIdentity.v1.ExternalIdentityModel> RestoreIdentity(
+        ContractsServices.RestoreIdentityRequest request,
+        ServerCallContext context)
+    {
+        var identityId = request.IdentityId.ToGuid();
+        var entity = await _mediator.Send(new RestoreIdentityCommand(identityId), context.CancellationToken);
+        return entity.ToContractModel();
+    }
+
+    public override async Task<Empty> PermanentlyDeleteIdentity(
+        ContractsServices.PermanentlyDeleteIdentityRequest request,
+        ServerCallContext context)
+    {
+        var identityId = request.IdentityId.ToGuid();
+        await _mediator.Send(new PermanentlyDeleteIdentityCommand(identityId), context.CancellationToken);
+        return new Empty();
     }
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)

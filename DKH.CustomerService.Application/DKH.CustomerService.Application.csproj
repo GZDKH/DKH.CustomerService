@@ -3,6 +3,8 @@
     <PackageReference Include="DKH.Platform"/>
     <PackageReference Include="DKH.Platform.Application"/>
     <PackageReference Include="DKH.Platform.DataExchange"/>
+    <PackageReference Include="DKH.Platform.EntityFrameworkCore"/>
+    <PackageReference Include="DKH.Platform.EntityFrameworkCore.Repositories"/>
     <PackageReference Include="DKH.Platform.Outbox"/>
     <PackageReference Include="DKH.Platform.Localization"/>
     <PackageReference Include="FluentValidation"/>
