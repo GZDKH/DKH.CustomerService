@@ -2,10 +2,15 @@ using DKH.CustomerService.Application.Admin.BlockCustomer;
 using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
+using DKH.CustomerService.Application.Mappers;
+using DKH.CustomerService.Application.Profiles.PermanentlyDeleteProfile;
+using DKH.CustomerService.Application.Profiles.RestoreProfile;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerCrud.v1;
 using DKH.Platform.Grpc.Common.Types;
+using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
 
@@ -42,7 +47,10 @@ public class CustomerCrudGrpcService(
                 request.Pagination?.Page ?? 1,
                 request.Pagination?.PageSize ?? 10,
                 request.SortBy,
-                request.SortDescending),
+                request.SortDescending,
+                request.HasSoftDeleteFilter
+                    ? request.SoftDeleteFilter.ToDomain()
+                    : Platform.Domain.Enums.PlatformSoftDeleteFilter.ActiveOnly),
             context.CancellationToken);
     }
 
@@ -84,6 +92,24 @@ public class CustomerCrudGrpcService(
     {
         // TODO: Implement SuspendCustomer
         return Task.FromResult(new SuspendCustomerResponse { Success = false });
+    }
+
+    public override async Task<Contracts.Customer.Models.CustomerProfile.v1.CustomerProfileModel> RestoreCustomerProfile(
+        RestoreCustomerProfileRequest request,
+        ServerCallContext context)
+    {
+        var profileId = request.ProfileId.ToGuid();
+        var entity = await mediator.Send(new RestoreProfileCommand(profileId), context.CancellationToken);
+        return entity.ToContractModel();
+    }
+
+    public override async Task<Empty> PermanentlyDeleteCustomerProfile(
+        PermanentlyDeleteCustomerProfileRequest request,
+        ServerCallContext context)
+    {
+        var profileId = request.ProfileId.ToGuid();
+        await mediator.Send(new PermanentlyDeleteProfileCommand(profileId), context.CancellationToken);
+        return new Empty();
     }
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)

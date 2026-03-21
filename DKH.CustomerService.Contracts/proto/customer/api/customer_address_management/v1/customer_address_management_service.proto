@@ -4,8 +4,10 @@ package proto.customer.api.customer_address_management.v1;
 
 option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1";
 
+import "google/protobuf/empty.proto";
 import "customer/models/customer_address/v1/customer_address.proto";
 import "types/guid.proto";
+import "types/soft_delete_filter.proto";
 
 service CustomerAddressManagementService {
   rpc ListAddresses(ListAddressesRequest) returns (ListAddressesResponse);
@@ -15,11 +17,20 @@ service CustomerAddressManagementService {
   rpc DeleteAddress(DeleteAddressRequest) returns (DeleteAddressResponse);
   rpc SetDefaultAddress(SetDefaultAddressRequest) returns (SetDefaultAddressResponse);
   rpc GetDefaultAddress(GetDefaultAddressRequest) returns (GetDefaultAddressResponse);
+
+  // Restore a soft-deleted address
+  rpc RestoreAddress(RestoreAddressRequest) returns (proto.customer.models.customer_address.v1.CustomerAddressModel);
+
+  // Permanently delete a soft-deleted address
+  rpc PermanentlyDeleteAddress(PermanentlyDeleteAddressRequest) returns (google.protobuf.Empty);
 }
 
 message ListAddressesRequest {
   proto.platform.grpc.common.types.GuidValue storefront_id = 1;
   string user_id = 2;
+
+  // Filter by soft-delete status
+  optional proto.platform.grpc.common.types.SoftDeleteFilter soft_delete_filter = 3;
 }
 
 message ListAddressesResponse {
@@ -101,4 +112,12 @@ message GetDefaultAddressRequest {
 message GetDefaultAddressResponse {
   proto.customer.models.customer_address.v1.CustomerAddressModel address = 1;
   bool found = 2;
+}
+
+message RestoreAddressRequest {
+  proto.platform.grpc.common.types.GuidValue address_id = 1;
+}
+
+message PermanentlyDeleteAddressRequest {
+  proto.platform.grpc.common.types.GuidValue address_id = 1;
 }

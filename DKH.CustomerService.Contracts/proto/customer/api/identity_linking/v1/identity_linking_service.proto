@@ -8,6 +8,7 @@ import "google/protobuf/empty.proto";
 import "customer/models/external_identity/v1/external_identity.proto";
 import "customer/models/customer_profile/v1/customer_profile.proto";
 import "types/guid.proto";
+import "types/soft_delete_filter.proto";
 
 // IdentityLinkingService manages external identity linking for customer profiles.
 service IdentityLinkingService {
@@ -25,6 +26,12 @@ service IdentityLinkingService {
 
   // Merge two customer profiles (source into target)
   rpc MergeProfiles(MergeProfilesRequest) returns (proto.customer.models.customer_profile.v1.CustomerProfileModel);
+
+  // Restore a soft-deleted external identity
+  rpc RestoreIdentity(RestoreIdentityRequest) returns (proto.customer.models.external_identity.v1.ExternalIdentityModel);
+
+  // Permanently delete a soft-deleted external identity
+  rpc PermanentlyDeleteIdentity(PermanentlyDeleteIdentityRequest) returns (google.protobuf.Empty);
 }
 
 message LinkIdentityRequest {
@@ -67,6 +74,9 @@ message ListIdentitiesRequest {
 
   // Required - user ID of the customer
   string user_id = 2;
+
+  // Filter by soft-delete status
+  optional proto.platform.grpc.common.types.SoftDeleteFilter soft_delete_filter = 3;
 }
 
 message ListIdentitiesResponse {
@@ -93,4 +103,12 @@ message MergeProfilesRequest {
 
   // Required - user ID of the target profile (will receive merged data)
   string target_user_id = 3;
+}
+
+message RestoreIdentityRequest {
+  proto.platform.grpc.common.types.GuidValue identity_id = 1;
+}
+
+message PermanentlyDeleteIdentityRequest {
+  proto.platform.grpc.common.types.GuidValue identity_id = 1;
 }
