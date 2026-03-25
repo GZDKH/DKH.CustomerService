@@ -14,9 +14,9 @@ public class GetOrCreateProfileCommandValidator : AbstractValidator<GetOrCreateP
             .WithMessage("Telegram User ID is required and must not exceed 64 characters");
 
         RuleFor(x => x.FirstName)
-            .NotEmpty()
             .MaximumLength(100)
-            .WithMessage("First name is required and must not exceed 100 characters");
+            .When(x => x.FirstName is not null)
+            .WithMessage("First name must not exceed 100 characters");
 
         RuleFor(x => x.LastName)
             .MaximumLength(100)
