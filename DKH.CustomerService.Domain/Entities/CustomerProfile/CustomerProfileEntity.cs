@@ -190,7 +190,11 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     public void UpdateFromTelegram(string firstName, string? lastName, string? username, string? photoUrl, string? languageCode)
     {
-        FirstName = Require(firstName, nameof(firstName));
+        if (!string.IsNullOrWhiteSpace(firstName))
+        {
+            FirstName = firstName;
+        }
+
         LastName = lastName;
         Username = username;
         PhotoUrl = photoUrl;
