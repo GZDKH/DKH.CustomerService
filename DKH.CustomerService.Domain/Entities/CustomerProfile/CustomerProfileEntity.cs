@@ -47,7 +47,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         StorefrontId = storefrontId;
         UserId = Require(userId, nameof(userId));
         ProviderType = providerType;
-        FirstName = Require(firstName, nameof(firstName));
+        FirstName = string.IsNullOrWhiteSpace(firstName) ? string.Empty : firstName;
         LastName = lastName;
         Username = username;
         PhotoUrl = photoUrl;
