@@ -1,4 +1,5 @@
 using DKH.CustomerService.Application.Admin.BlockCustomer;
+using DKH.CustomerService.Application.Admin.GetCustomerStats;
 using DKH.CustomerService.Application.Admin.ListCustomers;
 using DKH.CustomerService.Application.Admin.SearchCustomers;
 using DKH.CustomerService.Application.Admin.UnblockCustomer;
@@ -54,12 +55,14 @@ public class CustomerCrudGrpcService(
             context.CancellationToken);
     }
 
-    public override Task<GetCustomerStatsResponse> GetCustomerStats(
+    public override async Task<GetCustomerStatsResponse> GetCustomerStats(
         GetCustomerStatsRequest request,
         ServerCallContext context)
     {
-        // TODO: Implement GetCustomerStats
-        return Task.FromResult(new GetCustomerStatsResponse());
+        var storefrontId = ResolveStorefrontIdOptional(request.StorefrontId);
+        return await mediator.Send(
+            new GetCustomerStatsQuery(storefrontId, request.UserId),
+            context.CancellationToken);
     }
 
     public override async Task<BlockCustomerResponse> BlockCustomer(
