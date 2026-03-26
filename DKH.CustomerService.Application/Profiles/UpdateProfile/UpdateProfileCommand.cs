@@ -9,5 +9,6 @@ public sealed record UpdateProfileCommand(
     string? LastName,
     string? Phone,
     string? Email,
-    string? LanguageCode)
+    string? LanguageCode,
+    string? Username)
     : IRequest<UpdateProfileResponse>;

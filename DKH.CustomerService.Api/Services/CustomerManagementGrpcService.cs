@@ -72,7 +72,8 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
                 request.HasLastName ? request.LastName : null,
                 request.HasPhone ? request.Phone : null,
                 request.HasEmail ? request.Email : null,
-                request.HasLanguageCode ? request.LanguageCode : null),
+                request.HasLanguageCode ? request.LanguageCode : null,
+                request.HasUsername ? request.Username : null),
             context.CancellationToken);
         return new ContractsServices.UpdateProfileResponse
         {

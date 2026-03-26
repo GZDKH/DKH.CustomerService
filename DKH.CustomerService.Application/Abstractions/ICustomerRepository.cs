@@ -39,6 +39,8 @@ public interface ICustomerRepository
         string userId,
         CancellationToken cancellationToken = default);
 
+    Task<bool> ExistsByUsernameAsync(Guid storefrontId, string username, string excludeUserId, CancellationToken cancellationToken = default);
+
     Task<(IReadOnlyList<CustomerProfileEntity> Items, int TotalCount)> SearchAsync(
         Guid? storefrontId,  // Nullable for admin - returns all customers when null
         string query,

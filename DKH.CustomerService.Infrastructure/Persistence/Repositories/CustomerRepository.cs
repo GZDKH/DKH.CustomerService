@@ -100,6 +100,20 @@ public class CustomerRepository(AppDbContext dbContext) : ICustomerRepository
                 cancellationToken);
     }
 
+    public async Task<bool> ExistsByUsernameAsync(
+        Guid storefrontId,
+        string username,
+        string excludeUserId,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CustomerProfiles
+            .AnyAsync(
+                p => p.StorefrontId == storefrontId &&
+                     p.Username == username &&
+                     p.UserId != excludeUserId,
+                cancellationToken);
+    }
+
     public async Task<CustomerProfileEntity> AddAsync(CustomerProfileEntity entity, CancellationToken cancellationToken = default)
     {
         dbContext.CustomerProfiles.Add(entity);
