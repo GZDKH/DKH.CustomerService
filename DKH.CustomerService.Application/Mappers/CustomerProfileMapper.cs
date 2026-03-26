@@ -42,6 +42,14 @@ public static class CustomerProfileMapper
         profile.AccountStatus = entity.AccountStatus.ToContractModel();
         profile.ContactVerification = entity.ContactVerification.ToContractModel();
 
+        if (entity.ExternalIdentities.Count > 0)
+        {
+            profile.ExternalIdentities.AddRange(
+                entity.ExternalIdentities
+                    .Where(e => !e.IsDeleted)
+                    .Select(e => e.ToContractModel()));
+        }
+
         return profile;
     }
 
