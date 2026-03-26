@@ -14,9 +14,24 @@ public class UpdateProfileCommandHandler(ICustomerRepository repository)
             request.UserId,
             cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
 
+        if (request.Username is not null)
+        {
+            var taken = await repository.ExistsByUsernameAsync(
+                request.StorefrontId,
+                request.Username,
+                request.UserId,
+                cancellationToken);
+
+            if (taken)
+            {
+                throw new RpcException(new Status(StatusCode.AlreadyExists, "Username is already taken"));
+            }
+        }
+
         profile.Update(
             firstName: request.FirstName,
             lastName: request.LastName,
+            username: request.Username,
             phone: request.Phone,
             email: request.Email,
             languageCode: request.LanguageCode);

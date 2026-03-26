@@ -185,6 +185,7 @@ message UpdateProfileRequest {
   optional string phone = 5;
   optional string email = 6;
   optional string language_code = 7;
+  optional string username = 8;
 }
 
 message UpdateProfileResponse {
