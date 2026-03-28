@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package proto.customer.api.product_collection.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.ProductCollection.v1";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "customer/models/product_collection/v1/product_collection.proto";
+import "types/guid.proto";
+import "types/pagination.proto";
+
+service ProductCollectionService {
+  rpc AddToCollection(AddToCollectionRequest) returns (proto.customer.models.product_collection.v1.ProductCollectionItemModel);
+  rpc UpdateCollectionItem(UpdateCollectionItemRequest) returns (proto.customer.models.product_collection.v1.ProductCollectionItemModel);
+  rpc RemoveFromCollection(RemoveFromCollectionRequest) returns (google.protobuf.Empty);
+  rpc GetCollection(GetCollectionRequest) returns (proto.customer.models.product_collection.v1.ProductCollectionListModel);
+  rpc GetCollectionItem(GetCollectionItemRequest) returns (proto.customer.models.product_collection.v1.ProductCollectionItemModel);
+}
+
+message AddToCollectionRequest {
+  proto.platform.grpc.common.types.GuidValue customer_id = 1;
+  proto.platform.grpc.common.types.GuidValue product_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 3;
+  proto.customer.models.product_collection.v1.ProductCollectionStatus status = 4;
+  google.protobuf.StringValue notes = 5;
+  google.protobuf.Int32Value rating = 6;
+}
+
+message UpdateCollectionItemRequest {
+  proto.platform.grpc.common.types.GuidValue item_id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
+  proto.customer.models.product_collection.v1.ProductCollectionStatus status = 3;
+  google.protobuf.StringValue notes = 4;
+  google.protobuf.Int32Value rating = 5;
+}
+
+message RemoveFromCollectionRequest {
+  proto.platform.grpc.common.types.GuidValue item_id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
+}
+
+message GetCollectionRequest {
+  proto.platform.grpc.common.types.GuidValue customer_id = 1;
+  proto.customer.models.product_collection.v1.ProductCollectionStatus status_filter = 2;
+  proto.platform.grpc.common.types.PaginationRequest pagination = 3;
+}
+
+message GetCollectionItemRequest {
+  proto.platform.grpc.common.types.GuidValue customer_id = 1;
+  proto.platform.grpc.common.types.GuidValue product_id = 2;
+}

@@ -23,5 +23,7 @@
     <Protobuf Include="proto/customer/models/customer_preferences/v1/customer_preferences.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
     <Protobuf Include="proto/customer/models/account_status/v1/account_status.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
     <Protobuf Include="proto/customer/models/contact_verification/v1/contact_verification.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
+    <Protobuf Include="proto/customer/api/product_collection/v1/product_collection_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
+    <Protobuf Include="proto/customer/models/product_collection/v1/product_collection.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
   </ItemGroup>
 </Project>
