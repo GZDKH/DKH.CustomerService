@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package proto.customer.models.product_collection.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "types/guid.proto";
+import "types/pagination_metadata.proto";
+
+enum ProductCollectionStatus {
+  PRODUCT_COLLECTION_STATUS_UNSPECIFIED = 0;
+  PRODUCT_COLLECTION_STATUS_OWN = 1;
+  PRODUCT_COLLECTION_STATUS_USING = 2;
+  PRODUCT_COLLECTION_STATUS_FINISHED = 3;
+  PRODUCT_COLLECTION_STATUS_WISHLIST = 4;
+}
+
+message ProductCollectionItemModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
+  ProductCollectionStatus status = 5;
+  google.protobuf.StringValue notes = 6;
+  google.protobuf.Int32Value rating = 7;
+  google.protobuf.Timestamp added_at = 8;
+}
+
+message ProductCollectionListModel {
+  repeated ProductCollectionItemModel items = 1;
+  proto.platform.grpc.common.types.PaginationMetadata pagination = 2;
+}

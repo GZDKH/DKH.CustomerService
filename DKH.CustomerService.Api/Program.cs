@@ -55,6 +55,7 @@ await Platform
         grpc.MapService<CustomerCrudGrpcService>();
         grpc.MapService<CustomerManagementGrpcService>();
         grpc.MapService<IdentityLinkingGrpcService>();
+        grpc.MapService<ProductCollectionGrpcService>();
         grpc.MapService<DataExchangeService>();
         grpc.ConfigureDefaultRoute("CustomerService gRPC is running.");
     })
