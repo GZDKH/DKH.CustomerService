@@ -15,6 +15,9 @@ service IdentityLinkingService {
   // Link an external identity to a customer profile
   rpc LinkIdentity(LinkIdentityRequest) returns (proto.customer.models.external_identity.v1.ExternalIdentityModel);
 
+  // Soft-delete an external identity
+  rpc DeleteIdentity(DeleteIdentityRequest) returns (google.protobuf.Empty);
+
   // Unlink an external identity from a customer profile
   rpc UnlinkIdentity(UnlinkIdentityRequest) returns (google.protobuf.Empty);
 
@@ -55,6 +58,10 @@ message LinkIdentityRequest {
 
   // Whether this should be the primary identity
   bool is_primary = 7;
+}
+
+message DeleteIdentityRequest {
+  proto.platform.grpc.common.types.GuidValue identity_id = 1;
 }
 
 message UnlinkIdentityRequest {
