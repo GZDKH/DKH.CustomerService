@@ -1,3 +1,4 @@
+using DKH.CustomerService.Application.ExternalIdentities.DeleteIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.FindByExternalIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.LinkIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.ListIdentities;
@@ -51,6 +52,15 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
                 request.UserId,
                 request.IdentityId.ToGuid()),
             context.CancellationToken);
+        return new Empty();
+    }
+
+    public override async Task<Empty> DeleteIdentity(
+        ContractsServices.DeleteIdentityRequest request,
+        ServerCallContext context)
+    {
+        var identityId = request.IdentityId.ToGuid();
+        await _mediator.Send(new DeleteIdentityCommand(identityId), context.CancellationToken);
         return new Empty();
     }
 
