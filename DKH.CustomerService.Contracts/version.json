@@ -1,6 +1,6 @@
 {
   "$schema": "./version.schema.json",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "publish": true,
   "forceRepublish": false,
   "delete": false
