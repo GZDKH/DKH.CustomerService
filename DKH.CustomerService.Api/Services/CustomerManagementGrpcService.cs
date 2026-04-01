@@ -50,7 +50,9 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
                 request.LastName,
                 request.Username,
                 request.PhotoUrl,
-                request.LanguageCode),
+                request.LanguageCode,
+                string.IsNullOrWhiteSpace(request.Provider) ? null : request.Provider,
+                string.IsNullOrWhiteSpace(request.ProviderUserId) ? null : request.ProviderUserId),
             context.CancellationToken);
         return new ContractsServices.GetOrCreateProfileResponse
         {

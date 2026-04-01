@@ -188,6 +188,12 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         _domainEvents.Add(new CustomerUpdatedDomainEvent(Id, StorefrontId, UserId));
     }
 
+    public void UpdateUserId(string newUserId)
+    {
+        Require(newUserId, nameof(newUserId));
+        UserId = newUserId;
+    }
+
     public void UpdateFromTelegram(string firstName, string? lastName, string? username, string? photoUrl, string? languageCode)
     {
         if (!string.IsNullOrWhiteSpace(firstName))
