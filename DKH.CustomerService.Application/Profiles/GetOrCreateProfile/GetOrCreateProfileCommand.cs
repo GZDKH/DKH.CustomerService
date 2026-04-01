@@ -9,5 +9,7 @@ public sealed record GetOrCreateProfileCommand(
     string? LastName,
     string? Username,
     string? PhotoUrl,
-    string? LanguageCode)
+    string? LanguageCode,
+    string? Provider,
+    string? ProviderUserId)
     : IRequest<GetOrCreateProfileResponse>;
