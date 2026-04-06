@@ -1,1 +1,1 @@
-../../../../../libraries/DKH.Architecture/.codex/shared-rules/prod-debugging.md
+../../../../libraries/DKH.Architecture/.codex/shared-rules/prod-debugging.md

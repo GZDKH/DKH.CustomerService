@@ -26,8 +26,6 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.codex/rules/commits.md`
 - `.codex/rules/contracts.md`
 - `.codex/rules/docs-after-impl.md`
-- `.codex/rules/github-tasks.md`
-- `.codex/rules/gitlab-workflow.md`
 - `.codex/rules/no-duplication.md`
 - `.codex/rules/plan-execution.md`
 - `.codex/rules/platform-release.md`
@@ -35,6 +33,9 @@ Before starting implementation, you MUST also read and follow these local rule f
 - `.codex/rules/prod-debugging.md`
 - `.codex/rules/ralph-loop.md`
 - `.codex/rules/security.md`
+- `.codex/rules/server-operations.md`
+- `.codex/rules/trust-user-verify-state.md`
+- `.codex/rules/workflow.md`
 
 These rules are mandatory and complement the baseline `AGENTS.md` and `DKH.Architecture` guidance.
 

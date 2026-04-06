@@ -34,8 +34,8 @@ public class CreateCustomerCommandHandler(ICustomerRepository repository)
             request.Phone,
             request.Email,
             request.LanguageCode,
-            request.IsPremium,
-            request.ProviderType);
+            isPremium: request.IsPremium,
+            providerType: request.ProviderType);
 
         await repository.AddAsync(profile, cancellationToken);
 

@@ -41,6 +41,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         string? email,
         string languageCode,
         bool isPremium,
+        bool allowsWriteToPm,
         string providerType)
         : base(Guid.NewGuid())
     {
@@ -55,6 +56,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         Email = email;
         LanguageCode = languageCode ?? "en";
         IsPremium = isPremium;
+        AllowsWriteToPm = allowsWriteToPm;
         AccountStatus = AccountStatus.CreateNew();
         ContactVerification = ContactVerification.CreateNew();
         Preferences = CustomerPreferences.CreateDefault();
@@ -81,6 +83,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     public string LanguageCode { get; private set; }
 
     public bool IsPremium { get; private set; }
+
+    public bool AllowsWriteToPm { get; private set; }
 
     public AccountStatus AccountStatus { get; private set; }
 
@@ -111,9 +115,22 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         string? email = null,
         string? languageCode = null,
         bool isPremium = false,
+        bool allowsWriteToPm = false,
         string providerType = "Telegram")
     {
-        var entity = new CustomerProfileEntity(storefrontId, userId, firstName, lastName, username, photoUrl, phone, email, languageCode ?? "en", isPremium, providerType);
+        var entity = new CustomerProfileEntity(
+            storefrontId,
+            userId,
+            firstName,
+            lastName,
+            username,
+            photoUrl,
+            phone,
+            email,
+            languageCode ?? "en",
+            isPremium,
+            allowsWriteToPm,
+            providerType);
 
         entity._domainEvents.Add(new CustomerCreatedDomainEvent(
             entity.Id,
@@ -194,7 +211,14 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         UserId = newUserId;
     }
 
-    public void UpdateFromTelegram(string firstName, string? lastName, string? username, string? photoUrl, string? languageCode)
+    public void UpdateFromTelegram(
+        string firstName,
+        string? lastName,
+        string? username,
+        string? photoUrl,
+        string? languageCode,
+        bool isPremium,
+        bool allowsWriteToPm)
     {
         if (!string.IsNullOrWhiteSpace(firstName))
         {
@@ -208,6 +232,9 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         {
             LanguageCode = languageCode;
         }
+
+        IsPremium = isPremium;
+        AllowsWriteToPm = allowsWriteToPm;
 
         _domainEvents.Add(new CustomerUpdatedDomainEvent(Id, StorefrontId, UserId));
     }
@@ -362,6 +389,11 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         if (source.IsPremium)
         {
             IsPremium = true;
+        }
+
+        if (source.AllowsWriteToPm)
+        {
+            AllowsWriteToPm = true;
         }
     }
 

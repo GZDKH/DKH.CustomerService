@@ -26,6 +26,7 @@ message CustomerProfile {
   ContactVerification contact_verification = 16;
   string provider_type = 17;
   bool is_premium = 18;
+  bool allows_write_to_pm = 19;
 }
 
 message AccountStatus {

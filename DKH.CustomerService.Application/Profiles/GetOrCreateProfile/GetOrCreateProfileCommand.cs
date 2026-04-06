@@ -11,5 +11,7 @@ public sealed record GetOrCreateProfileCommand(
     string? PhotoUrl,
     string? LanguageCode,
     string? Provider,
-    string? ProviderUserId)
+    string? ProviderUserId,
+    bool IsPremium,
+    bool AllowsWriteToPm)
     : IRequest<GetOrCreateProfileResponse>;

@@ -52,7 +52,9 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
                 request.PhotoUrl,
                 request.LanguageCode,
                 string.IsNullOrWhiteSpace(request.Provider) ? null : request.Provider,
-                string.IsNullOrWhiteSpace(request.ProviderUserId) ? null : request.ProviderUserId),
+                string.IsNullOrWhiteSpace(request.ProviderUserId) ? null : request.ProviderUserId,
+                request.IsPremium,
+                request.AllowsWriteToPm),
             context.CancellationToken);
         return new ContractsServices.GetOrCreateProfileResponse
         {

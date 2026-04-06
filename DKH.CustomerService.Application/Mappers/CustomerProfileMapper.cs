@@ -25,6 +25,7 @@ public static class CustomerProfileMapper
             LanguageCode = entity.LanguageCode,
             ProviderType = entity.ProviderType,
             IsPremium = entity.IsPremium,
+            AllowsWriteToPm = entity.AllowsWriteToPm,
             CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(entity.CreationTime, DateTimeKind.Utc)),
             IsDeleted = entity.IsDeleted,
         };

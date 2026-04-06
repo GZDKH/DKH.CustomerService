@@ -22,7 +22,9 @@ public class GetOrCreateProfileCommandHandler(ICustomerRepository repository)
                 request.LastName,
                 request.Username,
                 request.PhotoUrl,
-                request.LanguageCode);
+                request.LanguageCode,
+                request.IsPremium,
+                request.AllowsWriteToPm);
             await repository.UpdateAsync(existing, cancellationToken);
 
             return new GetOrCreateProfileResponse
@@ -49,7 +51,9 @@ public class GetOrCreateProfileCommandHandler(ICustomerRepository repository)
                     request.LastName,
                     request.Username,
                     request.PhotoUrl,
-                    request.LanguageCode);
+                    request.LanguageCode,
+                    request.IsPremium,
+                    request.AllowsWriteToPm);
                 await repository.UpdateAsync(existing, cancellationToken);
 
                 return new GetOrCreateProfileResponse
@@ -68,7 +72,9 @@ public class GetOrCreateProfileCommandHandler(ICustomerRepository repository)
             request.LastName,
             request.Username,
             request.PhotoUrl,
-            languageCode: request.LanguageCode);
+            languageCode: request.LanguageCode,
+            isPremium: request.IsPremium,
+            allowsWriteToPm: request.AllowsWriteToPm);
 
         // Auto-link provider identity on creation
         if (!string.IsNullOrWhiteSpace(request.Provider) && !string.IsNullOrWhiteSpace(request.ProviderUserId))

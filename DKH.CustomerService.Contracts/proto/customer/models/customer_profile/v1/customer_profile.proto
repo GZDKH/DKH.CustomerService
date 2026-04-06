@@ -28,6 +28,7 @@ message CustomerProfileModel {
   string provider_type = 17;
   bool is_premium = 18;
   repeated proto.customer.models.external_identity.v1.ExternalIdentityModel external_identities = 19;
+  bool allows_write_to_pm = 20;
 }
 
 message AccountStatusModel {

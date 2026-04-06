@@ -53,6 +53,7 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
                     sp.GetRequiredService<AppDbContext>());
 
                 services.AddSingleton(Substitute.For<IPlatformStorefrontContext>());
+                services.AddSingleton(Substitute.For<Platform.Identity.IPlatformCurrentUser>());
                 services.AddSingleton(Substitute.For<Platform.Domain.Events.IPlatformDomainEventDispatcher>());
                 services.AddSingleton(Substitute.For<Platform.Outbox.IPlatformEventPublisher>());
 
@@ -74,12 +75,16 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
             LastName = "Doe",
             Username = "johndoe",
             LanguageCode = "en",
+            IsPremium = true,
+            AllowsWriteToPm = true,
         });
 
         response.Created.Should().BeTrue();
         response.Profile.Should().NotBeNull();
         response.Profile.FirstName.Should().Be("John");
         response.Profile.LastName.Should().Be("Doe");
+        response.Profile.IsPremium.Should().BeTrue();
+        response.Profile.AllowsWriteToPm.Should().BeTrue();
     }
 
     [Fact]
@@ -94,6 +99,8 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
             UserId = UserId,
             FirstName = "John",
             LastName = "Doe",
+            IsPremium = false,
+            AllowsWriteToPm = false,
         });
 
         var response = await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
@@ -101,10 +108,14 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
             StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
             UserId = UserId,
             FirstName = "Jane",
+            IsPremium = true,
+            AllowsWriteToPm = true,
         });
 
         response.Created.Should().BeFalse();
         response.Profile.FirstName.Should().Be("Jane");
+        response.Profile.IsPremium.Should().BeTrue();
+        response.Profile.AllowsWriteToPm.Should().BeTrue();
     }
 
     [Fact]
