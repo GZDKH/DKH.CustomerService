@@ -172,6 +172,8 @@ message GetOrCreateProfileRequest {
   string language_code = 7;
   string provider = 8;
   string provider_user_id = 9;
+  bool is_premium = 10;
+  bool allows_write_to_pm = 11;
 }
 
 message GetOrCreateProfileResponse {

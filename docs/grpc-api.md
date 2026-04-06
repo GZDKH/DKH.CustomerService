@@ -42,8 +42,8 @@ graph LR
 
 ## 1. CustomerManagementService
 
-**Package:** `customer.services.v1`
-**Description:** Core profile management operations for both storefront and admin consumers.
+**Package:** `customer.api.customer_management.v1`
+**Description:** Core profile management operations for storefront and management consumers. Legacy mirror proto files remain in `customer.services.v1` / `customer.api.v1`, but generated contracts come from the management package.
 
 ### RPC Methods
 
@@ -64,26 +64,33 @@ graph LR
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `customer_id` | `string` | Customer profile ID (GUID) |
+| `storefront_id` | `GuidValue` | Storefront scope |
+| `user_id` | `string` | External user ID (e.g., Telegram user ID) |
 
 **GetOrCreateProfileRequest**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `user_id` | `string` | External user ID (e.g., Telegram user ID) |
-| `provider_type` | `string` | Provider type (e.g., "Telegram") |
+| `storefront_id` | `GuidValue` | Storefront scope |
 | `first_name` | `string` | First name |
 | `last_name` | `string` | Last name |
 | `username` | `string` | Username |
 | `photo_url` | `string` | Photo URL |
 | `language_code` | `string` | Language code |
+| `provider` | `string` | Identity provider name (e.g., `Telegram`) |
+| `provider_user_id` | `string` | Provider-scoped user ID (e.g., Telegram user ID) |
 | `is_premium` | `bool` | Premium account flag |
+| `allows_write_to_pm` | `bool` | Telegram permission flag for proactive PM writes |
+
+**Consumer note:** `StorefrontGateway` can send the two Telegram flags after upgrading to `DKH.CustomerService.Contracts` `1.6.0`.
 
 **UpdateProfileRequest**
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `customer_id` | `string` | Customer profile ID |
+| `storefront_id` | `GuidValue` | Storefront scope |
+| `user_id` | `string` | External user ID |
 | `first_name` | `string` | Updated first name |
 | `last_name` | `string` | Updated last name |
 | `username` | `string` | Updated username |
@@ -95,7 +102,8 @@ graph LR
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `customer_id` | `string` | Customer profile ID |
+| `storefront_id` | `GuidValue` | Storefront scope |
+| `user_id` | `string` | External user ID |
 
 **CreateCustomerRequest**
 

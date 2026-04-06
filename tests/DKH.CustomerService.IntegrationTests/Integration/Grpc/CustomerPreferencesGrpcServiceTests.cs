@@ -54,6 +54,7 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
                     sp.GetRequiredService<AppDbContext>());
 
                 services.AddSingleton(Substitute.For<IPlatformStorefrontContext>());
+                services.AddSingleton(Substitute.For<Platform.Identity.IPlatformCurrentUser>());
                 services.AddSingleton(Substitute.For<Platform.Domain.Events.IPlatformDomainEventDispatcher>());
                 services.AddSingleton(Substitute.For<Platform.Outbox.IPlatformEventPublisher>());
 

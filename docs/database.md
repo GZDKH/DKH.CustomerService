@@ -26,6 +26,7 @@ erDiagram
         varchar_256 email
         varchar_10 language_code
         bool is_premium
+        bool allows_write_to_pm
         int account_status
         timestamp blocked_at
         text block_reason
@@ -129,6 +130,7 @@ The primary table storing customer profile data. Value objects (`AccountStatus`,
 | `email` | `varchar(256)` | Yes | | Email address |
 | `language_code` | `varchar(10)` | No | | Preferred language |
 | `is_premium` | `bool` | No | `false` | Premium flag |
+| `allows_write_to_pm` | `bool` | No | `false` | Telegram permission flag for proactive PM writes |
 | `account_status` | `int` | No | `0` | Account status enum value |
 | `blocked_at` | `timestamp` | Yes | | Block timestamp |
 | `block_reason` | `text` | Yes | | Block reason |
@@ -297,6 +299,7 @@ External identity providers linked to customer accounts (e.g., Google, Apple, em
 | `20260205083533_InitialCreate` | 2026-02-05 | Initial schema with customer_profiles, customer_addresses, wishlist_items, customer_external_identities |
 | `20260216010139_AddProviderTypeRenameUserId` | 2026-02-16 | Added `provider_type` column, renamed user identifier column to `user_id` |
 | `20260216070533_202602161200_AddIsPremium` | 2026-02-16 | Added `is_premium` column to customer_profiles |
+| `20260406082057_20260406_AddAllowsWriteToPm` | 2026-04-06 | Added `allows_write_to_pm` column to customer_profiles |
 
 ### Running Migrations
 
@@ -325,4 +328,4 @@ dotnet ef migrations script \
 - **Partial indexes on email/phone** -- Only non-null values are indexed to optimize lookups while allowing nulls.
 - **Unique filtered index on default address** -- Ensures at most one default address per customer at the database level.
 
-*Last updated: February 2026*
+*Last updated: April 2026*

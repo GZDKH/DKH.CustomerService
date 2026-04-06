@@ -21,6 +21,7 @@ classDiagram
         +string? Email
         +string LanguageCode
         +bool IsPremium
+        +bool AllowsWriteToPm
         +AccountStatus AccountStatus
         +ContactVerification ContactVerification
         +CustomerPreferences Preferences
@@ -148,6 +149,7 @@ The aggregate root representing a customer profile scoped to a storefront. Imple
 | `Email` | `string?` | Max 256 | Email address |
 | `LanguageCode` | `string` | Max 10 | Preferred language code |
 | `IsPremium` | `bool` | Default `false` | Premium account flag |
+| `AllowsWriteToPm` | `bool` | Default `false` | Telegram permission flag for proactive PM writes |
 | `AccountStatus` | `AccountStatus` | Value object | Account status and activity tracking |
 | `ContactVerification` | `ContactVerification` | Value object | Email/phone verification state |
 | `Preferences` | `CustomerPreferences` | Value object | Notification and display preferences |
@@ -161,7 +163,7 @@ The aggregate root representing a customer profile scoped to a storefront. Imple
 |--------|-------------|
 | `Create` | Factory method for creating a new customer profile |
 | `Update` | Updates profile fields (name, phone, email, etc.) |
-| `UpdateFromTelegram` | Syncs profile data from Telegram user info |
+| `UpdateFromTelegram` | Syncs profile data and Telegram capability flags from Telegram user info |
 | `AddExternalIdentity` | Links a new external identity provider |
 | `RemoveExternalIdentity` | Unlinks an external identity |
 | `SetPrimaryIdentity` | Marks an external identity as primary |
