@@ -13,11 +13,13 @@ using DKH.Platform.MultiTenancy;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using ContractsModels = DKH.CustomerService.Contracts.Customer.Models;
 using ContractsServices = DKH.CustomerService.Contracts.Customer.Api.IdentityLinking.v1;
 
 namespace DKH.CustomerService.Api.Services;
 
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsServices.IdentityLinkingService.IdentityLinkingServiceBase
 {

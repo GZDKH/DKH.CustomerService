@@ -4,10 +4,12 @@ using DKH.CustomerService.Contracts.Customer.Models.ContactVerification.v1;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.ContactVerification.v1.ContactVerificationService;
 
 namespace DKH.CustomerService.Api.Services;
 
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class ContactVerificationGrpcService(
     IVerificationService verificationService,
     ICustomerRepository customerRepository,

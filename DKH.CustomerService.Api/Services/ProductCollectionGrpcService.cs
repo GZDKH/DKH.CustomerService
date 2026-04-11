@@ -8,10 +8,12 @@ using DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.ProductCollection.v1.ProductCollectionService;
 
 namespace DKH.CustomerService.Api.Services;
 
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class ProductCollectionGrpcService(IMediator mediator)
     : ContractsService.ProductCollectionServiceBase
 {

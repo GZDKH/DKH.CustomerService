@@ -5,6 +5,8 @@ using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform;
+using DKH.Platform.Authentication.Keycloak;
+using DKH.Platform.Authorization;
 using DKH.Platform.Configuration;
 using DKH.Platform.DataExchange;
 using DKH.Platform.Domain.Events;
@@ -36,6 +38,13 @@ await Platform
     .AddPlatformDomainEvents()
     .AddPlatformLogging()
     .AddPlatformTelemetry()
+    .AddPlatformKeycloakAuth()
+    .AddPlatformAuthorization(policies => policies.AddRolePolicy(
+        CustomerServiceAuthorizationPolicies.CustomerAccess,
+        PlatformRoles.Realm.SuperAdmin,
+        PlatformRoles.Realm.Admin,
+        PlatformRoles.FullAccess,
+        PlatformRoles.Admin.CustomerManager))
     .AddPlatformLocalization()
     .AddPlatformDataExchangeFromAssemblyContaining<CustomerDataImportHandler>(options =>
     {
@@ -61,3 +70,8 @@ await Platform
     })
     .Build()
     .RunAsync();
+
+internal static class CustomerServiceAuthorizationPolicies
+{
+    public const string CustomerAccess = "CustomerAccess";
+}

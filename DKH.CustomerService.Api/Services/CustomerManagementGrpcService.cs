@@ -10,6 +10,7 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using ContractsServices = DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 
 namespace DKH.CustomerService.Api.Services;
@@ -18,6 +19,7 @@ namespace DKH.CustomerService.Api.Services;
 /// CustomerManagementService implementation for storefront-scoped customer profile operations.
 /// All methods require mandatory storefront_id - operations are restricted to the specified storefront.
 /// </summary>
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsServices.CustomerManagementService.CustomerManagementServiceBase
 {
