@@ -8,10 +8,12 @@ using DKH.Platform.DataExchange.Import;
 using DKH.Platform.DataExchange.Options;
 using Google.Protobuf;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Enum = System.Enum;
 
 namespace DKH.CustomerService.Api.Grpc.Services;
 
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class DataExchangeService(
     IPlatformImportService importService,
     IPlatformExportService exportService,
