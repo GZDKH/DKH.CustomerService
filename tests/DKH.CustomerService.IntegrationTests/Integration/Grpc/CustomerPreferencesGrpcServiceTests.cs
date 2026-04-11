@@ -5,6 +5,7 @@ using DKH.CustomerService.Contracts.Customer.Api.CustomerManagement.v1;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
+using DKH.Platform.Authorization;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Grpc.IntegrationTesting;
@@ -33,11 +34,22 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
 
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
-                    .AddPlatformRepositories<AppDbContext>(),
+                    .AddPlatformRepositories<AppDbContext>()
+                    .AddPlatformAuthorization(policies => policies.AddRolePolicy(
+                        "CustomerAccess",
+                        PlatformRoles.Realm.SuperAdmin)),
                 typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),
                 typeof(CustomerPreferencesGrpcService))
+            .WithAuthenticatedUser(
+                userId: Guid.NewGuid(),
+                username: "test-user",
+                email: "test@dkh.local",
+                roles: [PlatformRoles.Realm.SuperAdmin],
+                permissions: [],
+                tenantId: null,
+                additionalClaims: [])
             .WithPlatformConfiguration(services =>
             {
                 services.AddSingleton(new Dictionary<Type, object>());
