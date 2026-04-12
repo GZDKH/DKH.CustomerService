@@ -14,11 +14,9 @@ using DKH.Platform.MultiTenancy;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class CustomerCrudGrpcService(
     IMediator mediator,
     IPlatformStorefrontContext storefrontContext,

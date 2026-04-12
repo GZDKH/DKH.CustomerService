@@ -9,12 +9,10 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1.WishlistManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.WishlistManagementServiceBase
 {

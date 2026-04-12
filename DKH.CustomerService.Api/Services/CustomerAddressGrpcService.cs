@@ -15,12 +15,10 @@ using DKH.Platform.MultiTenancy;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1.CustomerAddressManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerAddressManagementServiceBase
 {

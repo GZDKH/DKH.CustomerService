@@ -7,12 +7,10 @@ using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1.CustomerPreferencesManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerPreferencesManagementServiceBase
 {
