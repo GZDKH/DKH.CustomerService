@@ -1,1 +1,1 @@
-../../../../libraries/DKH.Architecture/.codex/shared-rules/no-duplication.md
+../../../../agents/DKH.AgentRules/.codex/shared-rules/no-duplication.md

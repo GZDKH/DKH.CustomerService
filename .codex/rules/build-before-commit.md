@@ -1,1 +1,1 @@
-../../../../libraries/DKH.Architecture/.codex/shared-rules/build-dotnet.md
+../../../../agents/DKH.AgentRules/.codex/shared-rules/build-gates.md

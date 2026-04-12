@@ -1,1 +1,1 @@
-../../../../libraries/DKH.Architecture/.codex/shared-rules/platform-release.md
+../../../../agents/DKH.AgentRules/.codex/shared-rules/platform-release.md
