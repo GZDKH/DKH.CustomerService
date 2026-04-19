@@ -1,1 +1,0 @@
-../../../../libraries/DKH.Architecture/.codex/shared-rules/workflow.md
