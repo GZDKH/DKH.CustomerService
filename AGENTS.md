@@ -1,49 +1,23 @@
-# CLAUDE.md
-
+# AGENTS.md
 <!-- BEGIN REQUIRED-READING -->
 
 ## Required Reading (MUST read before working)
 
-Before starting any task in this repository, you MUST read these files from DKH.Architecture:
+Before starting any task in this repository, read the shared DKH.AgentRules entrypoint:
 
-1. **[AGENTS.md](https://github.com/GZDKH/DKH.Architecture/blob/main/AGENTS.md)** — baseline rules for all repos
-2. **[agents-dotnet.md](https://github.com/GZDKH/DKH.Architecture/blob/main/docs/agents-dotnet.md)** — .NET specific rules
-3. **[github-workflow.md](https://github.com/GZDKH/DKH.Architecture/blob/main/docs/github-workflow.md)** — GitHub Issues & Project Board
+1. **[AGENTS.md](../../agents/DKH.AgentRules/AGENTS.md)** — shared Codex entrypoint and on-demand trigger index
 
-These files are located in the DKH.Architecture repository (located in the sibling `libraries/DKH.Architecture` folder relative to your workspace).
+Profiles, skills, build gates, contracts, releases, and docs rules are lazy-loaded from `agents/DKH.AgentRules`. Use `agents/DKH.AgentRules/rules/codex/triggers.md` to decide what else to open for the current task.
 
 ---
 
 <!-- END REQUIRED-READING -->
 
-<!-- BEGIN LOCAL-CODEX-RULES -->
-
-## Additional Local Rules (.codex/rules)
-
-Before starting implementation, you MUST also read and follow these local rule files in this repository:
-
-- `.codex/rules/build-before-commit.md`
-- `.codex/rules/commits.md`
-- `.codex/rules/contracts.md`
-- `.codex/rules/docs-after-impl.md`
-- `.codex/rules/no-duplication.md`
-- `.codex/rules/plan-execution.md`
-- `.codex/rules/platform-release.md`
-- `.codex/rules/prod-config.md`
-- `.codex/rules/prod-debugging.md`
-- `.codex/rules/ralph-loop.md`
-- `.codex/rules/security.md`
-- `.codex/rules/server-operations.md`
-- `.codex/rules/trust-user-verify-state.md`
-- `.codex/rules/workflow.md`
-
-These rules are mandatory and complement the baseline `AGENTS.md` and `DKH.Architecture` guidance.
-
-<!-- END LOCAL-CODEX-RULES -->
 
 
 
-This file provides guidance to Claude Code when working in this repository.
+
+This file provides guidance to Codex when working in this repository.
 
 > **Baseline rules**: See `AGENTS.md` for unified GZDKH rules (SOLID, DDD, commits, code style, quality guardrails). This file adds service-specific context only.
 
