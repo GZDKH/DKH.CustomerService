@@ -55,7 +55,7 @@
     <PackageVersion Include="DKH.Platform.Outbox.PostgreSql" Version="1.1.3" />
     <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.1.9" />
     <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.1" />
-    <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.1" />
+    <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Telemetry" Version="1.0.9" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.0.0" />
   </ItemGroup>
