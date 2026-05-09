@@ -9,6 +9,8 @@ using DKH.CustomerService.Application.Addresses.SetDefaultAddress;
 using DKH.CustomerService.Application.Addresses.UpdateAddress;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.MultiTenancy;
@@ -35,6 +37,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<GetAddressResponse> GetAddress(GetAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -63,6 +66,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<UpdateAddressResponse> UpdateAddress(UpdateAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -85,6 +89,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<DeleteAddressResponse> DeleteAddress(DeleteAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -94,6 +99,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(new DeleteAddressCommand(storefrontId, request.UserId, addressId), context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<SetDefaultAddressResponse> SetDefaultAddress(SetDefaultAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -103,12 +109,14 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(new SetDefaultAddressCommand(storefrontId, request.UserId, addressId), context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<GetDefaultAddressResponse> GetDefaultAddress(GetDefaultAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<Contracts.Customer.Models.CustomerAddress.v1.CustomerAddressModel> RestoreAddress(
         RestoreAddressRequest request,
         ServerCallContext context)
@@ -118,6 +126,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return entity.ToContractModel();
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> PermanentlyDeleteAddress(
         PermanentlyDeleteAddressRequest request,
         ServerCallContext context)

@@ -1,10 +1,12 @@
 using System.Reflection;
 using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Domain.Authorization;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
+using DKH.Platform.Authorization.ResourceAccess.Domain;
 using DKH.Platform.EntityFrameworkCore;
 using DKH.Platform.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<CustomerExternalIdentityEntity> ExternalIdentities { get; init; } = null!;
 
     public DbSet<ProductCollectionItemEntity> ProductCollectionItems { get; init; } = null!;
+
+    public DbSet<CustomerAccessGrantEntity> CustomerAccessGrants => Set<CustomerAccessGrantEntity>();
+
+    public DbSet<ResourceTypeEntity> ResourceTypes => Set<ResourceTypeEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

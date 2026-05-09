@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="DKH.Platform.EntityFrameworkCore"/>
+    <PackageReference Include="DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore"/>
     <PackageReference Include="DKH.Platform.EntityFrameworkCore.PostgreSQL"/>
     <PackageReference Include="DKH.Platform.EntityFrameworkCore.Repositories"/>
     <PackageReference Include="DKH.Platform.Identity"/>

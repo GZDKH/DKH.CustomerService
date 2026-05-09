@@ -5,6 +5,8 @@ using DKH.CustomerService.Application.Wishlists.GetWishlist;
 using DKH.CustomerService.Application.Wishlists.GetWishlistCount;
 using DKH.CustomerService.Application.Wishlists.RemoveFromWishlist;
 using DKH.CustomerService.Contracts.Customer.Api.WishlistManagement.v1;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
@@ -16,6 +18,7 @@ namespace DKH.CustomerService.Api.Services;
 public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.WishlistManagementServiceBase
 {
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<GetWishlistResponse> GetWishlist(GetWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -24,6 +27,7 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<AddToWishlistResponse> AddToWishlist(AddToWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -37,6 +41,7 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<RemoveFromWishlistResponse> RemoveFromWishlist(RemoveFromWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -50,6 +55,7 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<CheckProductInWishlistResponse> CheckProductInWishlist(CheckProductInWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -63,12 +69,14 @@ public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext 
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<ClearWishlistResponse> ClearWishlist(ClearWishlistRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(new ClearWishlistCommand(storefrontId, request.UserId), context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<GetWishlistCountResponse> GetWishlistCount(GetWishlistCountRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
