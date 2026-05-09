@@ -5,6 +5,8 @@ using DKH.CustomerService.Application.ProductCollection.RemoveFromCollection;
 using DKH.CustomerService.Application.ProductCollection.UpdateCollectionItem;
 using DKH.CustomerService.Contracts.Customer.Api.ProductCollection.v1;
 using DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
@@ -36,6 +38,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ProductCollectionItemModel> UpdateCollectionItem(UpdateCollectionItemRequest request, ServerCallContext context)
     {
         var itemId = request.ItemId?.ToGuid()
@@ -58,6 +61,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> RemoveFromCollection(RemoveFromCollectionRequest request, ServerCallContext context)
     {
         var itemId = request.ItemId?.ToGuid()
@@ -71,6 +75,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<ProductCollectionListModel> GetCollection(GetCollectionRequest request, ServerCallContext context)
     {
         var customerId = request.CustomerId?.ToGuid()
@@ -89,6 +94,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<ProductCollectionItemModel> GetCollectionItem(GetCollectionItemRequest request, ServerCallContext context)
     {
         var customerId = request.CustomerId?.ToGuid()

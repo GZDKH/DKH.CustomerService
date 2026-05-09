@@ -7,6 +7,8 @@ using DKH.CustomerService.Application.ExternalIdentities.PermanentlyDeleteIdenti
 using DKH.CustomerService.Application.ExternalIdentities.RestoreIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.UnlinkIdentity;
 using DKH.CustomerService.Application.Mappers;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.MultiTenancy;
@@ -24,6 +26,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
     private readonly IMediator _mediator = mediator;
     private readonly IPlatformStorefrontContext _storefrontContext = storefrontContext;
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ContractsModels.ExternalIdentity.v1.ExternalIdentityModel> LinkIdentity(
         ContractsServices.LinkIdentityRequest request,
         ServerCallContext context)
@@ -41,6 +44,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<Empty> UnlinkIdentity(
         ContractsServices.UnlinkIdentityRequest request,
         ServerCallContext context)
@@ -55,6 +59,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
         return new Empty();
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> DeleteIdentity(
         ContractsServices.DeleteIdentityRequest request,
         ServerCallContext context)
@@ -79,6 +84,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<ContractsModels.CustomerProfile.v1.CustomerProfileModel> FindByExternalIdentity(
         ContractsServices.FindByExternalIdentityRequest request,
         ServerCallContext context)
@@ -92,6 +98,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ContractsModels.CustomerProfile.v1.CustomerProfileModel> MergeProfiles(
         ContractsServices.MergeProfilesRequest request,
         ServerCallContext context)
@@ -105,6 +112,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ContractsModels.ExternalIdentity.v1.ExternalIdentityModel> RestoreIdentity(
         ContractsServices.RestoreIdentityRequest request,
         ServerCallContext context)
@@ -114,6 +122,7 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
         return entity.ToContractModel();
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> PermanentlyDeleteIdentity(
         ContractsServices.PermanentlyDeleteIdentityRequest request,
         ServerCallContext context)

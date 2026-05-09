@@ -2,11 +2,16 @@ using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
+using DKH.CustomerService.Domain.Authorization;
+using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform;
 using DKH.Platform.Authentication.Keycloak;
 using DKH.Platform.Authorization;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.DependencyInjection;
+using DKH.Platform.Authorization.ResourceAccess.Grpc;
 using DKH.Platform.Configuration;
 using DKH.Platform.DataExchange;
 using DKH.Platform.Domain.Events;
@@ -45,6 +50,27 @@ await Platform
         PlatformRoles.Realm.Admin,
         PlatformRoles.FullAccess,
         PlatformRoles.Admin.CustomerManager))
+    .ConfigurePlatformWebApplicationBuilder(builder =>
+        builder.Services.AddPlatformResourceAccess<CustomerProfileEntity, CustomerAccessGrantEntity, Guid>(opts =>
+        {
+            opts.ResourceType = "customer";
+            opts.DisplayName = "Customer";
+            opts.GrantCreatorFullAccess = true;
+            opts.CreatorGrantReason = "creator-default";
+            opts.ScopeResourceTypes = ["storefront"];
+            opts.BaselineRoleGrants = b =>
+            {
+                b.Grant(PlatformRoles.Admin.CustomerManager,
+                        ResourceAccessConstants.WildcardResourceId,
+                        ResourceAccessPermissions.FullAccess);
+                b.Grant(PlatformRoles.Admin.StorefrontManager,
+                        ResourceAccessConstants.WildcardResourceId,
+                        ResourceAccessPermissions.FullAccess);
+                b.Grant(PlatformRoles.Realm.StorefrontOwner,
+                        ResourceAccessConstants.WildcardResourceId,
+                        ResourceAccessPermissions.Read);
+            };
+        }))
     .AddPlatformLocalization()
     .AddPlatformDataExchangeFromAssemblyContaining<CustomerDataImportHandler>(options =>
     {
@@ -57,6 +83,7 @@ await Platform
     .AddGrpcCurrentUser()
     .AddPlatformGrpc(grpc =>
     {
+        grpc.AddInterceptor<ResourceAccessGrpcInterceptor>();
         grpc.MapService<CustomerAddressGrpcService>();
         grpc.MapService<WishlistGrpcService>();
         grpc.MapService<CustomerPreferencesGrpcService>();

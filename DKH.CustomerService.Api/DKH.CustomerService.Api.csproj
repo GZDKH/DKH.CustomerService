@@ -25,6 +25,8 @@
     <PackageReference Include="DKH.Platform.Identity"/>
     <PackageReference Include="DKH.Platform.Authentication.Keycloak"/>
     <PackageReference Include="DKH.Platform.Authorization"/>
+    <PackageReference Include="DKH.Platform.Authorization.ResourceAccess"/>
+    <PackageReference Include="DKH.Platform.Authorization.ResourceAccess.Grpc"/>
     <PackageReference Include="DKH.Platform.DataExchange"/>
     <PackageReference Include="DKH.Platform.MultiTenancy"/>
     <PackageReference Include="DKH.Platform.Telemetry" />

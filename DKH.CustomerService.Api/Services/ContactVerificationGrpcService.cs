@@ -1,6 +1,8 @@
 using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Contracts.Customer.Api.ContactVerification.v1;
 using DKH.CustomerService.Contracts.Customer.Models.ContactVerification.v1;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
@@ -14,6 +16,7 @@ public class ContactVerificationGrpcService(
     IPlatformStorefrontContext storefrontContext)
     : ContractsService.ContactVerificationServiceBase
 {
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<InitiateEmailVerificationResponse> InitiateEmailVerification(InitiateEmailVerificationRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -35,6 +38,7 @@ public class ContactVerificationGrpcService(
         };
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<VerifyEmailResponse> VerifyEmail(VerifyEmailRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -63,6 +67,7 @@ public class ContactVerificationGrpcService(
         };
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<InitiatePhoneVerificationResponse> InitiatePhoneVerification(InitiatePhoneVerificationRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -84,6 +89,7 @@ public class ContactVerificationGrpcService(
         };
     }
 
+    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<VerifyPhoneResponse> VerifyPhone(VerifyPhoneRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
