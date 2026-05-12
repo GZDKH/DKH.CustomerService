@@ -35,12 +35,12 @@
     <PackageVersion Include="DKH.Platform" Version="1.3.2" />
     <PackageVersion Include="DKH.Platform.Core" Version="1.7.0" />
     <PackageVersion Include="DKH.Platform.Grpc" Version="1.2.5" />
-    <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.Abstractions" Version="0.2.0" />
+    <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.Abstractions" Version="0.3.0" />
     <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.Domain" Version="0.1.1" />
     <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore" Version="0.1.0" />
     <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess" Version="0.2.0" />
     <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.Contracts" Version="0.1.0" />
-    <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.Grpc" Version="1.0.0" />
+    <PackageVersion Include="DKH.Platform.Authorization.ResourceAccess.Grpc" Version="1.1.0" />
     <PackageVersion Include="DKH.Platform.Grpc.Client" Version="1.4.4" />
     <PackageVersion Include="DKH.Platform.Grpc.Common" Version="1.2.0" />
     <PackageVersion Include="DKH.Platform.Identity" Version="1.6.0" />
