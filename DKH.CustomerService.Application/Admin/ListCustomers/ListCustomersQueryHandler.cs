@@ -1,12 +1,17 @@
 using DKH.CustomerService.Application.Common;
 using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerCrud.v1;
+using DKH.CustomerService.Domain.Authorization;
+using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore.QueryFilters;
 using DKH.Platform.Domain.Enums;
 using DKH.Platform.EntityFrameworkCore;
+using DKH.Platform.Identity;
 
 namespace DKH.CustomerService.Application.Admin.ListCustomers;
 
-public class ListCustomersQueryHandler(ICustomerRepository repository, IAppDbContext dbContext)
+public class ListCustomersQueryHandler(ICustomerRepository repository, IAppDbContext dbContext, IPlatformCurrentUser currentUser)
     : IRequestHandler<ListCustomersQuery, ListCustomersResponse>
 {
     public async Task<ListCustomersResponse> Handle(ListCustomersQuery request, CancellationToken cancellationToken)
@@ -19,7 +24,14 @@ public class ListCustomersQueryHandler(ICustomerRepository repository, IAppDbCon
             // Use direct dbContext query with soft-delete filter bypass
             var baseQuery = dbContext.CustomerProfiles
                 .AsNoTracking()
-                .ApplySoftDeleteFilter(request.SoftDeleteFilter);
+                .ApplySoftDeleteFilter(request.SoftDeleteFilter)
+                .ApplyResourceAccessFilter<CustomerProfileEntity, CustomerAccessGrantEntity, Guid>(
+                    (DbContext)dbContext,
+                    currentUser,
+                    resourceType: "customer",
+                    permission: ResourceAccessPermissions.Read,
+                    resourceIdSelector: c => c.Id,
+                    scopeMappings: [("storefront", c => c.StorefrontId)]);
 
             if (request.StorefrontId.HasValue)
             {
