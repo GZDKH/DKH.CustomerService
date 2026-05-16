@@ -1,1 +1,0 @@
-../../../../libraries/DKH.Architecture/.claude/agents/debugger.md
