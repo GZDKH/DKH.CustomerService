@@ -143,7 +143,58 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/block-co-authored-by.sh"
+            "if": "Bash(*git commit*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-commit-wrong-branch.sh",
+            "statusMessage": "Branch safety check..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git *)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-destructive-git.sh",
+            "statusMessage": "Destructive command check..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git push*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-push-main.sh",
+            "statusMessage": "Push safety check..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git commit*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" check-issue-in-branch.sh",
+            "statusMessage": "Checking issue in branch..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git commit*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" validate-commit-message.sh",
+            "statusMessage": "Commit message validation..."
+          },
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-destructive.sh",
+            "statusMessage": "Deep destructive check..."
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-edit-on-main.sh",
+            "statusMessage": "Branch check for edit..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-edit-on-main.sh",
+            "statusMessage": "Branch check for write..."
           }
         ]
       }
@@ -154,7 +205,101 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ $exit_code -ne 0 ]; then echo 'Command failed with exit code: '$exit_code; fi"
+            "if": "Bash(*git commit*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" reminder-hook.sh commit",
+            "statusMessage": "Commit reminder..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git pull*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" reminder-hook.sh pull-main",
+            "statusMessage": "Pull-main reminder..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git push*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" reminder-hook.sh mr-push",
+            "statusMessage": "MR-push reminder..."
+          },
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" suggest-skills.sh",
+            "statusMessage": "Checking for relevant skills..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git push*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" remind-board-after-push.sh",
+            "statusMessage": "Board status reminder..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git push*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" monitor-pipeline-after-push.sh",
+            "statusMessage": "Pipeline monitoring..."
+          },
+          {
+            "type": "command",
+            "if": "Bash(*git commit*)",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" check-plan-on-commit.sh",
+            "statusMessage": "Plan persistence check..."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" session-cleanup-branches.sh",
+            "statusMessage": "Cleaning up merged branches..."
+          },
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" session-workflow-reminder.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" pre-compact.sh",
+            "statusMessage": "Saving state before compaction..."
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" post-compact.sh",
+            "statusMessage": "Restoring plan context..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" block-stop-on-pipeline.sh",
+            "statusMessage": "Verifying CI/CD pipelines..."
+          },
+          {
+            "type": "command",
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" stop-check-state.sh",
+            "statusMessage": "Checking for unfinished work..."
           }
         ]
       }
@@ -165,21 +310,14 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/notify-macos.sh"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/post-compact-context.sh"
+            "command": "[ ! -f \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" ] || bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" notify-macos.sh"
           }
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch.sh\" statusline.sh"
   }
 }
