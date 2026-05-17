@@ -1,4 +1,5 @@
 # AGENTS.md
+
 <!-- BEGIN REQUIRED-READING -->
 
 ## Required Reading (MUST read before working)
@@ -7,16 +8,11 @@ Before starting any task in this repository, read the shared DKH.AgentRules entr
 
 1. **[AGENTS.md](../../agents/DKH.AgentRules/AGENTS.md)** — shared Codex entrypoint and on-demand trigger index
 
-Profiles, skills, build gates, contracts, releases, and docs rules are lazy-loaded from `agents/DKH.AgentRules`. Use `agents/DKH.AgentRules/rules/codex/triggers.md` to decide what else to open for the current task.
+Profiles, skills, build gates, contracts, releases, and docs rules are lazy-loaded from `agents/DKH.AgentRules`. Use `../../agents/DKH.AgentRules/rules/codex/triggers.md` to decide what else to open for the current task.
 
 ---
 
 <!-- END REQUIRED-READING -->
-
-
-
-
-
 This file provides guidance to Codex when working in this repository.
 
 > **Baseline rules**: See `AGENTS.md` for unified GZDKH rules (SOLID, DDD, commits, code style, quality guardrails). This file adds service-specific context only.
