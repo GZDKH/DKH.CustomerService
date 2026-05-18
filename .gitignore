@@ -140,3 +140,5 @@ PROMPT.md
 
 # Agent workflow (plans)
 plans/
+.claude/skills
+.claude/agents
