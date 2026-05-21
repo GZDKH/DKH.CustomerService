@@ -1,3 +1,4 @@
+using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
@@ -99,7 +100,10 @@ await Platform
     .Build()
     .RunAsync();
 
-internal static class CustomerServiceAuthorizationPolicies
+namespace DKH.CustomerService.Api
 {
-    public const string CustomerAccess = "CustomerAccess";
+    public static class CustomerServiceAuthorizationPolicies
+    {
+        public const string CustomerAccess = "CustomerAccess";
+    }
 }
