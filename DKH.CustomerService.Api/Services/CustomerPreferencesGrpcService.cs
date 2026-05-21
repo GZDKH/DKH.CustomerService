@@ -3,27 +3,28 @@ using DKH.CustomerService.Application.Preferences.UpdateNotificationChannels;
 using DKH.CustomerService.Application.Preferences.UpdateNotificationTypes;
 using DKH.CustomerService.Application.Preferences.UpdatePreferences;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1;
-using DKH.Platform.Authorization.ResourceAccess;
-using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerPreferencesManagement.v1.CustomerPreferencesManagementService;
 
 namespace DKH.CustomerService.Api.Services;
 
+// TODO(olac-phase4-caller-binding): per-row binding deferred to Phase 4
+//   via ADR-025a D2 [RequireCallerMatchesClaim("UserId")] once Platform
+//   1.x with D2 lands here.
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerPreferencesManagementServiceBase
 {
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<GetPreferencesResponse> GetPreferences(GetPreferencesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
         return await mediator.Send(new GetPreferencesQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<UpdatePreferencesResponse> UpdatePreferences(UpdatePreferencesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -36,7 +37,6 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<UpdateNotificationChannelsResponse> UpdateNotificationChannels(UpdateNotificationChannelsRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -50,7 +50,6 @@ public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefr
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<UpdateNotificationTypesResponse> UpdateNotificationTypes(UpdateNotificationTypesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);

@@ -7,8 +7,6 @@ using DKH.CustomerService.Application.Mappers;
 using DKH.CustomerService.Application.Profiles.PermanentlyDeleteProfile;
 using DKH.CustomerService.Application.Profiles.RestoreProfile;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerCrud.v1;
-using DKH.Platform.Authorization.ResourceAccess;
-using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.Identity;
@@ -16,9 +14,14 @@ using DKH.Platform.MultiTenancy;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DKH.CustomerService.Api.Services;
 
+// TODO(olac-phase4-caller-binding): per-row binding deferred to Phase 4
+//   via ADR-025a D2 [RequireCallerMatchesClaim("UserId")] once Platform
+//   1.x with D2 lands here.
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class CustomerCrudGrpcService(
     IMediator mediator,
     IPlatformStorefrontContext storefrontContext,
@@ -57,7 +60,6 @@ public class CustomerCrudGrpcService(
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<GetCustomerStatsResponse> GetCustomerStats(
         GetCustomerStatsRequest request,
         ServerCallContext context)
@@ -68,7 +70,6 @@ public class CustomerCrudGrpcService(
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<BlockCustomerResponse> BlockCustomer(
         BlockCustomerRequest request,
         ServerCallContext context)
@@ -83,7 +84,6 @@ public class CustomerCrudGrpcService(
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<UnblockCustomerResponse> UnblockCustomer(
         UnblockCustomerRequest request,
         ServerCallContext context)
@@ -94,7 +94,6 @@ public class CustomerCrudGrpcService(
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override Task<SuspendCustomerResponse> SuspendCustomer(
         SuspendCustomerRequest request,
         ServerCallContext context)
@@ -103,7 +102,6 @@ public class CustomerCrudGrpcService(
         return Task.FromResult(new SuspendCustomerResponse { Success = false });
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<Contracts.Customer.Models.CustomerProfile.v1.CustomerProfileModel> RestoreCustomerProfile(
         RestoreCustomerProfileRequest request,
         ServerCallContext context)
@@ -113,7 +111,6 @@ public class CustomerCrudGrpcService(
         return entity.ToContractModel();
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> PermanentlyDeleteCustomerProfile(
         PermanentlyDeleteCustomerProfileRequest request,
         ServerCallContext context)

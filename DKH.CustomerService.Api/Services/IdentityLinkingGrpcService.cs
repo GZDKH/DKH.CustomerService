@@ -7,26 +7,28 @@ using DKH.CustomerService.Application.ExternalIdentities.PermanentlyDeleteIdenti
 using DKH.CustomerService.Application.ExternalIdentities.RestoreIdentity;
 using DKH.CustomerService.Application.ExternalIdentities.UnlinkIdentity;
 using DKH.CustomerService.Application.Mappers;
-using DKH.Platform.Authorization.ResourceAccess;
-using DKH.Platform.Authorization.ResourceAccess.Attributes;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Grpc.Extensions;
 using DKH.Platform.MultiTenancy;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using ContractsModels = DKH.CustomerService.Contracts.Customer.Models;
 using ContractsServices = DKH.CustomerService.Contracts.Customer.Api.IdentityLinking.v1;
 
 namespace DKH.CustomerService.Api.Services;
 
+// TODO(olac-phase4-caller-binding): per-row binding deferred to Phase 4
+//   via ADR-025a D2 [RequireCallerMatchesClaim("UserId")] once Platform
+//   1.x with D2 lands here.
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsServices.IdentityLinkingService.IdentityLinkingServiceBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IPlatformStorefrontContext _storefrontContext = storefrontContext;
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ContractsModels.ExternalIdentity.v1.ExternalIdentityModel> LinkIdentity(
         ContractsServices.LinkIdentityRequest request,
         ServerCallContext context)
@@ -44,7 +46,6 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<Empty> UnlinkIdentity(
         ContractsServices.UnlinkIdentityRequest request,
         ServerCallContext context)
@@ -59,7 +60,6 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
         return new Empty();
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> DeleteIdentity(
         ContractsServices.DeleteIdentityRequest request,
         ServerCallContext context)
@@ -84,7 +84,6 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Read)]
     public override async Task<ContractsModels.CustomerProfile.v1.CustomerProfileModel> FindByExternalIdentity(
         ContractsServices.FindByExternalIdentityRequest request,
         ServerCallContext context)
@@ -98,7 +97,6 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ContractsModels.CustomerProfile.v1.CustomerProfileModel> MergeProfiles(
         ContractsServices.MergeProfilesRequest request,
         ServerCallContext context)
@@ -112,7 +110,6 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
             context.CancellationToken);
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Update)]
     public override async Task<ContractsModels.ExternalIdentity.v1.ExternalIdentityModel> RestoreIdentity(
         ContractsServices.RestoreIdentityRequest request,
         ServerCallContext context)
@@ -122,7 +119,6 @@ public sealed class IdentityLinkingGrpcService(IMediator mediator, IPlatformStor
         return entity.ToContractModel();
     }
 
-    [RequireResourceAccess("customer", ResourceAccessPermissions.Delete)]
     public override async Task<Empty> PermanentlyDeleteIdentity(
         ContractsServices.PermanentlyDeleteIdentityRequest request,
         ServerCallContext context)
