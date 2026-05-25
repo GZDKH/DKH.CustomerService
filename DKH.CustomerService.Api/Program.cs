@@ -9,6 +9,7 @@ using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.Platform;
 using DKH.Platform.Authentication.Keycloak;
+using DKH.Platform.Authentication.Keycloak.Backend;
 using DKH.Platform.Authorization;
 using DKH.Platform.Authorization.ResourceAccess;
 using DKH.Platform.Authorization.ResourceAccess.DependencyInjection;
@@ -84,6 +85,7 @@ await Platform
     .AddGrpcCurrentUser()
     .AddPlatformGrpc(grpc =>
     {
+        grpc.AddInterceptor<RequireCallerMatchesClaimInterceptor>();
         grpc.AddInterceptor<ResourceAccessGrpcInterceptor>();
         grpc.MapService<CustomerAddressGrpcService>();
         grpc.MapService<WishlistGrpcService>();

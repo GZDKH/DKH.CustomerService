@@ -1,6 +1,7 @@
 using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Contracts.Customer.Api.ContactVerification.v1;
 using DKH.CustomerService.Contracts.Customer.Models.ContactVerification.v1;
+using DKH.Platform.Authentication.Keycloak.Backend;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
@@ -9,9 +10,6 @@ using ContractsService = DKH.CustomerService.Contracts.Customer.Api.ContactVerif
 
 namespace DKH.CustomerService.Api.Services;
 
-// TODO(olac-phase4-caller-binding): per-row binding deferred to Phase 4
-//   via ADR-025a D2 [RequireCallerMatchesClaim("UserId")] once Platform
-//   1.x with D2 lands here.
 [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class ContactVerificationGrpcService(
     IVerificationService verificationService,
@@ -19,6 +17,7 @@ public class ContactVerificationGrpcService(
     IPlatformStorefrontContext storefrontContext)
     : ContractsService.ContactVerificationServiceBase
 {
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<InitiateEmailVerificationResponse> InitiateEmailVerification(InitiateEmailVerificationRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -40,6 +39,7 @@ public class ContactVerificationGrpcService(
         };
     }
 
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<VerifyEmailResponse> VerifyEmail(VerifyEmailRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -68,6 +68,7 @@ public class ContactVerificationGrpcService(
         };
     }
 
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<InitiatePhoneVerificationResponse> InitiatePhoneVerification(InitiatePhoneVerificationRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
@@ -89,6 +90,7 @@ public class ContactVerificationGrpcService(
         };
     }
 
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<VerifyPhoneResponse> VerifyPhone(VerifyPhoneRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
