@@ -7,6 +7,8 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grant = DKH.Platform.Authorization.ResourceAccess.Models.Grant;
 using GrantCommand = DKH.Platform.Authorization.ResourceAccess.Models.GrantCommand;
+using ListAllGrantsQuery = DKH.Platform.Authorization.ResourceAccess.Models.ListAllGrantsQuery;
+using ListAllGrantsResult = DKH.Platform.Authorization.ResourceAccess.Models.ListAllGrantsResult;
 using ProtoGrant = DKH.Platform.Authorization.ResourceAccess.Contracts.V1.Grant;
 
 namespace DKH.CustomerService.Api.Grpc.Services;
@@ -70,6 +72,33 @@ public sealed class CustomerGrantsGrpcService(
         catch (ResourceAccessDeniedException ex)
         {
             throw new RpcException(new Status(StatusCode.PermissionDenied, ex.Message));
+        }
+    }
+
+    /// <inheritdoc/>
+    public override async Task<ListAllGrantsResponse> ListAllGrants(ListAllGrantsRequest request, ServerCallContext context)
+    {
+        if (!string.IsNullOrWhiteSpace(request.ResourceType))
+        {
+            ValidateResourceType(request.ResourceType);
+        }
+
+        try
+        {
+            var result = await grantsService.ListAllAsync(ToListAllGrantsQuery(request), context.CancellationToken);
+            return ToListAllGrantsResponse(result);
+        }
+        catch (ResourceAccessDeniedException ex)
+        {
+            throw new RpcException(new Status(StatusCode.PermissionDenied, ex.Message));
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new RpcException(new Status(StatusCode.PermissionDenied, ex.Message));
+        }
+        catch (NotSupportedException ex)
+        {
+            throw new RpcException(new Status(StatusCode.Unimplemented, ex.Message));
         }
     }
 
@@ -140,6 +169,28 @@ public sealed class CustomerGrantsGrpcService(
             throw new RpcException(new Status(StatusCode.PermissionDenied,
                 "Role-based grants can only be created by super-admin."));
         }
+    }
+
+    private static ListAllGrantsQuery ToListAllGrantsQuery(ListAllGrantsRequest r) => new()
+    {
+        ResourceType = string.IsNullOrWhiteSpace(r.ResourceType) ? null : r.ResourceType,
+        SubjectType = r.SubjectType == SubjectType.Unspecified ? null : (ResourceAccessSubjectType)r.SubjectType,
+        SubjectId = string.IsNullOrWhiteSpace(r.SubjectId) ? null : r.SubjectId,
+        IncludeExpired = r.IncludeExpired,
+        Page = r.Page,
+        PageSize = r.PageSize,
+    };
+
+    private static ListAllGrantsResponse ToListAllGrantsResponse(ListAllGrantsResult result)
+    {
+        var response = new ListAllGrantsResponse
+        {
+            TotalCount = result.TotalCount,
+            Page = result.Page,
+            PageSize = result.PageSize,
+        };
+        response.Grants.AddRange(result.Grants.Select(ToProto));
+        return response;
     }
 
     private static GrantCommand ToGrantCommand(GrantAccessRequest r) => new()
