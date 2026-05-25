@@ -6,6 +6,7 @@ using DKH.CustomerService.Application.Profiles.GetOrCreateProfile;
 using DKH.CustomerService.Application.Profiles.GetProfile;
 using DKH.CustomerService.Application.Profiles.UpdateCustomer;
 using DKH.CustomerService.Application.Profiles.UpdateProfile;
+using DKH.Platform.Authentication.Keycloak.Backend;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
@@ -19,9 +20,6 @@ namespace DKH.CustomerService.Api.Services;
 /// CustomerManagementService implementation for storefront-scoped customer profile operations.
 /// All methods require mandatory storefront_id - operations are restricted to the specified storefront.
 /// </summary>
-// TODO(olac-phase4-caller-binding): per-row binding deferred to Phase 4
-//   via ADR-025a D2 [RequireCallerMatchesClaim("UserId")] once Platform
-//   1.x with D2 lands here.
 [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsServices.CustomerManagementService.CustomerManagementServiceBase
@@ -42,6 +40,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<ContractsServices.GetOrCreateProfileResponse> GetOrCreateProfile(
         ContractsServices.GetOrCreateProfileRequest request,
         ServerCallContext context)
@@ -68,6 +67,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<ContractsServices.UpdateProfileResponse> UpdateProfile(
         ContractsServices.UpdateProfileRequest request,
         ServerCallContext context)
@@ -90,6 +90,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
+    [RequireCallerMatchesClaim("UserId")]
     public override async Task<ContractsServices.DeleteProfileResponse> DeleteProfile(
         ContractsServices.DeleteProfileRequest request,
         ServerCallContext context)
