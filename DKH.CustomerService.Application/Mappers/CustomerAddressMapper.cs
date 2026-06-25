@@ -22,6 +22,10 @@ public static class CustomerAddressMapper
             PostalCode = entity.PostalCode ?? string.Empty,
             Phone = entity.Phone ?? string.Empty,
             IsDefault = entity.IsDefault,
+            FirstName = entity.FirstName ?? string.Empty,
+            LastName = entity.LastName ?? string.Empty,
+            Province = entity.Province ?? string.Empty,
+            Company = entity.Company ?? string.Empty,
             CreatedAt = Timestamp.FromDateTime(DateTime.SpecifyKind(entity.CreationTime, DateTimeKind.Utc)),
         };
 

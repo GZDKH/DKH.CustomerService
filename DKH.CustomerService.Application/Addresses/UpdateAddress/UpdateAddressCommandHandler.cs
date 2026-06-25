@@ -19,7 +19,11 @@ public class UpdateAddressCommandHandler(IAppDbContext dbContext)
             request.Building,
             request.Apartment,
             request.PostalCode,
-            request.Phone);
+            request.Phone,
+            request.FirstName,
+            request.LastName,
+            request.Province,
+            request.Company);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

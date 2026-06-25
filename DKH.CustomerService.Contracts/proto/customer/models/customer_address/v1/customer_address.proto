@@ -21,4 +21,8 @@ message CustomerAddressModel {
   bool is_default = 11;
   google.protobuf.Timestamp created_at = 12;
   google.protobuf.Timestamp updated_at = 13;
+  string first_name = 14;
+  string last_name = 15;
+  string province = 16;
+  string company = 17;
 }

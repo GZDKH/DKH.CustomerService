@@ -60,6 +60,10 @@ message CreateAddressRequest {
   string postal_code = 9;
   string phone = 10;
   bool is_default = 11;
+  string first_name = 12;
+  string last_name = 13;
+  string province = 14;
+  string company = 15;
 }
 
 message CreateAddressResponse {
@@ -78,6 +82,10 @@ message UpdateAddressRequest {
   optional string apartment = 9;
   optional string postal_code = 10;
   optional string phone = 11;
+  optional string first_name = 12;
+  optional string last_name = 13;
+  optional string province = 14;
+  optional string company = 15;
 }
 
 message UpdateAddressResponse {

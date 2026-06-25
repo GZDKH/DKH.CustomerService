@@ -34,7 +34,11 @@ public class CreateAddressCommandHandler(ICustomerRepository repository, IAppDbC
             request.Apartment,
             request.PostalCode,
             request.Phone,
-            request.IsDefault);
+            request.IsDefault,
+            request.FirstName,
+            request.LastName,
+            request.Province,
+            request.Company);
 
         dbContext.CustomerAddresses.Add(address);
         await dbContext.SaveChangesAsync(cancellationToken);

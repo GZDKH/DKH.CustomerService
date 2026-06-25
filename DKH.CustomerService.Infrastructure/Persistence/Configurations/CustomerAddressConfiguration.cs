@@ -22,6 +22,10 @@ public class CustomerAddressConfiguration : IEntityTypeConfiguration<CustomerAdd
         builder.Property(x => x.PostalCode).HasMaxLength(20);
         builder.Property(x => x.Phone).HasMaxLength(32);
         builder.Property(x => x.IsDefault).IsRequired();
+        builder.Property(x => x.FirstName).HasMaxLength(100);
+        builder.Property(x => x.LastName).HasMaxLength(100);
+        builder.Property(x => x.Province).HasMaxLength(100);
+        builder.Property(x => x.Company).HasMaxLength(256);
 
         builder.HasIndex(x => x.CustomerId);
         builder.HasIndex(x => new { x.CustomerId, x.IsDefault }).HasFilter("\"IsDefault\" = true");

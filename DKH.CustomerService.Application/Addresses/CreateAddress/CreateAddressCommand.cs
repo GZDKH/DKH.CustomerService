@@ -13,5 +13,9 @@ public sealed record CreateAddressCommand(
     string? Apartment,
     string? PostalCode,
     string? Phone,
-    bool IsDefault)
+    bool IsDefault,
+    string? FirstName,
+    string? LastName,
+    string? Province,
+    string? Company)
     : IRequest<CreateAddressResponse>;

@@ -65,7 +65,11 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
                 request.Apartment,
                 request.PostalCode,
                 request.Phone,
-                request.IsDefault),
+                request.IsDefault,
+                string.IsNullOrEmpty(request.FirstName) ? null : request.FirstName,
+                string.IsNullOrEmpty(request.LastName) ? null : request.LastName,
+                string.IsNullOrEmpty(request.Province) ? null : request.Province,
+                string.IsNullOrEmpty(request.Company) ? null : request.Company),
             context.CancellationToken);
     }
 
@@ -88,7 +92,11 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
                 request.HasBuilding ? request.Building : null,
                 request.HasApartment ? request.Apartment : null,
                 request.HasPostalCode ? request.PostalCode : null,
-                request.HasPhone ? request.Phone : null),
+                request.HasPhone ? request.Phone : null,
+                request.HasFirstName ? request.FirstName : null,
+                request.HasLastName ? request.LastName : null,
+                request.HasProvince ? request.Province : null,
+                request.HasCompany ? request.Company : null),
             context.CancellationToken);
     }
 
