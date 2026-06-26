@@ -23,7 +23,11 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         string? apartment,
         string? postalCode,
         string? phone,
-        bool isDefault)
+        bool isDefault,
+        string? firstName,
+        string? lastName,
+        string? province,
+        string? company)
         : base(Guid.NewGuid())
     {
         CustomerId = customerId;
@@ -36,6 +40,10 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         PostalCode = postalCode;
         Phone = phone;
         IsDefault = isDefault;
+        FirstName = firstName;
+        LastName = lastName;
+        Province = province;
+        Company = company;
     }
 
     public Guid CustomerId { get; private set; }
@@ -58,6 +66,14 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
 
     public bool IsDefault { get; private set; }
 
+    public string? FirstName { get; private set; }
+
+    public string? LastName { get; private set; }
+
+    public string? Province { get; private set; }
+
+    public string? Company { get; private set; }
+
     public override object?[] GetKeys() => [Id];
 
     public static CustomerAddressEntity Create(
@@ -70,9 +86,13 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         string? apartment = null,
         string? postalCode = null,
         string? phone = null,
-        bool isDefault = false)
+        bool isDefault = false,
+        string? firstName = null,
+        string? lastName = null,
+        string? province = null,
+        string? company = null)
     {
-        return new CustomerAddressEntity(customerId, label, country, city, street, building, apartment, postalCode, phone, isDefault);
+        return new CustomerAddressEntity(customerId, label, country, city, street, building, apartment, postalCode, phone, isDefault, firstName, lastName, province, company);
     }
 
     public void Update(
@@ -83,7 +103,11 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         string? building = null,
         string? apartment = null,
         string? postalCode = null,
-        string? phone = null)
+        string? phone = null,
+        string? firstName = null,
+        string? lastName = null,
+        string? province = null,
+        string? company = null)
     {
         if (!string.IsNullOrWhiteSpace(label))
         {
@@ -123,6 +147,26 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         if (phone is not null)
         {
             Phone = phone;
+        }
+
+        if (firstName is not null)
+        {
+            FirstName = firstName;
+        }
+
+        if (lastName is not null)
+        {
+            LastName = lastName;
+        }
+
+        if (province is not null)
+        {
+            Province = province;
+        }
+
+        if (company is not null)
+        {
+            Company = company;
         }
     }
 

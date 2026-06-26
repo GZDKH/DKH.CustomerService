@@ -13,5 +13,9 @@ public sealed record UpdateAddressCommand(
     string? Building,
     string? Apartment,
     string? PostalCode,
-    string? Phone)
+    string? Phone,
+    string? FirstName,
+    string? LastName,
+    string? Province,
+    string? Company)
     : IRequest<UpdateAddressResponse>;
