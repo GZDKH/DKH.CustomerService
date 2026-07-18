@@ -4,6 +4,13 @@ on:
   issues:
     types: [opened, labeled, closed, reopened]
 
+# Serialize events for the same issue. board-label.sh is add-only, so the
+# workflow is the sole label-cleanup mechanism; without this, rapid successive
+# `labeled` events race on a stale payload snapshot and leave stragglers behind.
+concurrency:
+  group: board-sync-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
 permissions:
   issues: read
 
@@ -74,11 +81,26 @@ jobs:
               core.info(`Moved to ${targetStatus}`);
             }
 
-            // Clean up status labels (keep only the latest)
-            if (action === 'labeled' && context.payload.label.name.startsWith('status:')) {
-              const currentLabel = context.payload.label.name;
-              for (const label of issue.labels) {
-                if (label.name.startsWith('status:') && label.name !== currentLabel) {
+            // Clean up stale status:* labels. On `labeled`, keep only the label
+            // just added; on `closed`/`reopened` the board status is derived from
+            // issue state, so every status:* label is stale — drop them all.
+            // Labels are re-fetched here instead of read from the webhook payload,
+            // whose `issue.labels` snapshot goes stale under concurrent labeling.
+            const cleanup =
+              action === 'labeled'
+                ? context.payload.label.name.startsWith('status:')
+                : action === 'closed' || action === 'reopened';
+
+            if (cleanup) {
+              const keep = action === 'labeled' ? context.payload.label.name : null;
+              const current = await github.paginate(github.rest.issues.listLabelsOnIssue, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                per_page: 100,
+              });
+              for (const label of current) {
+                if (label.name.startsWith('status:') && label.name !== keep) {
                   await github.rest.issues.removeLabel({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
@@ -87,4 +109,5 @@ jobs:
                   }).catch(() => {});
                 }
               }
+              core.info(`Status labels cleaned (kept: ${keep ?? 'none'})`);
             }
