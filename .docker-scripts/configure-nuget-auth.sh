@@ -172,7 +172,7 @@ if [ -n "$GITLAB_USER" ] && [ -n "$GITLAB_TOKEN" ]; then
     --password "$GITLAB_TOKEN" \
     --store-password-in-clear-text \
     --configfile "$NUGET_CONFIG" 2>/dev/null || \
-  dotnet nuget add source "${GITLAB_NUGET_SOURCE_URL:-https://gitlab.thetea.app/api/v4/groups/2/-/packages/nuget/index.json}" \
+  dotnet nuget add source "${GITLAB_NUGET_SOURCE_URL:-https://gitlab.xnata.com/api/v4/groups/2/-/packages/nuget/index.json}" \
     --name gitlab-gzdkh-group \
     --username "$GITLAB_USER" \
     --password "$GITLAB_TOKEN" \
