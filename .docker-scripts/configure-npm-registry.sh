@@ -33,7 +33,7 @@ if [ -z "$GITLAB_TOKEN" ]; then
   exit 0
 fi
 
-NPM_REGISTRY="${NPM_REGISTRY_URL:-https://gitlab.thetea.app/api/v4/groups/${NPM_GROUP_ID:-2}/-/packages/npm/}"
+NPM_REGISTRY="${NPM_REGISTRY_URL:-https://gitlab.xnata.com/api/v4/groups/${NPM_GROUP_ID:-2}/-/packages/npm/}"
 
 cat > .npmrc <<EOF
 @gzdkh:registry=${NPM_REGISTRY}
