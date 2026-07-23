@@ -12,7 +12,7 @@ alwaysApply: true
 
 **CRITICAL**: Every non-trivial task MUST be developed in a feature branch with a Merge Request on GitLab. Direct commits to `main` are FORBIDDEN.
 
-**GitLab Instance**: gitlab.thetea.app (self-hosted, behind Cloudflare)
+**GitLab Instance**: gitlab.xnata.com (self-hosted, behind Cloudflare)
 **Remote**: `origin` = GitLab (primary); dual-push configured to push to both GitLab and GitHub via SSH
 **GitHub**: mirror only — issues and project board live on GitHub, code and MRs live on GitLab
 **Default branch**: `main`
