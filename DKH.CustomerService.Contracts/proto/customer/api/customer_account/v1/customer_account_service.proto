@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package proto.customer.api.customer_account.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerAccount.v1";
+
+import "customer/models/customer_account/v1/customer_account.proto";
+
+// CustomerAccountService exposes self-service operations whose account subject
+// and current storefront are derived from authenticated server context.
+service CustomerAccountService {
+  rpc EnsureCustomerAccount(EnsureCustomerAccountRequest)
+      returns (proto.customer.models.customer_account.v1.CustomerAccountModel);
+  rpc GetCustomerAccount(GetCustomerAccountRequest)
+      returns (proto.customer.models.customer_account.v1.CustomerAccountModel);
+  rpc UpdateCustomerAccount(UpdateCustomerAccountRequest)
+      returns (proto.customer.models.customer_account.v1.CustomerAccountModel);
+  rpc EnsureStorefrontMembership(EnsureStorefrontMembershipRequest)
+      returns (proto.customer.models.customer_account.v1.StorefrontMembershipModel);
+  rpc ListStorefrontMemberships(ListStorefrontMembershipsRequest)
+      returns (ListStorefrontMembershipsResponse);
+  rpc ListLinkedCustomerIdentities(ListLinkedCustomerIdentitiesRequest)
+      returns (ListLinkedCustomerIdentitiesResponse);
+  rpc ListConsolidatedWishlistEntries(ListConsolidatedWishlistEntriesRequest)
+      returns (ListConsolidatedWishlistEntriesResponse);
+}
+
+message EnsureCustomerAccountRequest {}
+
+message GetCustomerAccountRequest {}
+
+message UpdateCustomerAccountRequest {
+  optional string first_name = 1;
+  optional string last_name = 2;
+  optional string preferred_locale = 3;
+}
+
+message EnsureStorefrontMembershipRequest {}
+
+message ListStorefrontMembershipsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message ListStorefrontMembershipsResponse {
+  repeated proto.customer.models.customer_account.v1.StorefrontMembershipModel items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message ListLinkedCustomerIdentitiesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message ListLinkedCustomerIdentitiesResponse {
+  repeated proto.customer.models.customer_account.v1.LinkedCustomerIdentityModel items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message ListConsolidatedWishlistEntriesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message ListConsolidatedWishlistEntriesResponse {
+  repeated proto.customer.models.customer_account.v1.ConsolidatedWishlistEntryModel items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
