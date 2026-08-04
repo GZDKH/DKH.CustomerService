@@ -13,6 +13,42 @@ DKH.CustomerService uses PostgreSQL as its primary data store, accessed through 
 
 ```mermaid
 erDiagram
+    customer_accounts {
+        uuid id PK
+        varchar_512 identity_issuer
+        varchar_256 identity_subject
+        varchar_256 verified_email
+        timestamp email_verified_at
+        varchar_100 first_name
+        varchar_100 last_name
+        varchar_16 preferred_locale
+        varchar_32 status
+        bool is_deleted
+    }
+
+    linked_customer_identities {
+        uuid id PK
+        uuid customer_account_id FK
+        varchar_512 provider_authority
+        varchar_256 provider_subject
+        varchar_32 provider_kind
+        uuid legacy_external_identity_id
+        timestamp verified_at
+        bool is_deleted
+    }
+
+    storefront_memberships {
+        uuid id PK
+        uuid customer_account_id FK
+        uuid storefront_id
+        uuid legacy_customer_profile_id FK
+        timestamp first_authenticated_at
+        timestamp last_authenticated_at
+        timestamp last_activity_at
+        varchar_32 status
+        bool is_deleted
+    }
+
     customer_profiles {
         uuid id PK
         uuid storefront_id
@@ -27,6 +63,11 @@ erDiagram
         varchar_10 language_code
         bool is_premium
         bool allows_write_to_pm
+        uuid customer_account_id FK
+        varchar_32 account_reconciliation_status
+        int account_reconciliation_attempt_count
+        timestamp last_account_reconciliation_attempt_at
+        varchar_64 account_reconciliation_reason_code
         int account_status
         timestamp blocked_at
         text block_reason
@@ -106,6 +147,10 @@ erDiagram
     customer_profiles ||--o{ customer_addresses : "has many"
     customer_profiles ||--o{ wishlist_items : "has many"
     customer_profiles ||--o{ customer_external_identities : "has many"
+    customer_accounts ||--o{ linked_customer_identities : "has many"
+    customer_accounts ||--o{ storefront_memberships : "has many"
+    customer_accounts o|--o{ customer_profiles : "reconciles legacy"
+    storefront_memberships o|--o| customer_profiles : "retains source data"
 ```
 
 ## Tables
@@ -131,6 +176,11 @@ The primary table storing customer profile data. Value objects (`AccountStatus`,
 | `language_code` | `varchar(10)` | No | | Preferred language |
 | `is_premium` | `bool` | No | `false` | Premium flag |
 | `allows_write_to_pm` | `bool` | No | `false` | Telegram permission flag for proactive PM writes |
+| `customer_account_id` | `uuid` | Yes | | FK set only after authoritative-subject reconciliation |
+| `account_reconciliation_status` | `varchar(32)` | No | `PendingProof` | Restartable state: PendingProof, Processing, Linked, or Quarantined |
+| `account_reconciliation_attempt_count` | `int` | No | `0` | Number of reconciliation claims |
+| `last_account_reconciliation_attempt_at` | `timestamp` | Yes | | Last claim/completion/quarantine time |
+| `account_reconciliation_reason_code` | `varchar(64)` | Yes | | Allowlisted non-PII quarantine code |
 | `account_status` | `int` | No | `0` | Account status enum value |
 | `blocked_at` | `timestamp` | Yes | | Block timestamp |
 | `block_reason` | `text` | Yes | | Block reason |
@@ -292,6 +342,66 @@ External identity providers linked to customer accounts (e.g., Google, Apple, em
 
 ---
 
+### customer_accounts
+
+Global customer identities keyed by the authoritative Keycloak issuer and
+subject. Verified email is profile data and is intentionally not a unique or
+merge key.
+
+| Column | Type | Nullable | Description |
+|--------|------|----------|-------------|
+| `Id` | `uuid` | No | Primary key |
+| `identity_issuer` | `varchar(512)` | No | Normalized trusted Keycloak issuer |
+| `identity_subject` | `varchar(256)` | No | Keycloak `sub` within the issuer namespace |
+| `verified_email` | `varchar(256)` | No | Most recently verified email |
+| `email_verified_at` | `timestamp` | No | Time of authoritative email proof |
+| `first_name`, `last_name` | `varchar(100)` | Yes | Global core profile names |
+| `preferred_locale` | `varchar(16)` | No | Preferred locale |
+| `status` | `varchar(32)` | No | Active, Blocked, or DeletionPending |
+
+Indexes: unique `ux_customer_accounts_issuer_subject`; non-unique
+`ix_customer_accounts_verified_email`. The uniqueness constraint is not
+filtered by soft delete, so the same authoritative identity cannot exist twice.
+Full GDPR deletion first moves the soft-deleted tombstone to a synthetic
+`deleted:` identity namespace, allowing a later login to create a fresh account
+without reconnecting retained anonymous audit data.
+
+### linked_customer_identities
+
+Provider identities linked only after fresh provider proof. The globally unique
+`(provider_authority, provider_subject)` pair prevents one provider identity
+from being attached to multiple accounts. `legacy_external_identity_id` records
+reconciliation provenance without deleting or moving the legacy row.
+
+### storefront_memberships
+
+Merchant-visible relationship created on authenticated first touch. Unique
+`(customer_account_id, storefront_id)` prevents duplicate memberships;
+`legacy_customer_profile_id` links at most one membership to the original
+storefront-scoped profile that continues to own wishlist items, addresses,
+preferences, statistics, and merchant-specific state during migration.
+
+### Reconciliation and rollback order
+
+1. Deploy this additive schema while existing v1 profile APIs continue using
+   `customer_profiles`; no legacy table or column is removed.
+2. Existing and new legacy profiles start in `PendingProof`. A trusted
+   authenticated flow claims a row as `Processing`, increments its persisted
+   attempt counter, and links it only when the Keycloak issuer and `sub` are
+   proven. Email text never selects an account.
+3. Stale `Processing` rows are safe to claim again. Conflicts such as multiple
+   subjects or an identity already owned by another account become
+   `Quarantined` with an allowlisted non-PII reason code; an operator may return
+   them to `PendingProof` after resolution.
+4. Linked provider identities are copied with a unique legacy provenance id;
+   legacy identity and storefront data remain intact until the compatibility
+   window closes.
+5. Roll back application consumers first. The old schema remains authoritative;
+   the migration `Down` path only removes additive global-account structures
+   and nullable reconciliation columns.
+
+---
+
 ## Migrations
 
 | Migration | Date | Description |
@@ -300,6 +410,7 @@ External identity providers linked to customer accounts (e.g., Google, Apple, em
 | `20260216010139_AddProviderTypeRenameUserId` | 2026-02-16 | Added `provider_type` column, renamed user identifier column to `user_id` |
 | `20260216070533_202602161200_AddIsPremium` | 2026-02-16 | Added `is_premium` column to customer_profiles |
 | `20260406082057_20260406_AddAllowsWriteToPm` | 2026-04-06 | Added `allows_write_to_pm` column to customer_profiles |
+| `20260804131014_AddGlobalCustomerAccounts` | 2026-08-04 | Added global accounts, linked identities, lazy storefront memberships, and restartable legacy reconciliation state |
 
 ### Running Migrations
 
@@ -322,10 +433,12 @@ dotnet ef migrations script \
 
 ## Design Decisions
 
-- **Soft delete** -- All tables use `is_deleted` flag with global query filters. Physical deletion only occurs during GDPR anonymization.
+- **Soft delete** -- All tables use `is_deleted` flag with global query filters. GDPR flows redact direct identifiers before soft deletion; any later physical retention cleanup is a separate operation.
 - **Value objects as owned types** -- `AccountStatus`, `ContactVerification`, and `CustomerPreferences` are mapped as EF Core owned types, flattening their properties into the `customer_profiles` table.
 - **Cascade deletes** -- Child entities (addresses, wishlist items, external identities) are cascade-deleted when a customer profile is removed.
 - **Partial indexes on email/phone** -- Only non-null values are indexed to optimize lookups while allowing nulls.
 - **Unique filtered index on default address** -- Ensures at most one default address per customer at the database level.
+- **No email merge key** -- Global identity uniqueness uses normalized issuer plus Keycloak subject; verified email remains mutable profile data.
+- **Additive migration** -- Legacy storefront profiles and their child data remain the rollback-safe source of truth until reconciliation completes.
 
-*Last updated: April 2026*
+*Last updated: August 2026*

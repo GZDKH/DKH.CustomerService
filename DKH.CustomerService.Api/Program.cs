@@ -93,6 +93,7 @@ await Platform
         grpc.MapService<ContactVerificationGrpcService>();
         grpc.MapService<CustomerCrudGrpcService>();
         grpc.MapService<CustomerManagementGrpcService>();
+        grpc.MapService<CustomerAccountGrpcService>();
         grpc.MapService<IdentityLinkingGrpcService>();
         grpc.MapService<ProductCollectionGrpcService>();
         grpc.MapService<DataExchangeService>();

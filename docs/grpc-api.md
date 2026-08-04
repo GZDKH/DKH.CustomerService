@@ -2,10 +2,11 @@
 
 ## Overview
 
-DKH.CustomerService exposes 8 gRPC services on port **5010** (HTTP/2). The services are organized into two proto packages:
+DKH.CustomerService exposes 9 gRPC services on port **5010** (HTTP/2). The services are organized into versioned proto packages:
 
 - `customer.services.v1` -- Admin/management operations
 - `customer.api.v1` -- Storefront-facing operations
+- `proto.customer.api.customer_account.v1` -- Principal-oriented global account operations
 
 ## Service Architecture
 
@@ -25,6 +26,7 @@ graph LR
         CVS[ContactVerificationService]
         ILS[IdentityLinkingService]
         DES[DataExchangeService]
+        GCAS[CustomerAccountService]
     end
 
     AG --> CMS
@@ -36,7 +38,44 @@ graph LR
     SG --> CPS
     SG --> CVS
     SG --> ILS
+    SG --> GCAS
 ```
+
+---
+
+## CustomerAccountService (additive)
+
+**Package:** `proto.customer.api.customer_account.v1`
+**Contracts version:** `1.8.0`
+**Description:** Self-service global account, storefront membership, linked
+identity, and consolidated wishlist reads. Account ownership comes from the
+authenticated principal and current storefront scope comes from trusted server
+context; these requests deliberately contain no caller-supplied account,
+subject, issuer, user, or storefront identifiers.
+
+The service reads `sub`, `email`, and `email_verified` from the validated JWT
+principal on `HttpContext.User`; forwarded identity headers are not an ownership
+source. Account creation requires a verified email claim. The endpoint requires
+authentication but no administrative role because every operation is bound to
+the caller's own subject.
+
+| Method | Request | Response | Description |
+|--------|---------|----------|-------------|
+| `EnsureCustomerAccount` | `EnsureCustomerAccountRequest` | `CustomerAccountModel` | Idempotently ensure the principal's global account |
+| `GetCustomerAccount` | `GetCustomerAccountRequest` | `CustomerAccountModel` | Read the principal's global account |
+| `UpdateCustomerAccount` | `UpdateCustomerAccountRequest` | `CustomerAccountModel` | Update allowed global profile fields |
+| `EnsureStorefrontMembership` | `EnsureStorefrontMembershipRequest` | `StorefrontMembershipModel` | Idempotently ensure authenticated membership in the current storefront |
+| `ListStorefrontMemberships` | `ListStorefrontMembershipsRequest` | `ListStorefrontMembershipsResponse` | Paginated memberships for the principal |
+| `ListLinkedCustomerIdentities` | `ListLinkedCustomerIdentitiesRequest` | `ListLinkedCustomerIdentitiesResponse` | Paginated safe provider metadata without raw provider subjects |
+| `ListConsolidatedWishlistEntries` | `ListConsolidatedWishlistEntriesRequest` | `ListConsolidatedWishlistEntriesResponse` | Paginated wishlist entries retaining their source `storefront_id` |
+
+`UpdateCustomerAccountRequest` exposes only optional `first_name`, `last_name`,
+and `preferred_locale`. List requests accept bounded `page` and `page_size`;
+responses carry `items`, `total_count`, `page`, and `page_size`.
+
+The existing storefront-scoped v1 RPCs remain unchanged for compatibility.
+StorefrontGateway client adoption is deferred until the BFF/session phase, after
+the `1.8.0` package is published.
 
 ---
 

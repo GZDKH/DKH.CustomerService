@@ -1,10 +1,12 @@
 using System.Reflection;
 using DKH.CustomerService.Application.Abstractions;
 using DKH.CustomerService.Domain.Authorization;
+using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.ProductCollection;
+using DKH.CustomerService.Domain.Entities.StorefrontMembership;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.Platform.Authorization.ResourceAccess.Domain;
 using DKH.Platform.EntityFrameworkCore;
@@ -18,6 +20,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     : PlatformDbContext<AppDbContext>(options),
         IAppDbContext
 {
+    public DbSet<CustomerAccountEntity> CustomerAccounts { get; init; } = null!;
+
+    public DbSet<LinkedCustomerIdentityEntity> LinkedCustomerIdentities { get; init; } = null!;
+
+    public DbSet<StorefrontMembershipEntity> StorefrontMemberships { get; init; } = null!;
+
     public DbSet<CustomerProfileEntity> CustomerProfiles { get; init; } = null!;
 
     public DbSet<CustomerAddressEntity> CustomerAddresses { get; init; } = null!;
@@ -31,6 +39,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<CustomerAccessGrantEntity> CustomerAccessGrants => Set<CustomerAccessGrantEntity>();
 
     public DbSet<ResourceTypeEntity> ResourceTypes => Set<ResourceTypeEntity>();
+
+    public void ClearTrackedChanges() => ChangeTracker.Clear();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

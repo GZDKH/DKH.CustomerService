@@ -2,12 +2,60 @@
 
 ## Overview
 
-DKH.CustomerService manages customer profiles, delivery addresses, wishlists, preferences, and external identity linking for Telegram Mini App storefronts. The domain follows DDD principles with a single aggregate root (`CustomerProfileEntity`) and three child entities.
+DKH.CustomerService owns a global, Keycloak-backed customer account plus lazy
+storefront memberships. Existing storefront-scoped profiles continue to own
+addresses, wishlists, preferences, statistics, and merchant-specific state
+during the additive migration. The principal aggregates are
+`CustomerAccountEntity`, `StorefrontMembershipEntity`, and the compatible
+`CustomerProfileEntity`.
 
 ## Class Diagram
 
 ```mermaid
 classDiagram
+    class CustomerAccountEntity {
+        +Guid Id
+        +string IdentityIssuer
+        +string IdentitySubject
+        +string VerifiedEmail
+        +DateTime EmailVerifiedAt
+        +string? FirstName
+        +string? LastName
+        +string PreferredLocale
+        +CustomerAccountStatusType Status
+        +ICollection~LinkedCustomerIdentityEntity~ LinkedIdentities
+        +Create()
+        +UpdateVerifiedEmail()
+        +UpdateProfile()
+        +LinkIdentity()
+        +AnonymizeForDeletion()
+    }
+
+    class LinkedCustomerIdentityEntity {
+        +Guid Id
+        +Guid CustomerAccountId
+        +string ProviderAuthority
+        +string ProviderSubject
+        +string ProviderKind
+        +string? DisplayName
+        +DateTime LinkedAt
+        +DateTime VerifiedAt
+    }
+
+    class StorefrontMembershipEntity {
+        +Guid Id
+        +Guid CustomerAccountId
+        +Guid StorefrontId
+        +Guid? LegacyCustomerProfileId
+        +DateTime FirstAuthenticatedAt
+        +DateTime LastAuthenticatedAt
+        +DateTime LastActivityAt
+        +StorefrontMembershipStatusType Status
+        +Create()
+        +RegisterAuthenticatedTouch()
+        +RevokeAndDelete()
+    }
+
     class CustomerProfileEntity {
         +Guid Id
         +Guid StorefrontId
@@ -22,6 +70,8 @@ classDiagram
         +string LanguageCode
         +bool IsPremium
         +bool AllowsWriteToPm
+        +Guid? CustomerAccountId
+        +CustomerAccountReconciliationStatusType AccountReconciliationStatus
         +AccountStatus AccountStatus
         +ContactVerification ContactVerification
         +CustomerPreferences Preferences
@@ -120,6 +170,10 @@ classDiagram
         Deleted = 4
     }
 
+    CustomerAccountEntity "1" --> "*" LinkedCustomerIdentityEntity : Linked identities
+    CustomerAccountEntity "1" --> "*" StorefrontMembershipEntity : Memberships
+    StorefrontMembershipEntity "0..1" --> "0..1" CustomerProfileEntity : Legacy profile
+    CustomerAccountEntity "0..1" --> "*" CustomerProfileEntity : Reconciled profiles
     CustomerProfileEntity "1" --> "*" CustomerAddressEntity : Addresses
     CustomerProfileEntity "1" --> "*" WishlistItemEntity : WishlistItems
     CustomerProfileEntity "1" --> "*" CustomerExternalIdentityEntity : ExternalIdentities
@@ -130,6 +184,41 @@ classDiagram
 ```
 
 ## Entities
+
+### CustomerAccountEntity
+
+The global aggregate keyed uniquely by the trusted Keycloak issuer and
+subject. It is not storefront-scoped. Verified email is mutable profile data,
+not an account merge key.
+
+| Property | Type | Constraints | Description |
+|----------|------|-------------|-------------|
+| `IdentityIssuer` | `string` | Required, max 512 | Server-configured Keycloak issuer |
+| `IdentitySubject` | `string` | Required, max 256 | Validated JWT `sub` within the issuer |
+| `VerifiedEmail` | `string` | Required, max 256 | Email accepted only with `email_verified=true` |
+| `EmailVerifiedAt` | `DateTime` | Required | When verified proof was accepted |
+| `FirstName` / `LastName` | `string?` | Max 100 | Shared core profile names |
+| `PreferredLocale` | `string` | Required, max 16 | Shared locale |
+| `Status` | `CustomerAccountStatusType` | Required | Active, blocked, or deletion pending |
+
+The unique key is `(IdentityIssuer, IdentitySubject)`. Full-account deletion
+anonymizes the authoritative identity, email, linked identities, memberships,
+and all reconciled storefront profile data before soft deletion.
+
+### LinkedCustomerIdentityEntity
+
+A globally unique reference to a provider identity linked after verified
+provider proof. The unique key is `(ProviderAuthority, ProviderSubject)`.
+Self-service responses intentionally omit both raw values and expose only safe
+provider kind, display name, and timestamps.
+
+### StorefrontMembershipEntity
+
+The lazy association created on the first authenticated visit to a storefront.
+It implements `IPlatformStorefrontScoped`, is unique by
+`(CustomerAccountId, StorefrontId)`, and may point to one reconciled legacy
+profile. Deleting one membership anonymizes only that storefront's data;
+deleting the global account anonymizes every membership.
 
 ### CustomerProfileEntity
 
@@ -150,6 +239,11 @@ The aggregate root representing a customer profile scoped to a storefront. Imple
 | `LanguageCode` | `string` | Max 10 | Preferred language code |
 | `IsPremium` | `bool` | Default `false` | Premium account flag |
 | `AllowsWriteToPm` | `bool` | Default `false` | Telegram permission flag for proactive PM writes |
+| `CustomerAccountId` | `Guid?` | Nullable FK | Proven global account link |
+| `AccountReconciliationStatus` | `CustomerAccountReconciliationStatusType` | Required | Pending, processing, linked, or quarantined |
+| `AccountReconciliationAttemptCount` | `int` | Default `0` | Restartable reconciliation attempt count |
+| `LastAccountReconciliationAttemptAt` | `DateTime?` | Optional | Last migration attempt |
+| `AccountReconciliationReasonCode` | `string?` | Max 64 | Privacy-safe quarantine reason code |
 | `AccountStatus` | `AccountStatus` | Value object | Account status and activity tracking |
 | `ContactVerification` | `ContactVerification` | Value object | Email/phone verification state |
 | `Preferences` | `CustomerPreferences` | Value object | Notification and display preferences |
@@ -169,7 +263,7 @@ The aggregate root representing a customer profile scoped to a storefront. Imple
 | `SetPrimaryIdentity` | Marks an external identity as primary |
 | `MergeFrom` | Merges data from another customer profile (account linking) |
 | `SoftDelete` | Marks the profile as deleted without physical removal |
-| `Anonymize` | Removes PII for GDPR compliance |
+| `Anonymize` | Removes direct PII and anonymizes child addresses, wishlist notes, and external identities for GDPR compliance |
 
 ### CustomerAddressEntity
 
@@ -300,4 +394,4 @@ Notification channels and display preferences for the customer.
 
 Domain events are published via MediatR through the `DomainEvents` collection on the aggregate root. Events are dispatched after successful persistence to ensure consistency.
 
-*Last updated: February 2026*
+*Last updated: August 2026*

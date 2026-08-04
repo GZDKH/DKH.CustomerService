@@ -72,6 +72,16 @@ public sealed class CustomerExternalIdentityEntity : FullAuditedEntityWithKey<Gu
         DisplayName = displayName;
     }
 
+    public void Anonymize()
+    {
+        Provider = "deleted";
+        ProviderUserId = $"deleted:{Id:N}";
+        Email = null;
+        DisplayName = null;
+        IsPrimary = false;
+        MarkAsDeleted();
+    }
+
     private static string Require(string value, string name)
     {
         if (string.IsNullOrWhiteSpace(value))

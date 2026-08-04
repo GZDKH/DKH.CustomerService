@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package proto.customer.models.customer_account.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.CustomerAccount.v1";
+
+import "google/protobuf/timestamp.proto";
+import "types/guid.proto";
+
+message CustomerAccountModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  string verified_email = 2;
+  google.protobuf.Timestamp email_verified_at = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string preferred_locale = 6;
+  CustomerAccountStatus status = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+enum CustomerAccountStatus {
+  CUSTOMER_ACCOUNT_STATUS_UNSPECIFIED = 0;
+  CUSTOMER_ACCOUNT_STATUS_ACTIVE = 1;
+  CUSTOMER_ACCOUNT_STATUS_BLOCKED = 2;
+  CUSTOMER_ACCOUNT_STATUS_DELETION_PENDING = 3;
+}
+
+message StorefrontMembershipModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 2;
+  google.protobuf.Timestamp first_authenticated_at = 3;
+  google.protobuf.Timestamp last_authenticated_at = 4;
+  google.protobuf.Timestamp last_activity_at = 5;
+  StorefrontMembershipStatus status = 6;
+}
+
+enum StorefrontMembershipStatus {
+  STOREFRONT_MEMBERSHIP_STATUS_UNSPECIFIED = 0;
+  STOREFRONT_MEMBERSHIP_STATUS_ACTIVE = 1;
+  STOREFRONT_MEMBERSHIP_STATUS_BLOCKED = 2;
+  STOREFRONT_MEMBERSHIP_STATUS_REVOKED = 3;
+}
+
+message LinkedCustomerIdentityModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  string provider_kind = 2;
+  string display_name = 3;
+  google.protobuf.Timestamp linked_at = 4;
+  google.protobuf.Timestamp verified_at = 5;
+}
+
+message ConsolidatedWishlistEntryModel {
+  proto.platform.grpc.common.types.GuidValue id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 2;
+  proto.platform.grpc.common.types.GuidValue product_id = 3;
+  proto.platform.grpc.common.types.GuidValue product_sku_id = 4;
+  google.protobuf.Timestamp added_at = 5;
+  string note = 6;
+}
