@@ -19,7 +19,8 @@ public sealed class LinkedCustomerIdentityEntity : FullAuditedEntityWithKey<Guid
         string providerSubject,
         string providerKind,
         string? displayName,
-        DateTime verifiedAt)
+        DateTime verifiedAt,
+        Guid? legacyExternalIdentityId)
         : base(Guid.NewGuid())
     {
         CustomerAccountId = customerAccountId;
@@ -29,6 +30,7 @@ public sealed class LinkedCustomerIdentityEntity : FullAuditedEntityWithKey<Guid
         DisplayName = NormalizeOptional(displayName);
         LinkedAt = DateTime.UtcNow;
         VerifiedAt = EnsureUtc(verifiedAt);
+        LegacyExternalIdentityId = legacyExternalIdentityId;
     }
 
     public Guid CustomerAccountId { get; private set; }
@@ -45,6 +47,8 @@ public sealed class LinkedCustomerIdentityEntity : FullAuditedEntityWithKey<Guid
 
     public DateTime VerifiedAt { get; private set; }
 
+    public Guid? LegacyExternalIdentityId { get; private set; }
+
     public override object?[] GetKeys() => [Id];
 
     internal static LinkedCustomerIdentityEntity Create(
@@ -53,14 +57,16 @@ public sealed class LinkedCustomerIdentityEntity : FullAuditedEntityWithKey<Guid
         string providerSubject,
         string providerKind,
         string? displayName,
-        DateTime verifiedAt)
+        DateTime verifiedAt,
+        Guid? legacyExternalIdentityId)
         => new(
             customerAccountId,
             providerAuthority,
             providerSubject,
             providerKind,
             displayName,
-            verifiedAt);
+            verifiedAt,
+            legacyExternalIdentityId);
 
     public void UpdateDisplayName(string? displayName)
         => DisplayName = NormalizeOptional(displayName);

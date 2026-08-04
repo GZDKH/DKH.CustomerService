@@ -1,3 +1,4 @@
+using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,22 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
         builder.Property(x => x.LanguageCode).HasMaxLength(10).IsRequired();
         builder.Property(x => x.IsPremium).HasColumnName("is_premium").HasDefaultValue(false);
         builder.Property(x => x.AllowsWriteToPm).HasColumnName("allows_write_to_pm").HasDefaultValue(false);
+        builder.Property(x => x.CustomerAccountId).HasColumnName("customer_account_id");
+        builder.Property(x => x.AccountReconciliationStatus)
+            .HasColumnName("account_reconciliation_status")
+            .HasConversion<string>()
+            .HasMaxLength(32)
+            .HasDefaultValue(CustomerAccountReconciliationStatusType.PendingProof)
+            .IsRequired();
+        builder.Property(x => x.AccountReconciliationAttemptCount)
+            .HasColumnName("account_reconciliation_attempt_count")
+            .HasDefaultValue(0)
+            .IsRequired();
+        builder.Property(x => x.LastAccountReconciliationAttemptAt)
+            .HasColumnName("last_account_reconciliation_attempt_at");
+        builder.Property(x => x.AccountReconciliationReasonCode)
+            .HasColumnName("account_reconciliation_reason_code")
+            .HasMaxLength(64);
 
         builder.OwnsOne(x => x.AccountStatus, status =>
         {
@@ -80,9 +97,16 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
             .HasForeignKey(x => x.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne<CustomerAccountEntity>()
+            .WithMany()
+            .HasForeignKey(x => x.CustomerAccountId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasIndex(x => new { x.StorefrontId, x.UserId }).IsUnique();
         builder.HasIndex(x => x.Email);
         builder.HasIndex(x => x.Phone);
+        builder.HasIndex(x => x.CustomerAccountId);
+        builder.HasIndex(x => new { x.AccountReconciliationStatus, x.LastAccountReconciliationAttemptAt });
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

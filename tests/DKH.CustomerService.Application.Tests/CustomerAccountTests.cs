@@ -1,4 +1,5 @@
 using DKH.CustomerService.Domain.Entities.CustomerAccount;
+using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Domain.Entities.StorefrontMembership;
 using DKH.CustomerService.Domain.Enums;
 using DKH.CustomerService.Domain.Events;
@@ -171,6 +172,48 @@ public class CustomerAccountTests
 
         act.Should().Throw<InvalidOperationException>();
         membership.Status.Should().Be(StorefrontMembershipStatusType.Revoked);
+    }
+
+    [Fact]
+    public void LegacyProfileReconciliation_RequiresProofAndSupportsQuarantineRetry()
+    {
+        var profile = CustomerProfileEntity.Create(
+            Guid.NewGuid(),
+            "legacy-subject",
+            "Ada");
+
+        profile.AccountReconciliationStatus.Should().Be(CustomerAccountReconciliationStatusType.PendingProof);
+
+        profile.BeginAccountReconciliation(VerifiedAt);
+        profile.QuarantineAccountReconciliation("ambiguous_subject", VerifiedAt.AddSeconds(1));
+
+        profile.CustomerAccountId.Should().BeNull();
+        profile.AccountReconciliationAttemptCount.Should().Be(1);
+        profile.AccountReconciliationStatus.Should().Be(CustomerAccountReconciliationStatusType.Quarantined);
+        profile.AccountReconciliationReasonCode.Should().Be("ambiguous_subject");
+
+        profile.RetryAccountReconciliation();
+
+        profile.AccountReconciliationStatus.Should().Be(CustomerAccountReconciliationStatusType.PendingProof);
+        profile.AccountReconciliationReasonCode.Should().BeNull();
+    }
+
+    [Fact]
+    public void LegacyProfileReconciliation_WithProvenAccount_CompletesLinkedState()
+    {
+        var accountId = Guid.NewGuid();
+        var profile = CustomerProfileEntity.Create(
+            Guid.NewGuid(),
+            "legacy-subject",
+            "Ada");
+
+        profile.BeginAccountReconciliation(VerifiedAt);
+        profile.CompleteAccountReconciliation(accountId, VerifiedAt.AddSeconds(1));
+
+        profile.CustomerAccountId.Should().Be(accountId);
+        profile.AccountReconciliationStatus.Should().Be(CustomerAccountReconciliationStatusType.Linked);
+        profile.AccountReconciliationAttemptCount.Should().Be(1);
+        profile.AccountReconciliationReasonCode.Should().BeNull();
     }
 
     private static CustomerAccountEntity CreateAccount()

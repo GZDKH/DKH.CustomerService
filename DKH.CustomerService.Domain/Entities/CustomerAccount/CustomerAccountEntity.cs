@@ -103,7 +103,8 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
         string providerSubject,
         string providerKind,
         string? displayName,
-        DateTime verifiedAt)
+        DateTime verifiedAt,
+        Guid? legacyExternalIdentityId = null)
     {
         var normalizedAuthority = NormalizeProviderAuthority(providerAuthority);
         var normalizedSubject = Require(providerSubject, nameof(providerSubject));
@@ -122,7 +123,8 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
             normalizedSubject,
             normalizedKind,
             displayName,
-            verifiedAt);
+            verifiedAt,
+            legacyExternalIdentityId);
 
         _linkedIdentities.Add(identity);
         return identity;

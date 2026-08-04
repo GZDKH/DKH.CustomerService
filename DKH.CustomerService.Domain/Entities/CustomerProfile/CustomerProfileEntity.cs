@@ -1,6 +1,7 @@
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
+using DKH.CustomerService.Domain.Enums;
 using DKH.CustomerService.Domain.Events;
 using DKH.CustomerService.Domain.ValueObjects;
 using DKH.Platform.Domain.Entities.Auditing;
@@ -28,6 +29,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         AccountStatus = AccountStatus.CreateNew();
         ContactVerification = ContactVerification.CreateNew();
         Preferences = CustomerPreferences.CreateDefault();
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.PendingProof;
     }
 
     private CustomerProfileEntity(
@@ -60,6 +62,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         AccountStatus = AccountStatus.CreateNew();
         ContactVerification = ContactVerification.CreateNew();
         Preferences = CustomerPreferences.CreateDefault();
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.PendingProof;
     }
 
     public Guid StorefrontId { get; private set; }
@@ -92,6 +95,16 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     public CustomerPreferences Preferences { get; private set; }
 
+    public Guid? CustomerAccountId { get; private set; }
+
+    public CustomerAccountReconciliationStatusType AccountReconciliationStatus { get; private set; }
+
+    public int AccountReconciliationAttemptCount { get; private set; }
+
+    public DateTime? LastAccountReconciliationAttemptAt { get; private set; }
+
+    public string? AccountReconciliationReasonCode { get; private set; }
+
     public IReadOnlyCollection<CustomerAddressEntity> Addresses => _addresses.AsReadOnly();
 
     public IReadOnlyCollection<WishlistItemEntity> WishlistItems => _wishlistItems.AsReadOnly();
@@ -101,6 +114,61 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void ClearDomainEvents() => _domainEvents.Clear();
+
+    public void BeginAccountReconciliation(DateTime attemptedAt)
+    {
+        if (AccountReconciliationStatus == CustomerAccountReconciliationStatusType.Linked)
+        {
+            throw new InvalidOperationException("A linked customer profile cannot be reconciled again.");
+        }
+
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.Processing;
+        AccountReconciliationAttemptCount++;
+        LastAccountReconciliationAttemptAt = EnsureUtc(attemptedAt);
+        AccountReconciliationReasonCode = null;
+    }
+
+    public void CompleteAccountReconciliation(Guid customerAccountId, DateTime attemptedAt)
+    {
+        if (AccountReconciliationStatus != CustomerAccountReconciliationStatusType.Processing)
+        {
+            throw new InvalidOperationException("Only a processing customer profile can complete reconciliation.");
+        }
+
+        if (customerAccountId == Guid.Empty)
+        {
+            throw new ArgumentException("Customer account id must not be empty.", nameof(customerAccountId));
+        }
+
+        CustomerAccountId = customerAccountId;
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.Linked;
+        LastAccountReconciliationAttemptAt = EnsureUtc(attemptedAt);
+        AccountReconciliationReasonCode = null;
+    }
+
+    public void QuarantineAccountReconciliation(string reasonCode, DateTime attemptedAt)
+    {
+        if (AccountReconciliationStatus != CustomerAccountReconciliationStatusType.Processing)
+        {
+            throw new InvalidOperationException("Only a processing customer profile can be quarantined.");
+        }
+
+        CustomerAccountId = null;
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.Quarantined;
+        LastAccountReconciliationAttemptAt = EnsureUtc(attemptedAt);
+        AccountReconciliationReasonCode = NormalizeReasonCode(reasonCode);
+    }
+
+    public void RetryAccountReconciliation()
+    {
+        if (AccountReconciliationStatus != CustomerAccountReconciliationStatusType.Quarantined)
+        {
+            throw new InvalidOperationException("Only a quarantined customer profile can be retried.");
+        }
+
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.PendingProof;
+        AccountReconciliationReasonCode = null;
+    }
 
     public override object?[] GetKeys() => [Id];
 
@@ -423,6 +491,28 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
         return value;
     }
+
+    private static string NormalizeReasonCode(string value)
+    {
+        var reasonCode = Require(value, nameof(value)).Trim().ToLowerInvariant();
+        if (reasonCode.Length > 64 || reasonCode.Any(character =>
+                !char.IsAsciiLetterOrDigit(character) && character is not '_' and not '-'))
+        {
+            throw new ArgumentException(
+                "Reconciliation reason code must contain at most 64 ASCII letters, digits, underscores, or hyphens.",
+                nameof(value));
+        }
+
+        return reasonCode;
+    }
+
+    private static DateTime EnsureUtc(DateTime value)
+        => value.Kind switch
+        {
+            DateTimeKind.Utc => value,
+            DateTimeKind.Local => value.ToUniversalTime(),
+            _ => DateTime.SpecifyKind(value, DateTimeKind.Utc),
+        };
 
     public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 }
