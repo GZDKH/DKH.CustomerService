@@ -108,6 +108,12 @@ public sealed class StorefrontMembershipEntity : FullAuditedEntityWithKey<Guid>,
 
     public void Revoke() => Status = StorefrontMembershipStatusType.Revoked;
 
+    public void RevokeAndDelete()
+    {
+        Status = StorefrontMembershipStatusType.Revoked;
+        MarkAsDeleted();
+    }
+
     public void ClearDomainEvents() => _domainEvents.Clear();
 
     private static Guid RequireNonEmpty(Guid value, string parameterName)

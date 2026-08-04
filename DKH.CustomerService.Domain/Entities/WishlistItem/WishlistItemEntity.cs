@@ -50,4 +50,10 @@ public sealed class WishlistItemEntity : FullAuditedEntityWithKey<Guid>
     {
         Note = note;
     }
+
+    public void Anonymize()
+    {
+        Note = null;
+        MarkAsDeleted();
+    }
 }

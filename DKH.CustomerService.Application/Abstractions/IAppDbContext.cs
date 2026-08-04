@@ -26,5 +26,7 @@ public interface IAppDbContext
 
     DbSet<ProductCollectionItemEntity> ProductCollectionItems { get; }
 
+    void ClearTrackedChanges();
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

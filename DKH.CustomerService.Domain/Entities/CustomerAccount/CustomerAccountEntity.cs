@@ -31,8 +31,8 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
         DateTime emailVerifiedAt)
         : base(Guid.NewGuid())
     {
-        IdentityIssuer = NormalizeAuthority(identityIssuer, nameof(identityIssuer));
-        IdentitySubject = Require(identitySubject, nameof(identitySubject));
+        IdentityIssuer = NormalizeIdentityIssuer(identityIssuer);
+        IdentitySubject = NormalizeIdentitySubject(identitySubject);
         VerifiedEmail = NormalizeEmail(verifiedEmail);
         FirstName = NormalizeOptional(firstName);
         LastName = NormalizeOptional(lastName);
@@ -106,9 +106,9 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
         DateTime verifiedAt,
         Guid? legacyExternalIdentityId = null)
     {
-        var normalizedAuthority = NormalizeProviderAuthority(providerAuthority);
-        var normalizedSubject = Require(providerSubject, nameof(providerSubject));
-        var normalizedKind = Require(providerKind, nameof(providerKind)).ToLowerInvariant();
+        var normalizedAuthority = NormalizeLinkedProviderAuthority(providerAuthority);
+        var normalizedSubject = NormalizeIdentitySubject(providerSubject);
+        var normalizedKind = NormalizeLinkedProviderKind(providerKind);
 
         if (_linkedIdentities.Any(identity =>
                 identity.ProviderAuthority == normalizedAuthority &&
@@ -150,11 +150,47 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
 
     public void MarkDeletionPending() => Status = CustomerAccountStatusType.DeletionPending;
 
+    public void AnonymizeForDeletion(DateTime deletedAt)
+    {
+        IdentityIssuer = "https://deleted.invalid";
+        IdentitySubject = $"deleted:{Id:N}";
+        VerifiedEmail = $"deleted-{Id:N}@invalid.local";
+        EmailVerifiedAt = EnsureUtc(deletedAt);
+        FirstName = null;
+        LastName = null;
+        PreferredLocale = "en";
+        Status = CustomerAccountStatusType.DeletionPending;
+
+        foreach (var identity in _linkedIdentities.Where(identity => !identity.IsDeleted))
+        {
+            identity.AnonymizeForAccountDeletion();
+        }
+
+        MarkAsDeleted();
+    }
+
     public void ClearDomainEvents() => _domainEvents.Clear();
+
+    public static string NormalizeIdentityIssuer(string value)
+        => NormalizeAuthority(value, nameof(value), 512);
+
+    public static string NormalizeIdentitySubject(string value)
+        => Require(value, nameof(value), 256);
+
+    public static string NormalizeLinkedProviderAuthority(string value)
+    {
+        var authority = Require(value, nameof(value), 512);
+        return Uri.TryCreate(authority, UriKind.Absolute, out _)
+            ? NormalizeAuthority(authority, nameof(value), 512)
+            : authority.ToLowerInvariant();
+    }
+
+    public static string NormalizeLinkedProviderKind(string value)
+        => Require(value, nameof(value), 32).ToLowerInvariant();
 
     private static string NormalizeEmail(string value)
     {
-        var email = Require(value, nameof(value)).ToLowerInvariant();
+        var email = Require(value, nameof(value), 256).ToLowerInvariant();
         if (!MailAddress.TryCreate(email, out _))
         {
             throw new ArgumentException("A valid verified email address is required.", nameof(value));
@@ -163,9 +199,9 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
         return email;
     }
 
-    private static string NormalizeAuthority(string value, string parameterName)
+    private static string NormalizeAuthority(string value, string parameterName, int maximumLength)
     {
-        var authority = Require(value, parameterName);
+        var authority = Require(value, parameterName, maximumLength);
         if (!Uri.TryCreate(authority, UriKind.Absolute, out var uri) ||
             (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp) ||
             !string.IsNullOrEmpty(uri.Query) ||
@@ -174,32 +210,40 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
             throw new ArgumentException("An absolute HTTP(S) identity issuer is required.", parameterName);
         }
 
-        return uri.AbsoluteUri.TrimEnd('/');
-    }
-
-    private static string NormalizeProviderAuthority(string value)
-    {
-        var authority = Require(value, nameof(value));
-        return Uri.TryCreate(authority, UriKind.Absolute, out _)
-            ? NormalizeAuthority(authority, nameof(value))
-            : authority.ToLowerInvariant();
+        var normalized = uri.AbsoluteUri.TrimEnd('/');
+        return normalized.Length <= maximumLength
+            ? normalized
+            : throw new ArgumentException($"{parameterName} must not exceed {maximumLength} characters.", parameterName);
     }
 
     private static string NormalizeLocale(string value)
-        => Require(value, nameof(value)).ToLowerInvariant();
+        => Require(value, nameof(value), 16).ToLowerInvariant();
 
-    private static string Require(string value, string parameterName)
+    private static string Require(string value, string parameterName, int maximumLength)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
             throw new ArgumentException($"{parameterName} must be provided.", parameterName);
         }
 
-        return value.Trim();
+        var normalized = value.Trim();
+        return normalized.Length <= maximumLength
+            ? normalized
+            : throw new ArgumentException($"{parameterName} must not exceed {maximumLength} characters.", parameterName);
     }
 
     private static string? NormalizeOptional(string? value)
-        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalized = value.Trim();
+        return normalized.Length <= 100
+            ? normalized
+            : throw new ArgumentException("Profile names must not exceed 100 characters.", nameof(value));
+    }
 
     private static DateTime EnsureUtc(DateTime value)
         => value.Kind switch

@@ -71,8 +71,27 @@ public sealed class LinkedCustomerIdentityEntity : FullAuditedEntityWithKey<Guid
     public void UpdateDisplayName(string? displayName)
         => DisplayName = NormalizeOptional(displayName);
 
+    public void AnonymizeForAccountDeletion()
+    {
+        ProviderAuthority = "deleted";
+        ProviderSubject = $"deleted:{Id:N}";
+        ProviderKind = "deleted";
+        DisplayName = null;
+        MarkAsDeleted();
+    }
+
     private static string? NormalizeOptional(string? value)
-        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalized = value.Trim();
+        return normalized.Length <= 200
+            ? normalized
+            : throw new ArgumentException("Display name must not exceed 200 characters.", nameof(value));
+    }
 
     private static DateTime EnsureUtc(DateTime value)
         => value.Kind switch

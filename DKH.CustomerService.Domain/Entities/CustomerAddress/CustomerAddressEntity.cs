@@ -175,6 +175,24 @@ public sealed class CustomerAddressEntity : FullAuditedEntityWithKey<Guid>
         IsDefault = isDefault;
     }
 
+    public void Anonymize()
+    {
+        Label = "Deleted";
+        Country = "Deleted";
+        City = "Deleted";
+        Street = null;
+        Building = null;
+        Apartment = null;
+        PostalCode = null;
+        Phone = null;
+        FirstName = null;
+        LastName = null;
+        Province = null;
+        Company = null;
+        IsDefault = false;
+        MarkAsDeleted();
+    }
+
     private static string Require(string value, string name)
     {
         if (string.IsNullOrWhiteSpace(value))

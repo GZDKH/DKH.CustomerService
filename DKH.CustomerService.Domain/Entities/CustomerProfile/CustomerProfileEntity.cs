@@ -473,12 +473,35 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
 
     public void Anonymize()
     {
+        UserId = $"deleted:{Id:N}";
+        ProviderType = "Deleted";
         FirstName = "Deleted";
         LastName = "User";
         Username = null;
         PhotoUrl = null;
         Phone = null;
         Email = null;
+        IsPremium = false;
+        AllowsWriteToPm = false;
+        CustomerAccountId = null;
+        AccountReconciliationStatus = CustomerAccountReconciliationStatusType.PendingProof;
+        AccountReconciliationReasonCode = null;
+
+        foreach (var address in _addresses.Where(address => !address.IsDeleted))
+        {
+            address.Anonymize();
+        }
+
+        foreach (var wishlistItem in _wishlistItems.Where(item => !item.IsDeleted))
+        {
+            wishlistItem.Anonymize();
+        }
+
+        foreach (var externalIdentity in _externalIdentities.Where(identity => !identity.IsDeleted))
+        {
+            externalIdentity.Anonymize();
+        }
+
         SoftDelete();
     }
 

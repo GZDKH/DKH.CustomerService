@@ -40,6 +40,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<ResourceTypeEntity> ResourceTypes => Set<ResourceTypeEntity>();
 
+    public void ClearTrackedChanges() => ChangeTracker.Clear();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
