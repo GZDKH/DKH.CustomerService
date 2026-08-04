@@ -487,17 +487,17 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
         AccountReconciliationStatus = CustomerAccountReconciliationStatusType.PendingProof;
         AccountReconciliationReasonCode = null;
 
-        foreach (var address in _addresses.Where(address => !address.IsDeleted))
+        foreach (var address in _addresses)
         {
             address.Anonymize();
         }
 
-        foreach (var wishlistItem in _wishlistItems.Where(item => !item.IsDeleted))
+        foreach (var wishlistItem in _wishlistItems)
         {
             wishlistItem.Anonymize();
         }
 
-        foreach (var externalIdentity in _externalIdentities.Where(identity => !identity.IsDeleted))
+        foreach (var externalIdentity in _externalIdentities)
         {
             externalIdentity.Anonymize();
         }

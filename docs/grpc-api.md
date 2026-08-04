@@ -53,6 +53,12 @@ authenticated principal and current storefront scope comes from trusted server
 context; these requests deliberately contain no caller-supplied account,
 subject, issuer, user, or storefront identifiers.
 
+The service reads `sub`, `email`, and `email_verified` from the validated JWT
+principal on `HttpContext.User`; forwarded identity headers are not an ownership
+source. Account creation requires a verified email claim. The endpoint requires
+authentication but no administrative role because every operation is bound to
+the caller's own subject.
+
 | Method | Request | Response | Description |
 |--------|---------|----------|-------------|
 | `EnsureCustomerAccount` | `EnsureCustomerAccountRequest` | `CustomerAccountModel` | Idempotently ensure the principal's global account |

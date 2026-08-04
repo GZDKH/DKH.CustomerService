@@ -361,7 +361,10 @@ merge key.
 
 Indexes: unique `ux_customer_accounts_issuer_subject`; non-unique
 `ix_customer_accounts_verified_email`. The uniqueness constraint is not
-filtered by soft delete, preventing silent recreation of a deleted identity.
+filtered by soft delete, so the same authoritative identity cannot exist twice.
+Full GDPR deletion first moves the soft-deleted tombstone to a synthetic
+`deleted:` identity namespace, allowing a later login to create a fresh account
+without reconnecting retained anonymous audit data.
 
 ### linked_customer_identities
 
@@ -430,7 +433,7 @@ dotnet ef migrations script \
 
 ## Design Decisions
 
-- **Soft delete** -- All tables use `is_deleted` flag with global query filters. Physical deletion only occurs during GDPR anonymization.
+- **Soft delete** -- All tables use `is_deleted` flag with global query filters. GDPR flows redact direct identifiers before soft deletion; any later physical retention cleanup is a separate operation.
 - **Value objects as owned types** -- `AccountStatus`, `ContactVerification`, and `CustomerPreferences` are mapped as EF Core owned types, flattening their properties into the `customer_profiles` table.
 - **Cascade deletes** -- Child entities (addresses, wishlist items, external identities) are cascade-deleted when a customer profile is removed.
 - **Partial indexes on email/phone** -- Only non-null values are indexed to optimize lookups while allowing nulls.

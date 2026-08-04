@@ -161,7 +161,7 @@ public sealed class CustomerAccountEntity : FullAuditedEntityWithKey<Guid>, IAgg
         PreferredLocale = "en";
         Status = CustomerAccountStatusType.DeletionPending;
 
-        foreach (var identity in _linkedIdentities.Where(identity => !identity.IsDeleted))
+        foreach (var identity in _linkedIdentities)
         {
             identity.AnonymizeForAccountDeletion();
         }

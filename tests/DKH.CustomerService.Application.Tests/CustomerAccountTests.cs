@@ -109,6 +109,66 @@ public class CustomerAccountTests
     }
 
     [Fact]
+    public void Create_WithValuesBeyondPersistenceBounds_ThrowsBeforeDatabaseWrite()
+    {
+        var overlongSubject = new string('s', 257);
+        var overlongName = new string('n', 101);
+        var overlongLocale = new string('l', 17);
+
+        var subjectAction = () => CustomerAccountEntity.Create(
+            "https://auth.xnata.com/realms/dkh",
+            overlongSubject,
+            "customer@example.com",
+            null,
+            null,
+            "en",
+            VerifiedAt);
+        var nameAction = () => CustomerAccountEntity.Create(
+            "https://auth.xnata.com/realms/dkh",
+            "subject",
+            "customer@example.com",
+            overlongName,
+            null,
+            "en",
+            VerifiedAt);
+        var localeAction = () => CustomerAccountEntity.Create(
+            "https://auth.xnata.com/realms/dkh",
+            "subject",
+            "customer@example.com",
+            null,
+            null,
+            overlongLocale,
+            VerifiedAt);
+
+        subjectAction.Should().Throw<ArgumentException>();
+        nameAction.Should().Throw<ArgumentException>();
+        localeAction.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void LinkIdentity_WithValuesBeyondPersistenceBounds_ThrowsBeforeDatabaseWrite()
+    {
+        var account = CreateAccount();
+
+        var kindAction = () => account.LinkIdentity(
+            "telegram",
+            "123",
+            new string('p', 33),
+            null,
+            VerifiedAt);
+        var displayNameAction = () => account.LinkIdentity(
+            "telegram",
+            "123",
+            "telegram",
+            new string('d', 201),
+            VerifiedAt);
+
+        kindAction.Should().Throw<ArgumentException>();
+        displayNameAction.Should().Throw<ArgumentException>();
+        account.LinkedIdentities.Should().BeEmpty();
+    }
+
+    [Fact]
     public void CreateMembership_WithAuthenticatedTouch_CreatesSeparateStorefrontScopedAggregate()
     {
         var accountId = Guid.NewGuid();

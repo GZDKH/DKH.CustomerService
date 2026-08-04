@@ -2,7 +2,6 @@ using System.Security.Claims;
 using DKH.CustomerService.Application.CustomerAccounts;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerAccount.v1;
 using DKH.CustomerService.Contracts.Customer.Models.CustomerAccount.v1;
-using DKH.Platform.Identity;
 using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
@@ -14,7 +13,6 @@ namespace DKH.CustomerService.Api.Services;
 [Authorize]
 public sealed class CustomerAccountGrpcService(
     IMediator mediator,
-    IPlatformCurrentUser currentUser,
     IPlatformStorefrontContext storefrontContext,
     IConfiguration configuration)
     : ContractsService.CustomerAccountServiceBase
@@ -23,14 +21,14 @@ public sealed class CustomerAccountGrpcService(
         EnsureCustomerAccountRequest request,
         ServerCallContext context)
         => ExecuteAsync(() => mediator.Send(
-            new EnsureCustomerAccountCommand(ResolveVerifiedIdentity()),
+            new EnsureCustomerAccountCommand(ResolveVerifiedIdentity(context)),
             context.CancellationToken));
 
     public override Task<CustomerAccountModel> GetCustomerAccount(
         GetCustomerAccountRequest request,
         ServerCallContext context)
         => ExecuteAsync(() => mediator.Send(
-            new GetCustomerAccountQuery(ResolveIdentity()),
+            new GetCustomerAccountQuery(ResolveIdentity(context)),
             context.CancellationToken));
 
     public override Task<CustomerAccountModel> UpdateCustomerAccount(
@@ -38,7 +36,7 @@ public sealed class CustomerAccountGrpcService(
         ServerCallContext context)
         => ExecuteAsync(() => mediator.Send(
             new UpdateCustomerAccountCommand(
-                ResolveIdentity(),
+                ResolveIdentity(context),
                 request.HasFirstName ? request.FirstName : null,
                 request.HasLastName ? request.LastName : null,
                 request.HasPreferredLocale ? request.PreferredLocale : null),
@@ -49,7 +47,7 @@ public sealed class CustomerAccountGrpcService(
         ServerCallContext context)
         => ExecuteAsync(async () =>
         {
-            var verifiedIdentity = ResolveVerifiedIdentity();
+            var verifiedIdentity = ResolveVerifiedIdentity(context);
             await mediator.Send(
                 new EnsureCustomerAccountCommand(verifiedIdentity),
                 context.CancellationToken);
@@ -66,7 +64,7 @@ public sealed class CustomerAccountGrpcService(
         ServerCallContext context)
         => ExecuteAsync(() => mediator.Send(
             new ListStorefrontMembershipsQuery(
-                ResolveIdentity(),
+                ResolveIdentity(context),
                 request.Page,
                 request.PageSize),
             context.CancellationToken));
@@ -76,7 +74,7 @@ public sealed class CustomerAccountGrpcService(
         ServerCallContext context)
         => ExecuteAsync(() => mediator.Send(
             new ListLinkedCustomerIdentitiesQuery(
-                ResolveIdentity(),
+                ResolveIdentity(context),
                 request.Page,
                 request.PageSize),
             context.CancellationToken));
@@ -86,17 +84,18 @@ public sealed class CustomerAccountGrpcService(
         ServerCallContext context)
         => ExecuteAsync(() => mediator.Send(
             new ListConsolidatedWishlistEntriesQuery(
-                ResolveIdentity(),
+                ResolveIdentity(context),
                 request.Page,
                 request.PageSize),
             context.CancellationToken));
 
-    private VerifiedCustomerAccountIdentity ResolveVerifiedIdentity()
+    private VerifiedCustomerAccountIdentity ResolveVerifiedIdentity(ServerCallContext context)
     {
-        var identity = ResolveIdentity();
-        var email = Claim(ClaimTypes.Email, "email");
+        var principal = context.GetHttpContext().User;
+        var identity = ResolveIdentity(principal);
+        var email = Claim(principal, ClaimTypes.Email, "email");
         if (string.IsNullOrWhiteSpace(email) ||
-            !bool.TryParse(Claim("email_verified"), out var emailVerified) ||
+            !bool.TryParse(Claim(principal, "email_verified"), out var emailVerified) ||
             !emailVerified)
         {
             throw new RpcException(new Status(
@@ -109,19 +108,22 @@ public sealed class CustomerAccountGrpcService(
             identity.Subject,
             email,
             DateTime.UtcNow,
-            Claim(ClaimTypes.GivenName, "given_name"),
-            Claim(ClaimTypes.Surname, "family_name"),
-            Claim("locale") ?? "en");
+            Claim(principal, ClaimTypes.GivenName, "given_name"),
+            Claim(principal, ClaimTypes.Surname, "family_name"),
+            Claim(principal, "locale") ?? "en");
     }
 
-    private CustomerAccountIdentity ResolveIdentity()
+    private CustomerAccountIdentity ResolveIdentity(ServerCallContext context)
+        => ResolveIdentity(context.GetHttpContext().User);
+
+    private CustomerAccountIdentity ResolveIdentity(ClaimsPrincipal principal)
     {
-        if (!currentUser.IsAuthenticated)
+        if (principal.Identity?.IsAuthenticated != true)
         {
             throw new RpcException(new Status(StatusCode.Unauthenticated, "Authentication is required."));
         }
 
-        var subject = Claim("sub");
+        var subject = Claim(principal, "sub");
         if (string.IsNullOrWhiteSpace(subject))
         {
             throw new RpcException(new Status(StatusCode.Unauthenticated, "Authenticated subject is missing."));
@@ -145,12 +147,11 @@ public sealed class CustomerAccountGrpcService(
                StatusCode.FailedPrecondition,
                "Resolved storefront context is required."));
 
-    private string? Claim(params string[] claimTypes)
+    private static string? Claim(ClaimsPrincipal principal, params string[] claimTypes)
     {
         foreach (var claimType in claimTypes)
         {
-            var value = currentUser.GetClaim(claimType) ??
-                        currentUser.Claims.FirstOrDefault(claim => claim.Type == claimType)?.Value;
+            var value = principal.FindFirst(claimType)?.Value;
             if (!string.IsNullOrWhiteSpace(value))
             {
                 return value;

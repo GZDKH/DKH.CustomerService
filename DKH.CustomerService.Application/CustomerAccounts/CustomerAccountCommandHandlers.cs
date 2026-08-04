@@ -321,6 +321,7 @@ public sealed class DeleteStorefrontMembershipCommandHandler(IAppDbContext dbCon
         if (membership.LegacyCustomerProfileId.HasValue)
         {
             var profile = await dbContext.CustomerProfiles
+                .IgnoreQueryFilters()
                 .Include(candidate => candidate.Addresses)
                 .Include(candidate => candidate.WishlistItems)
                 .Include(candidate => candidate.ExternalIdentities)
@@ -358,7 +359,11 @@ public sealed class DeleteCustomerAccountDataCommandHandler(IAppDbContext dbCont
             .Include(profile => profile.Addresses)
             .Include(profile => profile.WishlistItems)
             .Include(profile => profile.ExternalIdentities)
-            .Where(profile => profileIds.Contains(profile.Id))
+            .Where(profile => profile.CustomerAccountId == account.Id || profileIds.Contains(profile.Id))
+            .ToListAsync(cancellationToken);
+        var linkedIdentities = await dbContext.LinkedCustomerIdentities
+            .IgnoreQueryFilters()
+            .Where(identity => identity.CustomerAccountId == account.Id)
             .ToListAsync(cancellationToken);
 
         foreach (var profile in profiles)
@@ -369,6 +374,11 @@ public sealed class DeleteCustomerAccountDataCommandHandler(IAppDbContext dbCont
         foreach (var membership in memberships)
         {
             membership.RevokeAndDelete();
+        }
+
+        foreach (var linkedIdentity in linkedIdentities)
+        {
+            linkedIdentity.AnonymizeForAccountDeletion();
         }
 
         account.AnonymizeForDeletion(DateTime.UtcNow);

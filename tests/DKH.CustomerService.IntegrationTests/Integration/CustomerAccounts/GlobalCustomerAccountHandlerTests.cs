@@ -2,7 +2,9 @@ using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application.CustomerAccounts;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerAccount.v1;
 using DKH.CustomerService.Contracts.Customer.Models.CustomerAccount.v1;
+using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Entities.StorefrontMembership;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.CustomerService.Domain.Enums;
 using DKH.CustomerService.Infrastructure.Persistence;
@@ -47,6 +49,38 @@ public sealed class GlobalCustomerAccountHandlerTests
         reconciledProfile.CustomerAccountId.Should().Be(Guid.Parse(firstAccount.Id.Value));
         reconciledProfile.AccountReconciliationStatus.Should().Be(CustomerAccountReconciliationStatusType.Linked);
         (await context.LinkedCustomerIdentities.SingleAsync()).ProviderSubject.Should().Be("123456");
+    }
+
+    [Fact]
+    public async Task EnsureAccount_WhenUniqueInsertLosesRace_ReturnsWinningAccountAsync()
+    {
+        await using var context = CreateConcurrentAccountContext();
+
+        var response = await new EnsureCustomerAccountCommandHandler(context).Handle(
+            EnsureAccount("racing-account"),
+            CancellationToken.None);
+
+        (await context.CustomerAccounts.CountAsync()).Should().Be(1);
+        var winner = await context.CustomerAccounts.SingleAsync();
+        response.Id.Value.Should().Be(winner.Id.ToString());
+        winner.IdentitySubject.Should().Be("racing-account");
+    }
+
+    [Fact]
+    public async Task EnsureMembership_WhenUniqueInsertLosesRace_ReturnsWinningMembershipAsync()
+    {
+        await using var context = CreateConcurrentMembershipContext();
+        await EnsureAccountAsync(context, "racing-membership");
+        var storefrontId = Guid.NewGuid();
+
+        var response = await new EnsureStorefrontMembershipCommandHandler(context).Handle(
+            new EnsureStorefrontMembershipCommand(Identity("racing-membership"), storefrontId, VerifiedAt),
+            CancellationToken.None);
+
+        (await context.StorefrontMemberships.CountAsync()).Should().Be(1);
+        var winner = await context.StorefrontMemberships.SingleAsync();
+        response.Id.Value.Should().Be(winner.Id.ToString());
+        winner.StorefrontId.Should().Be(storefrontId);
     }
 
     [Fact]
@@ -204,6 +238,29 @@ public sealed class GlobalCustomerAccountHandlerTests
     }
 
     [Fact]
+    public async Task MembershipPagination_AppliesSafeDefaultsAndMaximumPageSizeAsync()
+    {
+        await using var context = CreateContext();
+        var account = await EnsureAccountAsync(context, "many-memberships");
+        var accountId = Guid.Parse(account.Id.Value);
+        context.StorefrontMemberships.AddRange(Enumerable.Range(0, 105).Select(index =>
+            StorefrontMembershipEntity.Create(
+                accountId,
+                Guid.NewGuid(),
+                VerifiedAt.AddMinutes(index))));
+        await context.SaveChangesAsync();
+
+        var response = await new ListStorefrontMembershipsQueryHandler(context).Handle(
+            new ListStorefrontMembershipsQuery(Identity("many-memberships"), 0, int.MaxValue),
+            CancellationToken.None);
+
+        response.Page.Should().Be(1);
+        response.PageSize.Should().Be(100);
+        response.TotalCount.Should().Be(105);
+        response.Items.Should().HaveCount(100);
+    }
+
+    [Fact]
     public void PublicRequests_DoNotAcceptOwnershipOrStorefrontIdentifiers()
     {
         var forbiddenFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -232,6 +289,11 @@ public sealed class GlobalCustomerAccountHandlerTests
             .Select(field => field.Name)
             .Should()
             .NotContain(field => forbiddenFields.Contains(field));
+
+        LinkedCustomerIdentityModel.Descriptor.Fields.InDeclarationOrder()
+            .Select(field => field.Name)
+            .Should()
+            .NotContain(["provider_authority", "provider_subject"]);
     }
 
     [Fact]
@@ -268,8 +330,83 @@ public sealed class GlobalCustomerAccountHandlerTests
         return new TestAppDbContext(options);
     }
 
+    private static ConcurrentAccountAppDbContext CreateConcurrentAccountContext()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+        return new ConcurrentAccountAppDbContext(options);
+    }
+
+    private static ConcurrentMembershipAppDbContext CreateConcurrentMembershipContext()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+        return new ConcurrentMembershipAppDbContext(options);
+    }
+
     private sealed class TestAppDbContext(DbContextOptions<AppDbContext> options) : AppDbContext(options)
     {
+        protected override Guid? GetCurrentUserId() => null;
+    }
+
+    private sealed class ConcurrentAccountAppDbContext(DbContextOptions<AppDbContext> options) : AppDbContext(options)
+    {
+        private bool _simulateRace = true;
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var pending = ChangeTracker.Entries<CustomerAccountEntity>()
+                .SingleOrDefault(entry => entry.State == EntityState.Added);
+            if (!_simulateRace || pending is null)
+            {
+                return await base.SaveChangesAsync(cancellationToken);
+            }
+
+            _simulateRace = false;
+            var candidate = pending.Entity;
+            ChangeTracker.Clear();
+            CustomerAccounts.Add(CustomerAccountEntity.Create(
+                candidate.IdentityIssuer,
+                candidate.IdentitySubject,
+                candidate.VerifiedEmail,
+                candidate.FirstName,
+                candidate.LastName,
+                candidate.PreferredLocale,
+                candidate.EmailVerifiedAt));
+            await base.SaveChangesAsync(cancellationToken);
+            throw new DbUpdateException("Simulated unique-key insert race.");
+        }
+
+        protected override Guid? GetCurrentUserId() => null;
+    }
+
+    private sealed class ConcurrentMembershipAppDbContext(DbContextOptions<AppDbContext> options) : AppDbContext(options)
+    {
+        private bool _simulateRace = true;
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var pending = ChangeTracker.Entries<StorefrontMembershipEntity>()
+                .SingleOrDefault(entry => entry.State == EntityState.Added);
+            if (!_simulateRace || pending is null)
+            {
+                return await base.SaveChangesAsync(cancellationToken);
+            }
+
+            _simulateRace = false;
+            var candidate = pending.Entity;
+            ChangeTracker.Clear();
+            StorefrontMemberships.Add(StorefrontMembershipEntity.Create(
+                candidate.CustomerAccountId,
+                candidate.StorefrontId,
+                candidate.FirstAuthenticatedAt,
+                candidate.LegacyCustomerProfileId));
+            await base.SaveChangesAsync(cancellationToken);
+            throw new DbUpdateException("Simulated unique-key insert race.");
+        }
+
         protected override Guid? GetCurrentUserId() => null;
     }
 }
