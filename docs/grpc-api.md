@@ -2,11 +2,12 @@
 
 ## Overview
 
-DKH.CustomerService exposes 9 gRPC services on port **5010** (HTTP/2). The services are organized into versioned proto packages:
+DKH.CustomerService exposes 10 gRPC services on port **5010** (HTTP/2). The services are organized into versioned proto packages:
 
 - `customer.services.v1` -- Admin/management operations
 - `customer.api.v1` -- Storefront-facing operations
 - `proto.customer.api.customer_account.v1` -- Principal-oriented global account operations
+- `proto.customer.api.customer_account_admin.v1` -- Platform-global account administration
 
 ## Service Architecture
 
@@ -27,11 +28,13 @@ graph LR
         ILS[IdentityLinkingService]
         DES[DataExchangeService]
         GCAS[CustomerAccountService]
+        GCAA[CustomerAccountAdminService]
     end
 
     AG --> CMS
     AG --> CCS
     AG --> DES
+    AG --> GCAA
     SG --> CMS
     SG --> CAS
     SG --> WS
@@ -46,7 +49,7 @@ graph LR
 ## CustomerAccountService (additive)
 
 **Package:** `proto.customer.api.customer_account.v1`
-**Contracts version:** `1.8.0`
+**Introduced in:** `1.8.0` (available in current `1.9.0` package)
 **Description:** Self-service global account, storefront membership, linked
 identity, and consolidated wishlist reads. Account ownership comes from the
 authenticated principal and current storefront scope comes from trusted server
@@ -76,6 +79,38 @@ responses carry `items`, `total_count`, `page`, and `page_size`.
 The existing storefront-scoped v1 RPCs remain unchanged for compatibility.
 StorefrontGateway client adoption is deferred until the BFF/session phase, after
 the `1.8.0` package is published.
+
+---
+
+## CustomerAccountAdminService (additive)
+
+**Package:** `proto.customer.api.customer_account_admin.v1`
+**Contracts version:** `1.9.0`
+**Authorization:** `PlatformCustomerAccountAdmin` (`SuperAdmin`, realm `Admin`,
+or `FullAccess` only)
+
+This service is the platform-global counterpart to the principal-bound account
+API. It supports paginated account search, membership counts, account detail,
+membership inspection, status changes, GDPR export, and anonymizing deletion.
+All reads and destructive actions emit structured audit logs with the actor and
+target identifiers. Mutations require a bounded machine-readable reason code;
+free-form PII is rejected rather than written to logs.
+
+| Method | Request | Response | Description |
+|--------|---------|----------|-------------|
+| `ListCustomerAccounts` | `ListCustomerAccountsRequest` | `ListCustomerAccountsResponse` | Search/filter global accounts with bounded pagination |
+| `GetCustomerAccount` | `GetAdminCustomerAccountRequest` | `AdminCustomerAccountModel` | Read one global account with membership count and safe provider metadata |
+| `ListAccountStorefrontMemberships` | `ListAccountStorefrontMembershipsRequest` | `ListAccountStorefrontMembershipsResponse` | List an account's memberships with optional storefront/status filter |
+| `SetCustomerAccountStatus` | `SetCustomerAccountStatusRequest` | `AdminCustomerAccountModel` | Block or activate a global account; audit reason required |
+| `SetStorefrontMembershipStatus` | `SetStorefrontMembershipStatusRequest` | `AdminStorefrontMembershipModel` | Activate, block, or revoke a membership; audit reason required |
+| `ExportCustomerAccount` | `ExportCustomerAccountRequest` | `ExportCustomerAccountResponse` | Export a safe JSON account snapshot |
+| `DeleteCustomerAccount` | `DeleteCustomerAccountRequest` | `google.protobuf.Empty` | Anonymize the global account and related membership data |
+
+`LinkedProviderMetadataModel` deliberately contains only `provider_kind`,
+`linked_at`, and `verified_at`. Provider authority, provider subject, provider
+user ID, and tokens are neither serialized nor returned. Merchant administration
+continues to use the legacy storefront-scoped RPCs with a required storefront
+scope; it cannot call this platform-global service.
 
 ---
 
