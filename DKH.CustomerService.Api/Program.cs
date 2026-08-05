@@ -3,6 +3,7 @@ using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
+using DKH.CustomerService.Application.Observability;
 using DKH.CustomerService.Domain.Authorization;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Infrastructure;
@@ -44,7 +45,7 @@ await Platform
     .AddPlatformMessagingWithMediatR(typeof(ConfigureServices).Assembly)
     .AddPlatformDomainEvents()
     .AddPlatformLogging()
-    .AddPlatformTelemetry()
+    .AddPlatformTelemetry(configureMetrics: metrics => metrics.AddMeter(CustomerAccountMetrics.MeterName))
     .AddPlatformKeycloakAuth()
     .AddPlatformAuthorization(policies =>
     {
