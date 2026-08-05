@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package proto.customer.api.customer_account_admin.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CustomerAccountAdmin.v1";
+
+import "google/protobuf/empty.proto";
+import "customer/models/customer_account/v1/customer_account.proto";
+import "types/guid.proto";
+
+// CustomerAccountAdminService exposes platform-global customer-account
+// administration. Every RPC is restricted to platform administrators; merchant
+// storefront membership operations remain on the explicitly scoped legacy API.
+service CustomerAccountAdminService {
+  rpc ListCustomerAccounts(ListCustomerAccountsRequest)
+      returns (ListCustomerAccountsResponse);
+  rpc GetCustomerAccount(GetAdminCustomerAccountRequest)
+      returns (proto.customer.models.customer_account.v1.AdminCustomerAccountModel);
+  rpc ListAccountStorefrontMemberships(ListAccountStorefrontMembershipsRequest)
+      returns (ListAccountStorefrontMembershipsResponse);
+  rpc SetCustomerAccountStatus(SetCustomerAccountStatusRequest)
+      returns (proto.customer.models.customer_account.v1.AdminCustomerAccountModel);
+  rpc SetStorefrontMembershipStatus(SetStorefrontMembershipStatusRequest)
+      returns (proto.customer.models.customer_account.v1.AdminStorefrontMembershipModel);
+  rpc ExportCustomerAccount(ExportCustomerAccountRequest)
+      returns (ExportCustomerAccountResponse);
+  rpc DeleteCustomerAccount(DeleteCustomerAccountRequest)
+      returns (google.protobuf.Empty);
+}
+
+message ListCustomerAccountsRequest {
+  string query = 1;
+  optional proto.customer.models.customer_account.v1.CustomerAccountStatus status = 2;
+  bool include_deleted = 3;
+  int32 page = 4;
+  int32 page_size = 5;
+}
+
+message ListCustomerAccountsResponse {
+  repeated proto.customer.models.customer_account.v1.AdminCustomerAccountModel items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message GetAdminCustomerAccountRequest {
+  proto.platform.grpc.common.types.GuidValue account_id = 1;
+  bool include_deleted = 2;
+}
+
+message ListAccountStorefrontMembershipsRequest {
+  proto.platform.grpc.common.types.GuidValue account_id = 1;
+  optional proto.platform.grpc.common.types.GuidValue storefront_id = 2;
+  optional proto.customer.models.customer_account.v1.StorefrontMembershipStatus status = 3;
+  bool include_deleted = 4;
+  int32 page = 5;
+  int32 page_size = 6;
+}
+
+message ListAccountStorefrontMembershipsResponse {
+  repeated proto.customer.models.customer_account.v1.AdminStorefrontMembershipModel items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message SetCustomerAccountStatusRequest {
+  proto.platform.grpc.common.types.GuidValue account_id = 1;
+  proto.customer.models.customer_account.v1.CustomerAccountStatus status = 2;
+  string reason = 3;
+}
+
+message SetStorefrontMembershipStatusRequest {
+  proto.platform.grpc.common.types.GuidValue membership_id = 1;
+  proto.customer.models.customer_account.v1.StorefrontMembershipStatus status = 2;
+  string reason = 3;
+}
+
+message ExportCustomerAccountRequest {
+  proto.platform.grpc.common.types.GuidValue account_id = 1;
+  string format = 2;
+}
+
+message ExportCustomerAccountResponse {
+  bytes data = 1;
+  string content_type = 2;
+  string file_name = 3;
+}
+
+message DeleteCustomerAccountRequest {
+  proto.platform.grpc.common.types.GuidValue account_id = 1;
+  string reason = 2;
+}

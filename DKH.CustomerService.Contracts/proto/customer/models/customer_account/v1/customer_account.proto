@@ -50,6 +50,33 @@ message LinkedCustomerIdentityModel {
   google.protobuf.Timestamp verified_at = 5;
 }
 
+// Provider metadata safe for administrative presentation. Provider authority,
+// provider subject, tokens, and raw provider identifiers are intentionally not
+// part of this contract.
+message LinkedProviderMetadataModel {
+  string provider_kind = 1;
+  google.protobuf.Timestamp linked_at = 2;
+  google.protobuf.Timestamp verified_at = 3;
+}
+
+message AdminCustomerAccountModel {
+  CustomerAccountModel account = 1;
+  int32 membership_count = 2;
+  repeated LinkedProviderMetadataModel linked_providers = 3;
+  bool has_ambiguous_legacy_records = 4;
+}
+
+message AdminStorefrontMembershipModel {
+  StorefrontMembershipModel membership = 1;
+  proto.platform.grpc.common.types.GuidValue customer_account_id = 2;
+  string verified_email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  CustomerAccountStatus account_status = 6;
+  repeated LinkedProviderMetadataModel linked_providers = 7;
+  bool legacy_profile_linked = 8;
+}
+
 message ConsolidatedWishlistEntryModel {
   proto.platform.grpc.common.types.GuidValue id = 1;
   proto.platform.grpc.common.types.GuidValue storefront_id = 2;
