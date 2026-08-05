@@ -46,12 +46,20 @@ await Platform
     .AddPlatformLogging()
     .AddPlatformTelemetry()
     .AddPlatformKeycloakAuth()
-    .AddPlatformAuthorization(policies => policies.AddRolePolicy(
-        CustomerServiceAuthorizationPolicies.CustomerAccess,
-        PlatformRoles.Realm.SuperAdmin,
-        PlatformRoles.Realm.Admin,
-        PlatformRoles.FullAccess,
-        PlatformRoles.Admin.CustomerManager))
+    .AddPlatformAuthorization(policies =>
+    {
+        policies.AddRolePolicy(
+            CustomerServiceAuthorizationPolicies.CustomerAccess,
+            PlatformRoles.Realm.SuperAdmin,
+            PlatformRoles.Realm.Admin,
+            PlatformRoles.FullAccess,
+            PlatformRoles.Admin.CustomerManager);
+        policies.AddRolePolicy(
+            CustomerServiceAuthorizationPolicies.PlatformCustomerAccountAdmin,
+            PlatformRoles.Realm.SuperAdmin,
+            PlatformRoles.Realm.Admin,
+            PlatformRoles.FullAccess);
+    })
     .ConfigurePlatformWebApplicationBuilder(builder =>
         builder.Services.AddPlatformResourceAccess<CustomerProfileEntity, CustomerAccessGrantEntity, Guid>(opts =>
         {
@@ -94,6 +102,7 @@ await Platform
         grpc.MapService<CustomerCrudGrpcService>();
         grpc.MapService<CustomerManagementGrpcService>();
         grpc.MapService<CustomerAccountGrpcService>();
+        grpc.MapService<CustomerAccountAdminGrpcService>();
         grpc.MapService<IdentityLinkingGrpcService>();
         grpc.MapService<ProductCollectionGrpcService>();
         grpc.MapService<DataExchangeService>();
@@ -108,5 +117,6 @@ namespace DKH.CustomerService.Api
     public static class CustomerServiceAuthorizationPolicies
     {
         public const string CustomerAccess = "CustomerAccess";
+        public const string PlatformCustomerAccountAdmin = "PlatformCustomerAccountAdmin";
     }
 }

@@ -1,6 +1,8 @@
+using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application.CustomerAccounts;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerAccount.v1;
+using DKH.CustomerService.Contracts.Customer.Api.CustomerAccountAdmin.v1;
 using DKH.CustomerService.Contracts.Customer.Models.CustomerAccount.v1;
 using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
@@ -305,6 +307,142 @@ public sealed class GlobalCustomerAccountHandlerTests
             .Single();
 
         authorize.Policy.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task AdminAccountList_ExposesCountsAndSafeProviderMetadataAsync()
+    {
+        await using var context = CreateContext();
+        var accountModel = await EnsureAccountAsync(context, "admin-subject");
+        var accountId = Guid.Parse(accountModel.Id.Value);
+        var account = await context.CustomerAccounts.SingleAsync();
+        account.LinkIdentity(
+            "https://telegram.org",
+            "raw-provider-subject",
+            "telegram",
+            "Customer",
+            VerifiedAt);
+        context.StorefrontMemberships.Add(StorefrontMembershipEntity.Create(
+            accountId,
+            Guid.NewGuid(),
+            VerifiedAt));
+        var ambiguousProfile = CustomerProfileEntity.Create(Guid.NewGuid(), "admin-subject", "Ambiguous");
+        ambiguousProfile.BeginAccountReconciliation(VerifiedAt);
+        ambiguousProfile.QuarantineAccountReconciliation("identity_conflict", VerifiedAt);
+        context.CustomerProfiles.Add(ambiguousProfile);
+        await context.SaveChangesAsync();
+
+        var response = await new ListAdminCustomerAccountsQueryHandler(context).Handle(
+            new ListAdminCustomerAccountsQuery(null, null, false, 1, 20),
+            CancellationToken.None);
+
+        var item = response.Items.Should().ContainSingle().Which;
+        item.Account.Id.Value.Should().Be(accountId.ToString());
+        item.MembershipCount.Should().Be(1);
+        item.HasAmbiguousLegacyRecords.Should().BeTrue();
+        item.LinkedProviders.Should().ContainSingle().Which.ProviderKind.Should().Be("telegram");
+        LinkedProviderMetadataModel.Descriptor.Fields.InDeclarationOrder()
+            .Select(field => field.Name)
+            .Should().NotContain(["provider_authority", "provider_subject", "provider_user_id", "token"]);
+    }
+
+    [Fact]
+    public async Task AdminAccountAndMembershipStatusCommands_ChangeOnlyRequestedAggregateAsync()
+    {
+        await using var context = CreateContext();
+        var accountModel = await EnsureAccountAsync(context, "status-subject");
+        var accountId = Guid.Parse(accountModel.Id.Value);
+        var firstMembership = StorefrontMembershipEntity.Create(accountId, Guid.NewGuid(), VerifiedAt);
+        var secondMembership = StorefrontMembershipEntity.Create(accountId, Guid.NewGuid(), VerifiedAt);
+        context.StorefrontMemberships.AddRange(firstMembership, secondMembership);
+        await context.SaveChangesAsync();
+
+        var blockedAccount = await new SetAdminCustomerAccountStatusCommandHandler(context).Handle(
+            new SetAdminCustomerAccountStatusCommand(accountId, CustomerAccountStatus.Blocked),
+            CancellationToken.None);
+        var blockedMembership = await new SetAdminStorefrontMembershipStatusCommandHandler(context).Handle(
+            new SetAdminStorefrontMembershipStatusCommand(
+                firstMembership.Id,
+                StorefrontMembershipStatus.Blocked),
+            CancellationToken.None);
+
+        blockedAccount.Account.Status.Should().Be(CustomerAccountStatus.Blocked);
+        blockedMembership.Membership.Status.Should().Be(StorefrontMembershipStatus.Blocked);
+        (await context.StorefrontMemberships.SingleAsync(item => item.Id == secondMembership.Id))
+            .Status.Should().Be(StorefrontMembershipStatusType.Active);
+    }
+
+    [Fact]
+    public async Task AdminMembershipList_AppliesAccountAndStorefrontFiltersAsync()
+    {
+        await using var context = CreateContext();
+        var firstAccount = Guid.Parse((await EnsureAccountAsync(context, "first-admin")).Id.Value);
+        var secondAccount = Guid.Parse((await EnsureAccountAsync(context, "second-admin")).Id.Value);
+        var selectedStorefront = Guid.NewGuid();
+        context.StorefrontMemberships.AddRange(
+            StorefrontMembershipEntity.Create(firstAccount, selectedStorefront, VerifiedAt),
+            StorefrontMembershipEntity.Create(firstAccount, Guid.NewGuid(), VerifiedAt),
+            StorefrontMembershipEntity.Create(secondAccount, selectedStorefront, VerifiedAt));
+        await context.SaveChangesAsync();
+
+        var response = await new ListAdminStorefrontMembershipsQueryHandler(context).Handle(
+            new ListAdminStorefrontMembershipsQuery(
+                firstAccount,
+                selectedStorefront,
+                null,
+                false,
+                1,
+                20),
+            CancellationToken.None);
+
+        var item = response.Items.Should().ContainSingle().Which;
+        item.CustomerAccountId.Value.Should().Be(firstAccount.ToString());
+        item.Membership.StorefrontId.Value.Should().Be(selectedStorefront.ToString());
+    }
+
+    [Fact]
+    public async Task AdminExportAndDelete_OmitProviderSubjectAndAnonymizeAccountAsync()
+    {
+        await using var context = CreateContext();
+        var accountModel = await EnsureAccountAsync(context, "delete-admin");
+        var accountId = Guid.Parse(accountModel.Id.Value);
+        var account = await context.CustomerAccounts.SingleAsync();
+        account.LinkIdentity("telegram", "sensitive-provider-id", "telegram", null, VerifiedAt);
+        context.StorefrontMemberships.Add(StorefrontMembershipEntity.Create(
+            accountId,
+            Guid.NewGuid(),
+            VerifiedAt));
+        await context.SaveChangesAsync();
+
+        var exported = await new ExportAdminCustomerAccountQueryHandler(context).Handle(
+            new ExportAdminCustomerAccountQuery(accountId, "json"),
+            CancellationToken.None);
+        var json = exported.Data.ToStringUtf8();
+        json.Should().Contain("telegram");
+        json.Should().NotContain("sensitive-provider-id");
+        json.Should().NotContain("IdentitySubject");
+        json.Should().NotContain("ProviderAuthority");
+
+        await new DeleteAdminCustomerAccountCommandHandler(context).Handle(
+            new DeleteAdminCustomerAccountCommand(accountId),
+            CancellationToken.None);
+
+        (await context.CustomerAccounts.CountAsync()).Should().Be(0);
+        var deleted = await context.CustomerAccounts.IgnoreQueryFilters().SingleAsync();
+        deleted.IsDeleted.Should().BeTrue();
+        deleted.VerifiedEmail.Should().EndWith("@invalid.local");
+    }
+
+    [Fact]
+    public void CustomerAccountAdminEndpoint_RequiresPlatformAdminPolicy()
+    {
+        var authorize = typeof(CustomerAccountAdminGrpcService)
+            .GetCustomAttributes(typeof(AuthorizeAttribute), inherit: true)
+            .Cast<AuthorizeAttribute>()
+            .Single();
+
+        authorize.Policy.Should().Be(CustomerServiceAuthorizationPolicies.PlatformCustomerAccountAdmin);
+        CustomerAccountAdminService.Descriptor.Methods.Should().HaveCount(7);
     }
 
     private static EnsureCustomerAccountCommand EnsureAccount(string subject)
