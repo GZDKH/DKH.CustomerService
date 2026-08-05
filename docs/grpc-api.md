@@ -647,6 +647,23 @@ scope; it cannot call this platform-global service.
 
 ---
 
+## Privacy-safe customer account metrics
+
+The `DKH.CustomerService.CustomerAccount` meter exports counters and latency
+histograms for identity link/rejection/unlink/recovery and membership
+first/returning/revoked touches. Labels are limited to the resolved
+`storefront_id`, a closed `outcome`, and a bounded `provider_kind` (`telegram`,
+`email`, `wechat`, `google`, `apple`, or `other`).
+
+Email, phone, names, addresses, Keycloak/provider subjects, customer/account/user
+ids, tokens, secrets, and free-form errors are never metric labels. Unknown raw
+provider values collapse to `other`; `CustomerAccountMetricsTests` enforces the
+allowlist and proves raw provider values do not enter measurements. These are
+aggregate series with no opaque attempt id and can follow the platform metrics
+retention policy.
+
+---
+
 ## Error Handling
 
 All services use standard gRPC status codes for error signaling:

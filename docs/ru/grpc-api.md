@@ -33,4 +33,19 @@ membership конкретной витрины. Он предоставляет 
 Ответы не содержат provider authority, provider subject, provider user ID,
 токены или другие необработанные идентификаторы провайдера.
 
+## Privacy-safe метрики аккаунта клиента
+
+Meter `DKH.CustomerService.CustomerAccount` экспортирует counters и latency
+histograms для identity link/rejection/unlink/recovery и membership
+first/returning/revoked touch. Labels ограничены определённым сервером
+`storefront_id`, закрытым `outcome` и bounded `provider_kind` (`telegram`,
+`email`, `wechat`, `google`, `apple` или `other`).
+
+Email, телефон, имя, адрес, Keycloak/provider subject, customer/account/user id,
+токены, секреты и произвольные ошибки никогда не становятся metric labels.
+Неизвестный raw provider сворачивается в `other`; `CustomerAccountMetricsTests`
+проверяет allowlist и отсутствие raw provider values в measurements. Это
+агрегированные series без opaque attempt id, поэтому для них применяется общая
+platform metrics retention policy.
+
 *Последнее обновление: апрель 2026*

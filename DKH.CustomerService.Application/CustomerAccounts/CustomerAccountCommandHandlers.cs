@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using DKH.CustomerService.Application.Mappers;
+using DKH.CustomerService.Application.Observability;
 using DKH.CustomerService.Contracts.Customer.Models.CustomerAccount.v1;
 using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
@@ -108,6 +110,7 @@ public sealed class EnsureStorefrontMembershipCommandHandler(IAppDbContext dbCon
         EnsureStorefrontMembershipCommand request,
         CancellationToken cancellationToken)
     {
+        var startedAt = Stopwatch.GetTimestamp();
         if (request.StorefrontId == Guid.Empty)
         {
             throw new CustomerAccountConflictException("A resolved storefront is required.");
@@ -142,6 +145,10 @@ public sealed class EnsureStorefrontMembershipCommandHandler(IAppDbContext dbCon
             membership.RegisterAuthenticatedTouch(request.AuthenticatedAt);
             await ReconcileLegacyProfileAsync(account, membership, request, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
+            CustomerAccountMetrics.RecordMembership(
+                StorefrontMembershipOutcome.ReturningTouch,
+                request.StorefrontId,
+                Stopwatch.GetElapsedTime(startedAt));
             return membership.ToContractModel();
         }
 
@@ -163,6 +170,10 @@ public sealed class EnsureStorefrontMembershipCommandHandler(IAppDbContext dbCon
         try
         {
             await dbContext.SaveChangesAsync(cancellationToken);
+            CustomerAccountMetrics.RecordMembership(
+                StorefrontMembershipOutcome.FirstTouch,
+                request.StorefrontId,
+                Stopwatch.GetElapsedTime(startedAt));
             return membership.ToContractModel();
         }
         catch (DbUpdateException)
@@ -174,6 +185,10 @@ public sealed class EnsureStorefrontMembershipCommandHandler(IAppDbContext dbCon
                                  candidate.StorefrontId == request.StorefrontId,
                     cancellationToken)
                 ?? throw new CustomerAccountConflictException("Storefront membership creation conflicted with another request.");
+            CustomerAccountMetrics.RecordMembership(
+                StorefrontMembershipOutcome.ReturningTouch,
+                request.StorefrontId,
+                Stopwatch.GetElapsedTime(startedAt));
             return membership.ToContractModel();
         }
     }
@@ -306,6 +321,7 @@ public sealed class DeleteStorefrontMembershipCommandHandler(IAppDbContext dbCon
 {
     public async Task Handle(DeleteStorefrontMembershipCommand request, CancellationToken cancellationToken)
     {
+        var startedAt = Stopwatch.GetTimestamp();
         var account = await CustomerAccountHandlerSupport.RequireAccountAsync(
             dbContext,
             request.Identity,
@@ -333,6 +349,10 @@ public sealed class DeleteStorefrontMembershipCommandHandler(IAppDbContext dbCon
 
         membership.RevokeAndDelete();
         await dbContext.SaveChangesAsync(cancellationToken);
+        CustomerAccountMetrics.RecordMembership(
+            StorefrontMembershipOutcome.Revoked,
+            request.StorefrontId,
+            Stopwatch.GetElapsedTime(startedAt));
     }
 }
 
