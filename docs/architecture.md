@@ -104,7 +104,7 @@ graph LR
 | Consumer | Protocol | Operations |
 |----------|----------|------------|
 | StorefrontGateway | gRPC | Profile CRUD, addresses, wishlist, preferences, verification, identity linking |
-| AdminGateway | gRPC | Customer management, search, block/unblock, GDPR operations |
+| AdminGateway | gRPC | Platform-global account administration plus explicitly storefront-scoped customer membership management |
 | OrderService | gRPC | Address lookup for delivery |
 | CartService | Reference | Links via CustomerId |
 

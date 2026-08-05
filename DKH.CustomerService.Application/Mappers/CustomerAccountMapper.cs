@@ -55,6 +55,52 @@ public static class CustomerAccountMapper
             VerifiedAt = ToTimestamp(entity.VerifiedAt),
         };
 
+    public static LinkedProviderMetadataModel ToProviderMetadataContractModel(
+        this LinkedCustomerIdentityEntity entity)
+        => new()
+        {
+            ProviderKind = entity.ProviderKind,
+            LinkedAt = ToTimestamp(entity.LinkedAt),
+            VerifiedAt = ToTimestamp(entity.VerifiedAt),
+        };
+
+    public static AdminCustomerAccountModel ToAdminContractModel(
+        this CustomerAccountEntity entity,
+        int membershipCount,
+        IEnumerable<LinkedCustomerIdentityEntity> linkedIdentities,
+        bool hasAmbiguousLegacyRecords)
+    {
+        var model = new AdminCustomerAccountModel
+        {
+            Account = entity.ToContractModel(),
+            MembershipCount = membershipCount,
+            HasAmbiguousLegacyRecords = hasAmbiguousLegacyRecords,
+        };
+        model.LinkedProviders.AddRange(linkedIdentities.Select(identity =>
+            identity.ToProviderMetadataContractModel()));
+        return model;
+    }
+
+    public static AdminStorefrontMembershipModel ToAdminContractModel(
+        this StorefrontMembershipEntity entity,
+        CustomerAccountEntity account,
+        IEnumerable<LinkedCustomerIdentityEntity> linkedIdentities)
+    {
+        var model = new AdminStorefrontMembershipModel
+        {
+            Membership = entity.ToContractModel(),
+            CustomerAccountId = GuidValue.FromGuid(account.Id),
+            VerifiedEmail = account.VerifiedEmail,
+            FirstName = account.FirstName ?? string.Empty,
+            LastName = account.LastName ?? string.Empty,
+            AccountStatus = account.Status.ToContractStatus(),
+            LegacyProfileLinked = entity.LegacyCustomerProfileId.HasValue,
+        };
+        model.LinkedProviders.AddRange(linkedIdentities.Select(identity =>
+            identity.ToProviderMetadataContractModel()));
+        return model;
+    }
+
     public static ConsolidatedWishlistEntryModel ToConsolidatedContractModel(
         this WishlistItemEntity entity,
         Guid storefrontId)
@@ -70,7 +116,7 @@ public static class CustomerAccountMapper
             Note = entity.Note ?? string.Empty,
         };
 
-    private static ContractAccountStatus ToContractStatus(this CustomerAccountStatusType status)
+    internal static ContractAccountStatus ToContractStatus(this CustomerAccountStatusType status)
         => status switch
         {
             CustomerAccountStatusType.Active => ContractAccountStatus.Active,
@@ -79,7 +125,7 @@ public static class CustomerAccountMapper
             _ => ContractAccountStatus.Unspecified,
         };
 
-    private static ContractMembershipStatus ToContractStatus(this StorefrontMembershipStatusType status)
+    internal static ContractMembershipStatus ToContractStatus(this StorefrontMembershipStatusType status)
         => status switch
         {
             StorefrontMembershipStatusType.Active => ContractMembershipStatus.Active,
