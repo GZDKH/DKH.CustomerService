@@ -6,6 +6,7 @@ using DKH.Platform.MultiTenancy;
 using Grpc.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerAccount.v1.CustomerAccountService;
 
 namespace DKH.CustomerService.Api.Services;
@@ -14,6 +15,7 @@ namespace DKH.CustomerService.Api.Services;
 public sealed class CustomerAccountGrpcService(
     IMediator mediator,
     IPlatformStorefrontContext storefrontContext,
+    IOptions<PlatformStorefrontContextOptions> storefrontContextOptions,
     IConfiguration configuration)
     : ContractsService.CustomerAccountServiceBase
 {
@@ -54,7 +56,7 @@ public sealed class CustomerAccountGrpcService(
             return await mediator.Send(
                 new EnsureStorefrontMembershipCommand(
                     new CustomerAccountIdentity(verifiedIdentity.Issuer, verifiedIdentity.Subject),
-                    RequireStorefrontId(),
+                    RequireStorefrontId(context),
                     DateTime.UtcNow),
                 context.CancellationToken);
         });
@@ -141,11 +143,24 @@ public sealed class CustomerAccountGrpcService(
             subject);
     }
 
-    private Guid RequireStorefrontId()
-        => storefrontContext.StorefrontId
-           ?? throw new RpcException(new Status(
-               StatusCode.FailedPrecondition,
-               "Resolved storefront context is required."));
+    private Guid RequireStorefrontId(ServerCallContext context)
+    {
+        if (storefrontContext.StorefrontId is { } resolvedStorefrontId)
+        {
+            return resolvedStorefrontId;
+        }
+
+        var metadataStorefrontId = context.RequestHeaders.GetValue(
+            storefrontContextOptions.Value.HeaderName.ToLowerInvariant());
+        if (Guid.TryParse(metadataStorefrontId, out var parsedStorefrontId))
+        {
+            return parsedStorefrontId;
+        }
+
+        throw new RpcException(new Status(
+            StatusCode.FailedPrecondition,
+            "Resolved storefront context is required."));
+    }
 
     private static string? Claim(ClaimsPrincipal principal, params string[] claimTypes)
     {
