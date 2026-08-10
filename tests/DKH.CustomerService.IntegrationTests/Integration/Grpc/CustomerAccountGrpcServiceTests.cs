@@ -43,6 +43,45 @@ public sealed class CustomerAccountGrpcServiceTests : PlatformIntegrationTest
     }
 
     [Fact]
+    public async Task EnsureMembership_AmbientContextMissing_ResolvesStorefrontFromGrpcMetadataAsync()
+    {
+        await using var factory = CreateFactory(resolveAmbientStorefront: false);
+        var client = this.CreateGrpcClient<
+            CustomerAccountService.CustomerAccountServiceClient,
+            GrpcTestExceptionPolicy>(factory);
+        var headers = new Metadata
+        {
+            { "x-storefront-id", _storefrontId.ToString() },
+        };
+
+        var membership = await client.EnsureStorefrontMembershipAsync(
+            new EnsureStorefrontMembershipRequest(),
+            headers);
+
+        Guid.Parse(membership.StorefrontId.Value).Should().Be(_storefrontId);
+    }
+
+    [Fact]
+    public async Task EnsureMembership_AmbientContextMissingAndMetadataInvalid_IsRejectedAsync()
+    {
+        await using var factory = CreateFactory(resolveAmbientStorefront: false);
+        var client = this.CreateGrpcClient<
+            CustomerAccountService.CustomerAccountServiceClient,
+            GrpcTestExceptionPolicy>(factory);
+        var headers = new Metadata
+        {
+            { "x-storefront-id", "not-a-guid" },
+        };
+
+        var action = () => client.EnsureStorefrontMembershipAsync(
+            new EnsureStorefrontMembershipRequest(),
+            headers).ResponseAsync;
+
+        await action.Should().ThrowAsync<RpcException>()
+            .Where(exception => exception.StatusCode == StatusCode.FailedPrecondition);
+    }
+
+    [Fact]
     public async Task EnsureAccount_WithoutVerifiedEmailProof_IsRejectedAsync()
     {
         await using var factory = CreateFactory(emailVerified: false);
@@ -56,7 +95,9 @@ public sealed class CustomerAccountGrpcServiceTests : PlatformIntegrationTest
             .Where(exception => exception.StatusCode == StatusCode.FailedPrecondition);
     }
 
-    private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(bool emailVerified = true)
+    private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(
+        bool emailVerified = true,
+        bool resolveAmbientStorefront = true)
     {
         const string subject = "keycloak-customer-subject";
         var databaseName = $"customer-account-grpc-{Guid.NewGuid()}";
@@ -82,7 +123,7 @@ public sealed class CustomerAccountGrpcServiceTests : PlatformIntegrationTest
         currentUser.GetClaim(Arg.Any<string>()).Returns(call =>
             claims.FirstOrDefault(claim => claim.Type == call.Arg<string>())?.Value);
         var storefrontContext = Substitute.For<IPlatformStorefrontContext>();
-        storefrontContext.StorefrontId.Returns(_storefrontId);
+        storefrontContext.StorefrontId.Returns(resolveAmbientStorefront ? _storefrontId : null);
 
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder.AddPlatformAuthorization(policies =>
@@ -116,6 +157,7 @@ public sealed class CustomerAccountGrpcServiceTests : PlatformIntegrationTest
                 services.AddSingleton(currentUser);
                 services.RemoveAll<IPlatformStorefrontContext>();
                 services.AddSingleton(storefrontContext);
+
                 services.AddSingleton(Substitute.For<Platform.Domain.Events.IPlatformDomainEventDispatcher>());
                 services.AddSingleton(Substitute.For<Platform.Outbox.IPlatformEventPublisher>());
             });
