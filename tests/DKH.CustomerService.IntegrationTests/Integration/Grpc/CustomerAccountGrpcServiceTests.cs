@@ -62,6 +62,87 @@ public sealed class CustomerAccountGrpcServiceTests : PlatformIntegrationTest
     }
 
     [Fact]
+    public async Task EnsureMembership_AmbientContextMissingAndMetadataRepeated_ResolvesSingleStorefrontAsync()
+    {
+        await using var factory = CreateFactory(resolveAmbientStorefront: false);
+        var client = this.CreateGrpcClient<
+            CustomerAccountService.CustomerAccountServiceClient,
+            GrpcTestExceptionPolicy>(factory);
+        var headers = new Metadata
+        {
+            { "x-storefront-id", _storefrontId.ToString() },
+            { "x-storefront-id", _storefrontId.ToString() },
+        };
+
+        var membership = await client.EnsureStorefrontMembershipAsync(
+            new EnsureStorefrontMembershipRequest(),
+            headers);
+
+        Guid.Parse(membership.StorefrontId.Value).Should().Be(_storefrontId);
+    }
+
+    [Fact]
+    public async Task EnsureMembership_AmbientContextMissingAndMetadataCoalesced_ResolvesSingleStorefrontAsync()
+    {
+        await using var factory = CreateFactory(resolveAmbientStorefront: false);
+        var client = this.CreateGrpcClient<
+            CustomerAccountService.CustomerAccountServiceClient,
+            GrpcTestExceptionPolicy>(factory);
+        var headers = new Metadata
+        {
+            { "x-storefront-id", $"{_storefrontId},{_storefrontId}" },
+        };
+
+        var membership = await client.EnsureStorefrontMembershipAsync(
+            new EnsureStorefrontMembershipRequest(),
+            headers);
+
+        Guid.Parse(membership.StorefrontId.Value).Should().Be(_storefrontId);
+    }
+
+    [Fact]
+    public async Task EnsureMembership_AmbientContextMissingAndMetadataConflicts_IsRejectedAsync()
+    {
+        await using var factory = CreateFactory(resolveAmbientStorefront: false);
+        var client = this.CreateGrpcClient<
+            CustomerAccountService.CustomerAccountServiceClient,
+            GrpcTestExceptionPolicy>(factory);
+        var headers = new Metadata
+        {
+            { "x-storefront-id", _storefrontId.ToString() },
+            { "x-storefront-id", Guid.NewGuid().ToString() },
+        };
+
+        var action = () => client.EnsureStorefrontMembershipAsync(
+            new EnsureStorefrontMembershipRequest(),
+            headers).ResponseAsync;
+
+        await action.Should().ThrowAsync<RpcException>()
+            .Where(exception => exception.StatusCode == StatusCode.FailedPrecondition);
+    }
+
+    [Fact]
+    public async Task EnsureMembership_AmbientContextMissingAndMetadataMixesValidAndInvalid_IsRejectedAsync()
+    {
+        await using var factory = CreateFactory(resolveAmbientStorefront: false);
+        var client = this.CreateGrpcClient<
+            CustomerAccountService.CustomerAccountServiceClient,
+            GrpcTestExceptionPolicy>(factory);
+        var headers = new Metadata
+        {
+            { "x-storefront-id", _storefrontId.ToString() },
+            { "x-storefront-id", "not-a-guid" },
+        };
+
+        var action = () => client.EnsureStorefrontMembershipAsync(
+            new EnsureStorefrontMembershipRequest(),
+            headers).ResponseAsync;
+
+        await action.Should().ThrowAsync<RpcException>()
+            .Where(exception => exception.StatusCode == StatusCode.FailedPrecondition);
+    }
+
+    [Fact]
     public async Task EnsureMembership_AmbientContextMissingAndMetadataInvalid_IsRejectedAsync()
     {
         await using var factory = CreateFactory(resolveAmbientStorefront: false);

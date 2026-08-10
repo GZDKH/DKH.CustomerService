@@ -150,17 +150,40 @@ public sealed class CustomerAccountGrpcService(
             return resolvedStorefrontId;
         }
 
-        var metadataStorefrontId = context.RequestHeaders.GetValue(
-            storefrontContextOptions.Value.HeaderName.ToLowerInvariant());
-        if (Guid.TryParse(metadataStorefrontId, out var parsedStorefrontId))
+        var headerName = storefrontContextOptions.Value.HeaderName;
+        Guid? parsedStorefrontId = null;
+        var hasMetadataValue = false;
+
+        foreach (var entry in context.RequestHeaders.Where(entry =>
+                     string.Equals(entry.Key, headerName, StringComparison.OrdinalIgnoreCase)))
         {
-            return parsedStorefrontId;
+            foreach (var value in entry.Value.Split(
+                         ',',
+                         StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                hasMetadataValue = true;
+                if (!Guid.TryParse(value, out var candidateStorefrontId) ||
+                    parsedStorefrontId is { } existingStorefrontId && existingStorefrontId != candidateStorefrontId)
+                {
+                    throw MissingStorefrontContext();
+                }
+
+                parsedStorefrontId = candidateStorefrontId;
+            }
         }
 
-        throw new RpcException(new Status(
+        if (hasMetadataValue && parsedStorefrontId is { } resolvedMetadataStorefrontId)
+        {
+            return resolvedMetadataStorefrontId;
+        }
+
+        throw MissingStorefrontContext();
+    }
+
+    private static RpcException MissingStorefrontContext()
+        => new(new Status(
             StatusCode.FailedPrecondition,
             "Resolved storefront context is required."));
-    }
 
     private static string? Claim(ClaimsPrincipal principal, params string[] claimTypes)
     {
