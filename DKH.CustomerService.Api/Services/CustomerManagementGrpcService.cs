@@ -20,13 +20,14 @@ namespace DKH.CustomerService.Api.Services;
 /// CustomerManagementService implementation for storefront-scoped customer profile operations.
 /// All methods require mandatory storefront_id - operations are restricted to the specified storefront.
 /// </summary>
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerSelfAccess)]
 public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsServices.CustomerManagementService.CustomerManagementServiceBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IPlatformStorefrontContext _storefrontContext = storefrontContext;
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<ContractsServices.GetProfileResponse> GetProfile(
         ContractsServices.GetProfileRequest request,
         ServerCallContext context)
@@ -105,6 +106,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
         };
     }
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<ContractsServices.CreateCustomerResponse> CreateCustomer(
         ContractsServices.CreateCustomerRequest request,
         ServerCallContext context)
@@ -126,6 +128,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
             context.CancellationToken);
     }
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<ContractsServices.UpdateCustomerResponse> UpdateCustomer(
         ContractsServices.UpdateCustomerRequest request,
         ServerCallContext context)
@@ -146,6 +149,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
             context.CancellationToken);
     }
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<ContractsServices.ExportCustomerDataResponse> ExportCustomerData(
         ContractsServices.ExportCustomerDataRequest request,
         ServerCallContext context)
@@ -159,6 +163,7 @@ public sealed class CustomerManagementGrpcService(IMediator mediator, IPlatformS
             context.CancellationToken);
     }
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<ContractsServices.DeleteCustomerDataResponse> DeleteCustomerData(
         ContractsServices.DeleteCustomerDataRequest request,
         ServerCallContext context)

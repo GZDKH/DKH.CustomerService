@@ -56,6 +56,9 @@ await Platform
             PlatformRoles.FullAccess,
             PlatformRoles.Admin.CustomerManager);
         policies.AddRolePolicy(
+            CustomerServiceAuthorizationPolicies.CustomerSelfAccess,
+            [.. CustomerServiceAuthorizationPolicies.CustomerSelfAccessRoles]);
+        policies.AddRolePolicy(
             CustomerServiceAuthorizationPolicies.PlatformCustomerAccountAdmin,
             PlatformRoles.Realm.SuperAdmin,
             PlatformRoles.Realm.Admin,
@@ -118,6 +121,16 @@ namespace DKH.CustomerService.Api
     public static class CustomerServiceAuthorizationPolicies
     {
         public const string CustomerAccess = "CustomerAccess";
+        public const string CustomerSelfAccess = "CustomerSelfAccess";
         public const string PlatformCustomerAccountAdmin = "PlatformCustomerAccountAdmin";
+
+        public static IReadOnlyList<string> CustomerSelfAccessRoles { get; } = Array.AsReadOnly(
+        [
+            PlatformRoles.Realm.SuperAdmin,
+            PlatformRoles.Realm.Admin,
+            PlatformRoles.FullAccess,
+            PlatformRoles.Admin.CustomerManager,
+            PlatformRoles.Realm.Customer,
+        ]);
     }
 }

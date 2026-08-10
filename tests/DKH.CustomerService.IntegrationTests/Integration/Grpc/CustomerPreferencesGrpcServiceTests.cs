@@ -1,3 +1,4 @@
+using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
@@ -35,9 +36,16 @@ public class CustomerPreferencesGrpcServiceTests : PlatformIntegrationTest
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
                     .AddPlatformRepositories<AppDbContext>()
-                    .AddPlatformAuthorization(policies => policies.AddRolePolicy(
-                        "CustomerAccess",
-                        PlatformRoles.Realm.SuperAdmin)),
+                    .AddPlatformAuthorization(policies =>
+                    {
+                        policies.AddRolePolicy(
+                            CustomerServiceAuthorizationPolicies.CustomerAccess,
+                            PlatformRoles.Realm.SuperAdmin);
+                        policies.AddRolePolicy(
+                            CustomerServiceAuthorizationPolicies.CustomerSelfAccess,
+                            PlatformRoles.Realm.SuperAdmin,
+                            PlatformRoles.Realm.Customer);
+                    }),
                 typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),

@@ -13,7 +13,7 @@ using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerPref
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerSelfAccess)]
 public class CustomerPreferencesGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerPreferencesManagementServiceBase
 {
