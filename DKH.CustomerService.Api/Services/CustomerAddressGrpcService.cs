@@ -21,7 +21,7 @@ using ContractsService = DKH.CustomerService.Contracts.Customer.Api.CustomerAddr
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerSelfAccess)]
 public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.CustomerAddressManagementServiceBase
 {
@@ -127,6 +127,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.UserId), context.CancellationToken);
     }
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<Contracts.Customer.Models.CustomerAddress.v1.CustomerAddressModel> RestoreAddress(
         RestoreAddressRequest request,
         ServerCallContext context)
@@ -136,6 +137,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         return entity.ToContractModel();
     }
 
+    [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
     public override async Task<Empty> PermanentlyDeleteAddress(
         PermanentlyDeleteAddressRequest request,
         ServerCallContext context)

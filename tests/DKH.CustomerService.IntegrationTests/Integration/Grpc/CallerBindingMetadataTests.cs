@@ -1,13 +1,55 @@
 using System.Reflection;
+using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Services;
 using DKH.Platform.Authentication.Keycloak.Backend;
+using DKH.Platform.Authorization;
 using FluentAssertions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DKH.CustomerService.IntegrationTests.Integration.Grpc;
 
 [Trait("Category", "Integration")]
 public sealed class CallerBindingMetadataTests
 {
+    [Fact]
+    public void CustomerSelfAccess_AdmitsOnlyCustomerAndExistingAdministrativeRoles()
+    {
+        CustomerServiceAuthorizationPolicies.CustomerSelfAccessRoles.Should().BeEquivalentTo(
+        [
+            PlatformRoles.Realm.SuperAdmin,
+            PlatformRoles.Realm.Admin,
+            PlatformRoles.FullAccess,
+            PlatformRoles.Admin.CustomerManager,
+            PlatformRoles.Realm.Customer,
+        ]);
+    }
+
+    [Theory]
+    [InlineData(typeof(CustomerManagementGrpcService))]
+    [InlineData(typeof(CustomerAddressGrpcService))]
+    [InlineData(typeof(WishlistGrpcService))]
+    [InlineData(typeof(CustomerPreferencesGrpcService))]
+    [InlineData(typeof(ContactVerificationGrpcService))]
+    public void CustomerSelfServices_UseCustomerSelfAccessPolicy(Type serviceType)
+    {
+        GetAuthorizePolicies(serviceType).Should().ContainSingle()
+            .Which.Should().Be(CustomerServiceAuthorizationPolicies.CustomerSelfAccess);
+    }
+
+    [Theory]
+    [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.GetProfile))]
+    [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.CreateCustomer))]
+    [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.UpdateCustomer))]
+    [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.ExportCustomerData))]
+    [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.DeleteCustomerData))]
+    [InlineData(typeof(CustomerAddressGrpcService), nameof(CustomerAddressGrpcService.RestoreAddress))]
+    [InlineData(typeof(CustomerAddressGrpcService), nameof(CustomerAddressGrpcService.PermanentlyDeleteAddress))]
+    public void AdministrativeMethods_RetainCustomerAccessPolicy(Type serviceType, string methodName)
+    {
+        GetAuthorizePolicies(GetServiceMethod(serviceType, methodName)).Should().ContainSingle()
+            .Which.Should().Be(CustomerServiceAuthorizationPolicies.CustomerAccess);
+    }
+
     [Theory]
     [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.GetOrCreateProfile))]
     [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.UpdateProfile))]
@@ -92,4 +134,7 @@ public sealed class CallerBindingMetadataTests
                 methodName,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             ?? throw new MissingMethodException(serviceType.FullName, methodName);
+
+    private static IEnumerable<string?> GetAuthorizePolicies(MemberInfo member)
+        => member.GetCustomAttributes<AuthorizeAttribute>().Select(attribute => attribute.Policy);
 }

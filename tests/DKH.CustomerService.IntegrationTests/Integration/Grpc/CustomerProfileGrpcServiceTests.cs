@@ -1,3 +1,4 @@
+using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.Abstractions;
@@ -11,6 +12,7 @@ using DKH.Platform.Grpc.IntegrationTesting;
 using DKH.Platform.IntegrationTesting;
 using DKH.Platform.MultiTenancy;
 using FluentAssertions;
+using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,26 +28,37 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
     private const string UserId = "tg-user-1";
 
     private PlatformGrpcTestFactory<GrpcTestExceptionPolicy> CreateFactory(
-        Action<IServiceCollection>? configure = null)
+        Action<IServiceCollection>? configure = null,
+        Guid? authenticatedUserId = null,
+        string[]? roles = null)
     {
         var dbName = $"customer-profile-grpc-{Guid.NewGuid()}";
         var emptyConfig = new ConfigurationBuilder().Build();
+        var currentUserId = authenticatedUserId ?? Guid.NewGuid();
+        var currentRoles = roles ?? [PlatformRoles.Realm.SuperAdmin];
 
         return this.CreatePlatformGrpcTest<GrpcTestExceptionPolicy>(
                 platformBuilder => platformBuilder
                     .AddPlatformRepositories<AppDbContext>()
-                    .AddPlatformAuthorization(policies => policies.AddRolePolicy(
-                        "CustomerAccess",
-                        PlatformRoles.Realm.SuperAdmin)),
+                    .AddPlatformAuthorization(policies =>
+                    {
+                        policies.AddRolePolicy(
+                            CustomerServiceAuthorizationPolicies.CustomerAccess,
+                            PlatformRoles.Realm.SuperAdmin);
+                        policies.AddRolePolicy(
+                            CustomerServiceAuthorizationPolicies.CustomerSelfAccess,
+                            PlatformRoles.Realm.SuperAdmin,
+                            PlatformRoles.Realm.Customer);
+                    }),
                 typeof(CustomerManagementGrpcService),
                 typeof(WishlistGrpcService),
                 typeof(CustomerAddressGrpcService),
                 typeof(CustomerPreferencesGrpcService))
             .WithAuthenticatedUser(
-                userId: Guid.NewGuid(),
+                userId: currentUserId,
                 username: "test-user",
                 email: "test@dkh.local",
-                roles: [PlatformRoles.Realm.SuperAdmin],
+                roles: currentRoles,
                 permissions: [],
                 tenantId: null,
                 additionalClaims: [])
@@ -71,6 +84,44 @@ public class CustomerProfileGrpcServiceTests : PlatformIntegrationTest
 
                 configure?.Invoke(services);
             });
+    }
+
+    [Fact]
+    public async Task GetOrCreateProfile_CustomerRoleWithMatchingSubject_IsAllowedAsync()
+    {
+        var customerUserId = Guid.NewGuid();
+        await using var factory = CreateFactory(
+            authenticatedUserId: customerUserId,
+            roles: [PlatformRoles.Realm.Customer]);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+
+        var response = await client.GetOrCreateProfileAsync(new GetOrCreateProfileRequest
+        {
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
+            UserId = customerUserId.ToString(),
+            FirstName = "Customer",
+        });
+
+        response.Created.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task GetProfile_CustomerRole_RemainsForbiddenForAdministrativeLookupAsync()
+    {
+        var customerUserId = Guid.NewGuid();
+        await using var factory = CreateFactory(
+            authenticatedUserId: customerUserId,
+            roles: [PlatformRoles.Realm.Customer]);
+        var client = this.CreateGrpcClient<CustomerManagementService.CustomerManagementServiceClient, GrpcTestExceptionPolicy>(factory);
+
+        var act = () => client.GetProfileAsync(new GetProfileRequest
+        {
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
+            UserId = customerUserId.ToString(),
+        }).ResponseAsync;
+
+        await act.Should().ThrowAsync<RpcException>()
+            .Where(exception => exception.StatusCode == StatusCode.PermissionDenied);
     }
 
     [Fact]

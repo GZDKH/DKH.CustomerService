@@ -15,7 +15,7 @@ using ContractsService = DKH.CustomerService.Contracts.Customer.Api.WishlistMana
 
 namespace DKH.CustomerService.Api.Services;
 
-[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
+[Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerSelfAccess)]
 public class WishlistGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext)
     : ContractsService.WishlistManagementServiceBase
 {
