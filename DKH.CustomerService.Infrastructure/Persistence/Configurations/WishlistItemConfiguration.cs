@@ -20,5 +20,7 @@ public class WishlistItemConfiguration : IEntityTypeConfiguration<WishlistItemEn
 
         builder.HasIndex(x => x.CustomerId);
         builder.HasIndex(x => new { x.CustomerId, x.ProductId, x.ProductSkuId }).IsUnique();
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

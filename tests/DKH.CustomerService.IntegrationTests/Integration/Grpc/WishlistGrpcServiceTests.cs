@@ -166,6 +166,24 @@ public class WishlistGrpcServiceTests : PlatformIntegrationTest
         });
 
         response.Success.Should().BeTrue();
+
+        var wishlist = await client.GetWishlistAsync(new GetWishlistRequest
+        {
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
+            UserId = UserId,
+            Pagination = new PaginationRequest { Page = 1, PageSize = 10 },
+        });
+
+        wishlist.Wishlist.Items.Should().BeEmpty();
+
+        var exists = await client.CheckProductInWishlistAsync(new CheckProductInWishlistRequest
+        {
+            StorefrontId = new GuidValue { Value = _storefrontId.ToString() },
+            UserId = UserId,
+            ProductId = new GuidValue { Value = productId },
+        });
+
+        exists.InWishlist.Should().BeFalse();
     }
 
     [Fact]
