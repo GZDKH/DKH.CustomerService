@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
         // BaselineRoleGrantsSeeder can resolve a DbContext via DI.
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IVerificationService, NullVerificationService>();
+        services.AddScoped<IVerificationService, UnavailableVerificationService>();
         return services;
     }
 }
