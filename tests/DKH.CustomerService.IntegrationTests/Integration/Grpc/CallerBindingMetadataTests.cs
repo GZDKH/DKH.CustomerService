@@ -1,5 +1,6 @@
 using System.Reflection;
 using DKH.CustomerService.Api;
+using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Api.Services;
 using DKH.Platform.Authentication.Keycloak.Backend;
 using DKH.Platform.Authorization;
@@ -11,6 +12,13 @@ namespace DKH.CustomerService.IntegrationTests.Integration.Grpc;
 [Trait("Category", "Integration")]
 public sealed class CallerBindingMetadataTests
 {
+    [Fact]
+    public void CustomerDataExchange_RequiresAdministrativeCustomerAccess()
+    {
+        GetAuthorizePolicies(typeof(DataExchangeService)).Should().ContainSingle()
+            .Which.Should().Be(CustomerServiceAuthorizationPolicies.CustomerAccess);
+    }
+
     [Fact]
     public void CustomerSelfAccess_AdmitsOnlyCustomerAndExistingAdministrativeRoles()
     {
