@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "types/guid.proto";
 import "types/pagination_metadata.proto";
+import "customer/models/product_collection/v1/product_collection_experience.proto";
 
 enum ProductCollectionStatus {
   PRODUCT_COLLECTION_STATUS_UNSPECIFIED = 0;
@@ -26,6 +27,7 @@ message ProductCollectionItemModel {
   google.protobuf.StringValue notes = 6;
   google.protobuf.Int32Value rating = 7;
   google.protobuf.Timestamp added_at = 8;
+  ProductExperienceModel experience = 9;
 }
 
 message ProductCollectionListModel {

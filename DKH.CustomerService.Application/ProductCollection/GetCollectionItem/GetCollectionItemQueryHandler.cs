@@ -10,6 +10,10 @@ public class GetCollectionItemQueryHandler(IAppDbContext dbContext)
     public async Task<ProductCollectionItemModel> Handle(GetCollectionItemQuery request, CancellationToken cancellationToken)
     {
         var item = await dbContext.ProductCollectionItems
+            .Include(p => p.Experience!)
+                .ThenInclude(e => e.Observations)
+            .Include(p => p.Experience!)
+                .ThenInclude(e => e.Tags)
             .Where(p => p.CustomerId == request.CustomerId &&
                         p.ProductId == request.ProductId)
             .FirstOrDefaultAsync(cancellationToken)

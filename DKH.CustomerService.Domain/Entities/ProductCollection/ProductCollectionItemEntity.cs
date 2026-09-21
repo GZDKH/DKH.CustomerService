@@ -43,6 +43,8 @@ public sealed class ProductCollectionItemEntity : FullAuditedEntityWithKey<Guid>
 
     public DateTimeOffset AddedAt { get; private set; }
 
+    public ProductExperienceEntity? Experience { get; private set; }
+
     public override object?[] GetKeys() => [Id];
 
     public static ProductCollectionItemEntity Create(
@@ -69,6 +71,11 @@ public sealed class ProductCollectionItemEntity : FullAuditedEntityWithKey<Guid>
     public void UpdateNotes(string? notes)
     {
         Notes = notes;
+    }
+
+    public void ReplaceExperience(ProductExperienceEntity? experience)
+    {
+        Experience = experience;
     }
 
     public void UpdateRating(int? rating)

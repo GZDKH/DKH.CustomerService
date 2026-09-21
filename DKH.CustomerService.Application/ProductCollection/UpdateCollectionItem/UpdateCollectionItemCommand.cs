@@ -7,5 +7,6 @@ public sealed record UpdateCollectionItemCommand(
     Guid CustomerId,
     ProductCollectionStatus? Status,
     string? Notes,
-    int? Rating)
+    int? Rating,
+    ProductExperienceModel? Experience)
     : IRequest<ProductCollectionItemModel>;

@@ -1,5 +1,6 @@
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
+using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.CustomerService.Domain.Enums;
 using DKH.CustomerService.Domain.Events;
@@ -18,6 +19,7 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     private readonly List<CustomerAddressEntity> _addresses = [];
     private readonly List<WishlistItemEntity> _wishlistItems = [];
     private readonly List<CustomerExternalIdentityEntity> _externalIdentities = [];
+    private readonly List<ProductCollectionItemEntity> _productCollectionItems = [];
 
     private CustomerProfileEntity()
     {
@@ -110,6 +112,8 @@ public sealed class CustomerProfileEntity : FullAuditedEntityWithKey<Guid>,
     public IReadOnlyCollection<WishlistItemEntity> WishlistItems => _wishlistItems.AsReadOnly();
 
     public IReadOnlyCollection<CustomerExternalIdentityEntity> ExternalIdentities => _externalIdentities.AsReadOnly();
+
+    public IReadOnlyCollection<ProductCollectionItemEntity> ProductCollectionItems => _productCollectionItems.AsReadOnly();
 
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 

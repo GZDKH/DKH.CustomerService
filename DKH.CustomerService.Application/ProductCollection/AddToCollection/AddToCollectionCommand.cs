@@ -8,5 +8,6 @@ public sealed record AddToCollectionCommand(
     Guid? ProductSkuId,
     ProductCollectionStatus Status,
     string? Notes,
-    int? Rating)
+    int? Rating,
+    ProductExperienceModel? Experience)
     : IRequest<ProductCollectionItemModel>;

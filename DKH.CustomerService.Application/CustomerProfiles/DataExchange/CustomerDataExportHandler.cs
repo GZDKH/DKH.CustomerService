@@ -1,4 +1,5 @@
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.Enums;
 
 namespace DKH.CustomerService.Application.CustomerProfiles.DataExchange;
@@ -20,7 +21,7 @@ public sealed class CustomerDataExportHandler(
 
     /// <inheritdoc />
     protected override IReadOnlyList<string> PrimaryCollectionNames
-        => ["addresses", "wishlistItems"];
+        => ["addresses", "wishlistItems", "productCollectionItems"];
 
     /// <inheritdoc />
     public override string ProfileName => CustomerDataExchangeProfileProvider.Customers;
@@ -87,6 +88,10 @@ public sealed class CustomerDataExportHandler(
                 Note = w.Note,
             }),
         ],
+        ProductCollectionItems =
+        [
+            .. entity.ProductCollectionItems.Select(MapCollectionItem),
+        ],
     };
 
     /// <inheritdoc />
@@ -97,6 +102,12 @@ public sealed class CustomerDataExportHandler(
         var query = DbContext.CustomerProfiles
             .Include(c => c.Addresses)
             .Include(c => c.WishlistItems)
+            .Include(c => c.ProductCollectionItems)
+                .ThenInclude(i => i.Experience!)
+                    .ThenInclude(e => e.Observations)
+            .Include(c => c.ProductCollectionItems)
+                .ThenInclude(i => i.Experience!)
+                    .ThenInclude(e => e.Tags)
             .AsNoTracking();
 
         // Filter by storefrontId if provided
@@ -129,4 +140,31 @@ public sealed class CustomerDataExportHandler(
 
         return ApplyPaging(query, context);
     }
+
+    private static ProductCollectionItemDto MapCollectionItem(ProductCollectionItemEntity item)
+        => new()
+        {
+            Id = item.Id,
+            ProductId = item.ProductId,
+            ProductSkuId = item.ProductSkuId,
+            Status = item.Status.ToString(),
+            Notes = item.Notes,
+            Rating = item.Rating,
+            AddedAt = item.AddedAt,
+            ExperiencedAt = item.Experience?.ExperiencedAt,
+            PersonalText = item.Experience?.PersonalText,
+            Recommendation = item.Experience?.Recommendation,
+            Observations = item.Experience is null ? [] : [.. item.Experience.Observations.Select(o => new ProductExperienceObservationDto
+            {
+                DefinitionId = o.DefinitionId,
+                Role = o.Role.ToString(),
+                ValueType = o.ValueType.ToString(),
+                TextValue = o.TextValue,
+                DecimalValue = o.DecimalValue,
+                IntegerValue = o.IntegerValue,
+                BooleanValue = o.BooleanValue,
+                UnitCode = o.UnitCode,
+            })],
+            Tags = item.Experience is null ? [] : [.. item.Experience.Tags.Select(t => new ProductExperienceTagDto { Value = t.Value })],
+        };
 }

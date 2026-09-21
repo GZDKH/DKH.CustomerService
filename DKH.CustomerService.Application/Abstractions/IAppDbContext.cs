@@ -26,6 +26,12 @@ public interface IAppDbContext
 
     DbSet<ProductCollectionItemEntity> ProductCollectionItems { get; }
 
+    DbSet<ProductExperienceEntity> ProductExperiences { get; }
+
+    DbSet<ProductExperienceObservationEntity> ProductExperienceObservations { get; }
+
+    DbSet<ProductExperienceTagEntity> ProductExperienceTags { get; }
+
     void ClearTrackedChanges();
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

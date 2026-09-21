@@ -411,6 +411,7 @@ preferences, statistics, and merchant-specific state during migration.
 | `20260216070533_202602161200_AddIsPremium` | 2026-02-16 | Added `is_premium` column to customer_profiles |
 | `20260406082057_20260406_AddAllowsWriteToPm` | 2026-04-06 | Added `allows_write_to_pm` column to customer_profiles |
 | `20260804131014_AddGlobalCustomerAccounts` | 2026-08-04 | Added global accounts, linked identities, lazy storefront memberships, and restartable legacy reconciliation state |
+| `20260921012532_AddPrivateStructuredProductExperience` | 2026-09-21 | Added owner-private product experiences with normalized typed observations and tags |
 
 ### Running Migrations
 

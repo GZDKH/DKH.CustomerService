@@ -10,6 +10,10 @@ public class AddToCollectionCommandHandler(IAppDbContext dbContext)
     public async Task<ProductCollectionItemModel> Handle(AddToCollectionCommand request, CancellationToken cancellationToken)
     {
         var existing = await dbContext.ProductCollectionItems
+            .Include(p => p.Experience!)
+                .ThenInclude(e => e.Observations)
+            .Include(p => p.Experience!)
+                .ThenInclude(e => e.Tags)
             .Where(p => p.CustomerId == request.CustomerId &&
                         p.ProductId == request.ProductId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -27,6 +31,11 @@ public class AddToCollectionCommandHandler(IAppDbContext dbContext)
                 existing.UpdateRating(request.Rating.Value);
             }
 
+            if (request.Experience is not null)
+            {
+                ReplaceExperience(existing, request.Experience, dbContext);
+            }
+
             await dbContext.SaveChangesAsync(cancellationToken);
             return existing.ToProto();
         }
@@ -39,9 +48,34 @@ public class AddToCollectionCommandHandler(IAppDbContext dbContext)
             request.Notes,
             request.Rating);
 
+        if (request.Experience is not null)
+        {
+            var experience = ProductExperienceMapper.ToDomain(request.Experience, item.Id);
+            item.ReplaceExperience(experience);
+            if (experience is not null)
+            {
+                dbContext.ProductExperiences.Add(experience);
+            }
+        }
+
         dbContext.ProductCollectionItems.Add(item);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return item.ToProto();
+    }
+
+    private static void ReplaceExperience(ProductCollectionItemEntity item, ProductExperienceModel model, IAppDbContext dbContext)
+    {
+        if (item.Experience is not null)
+        {
+            dbContext.ProductExperiences.Remove(item.Experience);
+        }
+
+        var experience = ProductExperienceMapper.ToDomain(model, item.Id);
+        item.ReplaceExperience(experience);
+        if (experience is not null)
+        {
+            dbContext.ProductExperiences.Add(experience);
+        }
     }
 }

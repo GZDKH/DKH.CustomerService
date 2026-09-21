@@ -36,6 +36,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<ProductCollectionItemEntity> ProductCollectionItems { get; init; } = null!;
 
+    public DbSet<ProductExperienceEntity> ProductExperiences { get; init; } = null!;
+
+    public DbSet<ProductExperienceObservationEntity> ProductExperienceObservations { get; init; } = null!;
+
+    public DbSet<ProductExperienceTagEntity> ProductExperienceTags { get; init; } = null!;
+
     public DbSet<CustomerAccessGrantEntity> CustomerAccessGrants => Set<CustomerAccessGrantEntity>();
 
     public DbSet<ResourceTypeEntity> ResourceTypes => Set<ResourceTypeEntity>();
