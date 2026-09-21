@@ -24,5 +24,10 @@ public class ProductCollectionItemConfiguration : IEntityTypeConfiguration<Produ
 
         builder.HasIndex(x => new { x.CustomerId, x.ProductId }).IsUnique();
         builder.HasIndex(x => new { x.CustomerId, x.Status });
+
+        builder.HasOne(x => x.Experience)
+            .WithOne(x => x.CollectionItem)
+            .HasForeignKey<ProductExperienceEntity>(x => x.CollectionItemId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

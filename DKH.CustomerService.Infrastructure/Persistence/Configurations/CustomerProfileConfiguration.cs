@@ -92,6 +92,11 @@ public class CustomerProfileConfiguration : IEntityTypeConfiguration<CustomerPro
             .HasForeignKey(x => x.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.ProductCollectionItems)
+            .WithOne()
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasMany(x => x.ExternalIdentities)
             .WithOne()
             .HasForeignKey(x => x.CustomerId)

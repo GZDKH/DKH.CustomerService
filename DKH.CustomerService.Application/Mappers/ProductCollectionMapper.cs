@@ -19,6 +19,7 @@ public static class ProductCollectionMapper
             Notes = entity.Notes,
             Rating = entity.Rating,
             AddedAt = Timestamp.FromDateTimeOffset(entity.AddedAt),
+            Experience = ProductExperienceMapper.ToProto(entity.Experience),
         };
     }
 

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package proto.customer.models.product_collection.v1;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "types/guid.proto";
+
+enum ProductExperienceObservationRole {
+  PRODUCT_EXPERIENCE_OBSERVATION_ROLE_UNSPECIFIED = 0;
+  PRODUCT_EXPERIENCE_OBSERVATION_ROLE_OBSERVATION = 1;
+  PRODUCT_EXPERIENCE_OBSERVATION_ROLE_RECOMMENDED_PREPARATION = 2;
+}
+
+message ProductExperienceObservationModel {
+  proto.platform.grpc.common.types.GuidValue definition_id = 1;
+  ProductExperienceObservationRole role = 2;
+  string unit_code = 3;
+  oneof typed_value {
+    string text_value = 4;
+    double decimal_value = 5;
+    int64 integer_value = 6;
+    bool boolean_value = 7;
+  }
+}
+
+message ProductExperienceModel {
+  google.protobuf.Timestamp experienced_at = 1;
+  google.protobuf.StringValue personal_text = 2;
+  repeated string tags = 3;
+  google.protobuf.StringValue recommendation = 4;
+  repeated ProductExperienceObservationModel observations = 5;
+}

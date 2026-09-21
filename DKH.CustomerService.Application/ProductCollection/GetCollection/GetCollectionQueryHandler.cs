@@ -13,6 +13,10 @@ public class GetCollectionQueryHandler(IAppDbContext dbContext)
         var pageSize = Math.Clamp(request.PageSize, 1, 100);
 
         var query = dbContext.ProductCollectionItems
+            .Include(p => p.Experience!)
+                .ThenInclude(e => e.Observations)
+            .Include(p => p.Experience!)
+                .ThenInclude(e => e.Tags)
             .Where(p => p.CustomerId == request.CustomerId);
 
         if (request.StatusFilter.HasValue)

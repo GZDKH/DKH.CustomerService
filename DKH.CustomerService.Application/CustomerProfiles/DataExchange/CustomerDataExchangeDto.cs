@@ -91,6 +91,9 @@ public sealed class CustomerDataExchangeDto
 
     [JsonPropertyName("wishlistItems")]
     public ICollection<WishlistItemDto> WishlistItems { get; set; } = [];
+
+    [JsonPropertyName("productCollectionItems")]
+    public ICollection<ProductCollectionItemDto> ProductCollectionItems { get; set; } = [];
 }
 
 /// <summary>
@@ -145,4 +148,59 @@ public sealed class WishlistItemDto
 
     [JsonPropertyName("note")]
     public string? Note { get; set; }
+}
+
+/// <summary>Owner-only product collection item exported with its private experience.</summary>
+public sealed class ProductCollectionItemDto
+{
+    [JsonPropertyName("id")]
+    public Guid? Id { get; set; }
+    [JsonPropertyName("productId")]
+    public Guid ProductId { get; set; }
+    [JsonPropertyName("productSkuId")]
+    public Guid? ProductSkuId { get; set; }
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = "Own";
+    [JsonPropertyName("notes")]
+    public string? Notes { get; set; }
+    [JsonPropertyName("rating")]
+    public int? Rating { get; set; }
+    [JsonPropertyName("addedAt")]
+    public DateTimeOffset AddedAt { get; set; }
+    [JsonPropertyName("experiencedAt")]
+    public DateTimeOffset? ExperiencedAt { get; set; }
+    [JsonPropertyName("personalText")]
+    public string? PersonalText { get; set; }
+    [JsonPropertyName("recommendation")]
+    public string? Recommendation { get; set; }
+    [JsonPropertyName("observations")]
+    public ICollection<ProductExperienceObservationDto> Observations { get; set; } = [];
+    [JsonPropertyName("tags")]
+    public ICollection<ProductExperienceTagDto> Tags { get; set; } = [];
+}
+
+public sealed class ProductExperienceObservationDto
+{
+    [JsonPropertyName("definitionId")]
+    public Guid DefinitionId { get; set; }
+    [JsonPropertyName("role")]
+    public string Role { get; set; } = "Observation";
+    [JsonPropertyName("valueType")]
+    public string ValueType { get; set; } = "Text";
+    [JsonPropertyName("textValue")]
+    public string? TextValue { get; set; }
+    [JsonPropertyName("decimalValue")]
+    public double? DecimalValue { get; set; }
+    [JsonPropertyName("integerValue")]
+    public long? IntegerValue { get; set; }
+    [JsonPropertyName("booleanValue")]
+    public bool? BooleanValue { get; set; }
+    [JsonPropertyName("unitCode")]
+    public string? UnitCode { get; set; }
+}
+
+public sealed class ProductExperienceTagDto
+{
+    [JsonPropertyName("value")]
+    public string Value { get; set; } = string.Empty;
 }

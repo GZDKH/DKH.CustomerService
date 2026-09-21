@@ -37,7 +37,8 @@ public class ProductCollectionGrpcService(IMediator mediator)
                 productSkuId,
                 request.Status,
                 request.Notes,
-                request.Rating),
+                request.Rating,
+                request.Experience),
             context.CancellationToken);
     }
 
@@ -59,7 +60,8 @@ public class ProductCollectionGrpcService(IMediator mediator)
                 customerId,
                 status,
                 request.Notes,
-                request.Rating),
+                request.Rating,
+                request.Experience),
             context.CancellationToken);
     }
 

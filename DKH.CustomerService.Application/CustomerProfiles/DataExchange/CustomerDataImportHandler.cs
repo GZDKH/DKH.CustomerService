@@ -1,7 +1,15 @@
+using DKH.CustomerService.Application.Mappers;
+using DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.Entities.WishlistItem;
 using DKH.CustomerService.Domain.Enums;
+using DKH.Platform.Grpc.Common.Types;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using DomainCollectionStatus = DKH.CustomerService.Domain.Entities.ProductCollection.ProductCollectionStatus;
+using ProtoObservationRole = DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1.ProductExperienceObservationRole;
 
 namespace DKH.CustomerService.Application.CustomerProfiles.DataExchange;
 
@@ -164,6 +172,13 @@ public sealed class CustomerDataImportHandler(
             .ConfigureAwait(false);
 
         dbContext.WishlistItems.RemoveRange(existingWishlistItems);
+
+        var existingCollectionItems = await dbContext.ProductCollectionItems
+            .Where(i => i.CustomerId == customerId)
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        dbContext.ProductCollectionItems.RemoveRange(existingCollectionItems);
     }
 
     /// <inheritdoc />
@@ -226,7 +241,108 @@ public sealed class CustomerDataImportHandler(
             dbContext.WishlistItems.Add(wishlistItem);
         }
 
+        foreach (var collectionDto in dto.ProductCollectionItems)
+        {
+            if (collectionDto.ProductId == Guid.Empty)
+            {
+                context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "productCollectionItem", "ProductId is required."));
+                continue;
+            }
+
+            if (!System.Enum.TryParse<DomainCollectionStatus>(collectionDto.Status, true, out var status))
+            {
+                context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "productCollectionItem.status", $"Invalid collection status '{collectionDto.Status}'."));
+                continue;
+            }
+
+            if (collectionDto.Rating is < 1 or > 5)
+            {
+                context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "productCollectionItem.rating", "Rating must be between 1 and 5."));
+                continue;
+            }
+
+            var item = ProductCollectionItemEntity.Create(
+                customerId,
+                collectionDto.ProductId,
+                collectionDto.ProductSkuId,
+                status,
+                collectionDto.Notes,
+                collectionDto.Rating);
+
+            try
+            {
+                var experience = BuildExperienceModel(collectionDto);
+                var experienceEntity = ProductExperienceMapper.ToDomain(experience, item.Id);
+                item.ReplaceExperience(experienceEntity);
+                dbContext.ProductCollectionItems.Add(item);
+                if (experienceEntity is not null)
+                {
+                    dbContext.ProductExperiences.Add(experienceEntity);
+                }
+            }
+            catch (RpcException exception)
+            {
+                context.Errors.Add(new PlatformImportError(row.Raw.RowNumber, "productCollectionItem.experience", exception.Status.Detail));
+            }
+        }
+
         return Task.CompletedTask;
+    }
+
+    private static ProductExperienceModel? BuildExperienceModel(ProductCollectionItemDto dto)
+    {
+        if (dto.ExperiencedAt is null
+            && dto.PersonalText is null
+            && dto.Recommendation is null
+            && dto.Tags.Count == 0
+            && dto.Observations.Count == 0)
+        {
+            return null;
+        }
+
+        var model = new ProductExperienceModel
+        {
+            ExperiencedAt = dto.ExperiencedAt.HasValue ? Timestamp.FromDateTimeOffset(dto.ExperiencedAt.Value) : null,
+            PersonalText = dto.PersonalText,
+            Recommendation = dto.Recommendation,
+        };
+        model.Tags.Add(dto.Tags.Select(tag => tag.Value));
+
+        foreach (var observation in dto.Observations)
+        {
+            var modelObservation = new ProductExperienceObservationModel
+            {
+                DefinitionId = GuidValue.FromGuid(observation.DefinitionId),
+                Role = System.Enum.TryParse<ProtoObservationRole>(observation.Role, true, out var role)
+                    ? role
+                    : ProtoObservationRole.Unspecified,
+                UnitCode = observation.UnitCode ?? string.Empty,
+            };
+
+            switch (System.Enum.TryParse<ProductExperienceObservationValueType>(observation.ValueType, true, out var valueType)
+                ? valueType
+                : ProductExperienceObservationValueType.Text)
+            {
+                case ProductExperienceObservationValueType.Text when observation.TextValue is not null:
+                    modelObservation.TextValue = observation.TextValue;
+                    break;
+                case ProductExperienceObservationValueType.Decimal when observation.DecimalValue.HasValue:
+                    modelObservation.DecimalValue = observation.DecimalValue.Value;
+                    break;
+                case ProductExperienceObservationValueType.Integer when observation.IntegerValue.HasValue:
+                    modelObservation.IntegerValue = observation.IntegerValue.Value;
+                    break;
+                case ProductExperienceObservationValueType.Boolean when observation.BooleanValue.HasValue:
+                    modelObservation.BooleanValue = observation.BooleanValue.Value;
+                    break;
+                default:
+                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Observation value does not match its value type."));
+            }
+
+            model.Observations.Add(modelObservation);
+        }
+
+        return model;
     }
 
     private static void ApplyAccountStatus(
@@ -240,7 +356,7 @@ public sealed class CustomerDataImportHandler(
             return;
         }
 
-        if (!Enum.TryParse<AccountStatusType>(dto.AccountStatus, ignoreCase: true, out var status))
+        if (!System.Enum.TryParse<AccountStatusType>(dto.AccountStatus, ignoreCase: true, out var status))
         {
             context.Errors.Add(new PlatformImportError(
                 row.Raw.RowNumber,
