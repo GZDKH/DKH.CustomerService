@@ -93,6 +93,21 @@ public sealed class CallerBindingMetadataTests
     }
 
     [Theory]
+    [InlineData(nameof(ProductCollectionGrpcService.AddToCollection))]
+    [InlineData(nameof(ProductCollectionGrpcService.UpdateCollectionItem))]
+    [InlineData(nameof(ProductCollectionGrpcService.RemoveFromCollection))]
+    [InlineData(nameof(ProductCollectionGrpcService.GetCollection))]
+    [InlineData(nameof(ProductCollectionGrpcService.GetCollectionItem))]
+    public void ProductCollectionMethods_BindCustomerIdToCaller(string methodName)
+    {
+        var attr = GetBinding(typeof(ProductCollectionGrpcService), methodName);
+
+        attr.PropertyName.Should().Be("CustomerId");
+        attr.ClaimType.Should().Be("sub");
+        attr.Path.Should().Equal("customer_id", "value");
+    }
+
+    [Theory]
     [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.GetProfile))]
     [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.CreateCustomer))]
     [InlineData(typeof(CustomerManagementGrpcService), nameof(CustomerManagementGrpcService.UpdateCustomer))]
@@ -116,11 +131,6 @@ public sealed class CallerBindingMetadataTests
     [InlineData(typeof(IdentityLinkingGrpcService), nameof(IdentityLinkingGrpcService.MergeProfiles))]
     [InlineData(typeof(IdentityLinkingGrpcService), nameof(IdentityLinkingGrpcService.RestoreIdentity))]
     [InlineData(typeof(IdentityLinkingGrpcService), nameof(IdentityLinkingGrpcService.PermanentlyDeleteIdentity))]
-    [InlineData(typeof(ProductCollectionGrpcService), nameof(ProductCollectionGrpcService.AddToCollection))]
-    [InlineData(typeof(ProductCollectionGrpcService), nameof(ProductCollectionGrpcService.UpdateCollectionItem))]
-    [InlineData(typeof(ProductCollectionGrpcService), nameof(ProductCollectionGrpcService.RemoveFromCollection))]
-    [InlineData(typeof(ProductCollectionGrpcService), nameof(ProductCollectionGrpcService.GetCollection))]
-    [InlineData(typeof(ProductCollectionGrpcService), nameof(ProductCollectionGrpcService.GetCollectionItem))]
     public void AdminOrCustomerIdScopedMethods_DoNotRequireCallerBinding(Type serviceType, string methodName)
     {
         GetServiceMethod(serviceType, methodName)

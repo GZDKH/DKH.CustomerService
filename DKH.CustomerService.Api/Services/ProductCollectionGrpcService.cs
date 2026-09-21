@@ -5,6 +5,7 @@ using DKH.CustomerService.Application.ProductCollection.RemoveFromCollection;
 using DKH.CustomerService.Application.ProductCollection.UpdateCollectionItem;
 using DKH.CustomerService.Contracts.Customer.Api.ProductCollection.v1;
 using DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1;
+using DKH.Platform.Authentication.Keycloak.Backend;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
@@ -13,13 +14,11 @@ using ContractsService = DKH.CustomerService.Contracts.Customer.Api.ProductColle
 
 namespace DKH.CustomerService.Api.Services;
 
-// TODO(olac-phase4-caller-binding): per-row binding deferred to Phase 4
-//   via ADR-025a D2 [RequireCallerMatchesClaim("UserId")] once Platform
-//   1.x with D2 lands here.
 [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
 public class ProductCollectionGrpcService(IMediator mediator)
     : ContractsService.ProductCollectionServiceBase
 {
+    [RequireCallerMatchesClaim("CustomerId", Path = new[] { "customer_id", "value" })]
     public override async Task<ProductCollectionItemModel> AddToCollection(AddToCollectionRequest request, ServerCallContext context)
     {
         var customerId = request.CustomerId?.ToGuid()
@@ -42,6 +41,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireCallerMatchesClaim("CustomerId", Path = new[] { "customer_id", "value" })]
     public override async Task<ProductCollectionItemModel> UpdateCollectionItem(UpdateCollectionItemRequest request, ServerCallContext context)
     {
         var itemId = request.ItemId?.ToGuid()
@@ -65,6 +65,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireCallerMatchesClaim("CustomerId", Path = new[] { "customer_id", "value" })]
     public override async Task<Empty> RemoveFromCollection(RemoveFromCollectionRequest request, ServerCallContext context)
     {
         var itemId = request.ItemId?.ToGuid()
@@ -78,6 +79,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireCallerMatchesClaim("CustomerId", Path = new[] { "customer_id", "value" })]
     public override async Task<ProductCollectionListModel> GetCollection(GetCollectionRequest request, ServerCallContext context)
     {
         var customerId = request.CustomerId?.ToGuid()
@@ -96,6 +98,7 @@ public class ProductCollectionGrpcService(IMediator mediator)
             context.CancellationToken);
     }
 
+    [RequireCallerMatchesClaim("CustomerId", Path = new[] { "customer_id", "value" })]
     public override async Task<ProductCollectionItemModel> GetCollectionItem(GetCollectionItemRequest request, ServerCallContext context)
     {
         var customerId = request.CustomerId?.ToGuid()
