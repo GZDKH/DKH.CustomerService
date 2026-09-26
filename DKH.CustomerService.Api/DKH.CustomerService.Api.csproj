@@ -29,6 +29,7 @@
     <PackageReference Include="DKH.Platform.Authorization.ResourceAccess.Contracts"/>
     <PackageReference Include="DKH.Platform.Authorization.ResourceAccess.Grpc"/>
     <PackageReference Include="DKH.Platform.DataExchange"/>
+    <PackageReference Include="DKH.Platform.Http"/>
     <PackageReference Include="DKH.Platform.MultiTenancy"/>
     <PackageReference Include="DKH.Platform.Telemetry" />
     <PackageReference Include="Grpc.AspNetCore"/>

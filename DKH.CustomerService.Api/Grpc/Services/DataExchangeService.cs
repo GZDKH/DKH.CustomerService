@@ -1,11 +1,11 @@
 using System.Text;
 using DKH.CustomerService.Api.Grpc.Helpers;
 using DKH.CustomerService.Contracts.Customer.Api.DataExchange.v1;
-using DKH.Platform;
 using DKH.Platform.DataExchange;
 using DKH.Platform.DataExchange.Export;
 using DKH.Platform.DataExchange.Import;
 using DKH.Platform.DataExchange.Options;
+using DKH.Platform.Http.Client;
 using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -18,11 +18,10 @@ public class DataExchangeService(
     IPlatformImportService importService,
     IPlatformExportService exportService,
     IPlatformDataReaderFactory dataReaderFactory,
-    IPlatformImportProfileStore importProfileStore)
+    IPlatformImportProfileStore importProfileStore,
+    IPlatformOutboundTransfer outboundTransfer)
     : Contracts.Customer.Api.DataExchange.v1.DataExchangeService.DataExchangeServiceBase
 {
-    private static readonly HttpClient HttpClient = new();
-
     public override async Task<ImportResponse> Import(ImportRequest request, ServerCallContext context)
     {
         var (profile, format) = ResolveProfile(request.Profile, request.Format);
@@ -210,11 +209,15 @@ public class DataExchangeService(
         }
     }
 
-    private static async Task DownloadToFileAsync(string url, string destination, CancellationToken cancellationToken)
+    private async Task DownloadToFileAsync(string url, string destination, CancellationToken cancellationToken)
     {
-        await using var httpStream = await HttpClient.GetStreamAsync(url, cancellationToken).ConfigureAwait(false);
-        await using var fileStream = File.Create(destination);
-        await httpStream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            throw new InvalidOperationException("Outbound transfer URL is invalid.");
+        }
+
+        await using var fileStream = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, 64 * 1024, FileOptions.Asynchronous | FileOptions.SequentialScan);
+        await outboundTransfer.DownloadToAsync(uri, fileStream, cancellationToken).ConfigureAwait(false);
     }
 
     private static void TryDelete(string path)
@@ -229,18 +232,14 @@ public class DataExchangeService(
         }
     }
 
-    private static async Task UploadAsync(string destinationUrl, Stream content, CancellationToken cancellationToken)
+    private async Task UploadAsync(string destinationUrl, Stream content, CancellationToken cancellationToken)
     {
-        content.Position = 0;
-        using var request = new HttpRequestMessage(HttpMethod.Put, destinationUrl);
-        request.Content = new StreamContent(content);
-
-        var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
+        if (!Uri.TryCreate(destinationUrl, UriKind.Absolute, out var uri))
         {
-            var body = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-            throw new PlatformException($"Upload failed: {response.StatusCode} {body}");
+            throw new InvalidOperationException("Outbound transfer URL is invalid.");
         }
+
+        await outboundTransfer.UploadAsync(uri, content, cancellationToken).ConfigureAwait(false);
     }
 
     private static (string profile, PlatformFileFormat format) ResolveProfile(string profile, string formatRaw)
