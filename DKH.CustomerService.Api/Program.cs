@@ -21,6 +21,7 @@ using DKH.Platform.Domain.Events;
 using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
+using DKH.Platform.Http.Extensions;
 using DKH.Platform.Identity;
 using DKH.Platform.Localization;
 using DKH.Platform.Logging;
@@ -113,6 +114,7 @@ await Platform
         grpc.MapService<CustomerGrantsGrpcService>();
         grpc.ConfigureDefaultRoute("CustomerService gRPC is running.");
     })
+    .AddPlatformOutboundTransfer()
     .Build()
     .RunAsync();
 
