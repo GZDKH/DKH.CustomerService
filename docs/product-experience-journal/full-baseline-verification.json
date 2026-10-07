@@ -1,0 +1,24 @@
+{
+  "source_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+  "existing_baseline_only": true,
+  "new_diary_tests_run": 0,
+  "runs": [
+    {
+      "file": "ej00-full-baseline_net10.0_20261008045753.trx",
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "ej00-full-baseline_net10.0_20261008045756.trx",
+      "total": 127,
+      "passed": 127,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "total_passed": 158,
+  "total_failed": 0,
+  "total_skipped": 0
+}

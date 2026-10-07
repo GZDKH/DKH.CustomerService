@@ -1,0 +1,322 @@
+{
+  "owner": "services/DKH.CustomerService",
+  "sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+  "baseline_only": true,
+  "db_provider": "EF InMemory",
+  "new_diary_tests_run": 0,
+  "counter": {
+    "total": "26",
+    "executed": "26",
+    "passed": "26",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "tests": [
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_AmbientContextMissingAndMetadataMixesValidAndInvalid_IsRejectedAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.MembershipPagination_AppliesSafeDefaultsAndMaximumPageSizeAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.CustomerAccountEndpoint_RequiresAuthentication_WithoutAdminOnlyPolicy",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Application.ProductCollectionPrivacyTests.RepeatedOwnerUpsert_ReplacesOneExperienceAndExplicitEmptyClearsItAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.PublicRequests_DoNotAcceptOwnershipOrStorefrontIdentifiers",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.EnsureAccount_WhenUniqueInsertLosesRace_ReturnsWinningAccountAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.BlockedAccount_CannotUseSelfServiceQueriesAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.MembershipDeletion_RemovesOnlySelectedStorefrontDataAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureAccount_WithoutVerifiedEmailProof_IsRejectedAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_AmbientContextMissingAndMetadataCoalesced_ResolvesSingleStorefrontAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_DerivesIdentityAndStorefrontWithoutAdminRoleAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Application.ProductCollectionPrivacyTests.CollectionQueriesAndMutations_IsolateTwoCustomersAndPreserveExperienceAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_AmbientContextMissingAndMetadataRepeated_ResolvesSingleStorefrontAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.EnsureAccountAndMembership_AreIdempotent_AndReconcileLegacyProfileAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.CustomerAccountAdminEndpoint_RequiresPlatformAdminPolicy",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.EnsureMembership_WhenUniqueInsertLosesRace_ReturnsWinningMembershipAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.AdminMembershipList_AppliesAccountAndStorefrontFiltersAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_AmbientContextMissing_ResolvesStorefrontFromGrpcMetadataAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_AmbientContextMissingAndMetadataConflicts_IsRejectedAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.AdminAccountList_ExposesCountsAndSafeProviderMetadataAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.AdminAccountAndMembershipStatusCommands_ChangeOnlyRequestedAggregateAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.FullAccountDeletion_AnonymizesAllMembershipData_AndAllowsFreshAccountLaterAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.LegacyIdentityConflict_IsQuarantined_InsteadOfCrossLinkingAccountsAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.ConsolidatedWishlist_ContainsOnlyPrincipalAccountItems_WithSourceStorefrontsAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.Grpc.CustomerAccountGrpcServiceTests.EnsureMembership_AmbientContextMissingAndMetadataInvalid_IsRejectedAsync",
+      "outcome": "Passed"
+    },
+    {
+      "name": "DKH.CustomerService.IntegrationTests.Integration.CustomerAccounts.GlobalCustomerAccountHandlerTests.AdminExportAndDelete_OmitProviderSubjectAndAnonymizeAccountAsync",
+      "outcome": "Passed"
+    }
+  ],
+  "resolved_dkh_packages": [
+    {
+      "package": "DKH.NotificationService.Contracts",
+      "version": "1.6.0"
+    },
+    {
+      "package": "DKH.Platform",
+      "version": "1.5.1"
+    },
+    {
+      "package": "DKH.Platform.Application",
+      "version": "1.1.0"
+    },
+    {
+      "package": "DKH.Platform.Auditing.Contracts",
+      "version": "1.0.3"
+    },
+    {
+      "package": "DKH.Platform.Authentication.Keycloak",
+      "version": "1.5.0"
+    },
+    {
+      "package": "DKH.Platform.Authorization",
+      "version": "2.0.0"
+    },
+    {
+      "package": "DKH.Platform.Authorization.ResourceAccess",
+      "version": "0.7.1"
+    },
+    {
+      "package": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+      "version": "0.4.0"
+    },
+    {
+      "package": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+      "version": "0.2.0"
+    },
+    {
+      "package": "DKH.Platform.Authorization.ResourceAccess.Domain",
+      "version": "0.1.2"
+    },
+    {
+      "package": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+      "version": "0.1.0"
+    },
+    {
+      "package": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+      "version": "1.1.0"
+    },
+    {
+      "package": "DKH.Platform.Core",
+      "version": "1.7.1"
+    },
+    {
+      "package": "DKH.Platform.DataExchange",
+      "version": "1.3.2"
+    },
+    {
+      "package": "DKH.Platform.Domain",
+      "version": "1.13.2"
+    },
+    {
+      "package": "DKH.Platform.EntityFrameworkCore",
+      "version": "1.3.4"
+    },
+    {
+      "package": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+      "version": "1.3.0"
+    },
+    {
+      "package": "DKH.Platform.EntityFrameworkCore.Repositories",
+      "version": "1.4.0"
+    },
+    {
+      "package": "DKH.Platform.Grpc",
+      "version": "1.3.0"
+    },
+    {
+      "package": "DKH.Platform.Grpc.Client",
+      "version": "1.6.0"
+    },
+    {
+      "package": "DKH.Platform.Grpc.Common",
+      "version": "1.2.1"
+    },
+    {
+      "package": "DKH.Platform.Grpc.IntegrationTesting",
+      "version": "1.0.2"
+    },
+    {
+      "package": "DKH.Platform.Http",
+      "version": "1.6.0"
+    },
+    {
+      "package": "DKH.Platform.Identity",
+      "version": "1.7.5"
+    },
+    {
+      "package": "DKH.Platform.IntegrationTesting",
+      "version": "1.0.2"
+    },
+    {
+      "package": "DKH.Platform.Localization",
+      "version": "1.1.0"
+    },
+    {
+      "package": "DKH.Platform.Logging",
+      "version": "1.2.4"
+    },
+    {
+      "package": "DKH.Platform.Messaging",
+      "version": "1.9.2"
+    },
+    {
+      "package": "DKH.Platform.Messaging.MediatR",
+      "version": "1.2.0"
+    },
+    {
+      "package": "DKH.Platform.MultiTenancy",
+      "version": "1.1.0"
+    },
+    {
+      "package": "DKH.Platform.Outbox",
+      "version": "1.6.2"
+    },
+    {
+      "package": "DKH.Platform.Outbox.PostgreSql",
+      "version": "1.1.4"
+    },
+    {
+      "package": "DKH.Platform.RabbitMq",
+      "version": "1.1.12"
+    },
+    {
+      "package": "DKH.Platform.Secrets",
+      "version": "1.1.0"
+    },
+    {
+      "package": "DKH.Platform.Telemetry",
+      "version": "1.1.0"
+    },
+    {
+      "package": "DKH.CustomerService.Api",
+      "version": "1.0.0"
+    },
+    {
+      "package": "DKH.CustomerService.Application",
+      "version": "1.0.0"
+    },
+    {
+      "package": "DKH.CustomerService.Contracts",
+      "version": "1.0.0"
+    },
+    {
+      "package": "DKH.CustomerService.Domain",
+      "version": "1.0.0"
+    },
+    {
+      "package": "DKH.CustomerService.Infrastructure",
+      "version": "1.0.0"
+    }
+  ],
+  "trx": "ej00-baseline-test-results/ej00-baseline.trx",
+  "openspec_baseline": {
+    "command": "openspec validate --all --strict via pinned AgentRules wrapper",
+    "passed": 1,
+    "failed": 0,
+    "scope": "existing private-structured-product-experience only"
+  },
+  "format_verification": {
+    "passed": true,
+    "command": "dotnet format DKH.CustomerService.slnx --verify-no-changes --no-restore",
+    "initial_attempt": "Failed because only the selected integration project had restored dependencies. Full solution restore resolved missing unit-project packages; subsequent verification passed without source edits."
+  },
+  "full_solution_build": {
+    "configuration": "Release",
+    "passed": true,
+    "warnings": 0,
+    "errors": 0
+  },
+  "additive_owner_spec": {
+    "change": "experience-journal-owner",
+    "strict_validation_passed": true,
+    "implementation_tasks_checked": 0,
+    "code_implemented": false
+  },
+  "pending_model_changes": {
+    "has_changes": false,
+    "source_model_only": true,
+    "tool_warning": "EF CLI 10.0.10 older than runtime 10.0.12"
+  }
+}

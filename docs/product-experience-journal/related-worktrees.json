@@ -1,0 +1,141 @@
+{
+  "read_only": true,
+  "related": [
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.CustomerService/.worktrees/docs-8-journal-entry-gate-01a117e3",
+      "head": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "branch": "docs/8-journal-entry-gate-01a117e3",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": true,
+      "ownership": "current session audit only"
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.StorefrontService/.worktrees/feat-420-product-experience-island",
+      "head": "d706339e26699d524e2b5eed662122b8b61237b3",
+      "branch": "feat/420-product-experience-island",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": false,
+      "merge_requests": [
+        {
+          "iid": 1816,
+          "state": "merged",
+          "sha": "d706339e26699d524e2b5eed662122b8b61237b3",
+          "merge_commit_sha": "48b8bf044b044d91ef18080a53166d3a50023ae7",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1816",
+          "title": "feat(theme): mount private product experience island"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.StorefrontService/.worktrees/fix-421-product-experience-theme-backfill",
+      "head": "646f5250f9361f04c282a6a73a3c4526e46344de",
+      "branch": "fix/421-product-experience-theme-backfill",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": false,
+      "merge_requests": [
+        {
+          "iid": 1817,
+          "state": "merged",
+          "sha": "646f5250f9361f04c282a6a73a3c4526e46344de",
+          "merge_commit_sha": "b3ae663f045a95628925acd54384c7eece596f55",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1817",
+          "title": "fix(theme): backfill product experience marker into maintained XNATA PDP"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.StorefrontService/.worktrees/fix-422-product-experience-group-selection",
+      "head": "69f2bc01baaefbe5deb777084cfe7ecd2f4c714d",
+      "branch": "fix/422-product-experience-group-selection",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": false,
+      "merge_requests": [
+        {
+          "iid": 1818,
+          "state": "merged",
+          "sha": "69f2bc01baaefbe5deb777084cfe7ecd2f4c714d",
+          "merge_commit_sha": "ed89dbe183206f7ba89685252f415e6c1f49f876",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1818",
+          "title": "fix(theme): select imported sensory specification group for private tasting"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.StorefrontService/.worktrees/fix-430-legacy-product-experience",
+      "head": "7fa0a3ad057ecffac333d867ad9d785a5e4f97cd",
+      "branch": "fix/430-legacy-product-experience",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": false,
+      "merge_requests": [
+        {
+          "iid": 1823,
+          "state": "merged",
+          "sha": "7fa0a3ad057ecffac333d867ad9d785a5e4f97cd",
+          "merge_commit_sha": "39d8f1caf5b8e9773e064ca630d7de2ea575066d",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1823",
+          "title": "fix(theme): render product experience for legacy PDP"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.StorefrontService/.worktrees/fix-431-restore-product-experience-after-localization",
+      "head": "54418d3bea81dbddb42b90bfc27d7cbdb5ead373",
+      "branch": "fix/431-restore-product-experience-after-localization",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": false,
+      "merge_requests": [
+        {
+          "iid": 1824,
+          "state": "merged",
+          "sha": "54418d3bea81dbddb42b90bfc27d7cbdb5ead373",
+          "merge_commit_sha": "44398203ff9d50d6a49eeab57dc60cf3fe082378",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1824",
+          "title": "fix(xnata-tea): restore typed product experience contract"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "/Users/itprodavets/projects/GZDKH/services/DKH.StorefrontService/.worktrees/fix-433-normalize-typed-product-experience",
+      "head": "25df9943cab8c88d433754243e0aec7e5fdb3b02",
+      "branch": "fix/433-normalize-typed-product-experience",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": false,
+      "merge_requests": [
+        {
+          "iid": 1828,
+          "state": "merged",
+          "sha": "25df9943cab8c88d433754243e0aec7e5fdb3b02",
+          "merge_commit_sha": "1303559a48367647480d6108e84b59b0013e601c",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1828",
+          "title": "fix(theme): normalize typed product experience values"
+        }
+      ]
+    },
+    {
+      "repo": "ui/DKH.Admin.Web.UI",
+      "path": "/Users/itprodavets/projects/GZDKH/ui/DKH.Admin.Web.UI/.worktrees/feat-160-specification-picker",
+      "head": "fcf046a5895e4a94be5fe1a1eb9a8ce0082b4761",
+      "branch": "feat/160-specification-picker",
+      "worktree_exists": true,
+      "source_head_is_main_ancestor": true,
+      "merge_requests": [
+        {
+          "iid": 2105,
+          "state": "merged",
+          "sha": "fcf046a5895e4a94be5fe1a1eb9a8ce0082b4761",
+          "merge_commit_sha": "64d9d86178b2951aadf90d4652060f36c339c8bf",
+          "web_url": "https://gitlab.xnata.com/gzdkh/ui/DKH.Admin.Web.UI/-/merge_requests/2105",
+          "title": "feat(storefront-editor): add specification picker"
+        }
+      ]
+    }
+  ],
+  "note": "Branch-name alias scan is bounded evidence only. Existing branches are not assumed active or ours; preserve foreign worktrees and verify current MR/lease before any writes."
+}
