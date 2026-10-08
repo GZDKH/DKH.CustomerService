@@ -1,0 +1,640 @@
+{
+  "observed_utc": "2026-10-08T05:04:46.648014+00:00",
+  "kind": "EJ-00 bounded current model/wire and Review mutation/report-audit discovery",
+  "source_only": true,
+  "refs": {
+    "services/DKH.CustomerService": "2385421b85f37730a0b9c6f297ab4fda81036406",
+    "services/DKH.ReviewService": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+    "libraries/DKH.Platform": "6dc5563606d04e67833a409abba46940c58e4a0c"
+  },
+  "sources": [
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceEntity.cs",
+      "sha256": "22f3b57dab32694420171ba32f431ffdf8633b5eb2b15076b7dfc1a064e8250e",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceEntity.cs"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceObservationEntity.cs",
+      "sha256": "db3ba40fe8eac3a3a59e95a2b79920bac23f596e9cdb87e3e587448de0acd31a",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceObservationEntity.cs"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceTagEntity.cs",
+      "sha256": "bc57d96511f0cc89c7328026e9002696fcf60ae4b389030c18113242ae0fe0e6",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceTagEntity.cs"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Configurations/ProductExperienceConfiguration.cs",
+      "sha256": "ef279ca7e10b0489d75182930cee20432981b9abf4f1467c577fb79db353c511",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Infrastructure/Persistence/Configurations/ProductExperienceConfiguration.cs"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection_experience.proto",
+      "sha256": "3cd1ae6fcafbee0a97acdbe54ffa61d607ed7c0c3704e24a45fc464e7a589cfd",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection_experience.proto"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection.proto",
+      "sha256": "5c3d1690498a596316f66e231283fbddb4714987a8ce74da03f7e6553f046a86",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection.proto"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Contracts/proto/customer/api/product_collection/v1/product_collection_service.proto",
+      "sha256": "6f8f7b7cd97a27548b46be57211bd56d7d0e9cf752444829506c7cee9fe12689",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Contracts/proto/customer/api/product_collection/v1/product_collection_service.proto"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Application/Mappers/ProductExperienceMapper.cs",
+      "sha256": "b0931ad2db93358f9f2a855ba7c97366dd60b80473601b8509ff14bb53dd370d",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Application/Mappers/ProductExperienceMapper.cs"
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "sha": "2385421b85f37730a0b9c6f297ab4fda81036406",
+      "path": "DKH.CustomerService.Application/ProductCollection/UpdateCollectionItem/UpdateCollectionItemCommandHandler.cs",
+      "sha256": "97bad6f1e82ab129da51a2ca0731ffca8264aeb232493f8bf270d48448891650",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/2385421b85f37730a0b9c6f297ab4fda81036406/DKH.CustomerService.Application/ProductCollection/UpdateCollectionItem/UpdateCollectionItemCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/ApproveReview/ApproveReviewCommandHandler.cs",
+      "sha256": "f90bfc3c2b5196aecfae847629336ac91bc667c1aaa957f8df11898903b859b1",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/ApproveReview/ApproveReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/BulkModerate/BulkModerateCommandHandler.cs",
+      "sha256": "02d1e256f5a0f341893e5bd079ae15ba3cae1e455b5c7cc9594febdc45192850",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/BulkModerate/BulkModerateCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/DeleteReview/DeleteReviewCommandHandler.cs",
+      "sha256": "941f8a20613729549b2d29a74b48d263196decce6e4beb42b70753f0e485d2bc",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/DeleteReview/DeleteReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/FlagReview/FlagReviewCommandHandler.cs",
+      "sha256": "cce5471caab126f8b884933fe7ea13f0212b6e69ec61d689c79028569ba2e25c",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/FlagReview/FlagReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/PermanentlyDeleteReview/PermanentlyDeleteReviewCommandHandler.cs",
+      "sha256": "6d78cb705a6dc8946ec48185f741f5f5ccbca8a60ecd6e38b98a1d23ed189d66",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/PermanentlyDeleteReview/PermanentlyDeleteReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/RejectReview/RejectReviewCommandHandler.cs",
+      "sha256": "9ad9e444a495fca045eb8f1844f6a886560b545bae6d2ce116763776fe921de2",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/RejectReview/RejectReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Moderation/RestoreReview/RestoreReviewCommandHandler.cs",
+      "sha256": "27610032377b5bccb8a4b24634a7c320da6cb035519794361335244ac3c4f29d",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Moderation/RestoreReview/RestoreReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Reviews/CreateReview/CreateReviewCommandHandler.cs",
+      "sha256": "28c8cafbe84ff780c7da79554022d0ba73b9e8aec8b2f440b8fc99d7ef64825a",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Reviews/CreateReview/CreateReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Reviews/DataExchange/ReviewDataImportHandler.cs",
+      "sha256": "f7c078ed9ea49f44fc1856c2a25750ecd5cd113d50bcb821135f6b7a315bca6b",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Reviews/DataExchange/ReviewDataImportHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Reviews/DeleteReview/DeleteReviewCommandHandler.cs",
+      "sha256": "907892cbb68febc36b666626fbfe7cbfd58be9e8d0f3d1f68e01cae6b52fdc67",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Reviews/DeleteReview/DeleteReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Reviews/UpdateReview/UpdateReviewCommandHandler.cs",
+      "sha256": "4c8220f3eeeb8540d4a8b4eca379d22b43548702cedb0705b4d043920c953b53",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Reviews/UpdateReview/UpdateReviewCommandHandler.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Domain/Entities/Review/ReviewEntity.cs",
+      "sha256": "b4f16667c0dbc11bd2ad3126741d9ce62298f594dac523ccf65a37de17898a21",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Domain/Entities/Review/ReviewEntity.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Api/Services/ReviewCrudGrpcService.cs",
+      "sha256": "db7281aa02b823fd445965e41ca69266b33635f2b1e4b689c45373a26e5cafed",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Api/Services/ReviewCrudGrpcService.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Infrastructure/Persistence/AppDbContext.cs",
+      "sha256": "d852749abf5666e37b3989332cb30cd9285543c3009bc600b0eefd94956bb07b",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Infrastructure/Persistence/AppDbContext.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Infrastructure/Persistence/ReviewMutationTransaction.cs",
+      "sha256": "98683a325aba7e2181cc95d2a935857e0c36c693318d080280c680946b13535b",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Infrastructure/Persistence/ReviewMutationTransaction.cs"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "sha": "c1d615a8b984e3ac95ce21c6297382d2998a0edf",
+      "path": "DKH.ReviewService.Application/Reviews/Aggregates/ReviewAggregateMutation.cs",
+      "sha256": "298f9b6163530cf24cb863fa5158a38502ba41bfde1c3e63d35fa965858c5f0b",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.ReviewService/-/blob/c1d615a8b984e3ac95ce21c6297382d2998a0edf/DKH.ReviewService.Application/Reviews/Aggregates/ReviewAggregateMutation.cs"
+    },
+    {
+      "repo": "libraries/DKH.Platform",
+      "sha": "6dc5563606d04e67833a409abba46940c58e4a0c",
+      "path": "src/Data/DKH.Platform.EntityFrameworkCore/DKH/Platform/EntityFrameworkCore/Internal/PlatformAuditProcessor.cs",
+      "sha256": "5487585490d7c9c10b3a987ff163a0ed7f7675a5927621b085270cc546d40aa9",
+      "url": "https://gitlab.xnata.com/gzdkh/libraries/DKH.Platform/-/blob/6dc5563606d04e67833a409abba46940c58e4a0c/src/Data/DKH.Platform.EntityFrameworkCore/DKH/Platform/EntityFrameworkCore/Internal/PlatformAuditProcessor.cs"
+    },
+    {
+      "repo": "libraries/DKH.Platform",
+      "sha": "6dc5563606d04e67833a409abba46940c58e4a0c",
+      "path": "src/Domain/DKH.Platform.Domain/DKH/Platform/Domain/Entities/Auditing/FullAuditedEntity.cs",
+      "sha256": "8b4bfcd11e03337b16e07050141c31941d2aa13e0347fd34cae1089c8c924b6b",
+      "url": "https://gitlab.xnata.com/gzdkh/libraries/DKH.Platform/-/blob/6dc5563606d04e67833a409abba46940c58e4a0c/src/Domain/DKH.Platform.Domain/DKH/Platform/Domain/Entities/Auditing/FullAuditedEntity.cs"
+    }
+  ],
+  "current_three_tables_from_existing_disposable_PG_receipt": {
+    "product_collection_experiences": {
+      "columns": [
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "Id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "CollectionItemId",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "ExperiencedAt",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "PersonalText",
+          "data_type": "character varying",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "Recommendation",
+          "data_type": "character varying",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "CreationTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "CreatorId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "LastModificationTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "LastModifierId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "IsDeleted",
+          "data_type": "boolean",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "DeleterId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_collection_experiences",
+          "column_name": "DeletionTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        }
+      ],
+      "indexes": [
+        {
+          "tablename": "product_collection_experiences",
+          "indexname": "IX_product_collection_experiences_CollectionItemId",
+          "indexdef": "CREATE UNIQUE INDEX \"IX_product_collection_experiences_CollectionItemId\" ON public.product_collection_experiences USING btree (\"CollectionItemId\")"
+        },
+        {
+          "tablename": "product_collection_experiences",
+          "indexname": "PK_product_collection_experiences",
+          "indexdef": "CREATE UNIQUE INDEX \"PK_product_collection_experiences\" ON public.product_collection_experiences USING btree (\"Id\")"
+        }
+      ],
+      "constraints": [
+        {
+          "conname": "FK_product_collection_experiences_product_collection_items_Col~",
+          "relation": "product_collection_experiences",
+          "definition": "FOREIGN KEY (\"CollectionItemId\") REFERENCES product_collection_items(\"Id\") ON DELETE CASCADE"
+        },
+        {
+          "conname": "PK_product_collection_experiences",
+          "relation": "product_collection_experiences",
+          "definition": "PRIMARY KEY (\"Id\")"
+        },
+        {
+          "conname": "product_collection_experiences_CollectionItemId_not_null",
+          "relation": "product_collection_experiences",
+          "definition": "NOT NULL \"CollectionItemId\""
+        },
+        {
+          "conname": "product_collection_experiences_CreationTime_not_null",
+          "relation": "product_collection_experiences",
+          "definition": "NOT NULL \"CreationTime\""
+        },
+        {
+          "conname": "product_collection_experiences_Id_not_null",
+          "relation": "product_collection_experiences",
+          "definition": "NOT NULL \"Id\""
+        },
+        {
+          "conname": "product_collection_experiences_IsDeleted_not_null",
+          "relation": "product_collection_experiences",
+          "definition": "NOT NULL \"IsDeleted\""
+        }
+      ]
+    },
+    "product_experience_observations": {
+      "columns": [
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "Id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "ExperienceId",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "DefinitionId",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "Role",
+          "data_type": "character varying",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "ValueType",
+          "data_type": "character varying",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "TextValue",
+          "data_type": "character varying",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "DecimalValue",
+          "data_type": "double precision",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "IntegerValue",
+          "data_type": "bigint",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "BooleanValue",
+          "data_type": "boolean",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "UnitCode",
+          "data_type": "character varying",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "CreationTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "CreatorId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "LastModificationTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "LastModifierId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "IsDeleted",
+          "data_type": "boolean",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "DeleterId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_observations",
+          "column_name": "DeletionTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        }
+      ],
+      "indexes": [
+        {
+          "tablename": "product_experience_observations",
+          "indexname": "IX_product_experience_observations_ExperienceId_DefinitionId_R~",
+          "indexdef": "CREATE UNIQUE INDEX \"IX_product_experience_observations_ExperienceId_DefinitionId_R~\" ON public.product_experience_observations USING btree (\"ExperienceId\", \"DefinitionId\", \"Role\")"
+        },
+        {
+          "tablename": "product_experience_observations",
+          "indexname": "PK_product_experience_observations",
+          "indexdef": "CREATE UNIQUE INDEX \"PK_product_experience_observations\" ON public.product_experience_observations USING btree (\"Id\")"
+        }
+      ],
+      "constraints": [
+        {
+          "conname": "FK_product_experience_observations_product_collection_experien~",
+          "relation": "product_experience_observations",
+          "definition": "FOREIGN KEY (\"ExperienceId\") REFERENCES product_collection_experiences(\"Id\") ON DELETE CASCADE"
+        },
+        {
+          "conname": "PK_product_experience_observations",
+          "relation": "product_experience_observations",
+          "definition": "PRIMARY KEY (\"Id\")"
+        },
+        {
+          "conname": "product_experience_observations_CreationTime_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"CreationTime\""
+        },
+        {
+          "conname": "product_experience_observations_DefinitionId_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"DefinitionId\""
+        },
+        {
+          "conname": "product_experience_observations_ExperienceId_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"ExperienceId\""
+        },
+        {
+          "conname": "product_experience_observations_Id_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"Id\""
+        },
+        {
+          "conname": "product_experience_observations_IsDeleted_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"IsDeleted\""
+        },
+        {
+          "conname": "product_experience_observations_Role_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"Role\""
+        },
+        {
+          "conname": "product_experience_observations_ValueType_not_null",
+          "relation": "product_experience_observations",
+          "definition": "NOT NULL \"ValueType\""
+        }
+      ]
+    },
+    "product_experience_tags": {
+      "columns": [
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "Id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "ExperienceId",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "Value",
+          "data_type": "character varying",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "CreationTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "CreatorId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "LastModificationTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "LastModifierId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "IsDeleted",
+          "data_type": "boolean",
+          "is_nullable": "NO"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "DeleterId",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_name": "product_experience_tags",
+          "column_name": "DeletionTime",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        }
+      ],
+      "indexes": [
+        {
+          "tablename": "product_experience_tags",
+          "indexname": "IX_product_experience_tags_ExperienceId_Value",
+          "indexdef": "CREATE UNIQUE INDEX \"IX_product_experience_tags_ExperienceId_Value\" ON public.product_experience_tags USING btree (\"ExperienceId\", \"Value\")"
+        },
+        {
+          "tablename": "product_experience_tags",
+          "indexname": "PK_product_experience_tags",
+          "indexdef": "CREATE UNIQUE INDEX \"PK_product_experience_tags\" ON public.product_experience_tags USING btree (\"Id\")"
+        }
+      ],
+      "constraints": [
+        {
+          "conname": "FK_product_experience_tags_product_collection_experiences_Expe~",
+          "relation": "product_experience_tags",
+          "definition": "FOREIGN KEY (\"ExperienceId\") REFERENCES product_collection_experiences(\"Id\") ON DELETE CASCADE"
+        },
+        {
+          "conname": "PK_product_experience_tags",
+          "relation": "product_experience_tags",
+          "definition": "PRIMARY KEY (\"Id\")"
+        },
+        {
+          "conname": "product_experience_tags_CreationTime_not_null",
+          "relation": "product_experience_tags",
+          "definition": "NOT NULL \"CreationTime\""
+        },
+        {
+          "conname": "product_experience_tags_ExperienceId_not_null",
+          "relation": "product_experience_tags",
+          "definition": "NOT NULL \"ExperienceId\""
+        },
+        {
+          "conname": "product_experience_tags_Id_not_null",
+          "relation": "product_experience_tags",
+          "definition": "NOT NULL \"Id\""
+        },
+        {
+          "conname": "product_experience_tags_IsDeleted_not_null",
+          "relation": "product_experience_tags",
+          "definition": "NOT NULL \"IsDeleted\""
+        },
+        {
+          "conname": "product_experience_tags_Value_not_null",
+          "relation": "product_experience_tags",
+          "definition": "NOT NULL \"Value\""
+        }
+      ]
+    }
+  },
+  "review_mutation_handlers": [
+    "DKH.ReviewService.Application/Moderation/ApproveReview/ApproveReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Moderation/BulkModerate/BulkModerateCommandHandler.cs",
+    "DKH.ReviewService.Application/Moderation/DeleteReview/DeleteReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Moderation/FlagReview/FlagReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Moderation/PermanentlyDeleteReview/PermanentlyDeleteReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Moderation/RejectReview/RejectReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Moderation/RestoreReview/RestoreReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Reviews/CreateReview/CreateReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Reviews/DataExchange/ReviewDataImportHandler.cs",
+    "DKH.ReviewService.Application/Reviews/DeleteReview/DeleteReviewCommandHandler.cs",
+    "DKH.ReviewService.Application/Reviews/UpdateReview/UpdateReviewCommandHandler.cs"
+  ],
+  "review_service_api_protos": [
+    "DKH.ReviewService.Contracts/proto/review/api/data_exchange/v1/data_exchange_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/review_crud/v1/reviews_crud_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/review_management/v1/review_management_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/review_query/v1/review_query_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/review_reply_management/v1/review_reply_management_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/v1/review_moderation_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/v1/review_query_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/v1/review_reply_service.proto",
+    "DKH.ReviewService.Contracts/proto/review/api/v1/review_service.proto"
+  ],
+  "review_domain_entity_surfaces": [
+    "DKH.ReviewService.Domain/Entities/Review/Events/ReviewApprovedDomainEvent.cs",
+    "DKH.ReviewService.Domain/Entities/Review/Events/ReviewCreatedDomainEvent.cs",
+    "DKH.ReviewService.Domain/Entities/Review/Events/ReviewDeletedDomainEvent.cs",
+    "DKH.ReviewService.Domain/Entities/Review/Events/ReviewRatingChangedDomainEvent.cs",
+    "DKH.ReviewService.Domain/Entities/Review/ReviewEntity.cs",
+    "DKH.ReviewService.Domain/Entities/Review/ReviewQualityAttributionEntity.cs",
+    "DKH.ReviewService.Domain/Entities/Review/ReviewSpecificationEntity.cs",
+    "DKH.ReviewService.Domain/Entities/ReviewAggregate/ReviewAggregateEntity.cs",
+    "DKH.ReviewService.Domain/Entities/ReviewPolicy/ReviewPolicyEntity.cs",
+    "DKH.ReviewService.Domain/Entities/ReviewQualityAggregate/ReviewQualityAggregateEntity.cs",
+    "DKH.ReviewService.Domain/Entities/ReviewReply/ReviewReplyEntity.cs"
+  ],
+  "proposed_behavior_not_implemented": true,
+  "new_diary_tests_run": 0
+}
