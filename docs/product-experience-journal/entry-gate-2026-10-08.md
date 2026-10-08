@@ -76,6 +76,10 @@ P06: `pg-backup.sh` source has configurable defaults (7 daily, 4 weekly, 3 month
 
 Production-applied PostgreSQL state, deployed package versions, principal forwarding options, Media ACL/direct download, effective persisted themes, actual UI journeys/load and all new diary race/negative/compatibility gates are unverified. Source declarations, fixture tests and synthetic package renders cannot substitute for them.
 
+## Discovery supplement
+
+[Current model/wire and complete Review mutation/report-audit inventory](discovery-delta-2026-10-08.md) resolves the independent source-discovery follow-up; its newer exact Review/Platform refs apply to those named seams. The original receipt above remains a dated observation. Acceptance still requires the supplement review and delivery evidence.
+
 ## Handoff and closure
 
 Next: obtain independent review and authoritative CI/main acceptance of the entry receipt, then run EJ-01's exact Customer/BFF owner scopes with validated deltas and WIP=1. Backend dated-core implementation is EJ-02 only after EJ-00/EJ-01 acceptance. Register owner-local implementation tasks before coding. Retain separate policy/runtime enablement gates; do not mark all 24 stages done from this discovery.

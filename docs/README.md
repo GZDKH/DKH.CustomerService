@@ -9,6 +9,7 @@
 | [Database](database.md) | Schema, tables, indexes, migrations |
 | [Architecture](architecture.md) | Project structure, architecture decisions |
 | [Experience Journal entry discovery](product-experience-journal/entry-gate-2026-10-08.md) | Revision 2 reuse, baseline evidence and remaining gates |
+| [Experience Journal current model and Review seams](product-experience-journal/discovery-delta-2026-10-08.md) | EJ-00 wire, mutation, report and audit reuse decisions |
 
 ## Translations
 
