@@ -1,0 +1,206 @@
+{
+  "observed_utc": "2026-10-07T20:46:25.947018+00:00",
+  "read_only": true,
+  "repositories": [
+    {
+      "repo": "services/DKH.CustomerService",
+      "main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "read_ok": true,
+      "open_mrs": []
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "read_ok": true,
+      "open_mrs": []
+    },
+    {
+      "repo": "services/DKH.ProductCatalogService",
+      "main_sha": "515bc4d6175de10d2ee056d6281aa21f237b58ff",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 527,
+          "title": "docs(catalog): integrate final schema and consumer discovery",
+          "sha": "79dbfa9a3a36d2c7d46e0ea620fc7bb9d6237058",
+          "source_branch": "docs/72-d02-final-discovery-01a11263",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.ProductCatalogService/-/merge_requests/527"
+        },
+        {
+          "iid": 404,
+          "title": "chore(deps): update non-major dependencies",
+          "sha": "fc211d83cc6d54dec1eccaa14d9bc3d5f5e369b6",
+          "source_branch": "renovate/non-major-dependencies",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.ProductCatalogService/-/merge_requests/404"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "main_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 1320,
+          "title": "chore(deps): update non-major dependencies",
+          "sha": "578d49ab5447ee192523caa8c488a2c91abe29ca",
+          "source_branch": "renovate/non-major-dependencies",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1320"
+        },
+        {
+          "iid": 1313,
+          "title": "chore(deps): update .net test and analysis toolchain (major)",
+          "sha": "9bc9d15d000a9a4b903cd01f7fe6261edd1357e6",
+          "source_branch": "renovate/major-.net-test-and-analysis-toolchain",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.StorefrontService/-/merge_requests/1313"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.MediaService",
+      "main_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 143,
+          "title": "chore(deps): update dependency dkh.orderservice.contracts to 1.12.0",
+          "sha": "1fc94ba046240306be55c48eced1a817b21470a1",
+          "source_branch": "renovate/non-major-dependencies",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/services/DKH.MediaService/-/merge_requests/143"
+        }
+      ]
+    },
+    {
+      "repo": "gateways/DKH.StorefrontGateway",
+      "main_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 473,
+          "title": "chore(deps): update dependency microsoft.openapi to v3",
+          "sha": "4cc51031fb1ee2d88d6930414955890d02a91d6c",
+          "source_branch": "renovate/major-openapi-dotnet-monorepo",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/gateways/DKH.StorefrontGateway/-/merge_requests/473"
+        }
+      ]
+    },
+    {
+      "repo": "gateways/DKH.AdminGateway",
+      "main_sha": "02f51ecbbb62a61745228d8ad7106381ab735097",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 600,
+          "title": "chore(deps): update non-major dependencies",
+          "sha": "186934f82307afce8d1012947bfaeb46d4c39a68",
+          "source_branch": "renovate/non-major-dependencies",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/gateways/DKH.AdminGateway/-/merge_requests/600"
+        }
+      ]
+    },
+    {
+      "repo": "ui/DKH.Storefront.Web.UI",
+      "main_sha": "26e40c9a3015ada32bc13e46d401637a67c1deb8",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 727,
+          "title": "chore(deps): update non-major dependencies",
+          "sha": "a1170e31569d68136c8df8c760e72a3f002bd01f",
+          "source_branch": "renovate/non-major-dependencies",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/ui/DKH.Storefront.Web.UI/-/merge_requests/727"
+        },
+        {
+          "iid": 587,
+          "title": "chore(deps): update dependency eslint to v10",
+          "sha": "847f33c30e33e201d4f0251a46efee09278a9a0f",
+          "source_branch": "renovate/major-eslint-monorepo",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/ui/DKH.Storefront.Web.UI/-/merge_requests/587"
+        },
+        {
+          "iid": 528,
+          "title": "chore(deps): update dependency @playwright/test to v1.63.0",
+          "sha": "858237c36f1cf1c198cba4942f7dece48a3346aa",
+          "source_branch": "renovate/playwright-monorepo",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/ui/DKH.Storefront.Web.UI/-/merge_requests/528"
+        },
+        {
+          "iid": 509,
+          "title": "chore(deps): update pnpm to v10 [security]",
+          "sha": "9ea29baca439234c5166b839a522feb2d02b4579",
+          "source_branch": "renovate/npm-pnpm-vulnerability",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/ui/DKH.Storefront.Web.UI/-/merge_requests/509"
+        }
+      ]
+    },
+    {
+      "repo": "ui/DKH.Admin.Web.UI",
+      "main_sha": "d74c02fd1da51b9de6201982e00f4e4c3cb7fdda",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 2091,
+          "title": "chore(deps): update jest monorepo to v30.5.2",
+          "sha": "dbe714608506cd0e0c224648073c12f50178081b",
+          "source_branch": "renovate/jest-monorepo",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/ui/DKH.Admin.Web.UI/-/merge_requests/2091"
+        }
+      ]
+    },
+    {
+      "repo": "libraries/DKH.Platform",
+      "main_sha": "605a7ab7ad5a9ce08ebff2f5840154fba15f2a12",
+      "read_ok": true,
+      "open_mrs": [
+        {
+          "iid": 504,
+          "title": "chore(versions): auto-bump from conventional commits",
+          "sha": "e081a2008c6db3443e20819842b98d43ca54d165",
+          "source_branch": "ci/auto-version-1453",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/libraries/DKH.Platform/-/merge_requests/504"
+        },
+        {
+          "iid": 415,
+          "title": "chore(deps): update opentelemetry-dotnet monorepo to 1.19.1",
+          "sha": "eabea0b05fa5d7b6a1f72599b7729fdee6485bfd",
+          "source_branch": "renovate/opentelemetry-dotnet-monorepo",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/libraries/DKH.Platform/-/merge_requests/415"
+        },
+        {
+          "iid": 410,
+          "title": "chore(deps): update non-major dependencies",
+          "sha": "6c2ea0d977443af4e5085fecae75aa42e975c6ab",
+          "source_branch": "renovate/non-major-dependencies",
+          "target_branch": "main",
+          "web_url": "https://gitlab.xnata.com/gzdkh/libraries/DKH.Platform/-/merge_requests/410"
+        }
+      ]
+    },
+    {
+      "repo": "services/DKH.ReferenceService",
+      "main_sha": "a0c2e59d5d5c111ece1a467f926c9452b5fe56a6",
+      "read_ok": true,
+      "open_mrs": []
+    },
+    {
+      "repo": "libraries/DKH.Architecture",
+      "main_sha": "8c8545d03e11e064bf71056ebc9a70f0fb8006a1",
+      "read_ok": true,
+      "open_mrs": []
+    }
+  ]
+}

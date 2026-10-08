@@ -1,0 +1,337 @@
+{
+  "observed_utc": "2026-10-07T20:59:56.358601+00:00",
+  "fresh_main_fetches_completed": true,
+  "source_only": true,
+  "rows": [
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Api/Services/CustomerAccountGrpcService.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "06f276a5795f9c82fb52225452a38d45eda3d07f43d613ebe112653bdf347903",
+      "captured_sha256": "06f276a5795f9c82fb52225452a38d45eda3d07f43d613ebe112653bdf347903",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Api/Services/ProductCollectionGrpcService.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "679d412f871c1b866a5392dfc544af8d6653ce5ef6d9451c6cce5e7ab4f20b40",
+      "captured_sha256": "679d412f871c1b866a5392dfc544af8d6653ce5ef6d9451c6cce5e7ab4f20b40",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Application/CustomerAccounts/CustomerAccountQueryHandlers.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "1e6f6314a4940980a55bd423f071e125f0174526a62039763e9fe2a676d82fe0",
+      "captured_sha256": "1e6f6314a4940980a55bd423f071e125f0174526a62039763e9fe2a676d82fe0",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Application/CustomerAccounts/CustomerAccountAdminHandlers.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "32990a22e4522e19e0a4a1cb5cd68b0a1840662cd3358478fd39a8f6493b3cb9",
+      "captured_sha256": "32990a22e4522e19e0a4a1cb5cd68b0a1840662cd3358478fd39a8f6493b3cb9",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Application/Profiles/DeleteCustomerData/DeleteCustomerDataCommandHandler.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "d3c16921f6950836055ae9a1256a9e794e8f9f3264582484646a04c68e94bd89",
+      "captured_sha256": "d3c16921f6950836055ae9a1256a9e794e8f9f3264582484646a04c68e94bd89",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Application/ProductCollection/UpdateCollectionItem/UpdateCollectionItemCommandHandler.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "97bad6f1e82ab129da51a2ca0731ffca8264aeb232493f8bf270d48448891650",
+      "captured_sha256": "97bad6f1e82ab129da51a2ca0731ffca8264aeb232493f8bf270d48448891650",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceEntity.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "22f3b57dab32694420171ba32f431ffdf8633b5eb2b15076b7dfc1a064e8250e",
+      "captured_sha256": "22f3b57dab32694420171ba32f431ffdf8633b5eb2b15076b7dfc1a064e8250e",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductCollectionItemEntity.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "71a472a8b687035d2abdc27d85b202b32ef6c2e6b2522b17344d1cb4b17b805f",
+      "captured_sha256": "71a472a8b687035d2abdc27d85b202b32ef6c2e6b2522b17344d1cb4b17b805f",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Configurations/ProductExperienceConfiguration.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "ef279ca7e10b0489d75182930cee20432981b9abf4f1467c577fb79db353c511",
+      "captured_sha256": "ef279ca7e10b0489d75182930cee20432981b9abf4f1467c577fb79db353c511",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260921012532_AddPrivateStructuredProductExperience.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "ef6a0f2ca5424844b02c79f51726a395e3a663b91f570c42b25b5f74544bed78",
+      "captured_sha256": "ef6a0f2ca5424844b02c79f51726a395e3a663b91f570c42b25b5f74544bed78",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Contracts/proto/customer/api/product_collection/v1/product_collection_service.proto",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "6f8f7b7cd97a27548b46be57211bd56d7d0e9cf752444829506c7cee9fe12689",
+      "captured_sha256": "6f8f7b7cd97a27548b46be57211bd56d7d0e9cf752444829506c7cee9fe12689",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection_experience.proto",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "3cd1ae6fcafbee0a97acdbe54ffa61d607ed7c0c3704e24a45fc464e7a589cfd",
+      "captured_sha256": "3cd1ae6fcafbee0a97acdbe54ffa61d607ed7c0c3704e24a45fc464e7a589cfd",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.CustomerService",
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Application/ProductCollectionPrivacyTests.cs",
+      "current_main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "captured_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "current_sha256": "e8b0625710a08c923bc1ac1fc088898669e1719a112eab6b1a1ae9afd8fead38",
+      "captured_sha256": "e8b0625710a08c923bc1ac1fc088898669e1719a112eab6b1a1ae9afd8fead38",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "gateways/DKH.StorefrontGateway",
+      "path": "DKH.StorefrontGateway.Api/Controllers/Account/V1/AccountController.cs",
+      "current_main_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "captured_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "current_sha256": "49a48080ca87ea72ed99c2acba86a5bf8e99dbbb7f923dd213e922ad79fc320a",
+      "captured_sha256": "49a48080ca87ea72ed99c2acba86a5bf8e99dbbb7f923dd213e922ad79fc320a",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "gateways/DKH.StorefrontGateway",
+      "path": "DKH.StorefrontGateway.Api/Controllers/Collection/V1/CollectionController.cs",
+      "current_main_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "captured_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "current_sha256": "da2f18c443b8a46e5ce65390d506d2d6c39923eeeef5eac50ac2afd3b7364ffb",
+      "captured_sha256": "da2f18c443b8a46e5ce65390d506d2d6c39923eeeef5eac50ac2afd3b7364ffb",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "gateways/DKH.StorefrontGateway",
+      "path": "DKH.StorefrontGateway.Api/Controllers/Reviews/V1/ProductReviewsController.cs",
+      "current_main_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "captured_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "current_sha256": "1a7bcbb9082da33e84873745189709f46f4d9323137ca81012a7957a5bc165b4",
+      "captured_sha256": "1a7bcbb9082da33e84873745189709f46f4d9323137ca81012a7957a5bc165b4",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "path": "DKH.ReviewService.Infrastructure/Persistence/Configurations/ReviewConfiguration.cs",
+      "current_main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "captured_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "current_sha256": "e78db3e49fc0b7532938372dde412fc5e583a2aef3f54bcf1556d138b7ba33dd",
+      "captured_sha256": "e78db3e49fc0b7532938372dde412fc5e583a2aef3f54bcf1556d138b7ba33dd",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "path": "DKH.ReviewService.Application/Reviews/CreateReview/CreateReviewCommandHandler.cs",
+      "current_main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "captured_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "current_sha256": "28c8cafbe84ff780c7da79554022d0ba73b9e8aec8b2f440b8fc99d7ef64825a",
+      "captured_sha256": "28c8cafbe84ff780c7da79554022d0ba73b9e8aec8b2f440b8fc99d7ef64825a",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "path": "DKH.ReviewService.Application/IntegrationEvents/Handlers/ReviewApprovedIntegrationHandler.cs",
+      "current_main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "captured_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "current_sha256": "f6e3782774e206af0c6b22adb9e550424eebfebcd421c2026a137975e7fa6ebd",
+      "captured_sha256": "f6e3782774e206af0c6b22adb9e550424eebfebcd421c2026a137975e7fa6ebd",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "path": "DKH.ReviewService.Application/IntegrationEvents/Handlers/ReviewDeletedIntegrationHandler.cs",
+      "current_main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "captured_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "current_sha256": "ffd6d5d98a9059fe5b1fa562cd7ddc9cc4c8cf93e22e2b5bf0183284df023fc7",
+      "captured_sha256": "ffd6d5d98a9059fe5b1fa562cd7ddc9cc4c8cf93e22e2b5bf0183284df023fc7",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "path": "DKH.ReviewService.Application/IntegrationEvents/Handlers/ReviewRatingChangedIntegrationHandler.cs",
+      "current_main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "captured_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "current_sha256": "61436bbea13e484e8f50f75ebdbc4590b2de9d61ca1eb7fc2dd3536a799c6e72",
+      "captured_sha256": "61436bbea13e484e8f50f75ebdbc4590b2de9d61ca1eb7fc2dd3536a799c6e72",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "path": "DKH.ReviewService.Application/Moderation/BulkModerate/BulkModerateCommandHandler.cs",
+      "current_main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "captured_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "current_sha256": "02d1e256f5a0f341893e5bd079ae15ba3cae1e455b5c7cc9594febdc45192850",
+      "captured_sha256": "02d1e256f5a0f341893e5bd079ae15ba3cae1e455b5c7cc9594febdc45192850",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.ProductCatalogService",
+      "path": "DKH.ProductCatalogService.Contracts/proto/product_catalog/api/specification_attribute_query/v1/specification_attribute_query_service.proto",
+      "current_main_sha": "515bc4d6175de10d2ee056d6281aa21f237b58ff",
+      "captured_sha": "515bc4d6175de10d2ee056d6281aa21f237b58ff",
+      "current_sha256": "fa2225331f75f79d9868af256b0c347297cfb147aae3d90481b39833a7d5be97",
+      "captured_sha256": "fa2225331f75f79d9868af256b0c347297cfb147aae3d90481b39833a7d5be97",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "DKH.StorefrontService.Domain/Entities/BlogPostEntity.cs",
+      "current_main_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "captured_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "current_sha256": "0107bf279f6b56733265e6e2efea0c089349ac1c25879ce10cdca4a10a9f3fd4",
+      "captured_sha256": "0107bf279f6b56733265e6e2efea0c089349ac1c25879ce10cdca4a10a9f3fd4",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "DKH.StorefrontService.Infrastructure/Blog/BlogPostProductFallbackResolver.cs",
+      "current_main_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "captured_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "current_sha256": "7eac26b405dca32bab6b9eaaf4df2434e0574bb07917789e078efbdf9a901836",
+      "captured_sha256": "7eac26b405dca32bab6b9eaaf4df2434e0574bb07917789e078efbdf9a901836",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "themes/xnata-tea/sections/product-detail.liquid",
+      "current_main_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "captured_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "current_sha256": "b27df0e64618f84117661f94942e5d2f3c251aed90c900e8a39c5356144a1456",
+      "captured_sha256": "b27df0e64618f84117661f94942e5d2f3c251aed90c900e8a39c5356144a1456",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "path": "themes/xnata-tea/sections/product-reading.liquid",
+      "current_main_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "captured_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "current_sha256": "0d13aa55bc550091ca77ea6865ae20061ab9aaa550d047722dc0749423698c72",
+      "captured_sha256": "0d13aa55bc550091ca77ea6865ae20061ab9aaa550d047722dc0749423698c72",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "ui/DKH.Storefront.Web.UI",
+      "path": "src/features/product-experience/islands/ProductExperienceIsland.tsx",
+      "current_main_sha": "26e40c9a3015ada32bc13e46d401637a67c1deb8",
+      "captured_sha": "4c3c941c01262528d9e3721fa679fee704fdf693",
+      "current_sha256": "161c443159beb6db90be763bdb8bc70387b0900e64382de9a8c448f0fbf486f1",
+      "captured_sha256": "161c443159beb6db90be763bdb8bc70387b0900e64382de9a8c448f0fbf486f1",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "ui/DKH.Storefront.Web.UI",
+      "path": "src/features/product-experience/ui/ProductExperienceNoteForm.tsx",
+      "current_main_sha": "26e40c9a3015ada32bc13e46d401637a67c1deb8",
+      "captured_sha": "4c3c941c01262528d9e3721fa679fee704fdf693",
+      "current_sha256": "0c0f32c92b9132b99785b51493e89ae0b033ad089702069362ea8da5b992df13",
+      "captured_sha256": "0c0f32c92b9132b99785b51493e89ae0b033ad089702069362ea8da5b992df13",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "ui/DKH.Storefront.Web.UI",
+      "path": "src/features/product-experience/ui/ProductExperienceShareReviewForm.tsx",
+      "current_main_sha": "26e40c9a3015ada32bc13e46d401637a67c1deb8",
+      "captured_sha": "4c3c941c01262528d9e3721fa679fee704fdf693",
+      "current_sha256": "26877829c0597b11c0ffb48979b1a24bac77d0aa79c4b16c7edc5da6c6e74b53",
+      "captured_sha256": "26877829c0597b11c0ffb48979b1a24bac77d0aa79c4b16c7edc5da6c6e74b53",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.MediaService",
+      "path": "DKH.MediaService.Api/Program.cs",
+      "current_main_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "captured_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "current_sha256": "f6255fe4d65d6a5398ff304f4319e4fd4b0ec68afcad04ccd2b2d792b8c4ec33",
+      "captured_sha256": "f6255fe4d65d6a5398ff304f4319e4fd4b0ec68afcad04ccd2b2d792b8c4ec33",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.MediaService",
+      "path": "DKH.MediaService.Api/Services/AssetGrpcService.cs",
+      "current_main_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "captured_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "current_sha256": "b8e88f1e5cb70f662d90ae8859f1cbead7040b61f1ed0559c5a19e58d83a6085",
+      "captured_sha256": "b8e88f1e5cb70f662d90ae8859f1cbead7040b61f1ed0559c5a19e58d83a6085",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    },
+    {
+      "repo": "services/DKH.MediaService",
+      "path": "DKH.MediaService.Infrastructure/ScopeRegistry/StorefrontPrivateArtworkOwnerValidator.cs",
+      "current_main_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "captured_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "current_sha256": "46f02a9de78e236778c96037d0de565a1b265b0b0f6a03c2b5e7ee4f7f358f7c",
+      "captured_sha256": "46f02a9de78e236778c96037d0de565a1b265b0b0f6a03c2b5e7ee4f7f358f7c",
+      "byte_equal_to_accepted_pin": true,
+      "path_exists": true
+    }
+  ]
+}

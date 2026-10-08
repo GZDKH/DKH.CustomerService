@@ -1,0 +1,1563 @@
+{
+  "observed_utc": "2026-10-07T20:28:21.341794+00:00",
+  "source_only": true,
+  "repositories": [
+    {
+      "repo": "services/DKH.CustomerService",
+      "main_sha": "c176ebea92c5500e2cc31646dc1d38ee440408c8",
+      "packages": [
+        {
+          "name": "DKH.Platform.Http",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Grpc",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Domain",
+          "version": "0.1.2"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+          "version": "0.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess",
+          "version": "0.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Common",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore",
+          "version": "1.3.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.Repositories",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.Platform.DataExchange",
+          "version": "1.3.2"
+        },
+        {
+          "name": "DKH.Platform.MultiTenancy",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Messaging.MediatR",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Grpc.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.NotificationService.Contracts",
+          "version": "1.6.0"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "services/DKH.ReviewService",
+      "main_sha": "facb8a9f7b74dd505fdbf32bdd121b5ab8ab37d7",
+      "packages": [
+        {
+          "name": "DKH.Platform.Http",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Domain",
+          "version": "0.1.2"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+          "version": "0.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess",
+          "version": "0.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Common",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.DataExchange",
+          "version": "1.3.2"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore",
+          "version": "1.3.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.Repositories",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.Platform.MediatR.Behaviors",
+          "version": "1.0.1"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Messaging.MediatR",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.MultiTenancy",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.OrderService.Contracts",
+          "version": "1.19.0"
+        },
+        {
+          "name": "DKH.ProcurementService.Contracts",
+          "version": "0.28.0"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Grpc.IntegrationTesting",
+          "version": "1.0.2"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "services/DKH.ProductCatalogService",
+      "main_sha": "515bc4d6175de10d2ee056d6281aa21f237b58ff",
+      "packages": [
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Grpc.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Grpc",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Common",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Domain",
+          "version": "0.1.2"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+          "version": "0.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess",
+          "version": "0.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.Marking",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Auditing.Contracts",
+          "version": "1.0.3"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore",
+          "version": "1.3.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.Repositories",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.Platform.DataExchange",
+          "version": "1.3.2"
+        },
+        {
+          "name": "DKH.Platform.Http",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Storage",
+          "version": "2.0.2"
+        },
+        {
+          "name": "DKH.Platform.Storage.S3",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Seo",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.MultiTenancy",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Dapper",
+          "version": "1.10.0"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Messaging.MediatR",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.MediatR.Behaviors",
+          "version": "1.0.1"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.PropertySequence",
+          "version": "1.0.1"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.CartService.Contracts",
+          "version": "1.18.0"
+        },
+        {
+          "name": "DKH.CounterpartyService.Contracts",
+          "version": "1.27.0"
+        },
+        {
+          "name": "DKH.ProcurementService.Contracts",
+          "version": "0.26.0"
+        },
+        {
+          "name": "DKH.ReferenceService.Contracts",
+          "version": "3.0.0"
+        },
+        {
+          "name": "DKH.StorefrontService.Contracts",
+          "version": "2.108.0"
+        },
+        {
+          "name": "DKH.MediaService.Contracts",
+          "version": "1.3.0"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "services/DKH.StorefrontService",
+      "main_sha": "db37f8b01f024d78333f51fbabc5a1f4d93e2ee3",
+      "packages": [
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Grpc.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Domain",
+          "version": "0.1.2"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+          "version": "0.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess",
+          "version": "0.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.RateLimiting",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Common",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.MediatR.Behaviors",
+          "version": "1.0.1"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Messaging.MediatR",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore",
+          "version": "1.3.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.Repositories",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.Platform.Redis",
+          "version": "1.3.1"
+        },
+        {
+          "name": "DKH.Platform.Caching",
+          "version": "1.6.1"
+        },
+        {
+          "name": "DKH.Platform.Caching.Memory",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Seo",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Storage",
+          "version": "2.0.2"
+        },
+        {
+          "name": "DKH.Platform.Workers",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Storage.S3",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.MultiTenancy",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Plugins",
+          "version": "1.11.0"
+        },
+        {
+          "name": "DKH.Platform.Plugins.Host",
+          "version": "1.2.2"
+        },
+        {
+          "name": "DKH.ProductCatalogService.Contracts",
+          "version": "5.20.0"
+        },
+        {
+          "name": "DKH.CommerceNetworkService.Contracts",
+          "version": "1.29.0"
+        },
+        {
+          "name": "DKH.NotificationService.Contracts",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.MediaService.Contracts",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.ReviewService.Contracts",
+          "version": "1.8.0"
+        },
+        {
+          "name": "DKH.TelegramBotService.Contracts",
+          "version": "3.3.0"
+        },
+        {
+          "name": "DKH.SearchService.Contracts",
+          "version": "1.9.0"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "services/DKH.MediaService",
+      "main_sha": "cf7df147c2ad8b74d03855889cbb53b7b5b5a8b8",
+      "packages": [
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Grpc",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Common",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore",
+          "version": "1.3.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.Repositories",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.Platform.DataExchange",
+          "version": "1.3.2"
+        },
+        {
+          "name": "DKH.Platform.Seo",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.MultiTenancy",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak.Admin",
+          "version": "1.9.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess",
+          "version": "0.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Domain",
+          "version": "0.1.2"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+          "version": "0.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Workers",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.InventoryService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.OrderService.Contracts",
+          "version": "1.9.0"
+        },
+        {
+          "name": "DKH.ProductCatalogService.Contracts",
+          "version": "5.9.0"
+        },
+        {
+          "name": "DKH.StorefrontService.Contracts",
+          "version": "4.18.0"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Grpc.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.Messaging.EntityFrameworkCore",
+          "version": "1.0.0"
+        },
+        {
+          "name": "DKH.Platform.Storage",
+          "version": "2.0.2"
+        },
+        {
+          "name": "DKH.Platform.Storage.Local",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Storage.S3",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Messaging.MediatR",
+          "version": "1.2.0"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "gateways/DKH.StorefrontGateway",
+      "main_sha": "3f1ed9a58a2495cfa3be84ab8b9e9e9d3f4836ea",
+      "packages": [
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Http",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.RestfulApi",
+          "version": "1.3.1"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Modularity.Abstractions",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Modularity.AspNetCore",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.Storage",
+          "version": "2.0.2"
+        },
+        {
+          "name": "DKH.Platform.Storage.Local",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Storage.S3",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak.Admin",
+          "version": "1.9.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Caching",
+          "version": "1.6.1"
+        },
+        {
+          "name": "DKH.Platform.Redis",
+          "version": "1.3.1"
+        },
+        {
+          "name": "DKH.Platform.Caching.Memory",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.MultiTenancy",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.Marking",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.ApiManagementService.Contracts",
+          "version": "1.10.0"
+        },
+        {
+          "name": "DKH.MediaService.Contracts",
+          "version": "1.10.0"
+        },
+        {
+          "name": "DKH.ProductCatalogService.Contracts",
+          "version": "5.26.0"
+        },
+        {
+          "name": "DKH.ReferenceService.Contracts",
+          "version": "2.2.0"
+        },
+        {
+          "name": "DKH.CartService.Contracts",
+          "version": "1.21.0"
+        },
+        {
+          "name": "DKH.OrderService.Contracts",
+          "version": "1.19.0"
+        },
+        {
+          "name": "DKH.StorefrontService.Contracts",
+          "version": "4.21.0"
+        },
+        {
+          "name": "DKH.TelegramBotService.Contracts",
+          "version": "1.55.0"
+        },
+        {
+          "name": "DKH.CustomerService.Contracts",
+          "version": "1.10.0"
+        },
+        {
+          "name": "DKH.ReviewService.Contracts",
+          "version": "1.8.0"
+        },
+        {
+          "name": "DKH.CounterpartyService.Contracts",
+          "version": "1.28.0"
+        },
+        {
+          "name": "DKH.LogisticsService.Contracts",
+          "version": "3.4.0"
+        },
+        {
+          "name": "DKH.CommerceNetworkService.Contracts",
+          "version": "1.29.0"
+        },
+        {
+          "name": "DKH.SubscriptionService.Contracts",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.SearchService.Contracts",
+          "version": "1.11.0"
+        },
+        {
+          "name": "DKH.AssistantService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.ProductRequestService.Contracts",
+          "version": "1.0.0"
+        },
+        {
+          "name": "DKH.EngagementService.Contracts",
+          "version": "1.8.0"
+        },
+        {
+          "name": "DKH.WarehouseService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.PaymentService.Contracts",
+          "version": "0.20.0"
+        },
+        {
+          "name": "DKH.InventoryService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.NotificationService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Gateway.IntegrationTesting",
+          "version": "1.0.1"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "gateways/DKH.AdminGateway",
+      "main_sha": "02f51ecbbb62a61745228d8ad7106381ab735097",
+      "packages": [
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.RateLimiting",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Http",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.RestfulApi",
+          "version": "1.3.1"
+        },
+        {
+          "name": "DKH.Platform.Redis",
+          "version": "1.3.1"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Client",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.DataExchange",
+          "version": "1.3.2"
+        },
+        {
+          "name": "DKH.Platform.Storage",
+          "version": "2.0.2"
+        },
+        {
+          "name": "DKH.Platform.Storage.Local",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Storage.S3",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Caching",
+          "version": "1.6.1"
+        },
+        {
+          "name": "DKH.Platform.Caching.Memory",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.SignalR",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak.Admin",
+          "version": "1.9.0"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Plugins",
+          "version": "1.11.0"
+        },
+        {
+          "name": "DKH.Platform.Plugins.Host",
+          "version": "1.2.2"
+        },
+        {
+          "name": "DKH.ProductCatalogService.Contracts",
+          "version": "5.22.0"
+        },
+        {
+          "name": "DKH.ReferenceService.Contracts",
+          "version": "3.0.0"
+        },
+        {
+          "name": "DKH.TelegramBotService.Contracts",
+          "version": "3.3.0"
+        },
+        {
+          "name": "DKH.CartService.Contracts",
+          "version": "1.19.0"
+        },
+        {
+          "name": "DKH.OrderService.Contracts",
+          "version": "1.18.0"
+        },
+        {
+          "name": "DKH.NotificationService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.StorefrontService.Contracts",
+          "version": "4.21.0"
+        },
+        {
+          "name": "DKH.CounterpartyService.Contracts",
+          "version": "1.28.0"
+        },
+        {
+          "name": "DKH.CustomerService.Contracts",
+          "version": "1.9.0"
+        },
+        {
+          "name": "DKH.ReviewService.Contracts",
+          "version": "1.7.0"
+        },
+        {
+          "name": "DKH.ApiManagementService.Contracts",
+          "version": "1.10.0"
+        },
+        {
+          "name": "DKH.Platform.Modularity.Abstractions",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Modularity.AspNetCore",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.InventoryService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.DeliveryService.Contracts",
+          "version": "1.12.0"
+        },
+        {
+          "name": "DKH.WarehouseService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.TelegramClientService.Contracts",
+          "version": "1.0.0"
+        },
+        {
+          "name": "DKH.BroadcastService.Contracts",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.SearchService.Contracts",
+          "version": "1.9.0"
+        },
+        {
+          "name": "DKH.AssistantService.Contracts",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.ProductRequestService.Contracts",
+          "version": "1.0.0"
+        },
+        {
+          "name": "DKH.SubscriptionService.Contracts",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.MediaService.Contracts",
+          "version": "1.10.0"
+        },
+        {
+          "name": "DKH.PaymentService.Contracts",
+          "version": "0.19.0"
+        },
+        {
+          "name": "DKH.LogisticsService.Contracts",
+          "version": "3.4.0"
+        },
+        {
+          "name": "DKH.ProcurementService.Contracts",
+          "version": "0.25.0"
+        },
+        {
+          "name": "DKH.StaffService.Contracts",
+          "version": "0.6.0"
+        },
+        {
+          "name": "DKH.EngagementService.Contracts",
+          "version": "1.8.0"
+        },
+        {
+          "name": "DKH.CustomsService.Contracts",
+          "version": "2.1.0"
+        },
+        {
+          "name": "DKH.CommerceNetworkService.Contracts",
+          "version": "1.29.0"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Gateway.IntegrationTesting",
+          "version": "1.0.1"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "ui/DKH.Storefront.Web.UI",
+      "main_sha": "26e40c9a3015ada32bc13e46d401637a67c1deb8",
+      "packages": [],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "ui/DKH.Admin.Web.UI",
+      "main_sha": "d74c02fd1da51b9de6201982e00f4e4c3cb7fdda",
+      "packages": [],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "libraries/DKH.Platform",
+      "main_sha": "605a7ab7ad5a9ce08ebff2f5840154fba15f2a12",
+      "packages": [],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "services/DKH.ReferenceService",
+      "main_sha": "a0c2e59d5d5c111ece1a467f926c9452b5fe56a6",
+      "packages": [
+        {
+          "name": "DKH.Platform.Http",
+          "version": "1.6.0"
+        },
+        {
+          "name": "DKH.Platform",
+          "version": "1.5.1"
+        },
+        {
+          "name": "DKH.Platform.Core",
+          "version": "1.7.1"
+        },
+        {
+          "name": "DKH.Platform.Grpc",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.Grpc.Common",
+          "version": "1.2.1"
+        },
+        {
+          "name": "DKH.Platform.Identity",
+          "version": "1.7.5"
+        },
+        {
+          "name": "DKH.Platform.Authentication.Keycloak",
+          "version": "1.5.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization",
+          "version": "2.0.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess",
+          "version": "0.7.1"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Abstractions",
+          "version": "0.4.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Contracts",
+          "version": "0.2.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Domain",
+          "version": "0.1.2"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.EntityFrameworkCore",
+          "version": "0.1.0"
+        },
+        {
+          "name": "DKH.Platform.Authorization.ResourceAccess.Grpc",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Domain",
+          "version": "1.13.2"
+        },
+        {
+          "name": "DKH.Platform.Application",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.MediatR.Behaviors",
+          "version": "1.0.1"
+        },
+        {
+          "name": "DKH.Platform.Localization",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Logging",
+          "version": "1.2.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore",
+          "version": "1.3.4"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.PostgreSQL",
+          "version": "1.3.0"
+        },
+        {
+          "name": "DKH.Platform.EntityFrameworkCore.Repositories",
+          "version": "1.4.0"
+        },
+        {
+          "name": "DKH.Platform.DataExchange",
+          "version": "1.3.2"
+        },
+        {
+          "name": "DKH.Platform.Telemetry",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Grpc.IntegrationTesting",
+          "version": "1.0.2"
+        },
+        {
+          "name": "DKH.Platform.Messaging",
+          "version": "1.9.2"
+        },
+        {
+          "name": "DKH.Platform.Messaging.MediatR",
+          "version": "1.2.0"
+        },
+        {
+          "name": "DKH.Platform.Outbox",
+          "version": "1.6.2"
+        },
+        {
+          "name": "DKH.Platform.Outbox.PostgreSql",
+          "version": "1.1.4"
+        },
+        {
+          "name": "DKH.Platform.RabbitMq",
+          "version": "1.1.12"
+        },
+        {
+          "name": "DKH.Platform.Caching",
+          "version": "1.6.1"
+        },
+        {
+          "name": "DKH.Platform.Caching.Memory",
+          "version": "1.1.0"
+        },
+        {
+          "name": "DKH.Platform.Dapper.PostgreSQL",
+          "version": "1.0.0"
+        },
+        {
+          "name": "DKH.Platform.Dapper.Repositories",
+          "version": "2.0.0"
+        }
+      ],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    },
+    {
+      "repo": "libraries/DKH.Architecture",
+      "main_sha": "8c8545d03e11e064bf71056ebc9a70f0fb8006a1",
+      "packages": [],
+      "state": "source-declared versions; deployed/resolved package versions not verified"
+    }
+  ],
+  "policy_findings": [
+    {
+      "owner": "DKH.CustomerService",
+      "path": "DKH.CustomerService.Application/Profiles/DeleteCustomerData/DeleteCustomerDataCommandHandler.cs",
+      "finding": "Existing handler anonymizes or soft-deletes storefront profile; not a complete account-wide dated-journal deletion or provider/backup erasure proof."
+    },
+    {
+      "owner": "DKH.Infrastructure",
+      "path": "scripts/backup/pg-backup.sh",
+      "finding": "Source declares configurable default backup counts: 7 daily, 4 weekly, 3 monthly; cleanup preserves recovery points when current backup fails. Defaults do not prove deployed schedule, successful purge or an approved erasure deadline."
+    },
+    {
+      "owner": "DKH.CustomerService",
+      "path": "DKH.CustomerService.Application/CustomerAccounts/CustomerAccountCommandHandlers.cs",
+      "finding": "DeleteCustomerAccountDataCommandHandler already anonymizes linked profiles/identities and revokes memberships account-wide. Reuse this coordinator; extend it for new journal cleanup rather than inventing a second account deletion service. It still does not prove backup/provider erasure."
+    }
+  ],
+  "policy_decision": "P06 enablement evidence remains unverified; additive private implementation remains permitted behind disabled feature flags.",
+  "identity_findings": [
+    {
+      "owner": "DKH.CustomerService",
+      "path": "DKH.CustomerService.Api/Services/CustomerAccountGrpcService.cs",
+      "decision": "extend",
+      "finding": "ResolveIdentity uses validated ClaimsPrincipal issuer and string subject; CustomerAccountHandlerSupport resolves canonical account and rejects deleted/blocked state. Reuse these boundaries for new personal RPCs; preserve legacy collection caller claims."
+    },
+    {
+      "owner": "DKH.StorefrontGateway",
+      "path": "DKH.StorefrontGateway.Api/Controllers/Account/V1/AccountController.cs",
+      "decision": "integrate",
+      "finding": "Existing account route calls CustomerAccount RPC without browser-supplied AccountId; collection route uses legacy RequireUserId. New diary must use account path rather than interpret sub as CustomerProfile UUID."
+    },
+    {
+      "owner": "DKH.Platform",
+      "path": "src/Security/DKH.Platform.Identity/DKH/Platform/Identity/Interceptors/PlatformUserIdentityPropagationInterceptor.cs",
+      "decision": "integrate",
+      "finding": "Interceptor forwards Authorization header even when currentUser GUID is unavailable; PlatformGrpcCurrentUser itself uses GUID UserId and optional transitional header fallback. Raw authenticated ClaimsPrincipal resolver must remain canonical; deployed ForwardAuthorizationHeader and fallback options need owner host tests."
+    },
+    {
+      "owner": "DKH.MediaService",
+      "path": "DKH.MediaService.Infrastructure/ScopeRegistry/StorefrontPrivateArtworkOwnerValidator.cs",
+      "decision": "extend",
+      "finding": "Reuse fail-closed scoped owner validator pattern; existing PlushInquiry scope is not diary authorization. Customer purpose-check producer must precede Media consumer."
+    }
+  ],
+  "openspec_baseline": {
+    "owner": "DKH.CustomerService",
+    "path": "openspec/changes/private-structured-product-experience/specs/private-structured-product-experience/spec.md",
+    "finding": "Existing spec describes one replaceable private collection experience, omission-vs-clear and separate Review. Dated entry/revision/General/unknown and account-wide diary need an additive delta after the entry gate, without rewriting legacy semantics."
+  },
+  "fresh_fetch_verified_utc": "2026-10-07T20:35:35.316220+00:00",
+  "test_baseline": {
+    "repository": "services/DKH.CustomerService",
+    "finding": "All inspected existing product experience privacy, global account, host gRPC and persistence model test fixtures use EF InMemory. Test class names and Integration category do not prove PostgreSQL behavior. New journal relational constraint/transaction/CAS/cascade and actual owner boundary tests remain required in EJ-01/EJ-02/EJ-22.",
+    "new_journal_application_tests_run": 0,
+    "docker_server_available": "29.8.1",
+    "dotnet_sdk_available": "10.0.401"
+  }
+}

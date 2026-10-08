@@ -8,6 +8,7 @@
 | [gRPC API](grpc-api.md) | Service definitions, methods, request/response types |
 | [Database](database.md) | Schema, tables, indexes, migrations |
 | [Architecture](architecture.md) | Project structure, architecture decisions |
+| [Experience Journal entry discovery](product-experience-journal/entry-gate-2026-10-08.md) | Revision 2 reuse, baseline evidence and remaining gates |
 
 ## Translations
 
