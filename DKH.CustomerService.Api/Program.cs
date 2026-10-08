@@ -1,5 +1,6 @@
 using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Grpc.Services;
+using DKH.CustomerService.Api.Journal;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
@@ -37,6 +38,7 @@ await Platform
         builder.ConfigurePlatformStandardConfiguration();
         builder.Services.AddCustomerInfrastructure(builder.Configuration);
         builder.Services.AddApplication(builder.Configuration);
+        builder.Services.AddCustomerJournalOwnership();
     })
     .AddPlatformMessaging(messaging =>
     {

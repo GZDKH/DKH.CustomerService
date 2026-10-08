@@ -12,5 +12,6 @@ public static class ConfigureServices
         var assembly = Assembly.GetExecutingAssembly();
 
         services.AddValidatorsFromAssembly(assembly);
+        services.AddScoped<CustomerAccounts.CustomerJournalAccounts>();
     }
 }

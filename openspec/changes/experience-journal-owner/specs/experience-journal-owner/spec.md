@@ -42,6 +42,21 @@ Every new personal journal resource operation SHALL independently bind to the re
 - **WHEN** a caller presents only a service credential without the required validated personal ownership context
 - **THEN** no personal journal access is granted
 
+#### Scenario: Validated purpose has an exact versioned string shape
+
+- **WHEN** the installed JWT validator accepts a bearer but its purpose is missing, service/unsupported, wrong-version, duplicate, array, object, null or another non-string value
+- **THEN** journal access is denied while existing legacy API authorization retains its own policy
+
+#### Scenario: Verified aliases resolve one current account without email guessing
+
+- **WHEN** a current configured issuer and raw subject match a primary identity or an already verified active issuer/subject link
+- **THEN** exactly one distinct active account is resolved, and missing, future/unverified, removed or conflicting authority matches fail closed
+
+#### Scenario: Configured external issuer preserves the canonical account namespace
+
+- **WHEN** the installed validator accepts a personal bearer from the exact configured external URL for the same trusted realm
+- **THEN** journal ownership resolves into the existing internal configured account namespace, while additional issuer allowlist entries grant no journal authority
+
 #### Scenario: Missing and foreign resources remain indistinguishable
 
 - **WHEN** an authenticated personal caller targets an absent resource or one owned by a different account
@@ -79,3 +94,8 @@ The new journal purpose SHALL preserve the existing verified-email account provi
 
 - **WHEN** an old collection client submits an existing summary, omits it, or explicitly clears it
 - **THEN** the existing replacement, preserve/clear, nullable date, 7000-character validation and separate rating semantics remain unchanged and no historical journal session is fabricated
+
+#### Scenario: Soft-deleted summaries do not occupy the active summary slot
+
+- **WHEN** an owner replaces or clears the existing optional collection summary and later supplies a new summary
+- **THEN** real PostgreSQL accepts at most one active summary for that collection item while retaining soft-deleted rows and separate collection rating

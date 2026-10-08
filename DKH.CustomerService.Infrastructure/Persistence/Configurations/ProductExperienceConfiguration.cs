@@ -14,7 +14,7 @@ public sealed class ProductExperienceConfiguration : IEntityTypeConfiguration<Pr
         builder.Property(x => x.ExperiencedAt);
         builder.Property(x => x.PersonalText).HasMaxLength(7000);
         builder.Property(x => x.Recommendation).HasMaxLength(2000);
-        builder.HasIndex(x => x.CollectionItemId).IsUnique();
+        builder.HasIndex(x => x.CollectionItemId).IsUnique().HasFilter("\"IsDeleted\" = false");
         builder.HasQueryFilter(x => !x.IsDeleted);
 
         builder.HasMany(x => x.Observations)

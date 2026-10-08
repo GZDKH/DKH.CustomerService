@@ -8,7 +8,8 @@ The accepted Experience Journal adds account-wide dated private entries alongsid
 - Require independently resolved owner predicates for future personal resources; browser IDs and wildcard grants confer no ownership.
 - Reuse verified legacy account/profile/membership links only for compatibility copy/link operations; unresolved legacy mapping does not reject a fresh entry for an already resolved account.
 - Preserve existing verified-email provisioning and legacy collection wire, authorization, summary replacement and rating behavior.
-- Authoring this delta changes no executable code, schema, configuration or live policy. Its implementation follows accepted EJ-00 delivery and EJ-01's owner-local registration.
+- Implement the Customer owner-local delta after accepted EJ-00 delivery and explicit owner-local transfer. Compose the installed validator's event for exact `personal:v1` shape and identity binding.
+- Correct the proven legacy PostgreSQL summary replacement failure with an active-only unique index; retain soft-deleted rows and document the generated downgrade limit.
 
 ## Capabilities
 
@@ -23,6 +24,8 @@ None. Existing collection-summary requirements remain unchanged; this delta appl
 ## Impact
 
 Owner: DKH.CustomerService API/Application boundary. StorefrontGateway remains a separate consumer verification/adapter scope in EJ-01. No Platform duplication or producer package/API change is implemented by this specification.
+
+Current Customer source and test/migration acceptance mapping: [EJ-01 Customer implementation evidence](../../../docs/product-experience-journal/ej01-customer-owner.md). The entry branch below is historical EJ-00 evidence; implementation is on its own fresh leased branch and child `dkh-wixs7m.1`.
 
 Discovery decision: **extend**, with **integrate** at the BFF/Platform seam. Source `c176ebea92c5500e2cc31646dc1d38ee440408c8` already contains `CustomerAccountGrpcService.ResolveIdentity`, `CustomerAccountHandlerSupport.RequireAccountAsync`, verified profile reconciliation and account-wide deletion. `ProductCollectionGrpcService` uses the existing legacy CustomerId caller check and remains separate. Exact refs, active MRs/worktrees, 33 fresh byte-equal source pins, 40 resolved Customer dependencies, baseline tests and limitations are recorded in [EJ-00 entry discovery](../../../docs/product-experience-journal/entry-gate-2026-10-08.md).
 

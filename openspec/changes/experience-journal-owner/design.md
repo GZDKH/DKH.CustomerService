@@ -6,7 +6,7 @@ See proposal.md and the EJ-00 source receipt. Canonical account resolution alrea
 
 Goals: share the existing trusted principal/account/status path within the new Customer journal purpose, reuse verified legacy links for compatibility, and prevent generic grants or untrusted browser identifiers from supplying ownership.
 
-Non-goals: implement dated journal tables/commands/APIs, change existing account provisioning or collection wire semantics, add an account/auth service, duplicate Platform token validation, or enable production/pilot flags. This entry MR authors specifications and evidence only.
+Non-goals: implement dated journal tables/commands/APIs, change existing account provisioning or collection wire semantics, add an account/auth service, duplicate Platform token validation, or enable production/pilot flags. The Customer owner-local implementation and its real host acceptance checks extend the accepted entry delta.
 
 ## Decisions
 
@@ -14,6 +14,9 @@ Non-goals: implement dated journal tables/commands/APIs, change existing account
 2. Resolve an active canonical account independently at the owner service for each permitted journal operation. Private owner predicates remain mandatory even when staff/resource permission grants are broad. The personal-versus-service purpose check must use authoritative validated identity/context evidence, never caller-controlled headers, email guessing or a generic wildcard permission. Reuse an established Platform mechanism where one exists; verify its actual registered/resolved version and host behavior before accepting the implementation.
 3. Keep compatibility links purpose-limited. Reuse current verified account/profile/membership reconciliation. Missing or quarantined legacy links block only the requested copy/link, while a resolved canonical account can create a fresh private entry once the later core/API gates exist. Do not invent an alias table until a bounded owner/consumer gap proves it necessary.
 4. Preserve the legacy summary surface and existing verified-email provisioning. New journal authorization applies to its new purpose; it must not rewrite old collection or existing account APIs. Producer protobuf/package work remains EJ-03 and the BFF adapter is a separate owner scope.
+5. Integrate the issuer's `dkh_principal_purpose` contract by composing Bearer's validated-token event. Capture exact JSON string shape and issuer/subject under a private request key; generic authenticated principal claims and caller headers cannot mint this evidence. Keep old API authorization independent of journal eligibility. Resolve primary and verified current-authority alias matches together with a bounded SQL union; zero or multiple distinct accounts fail closed.
+   Platform's configured internal and external issuer URLs for the same realm are trusted token alternatives, both mapped to the existing internal canonical account namespace. Arbitrary validator allowlist additions are not owner authority. Real host tests use distinct internal/external URLs and verify this narrower trust boundary.
+6. Real legacy RPC/PostgreSQL checks found that the existing unfiltered collection-summary unique index prevents replacement after Platform soft-delete. Restrict it to non-deleted rows, retain tombstones and preserve the existing replace/preserve/clear semantics. This minimal compatibility index correction creates no historical diary or data cleanup.
 
 ## Risks / Trade-offs
 
@@ -24,4 +27,4 @@ Non-goals: implement dated journal tables/commands/APIs, change existing account
 
 ## Migration Plan
 
-This specification/entry receipt changes no application or database state and needs no migration. Later EJ-01 refactoring is additive and retains current account/collection contracts; package/API changes follow the producer-before-consumer sequence when their exact gates start. Rollback of subsequent journal intake must retain owner reads, export/delete/withdrawal and deny/cleanup participants. No user data is dropped to roll back a UI.
+The owner adapter needs no new schema. The proven legacy compatibility correction uses generated migration `LimitActiveProductExperienceSummary`, changing only the unique index predicate and retaining all rows. Its `Down` can restore the old index before duplicate tombstones exist; after replacement, the old constraint can no longer represent retained data and downgrade rejects it transactionally. Retain the additive schema for application rollback; never delete retained data to force rollback. No live migration or activation is performed by this implementation handoff. Package/API changes follow downstream producer gates. Rollback of subsequent journal intake must retain owner reads, export/delete/withdrawal and deny/cleanup participants.

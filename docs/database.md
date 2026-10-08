@@ -412,6 +412,9 @@ preferences, statistics, and merchant-specific state during migration.
 | `20260406082057_20260406_AddAllowsWriteToPm` | 2026-04-06 | Added `allows_write_to_pm` column to customer_profiles |
 | `20260804131014_AddGlobalCustomerAccounts` | 2026-08-04 | Added global accounts, linked identities, lazy storefront memberships, and restartable legacy reconciliation state |
 | `20260921012532_AddPrivateStructuredProductExperience` | 2026-09-21 | Added owner-private product experiences with normalized typed observations and tags |
+| `20261008115437_LimitActiveProductExperienceSummary` | 2026-10-08 | Restricts the collection-summary unique index to active rows so soft-deleted summaries do not prevent replacement or recreation |
+
+The active-summary migration changes an index only and retains soft-deleted data. Its generated `Down` restores the previous unfiltered unique index. That downgrade rejects duplicate collection-item IDs once replacements have created tombstones; retain the new schema when rolling back application code. Do not remove retained data to force a downgrade. Index rebuild locking and production deployment require the normal separate release decision.
 
 ### Running Migrations
 
