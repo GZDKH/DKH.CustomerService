@@ -120,27 +120,7 @@ public sealed class CustomerAccountGrpcService(
 
     private CustomerAccountIdentity ResolveIdentity(ClaimsPrincipal principal)
     {
-        if (principal.Identity?.IsAuthenticated != true)
-        {
-            throw new RpcException(new Status(StatusCode.Unauthenticated, "Authentication is required."));
-        }
-
-        var subject = Claim(principal, "sub");
-        if (string.IsNullOrWhiteSpace(subject))
-        {
-            throw new RpcException(new Status(StatusCode.Unauthenticated, "Authenticated subject is missing."));
-        }
-
-        var authServerUrl = configuration["Platform:Auth:Keycloak:AuthServerUrl"];
-        var realm = configuration["Platform:Auth:Keycloak:Realm"];
-        if (string.IsNullOrWhiteSpace(authServerUrl) || string.IsNullOrWhiteSpace(realm))
-        {
-            throw new RpcException(new Status(StatusCode.FailedPrecondition, "Trusted identity issuer is not configured."));
-        }
-
-        return new CustomerAccountIdentity(
-            $"{authServerUrl.TrimEnd('/')}/realms/{realm.Trim('/')}",
-            subject);
+        return CustomerAccountIdentityResolver.Resolve(principal, configuration);
     }
 
     private Guid RequireStorefrontId(ServerCallContext context)

@@ -1,0 +1,42 @@
+# EJ-01.01-Customer implementation evidence
+
+This is the Customer owner-local slice of Revision 2, tracked by CustomerService #8 and [Beads #12182](https://gitlab.xnata.com/gzdkh/agents/DKH.Beads/-/issues/12182), child `dkh-wixs7m.1`. The human transferred this slice to session `01a11b08-53a6-7535-8407-4c585316509b`. The separate Gateway scope, original coordinator lease and IAM producer lease are retained. Original program totals remain 24 stages / 49 tasks, with EJ-00 accepted; this patch alone cannot accept EJ-01.
+
+## Source and reuse decision
+
+Customer base: `c9aaf27187785603193a55364b03b9011947a1f0`. AgentRules instructions: `b9f55451db28b6896e371621d7967ca206e52b20`. Accepted [EJ-00 discovery](entry-gate-2026-10-08.md) was revalidated against this base. Bounded discovery searched Customer and Platform for `ResolveIdentity`, `CustomerAccountHandlerSupport`, `LegacyCustomerProfileId` and `dkh_principal_purpose`; source, existing contracts, migrations and concurrent work were inspected. No existing journal implementation or overlapping Customer MR was found. A fresh leased worktree was created; the prior owner's branch was untouched.
+
+Decision: **extend** existing Customer ownership and **integrate** the IAM purpose contract. Reuse configured issuer/raw-subject resolution, `EnsureAccountCanAuthenticate`, existing account/linked-identity/profile/membership entities and verified reconciliation. Keep current protobufs and the legacy collection service. No new identity authority or Platform package fork is introduced. Installed dependencies include Keycloak authentication 1.5.0, Identity 1.7.5, gRPC 1.3.0 and gRPC integration testing 1.0.2; package versions are unchanged. Real bearer tests exercise these installed packages.
+
+IAM producer handoff: reviewed source `55baf2098123614af48f7ae1ff03093b985a4baf`, merged !230 at `5abce68f938023658ee9f561546ff079c8f85c86`, main pipeline 42385. Its versioned purpose is `dkh_principal_purpose`: `personal:v1`, `service:v1`, `unsupported:v1`. Its real-issuer tests are producer evidence; they do not establish live mapper activation or Customer/Gateway/Telegram transport adoption.
+
+## Executable boundary
+
+`CustomerAccountIdentityResolver` shares the existing account API's configured issuer and raw authenticated `sub` path without adding an email-verification requirement to reads. `CustomerJournalPrincipalOptions` composes the installed Bearer `OnTokenValidated` event and captures shape evidence from its already validated token. It accepts exactly one JSON string `personal:v1`, one nonempty untrimmed string `sub` (at most 256 characters), and one issuer matching configured authority. It refuses duplicate/array/object claims, untrusted headers and principal-only injection. Token signatures, issuer, audience and lifetime remain the existing validator's responsibility. Ineligible journal purpose does not globally reject legacy authentication.
+
+`CustomerJournalAccounts` reads primary and already verified, non-deleted, current issuer/subject aliases with one bounded SQL union. Both identity indexes and the account PK are reused; no N+1 or account-wide correlated scan is introduced. Distinct matches are capped at two, a collision is denied, and the existing blocked/deletion-pending/deleted guard is applied each operation. Shared email is never used to resolve, provision or link an account.
+
+`CustomerJournalOwnerResolver` binds the authenticated owner to the later RPC boundary and produces equal generic NotFound responses for foreign and absent selected owners. The read-only compatibility adapter additionally requires the exact active, linked profile and active, non-deleted matching account/storefront/profile membership. Missing, quarantined, revoked or deleted legacy links cannot disable canonical ownership.
+
+The host compatibility test exposed an existing relational failure: soft-deleting the prior summary before inserting a replacement conflicted with the unfiltered unique `CollectionItemId` index. `LimitActiveProductExperienceSummary` preserves tombstones and restricts uniqueness to active summaries. It creates no journal table and deletes no retained rows. See [schema and downgrade limitation](../database.md).
+
+## Acceptance checks and limits
+
+`CustomerJournalHostTests` uses an ephemeral in-memory RSA signing key, normal Platform JWT bearer authentication, loopback HTTP/2 Kestrel, the production scoped resolver and disposable PostgreSQL 18.4 with actual existing migrations. Only broker/outbox sinks are replaced. No authenticated-user override or InMemory database supplies owner proof. A test-only RPC binding calls the production adapter; it is not a delivered EJ-03 endpoint.
+
+| Requirement | Named evidence |
+| --- | --- |
+| RT01 positive: non-GUID canonical owner across storefronts and verified alias | `NonGuidAndVerifiedLinkedSubjects_ResolveOneAccountAcrossStorefrontsAsync` |
+| Primary/alias collision, same-account deduplication, absent/removed/unverified/future/foreign-authority alias, no email merge | `AliasCollisionAndRemovedAlias_FailClosedWithoutEmailMergeAsync`, `LinkedIdentity_RequiresCurrentIssuerAndCompletedVerificationAsync` |
+| RT01 negative: service/unsupported/missing/invalid version and claim shapes, duplicate claims, invalid subject | `InvalidPurpose_IsDeniedAfterRealJwtValidationAsync`, `DuplicatePurposeAndSubject_AreNotFlattenedIntoPersonalAccessAsync`, `NonStringOrEmptySubject_IsDeniedAsync`, `LongAndWhitespaceSubject_CannotNormalizeIntoAnotherIdentityAsync` |
+| Unit boundary: authenticated principal claims alone cannot mint validated-token evidence | `JournalPrincipalUnitTests.AuthenticatedPrincipalClaims_CannotMintValidatedTokenEvidenceAsync` |
+| Validator owns issuer/audience/signature/lifetime; missing trusted authority and no bearer deny | `InvalidJwt_IsRejectedByExistingPlatformAuthenticationAsync`, `MissingTrustedIssuerAndUnsignedPrincipalCannotSupplyJournalOwnershipAsync` |
+| Wildcard/admin grants and forged metadata cannot select another owner; foreign/missing equivalence | `WildcardAndForgedMetadata_DoNotSelectForeignOrMissingOwnerAsync` |
+| Deleted, blocked and deletion-pending account; status rechecked with reused bearer/concurrent requests | `InactiveAccount_DoesNotAcquireOwnershipAsync`, `ReusedBearer_RechecksAccountStatusAcrossConcurrentRequestsAsync` |
+| Exact active legacy link and ten invalid mapping states; canonical owner survives invalid mapping | `LegacyBridge_RequiresExactVerifiedActiveLinksOnlyAsync` |
+| Old account read without personal purpose or verified email; provisioning guard retained | `LegacyAccountReadRetainsItsPolicy_ProvisioningStillRequiresVerifiedEmailAsync` |
+| Real legacy collection RPC: nullable date, 7000 accepted/7001 rejected, replace/preserve/clear, separate rating | `LegacyCollectionRpc_PreservesSummaryDateTextAndRatingWithoutPersonalPurposeAsync`; existing collection handler/gRPC and mapper suites |
+
+All data is synthetic. These cases provide no production legacy population or backfill counts. Host tests do not prove actual Bot owner API/DB/TLS authentication, BFF bearer forwarding, live issuer activation, dated entry persistence, editor/history/UI or delivery. Those remain their published owner and downstream gates. P02/public policy and P06/retention decisions are unchanged. Required local checks, independent exact-head review, MR/CI and separate merge/main delivery are recorded in the task/MR, not inferred from source or a fixture.
+
+Local pre-commit checks on 2026-10-08: Release build succeeded with zero warnings/errors; format verification passed; complete suite passed 205 tests (31 Application, 174 integration-project including 46 real host cases and one principal unit case), zero failed/skipped; strict OpenSpec passed 2/2; EF pending-model check found no changes. The fixture exercises generated empty-database Down/Up, recreation with exactly one active summary, and transactional downgrade rejection with applied-migration history, retained-row count and owner read preserved. Existing EF CLI 10.0.10 emits an older-than-runtime 10.0.12 advisory; no global tool or dependency upgrades were made to suppress it.
