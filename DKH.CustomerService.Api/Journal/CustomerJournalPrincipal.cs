@@ -82,7 +82,8 @@ internal static class CustomerJournalPrincipal
         var identity = Services.CustomerAccountIdentityResolver.Resolve(context.User, configuration);
         if (!context.Items.TryGetValue(ValidatedIdentityKey, out var value) ||
             value is not CustomerAccountIdentity validated ||
-            identity != validated ||
+            identity.Subject != validated.Subject ||
+            !IsTrustedIssuer(validated.Issuer, identity.Issuer, configuration) ||
             context.User.FindAll("sub").Count() != 1 ||
             context.User.FindAll("dkh_principal_purpose").Count() != 1 ||
             context.User.FindFirst("dkh_principal_purpose")?.Value != "personal:v1")
@@ -91,6 +92,22 @@ internal static class CustomerJournalPrincipal
         }
 
         return identity;
+    }
+
+    private static bool IsTrustedIssuer(string validatedIssuer, string canonicalIssuer, IConfiguration configuration)
+    {
+        if (validatedIssuer == canonicalIssuer)
+        {
+            return true;
+        }
+
+        // Platform validates internal and browser-facing issuer URLs for the
+        // same realm. Keep the existing internal canonical account namespace;
+        // an arbitrary validator allowlist addition is not an owner authority.
+        var external = configuration["Platform:Auth:Keycloak:ExternalAuthServerUrl"];
+        var realm = configuration["Platform:Auth:Keycloak:Realm"];
+        return !string.IsNullOrWhiteSpace(external) && !string.IsNullOrWhiteSpace(realm) &&
+            validatedIssuer == $"{external.TrimEnd('/')}/realms/{realm.Trim('/')}";
     }
 
     private static string? String(JsonElement root, string name)

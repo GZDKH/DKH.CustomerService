@@ -52,6 +52,11 @@ Every new personal journal resource operation SHALL independently bind to the re
 - **WHEN** a current configured issuer and raw subject match a primary identity or an already verified active issuer/subject link
 - **THEN** exactly one distinct active account is resolved, and missing, future/unverified, removed or conflicting authority matches fail closed
 
+#### Scenario: Configured external issuer preserves the canonical account namespace
+
+- **WHEN** the installed validator accepts a personal bearer from the exact configured external URL for the same trusted realm
+- **THEN** journal ownership resolves into the existing internal configured account namespace, while additional issuer allowlist entries grant no journal authority
+
 #### Scenario: Missing and foreign resources remain indistinguishable
 
 - **WHEN** an authenticated personal caller targets an absent resource or one owned by a different account

@@ -39,6 +39,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
@@ -67,6 +68,43 @@ public sealed class CustomerJournalHostTests(JournalHostFixture fixture) : IClas
         var linked = await fixture.ResolveAsync(fixture.Token(alias));
         primary.Value.Should().Be(account.Id.ToString());
         linked.Value.Should().Be(primary.Value);
+    }
+
+    [Fact]
+    public async Task ExternalIssuer_UsesExistingCanonicalAccountNamespaceAsync()
+    {
+        var account = await fixture.SeedAccountAsync();
+        var token = fixture.Token(account.IdentitySubject, issuer: JournalHostFixture.ExternalIssuer);
+        var client = new CustomerAccountService.CustomerAccountServiceClient(fixture.Channel);
+        var read = await client.GetCustomerAccountAsync(new GetCustomerAccountRequest(),
+            new Metadata { { "authorization", "Bearer " + token } });
+        read.Id.Value.Should().Be(account.Id.ToString());
+        (await fixture.ResolveAsync(token)).Value.Should().Be(read.Id.Value);
+        (await fixture.ResolveAsync(fixture.Token(account.IdentitySubject))).Value.Should().Be(read.Id.Value);
+    }
+
+    [Fact]
+    public async Task ValidatorIssuerWidening_DoesNotExpandJournalAuthorityAsync()
+    {
+        var account = await fixture.SeedAccountAsync();
+        var validation = fixture.AuthenticationOptions.TokenValidationParameters;
+        var original = validation.ValidIssuers;
+        const string foreign = "https://foreign.fixture.invalid/realms/test";
+        try
+        {
+            validation.ValidIssuers = [.. original!, foreign];
+            var token = fixture.Token(account.IdentitySubject, issuer: foreign);
+            // Prove the normal validator accepted this token for the existing
+            // API before asserting the journal's narrower owner authority.
+            var client = new CustomerAccountService.CustomerAccountServiceClient(fixture.Channel);
+            (await client.GetCustomerAccountAsync(new GetCustomerAccountRequest(),
+                new Metadata { { "authorization", "Bearer " + token } })).Id.Value.Should().Be(account.Id.ToString());
+            await DeniedAsync(() => fixture.ResolveAsync(token), StatusCode.PermissionDenied);
+        }
+        finally
+        {
+            validation.ValidIssuers = original;
+        }
     }
 
     [Theory]
@@ -474,6 +512,7 @@ public sealed class CustomerJournalHostTests(JournalHostFixture fixture) : IClas
 public sealed class JournalHostFixture : IAsyncLifetime
 {
     public const string Issuer = "https://journal.fixture.invalid/realms/test";
+    public const string ExternalIssuer = "https://journal-public.fixture.invalid/realms/test";
     public const string Audience = "customer-fixture";
     public const string PreviousMigration = "20260921012532_AddPrivateStructuredProductExperience";
     public const string CurrentMigration = "20261008115437_LimitActiveProductExperienceSummary";
@@ -482,6 +521,8 @@ public sealed class JournalHostFixture : IAsyncLifetime
     private WebApplication? _app;
     public GrpcChannel Channel { get; private set; } = null!;
     public IConfiguration Configuration { get; private set; } = null!;
+    public JwtBearerOptions AuthenticationOptions => _app!.Services
+        .GetRequiredService<IOptionsMonitor<JwtBearerOptions>>().Get(JwtBearerDefaults.AuthenticationScheme);
 
     public async Task InitializeAsync()
     {
@@ -512,6 +553,7 @@ public sealed class JournalHostFixture : IAsyncLifetime
                 builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     ["Platform:Auth:Keycloak:AuthServerUrl"] = "https://journal.fixture.invalid",
+                    ["Platform:Auth:Keycloak:ExternalAuthServerUrl"] = "https://journal-public.fixture.invalid",
                     ["Platform:Auth:Keycloak:Realm"] = "test",
                 });
                 builder.WebHost.ConfigureKestrel(server => server.Listen(IPAddress.Loopback, 0,
@@ -526,6 +568,7 @@ public sealed class JournalHostFixture : IAsyncLifetime
             .AddPlatformKeycloakAuth((options, _) =>
             {
                 options.AuthServerUrl = "https://journal.fixture.invalid";
+                options.ExternalAuthServerUrl = "https://journal-public.fixture.invalid";
                 options.Realm = "test";
                 options.ClientId = Audience;
                 options.ValidateIssuer = true;
