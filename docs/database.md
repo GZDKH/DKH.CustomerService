@@ -413,8 +413,55 @@ preferences, statistics, and merchant-specific state during migration.
 | `20260804131014_AddGlobalCustomerAccounts` | 2026-08-04 | Added global accounts, linked identities, lazy storefront memberships, and restartable legacy reconciliation state |
 | `20260921012532_AddPrivateStructuredProductExperience` | 2026-09-21 | Added owner-private product experiences with normalized typed observations and tags |
 | `20261008115437_LimitActiveProductExperienceSummary` | 2026-10-08 | Restricts the collection-summary unique index to active rows so soft-deleted summaries do not prevent replacement or recreation |
+| `20261009170132_AddPrivateDatedExperienceJournal` | 2026-10-09 | Adds six separate dated-journal tables, immutable General v1 seed, owner-local restricted relationships, revision/receipt uniqueness and exact-value checks; no legacy backfill |
 
 The active-summary migration changes an index only and retains soft-deleted data. Its generated `Down` restores the previous unfiltered unique index. That downgrade rejects duplicate collection-item IDs once replacements have created tombstones; retain the new schema when rolling back application code. Do not remove retained data to force a downgrade. Index rebuild locking and production deployment require the normal separate release decision.
+
+### Dated private journal schema
+
+The dated core is separate from the replaceable collection summary. The new
+`journal_experience_entries`, `journal_experience_revisions`,
+`journal_experience_unknown_references`, `journal_experience_profile_snapshots`,
+`journal_experience_observations` and `journal_experience_mutation_receipts`
+tables retain repeated entries, full revision snapshots and ordinary 24-hour
+mutation results. All account references target the existing `customer_accounts`.
+Composite local relationships preserve the same account across unknown references,
+entries, revisions, observations and receipts; deletes are restricted.
+
+The General v1 seed has ID `f9eb970a-7e55-54f3-9aaa-74e3383ee0de`, empty definitions
+and schema SHA256 `f9eb970a7e5524f39aaa74e3383ee0ded5e8f17450a9fc58956ccd0cfe512371`.
+Other snapshots bind both Catalog and Category and retain resolved labels, roles,
+types, options and permitted unit conversions. Canonical schema and personal
+payloads remain text with explicit hashes and byte limits, preserving canonical
+serialization rather than JSONB's representation.
+
+New decimal values have exact logical precision (18,6). The physical column is
+unconstrained PostgreSQL `numeric` with a finite representability range and an
+equality-to-`round(value,6)` CHECK. This rejects excess fractional precision before
+coercion: declared `numeric(18,6)` would round it before a CHECK sees the value.
+See [PostgreSQL numeric semantics](https://www.postgresql.org/docs/17/datatype-numeric.html).
+Legacy `double precision` observations retain their existing behavior and storage.
+
+OccurredDate is `date`. Optional local time uses its exact seven-digit fractional
+text representation; DateOnly has null time, zone and offset. Domain validation
+checks the selected IANA offset and DST gap; persistence checks the nullable shape.
+Owner/date/id and owner/Product/date/id indexes support keyset access. Separate
+partial unique indexes enforce observation uniqueness for null and nonnull row IDs.
+
+The explicitly required C2 `Down` guard is added ahead of the generated table
+removals. It only permits an empty `dkh_journal_fixture` or
+`dkh_journal_fixture_*` disposable database, with General as the sole permitted
+snapshot seed. A data-bearing or production database refuses teardown. Application
+rollback disables new intake/writers and retains tables/history; it never deletes
+data to force a downgrade. Source preparation and local fixtures do not prove a
+production migration, enabled diary or pilot.
+
+Journal host tests default to Testcontainers. An optional test-assembly-only
+`DKH_JOURNAL_PG_FIXTURE_RECEIPT` selects an owned socket-only PostgreSQL 17.8
+runtime using a receipt, not an arbitrary connection URL. The fixture verifies
+data directory and system identifier, creates a unique disposable database and
+removes only that database after disposing the host. The key is absent from the
+production application and requires no service or production environment change.
 
 ### Running Migrations
 

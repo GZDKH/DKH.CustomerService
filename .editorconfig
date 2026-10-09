@@ -779,3 +779,8 @@ dotnet_diagnostic.IDE0300.severity = none
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1861.severity = none
 generated_code = true
+
+# JSON constructor parameters and properties must have matching collection types.
+# The frozen definition accepts IReadOnlyList input and copies it into immutable storage.
+[DKH.CustomerService.Domain/ValueObjects/ExperienceFrozenDefinition.cs]
+dotnet_diagnostic.CA1859.severity = none

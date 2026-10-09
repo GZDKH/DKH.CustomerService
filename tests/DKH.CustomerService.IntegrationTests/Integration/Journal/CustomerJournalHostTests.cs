@@ -516,8 +516,10 @@ public sealed class JournalHostFixture : IAsyncLifetime
     public const string Audience = "customer-fixture";
     public const string PreviousMigration = "20260921012532_AddPrivateStructuredProductExperience";
     public const string CurrentMigration = "20261008115437_LimitActiveProductExperienceSummary";
+    public const string CurrentJournalMigration = "20261009170132_AddPrivateDatedExperienceJournal";
     private readonly RSA _rsa = RSA.Create(2048);
-    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder("postgres:18.4-alpine").Build();
+    private PostgreSqlContainer? _postgres;
+    private JournalLocalPostgres? _localPostgres;
     private WebApplication? _app;
     public GrpcChannel Channel { get; private set; } = null!;
     public IConfiguration Configuration { get; private set; } = null!;
@@ -526,11 +528,21 @@ public sealed class JournalHostFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        await _postgres.StartAsync();
-        var connectionString = _postgres.GetConnectionString();
+        _localPostgres = JournalLocalPostgres.FromEnvironment();
+        string connectionString;
+        if (_localPostgres is not null)
+        {
+            connectionString = await _localPostgres.CreateDatabaseAsync();
+        }
+        else
+        {
+            _postgres = new PostgreSqlBuilder("postgres:18.4-alpine").WithDatabase("dkh_journal_fixture").Build();
+            await _postgres.StartAsync();
+            connectionString = _postgres.GetConnectionString();
+        }
         // Docker-outside-of-Docker runners can reach the container network even
         // when a published host port is unavailable. Do not change Docker state.
-        foreach (var endpoint in new[] { connectionString, new NpgsqlConnectionStringBuilder(connectionString)
+        foreach (var endpoint in _postgres is null ? [connectionString] : new[] { connectionString, new NpgsqlConnectionStringBuilder(connectionString)
                  { Host = _postgres.IpAddress, Port = 5432 }.ConnectionString })
         {
             try
@@ -615,6 +627,7 @@ public sealed class JournalHostFixture : IAsyncLifetime
         // Exercise generated Down/Up on the empty disposable database first.
         await MigrateAsync(PreviousMigration);
         await MigrateAsync(CurrentMigration);
+        await MigrateAsync(CurrentJournalMigration);
 
         await _app.StartAsync();
         var address = _app.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();
@@ -629,7 +642,16 @@ public sealed class JournalHostFixture : IAsyncLifetime
             await _app.DisposeAsync();
         }
 
-        await _postgres.DisposeAsync();
+        if (_postgres is not null)
+        {
+            await _postgres.DisposeAsync();
+        }
+
+        if (_localPostgres is not null)
+        {
+            await _localPostgres.DisposeAsync();
+        }
+
         _rsa.Dispose();
     }
 

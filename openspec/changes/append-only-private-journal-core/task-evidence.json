@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "delivery_owner": "01a117e3-8606-7e53-a0fb-9f1b5aeb8095",
+  "stage": "implementation",
+  "task_file": "tasks.md",
+  "next_action": "Implement ordinary immutable-row guard and the existing shared-transaction C2 producer; run actual new-core PostgreSQL negatives/races and host acceptance, then full delivery.",
+  "tasks": {
+    "1.1": {
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceEntryEntity.cs"
+        },
+        {
+          "kind": "test",
+          "path": "openspec/changes/append-only-private-journal-core/evidence/domain-model-gates.json"
+        }
+      ]
+    },
+    "1.2": {
+      "state": "pending",
+      "reason": "General/frozen definitions, options, unit/category/type/read-only validation and canonical hashing pass named tests; ordinary persistence rewrite refusal remains unimplemented."
+    },
+    "1.3": {
+      "state": "pending",
+      "reason": "DateOnly, gap and ambiguous-offset domain tests pass; actual persisted local-time roundtrip remains unverified."
+    },
+    "2.1": {
+      "state": "pending",
+      "reason": "Six-table EF mapping/additive generated migration and SQL source inspection prepared; generated Up/empty Down run on own PG17 in legacy host suite. Actual new-core negative/check/null-row and index/type query acceptance remains pending."
+    },
+    "2.2": {
+      "state": "pending",
+      "reason": "Shared Platform transaction reuse was verified in source and resolved package; new atomic mutations, receipts and CAS remain unimplemented."
+    },
+    "2.3": {
+      "state": "pending",
+      "reason": "New owner current/history access and edit/map/delete producer remain unimplemented."
+    },
+    "3.1": {
+      "state": "pending",
+      "reason": "Disposable PostgreSQL 17 schema, constraints, numeric/time and legacy compatibility acceptance remain unverified."
+    },
+    "3.2": {
+      "state": "pending",
+      "reason": "Docker fresh-start failure remains outside code; an isolated source-built PG17.8 runtime now passes all48 real JWT/legacy host cases. New C2 transactional races, rollback, lifecycle and producer host cases remain unimplemented."
+    },
+    "3.3": {
+      "state": "pending",
+      "reason": "Empty disposable Down and data retention rollback evidence remain unverified."
+    },
+    "4.1": {
+      "state": "pending",
+      "reason": "Prepared domain slice passes focused tests, Release build and formatting; full owner scope, documentation, complete gates and independent review remain pending."
+    },
+    "4.2": {
+      "state": "pending",
+      "reason": "No owner code commit or MR exists; authorized merge, authoritative main/deploy acceptance, cleanup and exact plan reconciliation remain pending."
+    }
+  }
+}

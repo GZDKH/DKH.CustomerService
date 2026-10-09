@@ -4,6 +4,7 @@ using DKH.CustomerService.Domain.Authorization;
 using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Entities.ExperienceJournal;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.Entities.StorefrontMembership;
@@ -41,6 +42,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ProductExperienceObservationEntity> ProductExperienceObservations { get; init; } = null!;
 
     public DbSet<ProductExperienceTagEntity> ProductExperienceTags { get; init; } = null!;
+
+    public DbSet<ExperienceEntryEntity> ExperienceEntries { get; init; } = null!;
+    public DbSet<ExperienceRevisionEntity> ExperienceRevisions { get; init; } = null!;
+    public DbSet<ExperienceUnknownReferenceEntity> ExperienceUnknownReferences { get; init; } = null!;
+    public DbSet<ExperienceProfileSnapshotEntity> ExperienceProfileSnapshots { get; init; } = null!;
+    public DbSet<ExperienceRevisionObservationEntity> ExperienceRevisionObservations { get; init; } = null!;
+    public DbSet<ExperienceMutationReceiptEntity> ExperienceMutationReceipts { get; init; } = null!;
 
     public DbSet<CustomerAccessGrantEntity> CustomerAccessGrants => Set<CustomerAccessGrantEntity>();
 
