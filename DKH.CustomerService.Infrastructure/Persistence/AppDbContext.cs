@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DKH.CustomerService.Infrastructure.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options)
+public partial class AppDbContext(DbContextOptions<AppDbContext> options)
     : PlatformDbContext<AppDbContext>(options),
         IAppDbContext
 {

@@ -448,6 +448,27 @@ checks the selected IANA offset and DST gap; persistence checks the nullable sha
 Owner/date/id and owner/Product/date/id indexes support keyset access. Separate
 partial unique indexes enforce observation uniqueness for null and nonnull row IDs.
 
+Owner-internal MediatR mutations use the installed Platform relational/outbox
+transaction behavior. A locked account row rechecks lifecycle and verified
+identity before receipt replay or resource lookup. Header, full revision,
+observations, unknown reference and receipt commit together. Identical keys
+return the original result for 24 hours; changed bodies and stale expected
+revisions conflict. Receipt audit clocks use PostgreSQL microsecond precision;
+local occurrence time retains its separate seven-digit representation.
+
+Ordinary EF SaveChanges refuses historical revision, observation, schema,
+unknown-reference and receipt rewrites/removals, and header changes without a
+matching next revision. Delete appends a tombstone; explicit target mapping
+retains the original unknown label and historical payload. Expired receipt-key
+removal is limited to the same locked owner/operation/key and expiry predicate.
+
+Current, keyset list, bounded history and private-unknown reads reuse the same
+owner resolver and hold a shared lifecycle lock through their transaction.
+History includes retained deletion revisions; current/list exclude deleted
+entries. Missing and foreign resources share an error. Payload/schema hashes
+and their frozen binding are checked before returning historical content.
+These producers have no public journal RPC binding; EJ-03 supplies that contract.
+
 The explicitly required C2 `Down` guard is added ahead of the generated table
 removals. It only permits an empty `dkh_journal_fixture` or
 `dkh_journal_fixture_*` disposable database, with General as the sole permitted

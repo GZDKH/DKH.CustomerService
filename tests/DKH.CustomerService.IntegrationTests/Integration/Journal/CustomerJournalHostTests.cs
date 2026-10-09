@@ -7,11 +7,14 @@ using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Journal;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
+using DKH.CustomerService.Application.CustomerAccounts;
+using DKH.CustomerService.Application.ExperienceJournal;
 using DKH.CustomerService.Contracts.Customer.Api.CustomerAccount.v1;
 using DKH.CustomerService.Contracts.Customer.Api.ProductCollection.v1;
 using DKH.CustomerService.Contracts.Customer.Models.ProductCollection.v1;
 using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Entities.ExperienceJournal;
 using DKH.CustomerService.Domain.Entities.StorefrontMembership;
 using DKH.CustomerService.Infrastructure;
 using DKH.CustomerService.Infrastructure.Persistence;
@@ -20,12 +23,15 @@ using DKH.Platform.Authorization;
 using DKH.Platform.Grpc;
 using DKH.Platform.Grpc.Common.Types;
 using DKH.Platform.Identity;
+using DKH.Platform.Messaging.MediatR;
 using DKH.Platform.MultiTenancy;
+using DKH.Platform.Outbox.PostgreSql;
 using FluentAssertions;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +44,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -521,6 +528,11 @@ public sealed class JournalHostFixture : IAsyncLifetime
     private PostgreSqlContainer? _postgres;
     private JournalLocalPostgres? _localPostgres;
     private WebApplication? _app;
+    private readonly JournalFixtureCommands _commands = new();
+    private readonly JournalFixtureQueries _queries = new();
+    public bool UseTransactionBoundary { get; init; } = true;
+    public TimeProvider Clock { get; init; } = TimeProvider.System;
+    public JournalFixtureFailure Failure { get; } = new();
     public GrpcChannel Channel { get; private set; } = null!;
     public IConfiguration Configuration { get; private set; } = null!;
     public JwtBearerOptions AuthenticationOptions => _app!.Services
@@ -567,16 +579,24 @@ public sealed class JournalHostFixture : IAsyncLifetime
                     ["Platform:Auth:Keycloak:AuthServerUrl"] = "https://journal.fixture.invalid",
                     ["Platform:Auth:Keycloak:ExternalAuthServerUrl"] = "https://journal-public.fixture.invalid",
                     ["Platform:Auth:Keycloak:Realm"] = "test",
+                    ["ConnectionStrings:Default"] = connectionString,
                 });
                 builder.WebHost.ConfigureKestrel(server => server.Listen(IPAddress.Loopback, 0,
                     endpoint => endpoint.Protocols = HttpProtocols.Http2));
                 builder.Services.AddApplication(builder.Configuration);
+                builder.Services.AddSingleton(Clock);
                 builder.Services.AddCustomerInfrastructure(builder.Configuration);
                 builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(ConfigureServices).Assembly));
                 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
                 builder.Services.AddSingleton(Substitute.For<Platform.Domain.Events.IPlatformDomainEventDispatcher>());
                 builder.Services.AddSingleton(Substitute.For<Platform.Outbox.IPlatformEventPublisher>());
+                builder.Services.AddSingleton(_commands);
+                builder.Services.AddSingleton(_queries);
             })
+            // Use the real PostgreSQL outbox adapter and shared transactional
+            // behavior without adding a RabbitMQ transport to this owner fixture.
+            .AddPostgreSqlOutbox(outbox => outbox.ConnectionStringKey = "Default")
+            .AddPlatformMessagingWithMediatR(typeof(ConfigureServices).Assembly)
             .AddPlatformKeycloakAuth((options, _) =>
             {
                 options.AuthServerUrl = "https://journal.fixture.invalid";
@@ -611,6 +631,12 @@ public sealed class JournalHostFixture : IAsyncLifetime
                     };
                 });
                 builder.Services.AddCustomerJournalOwnership();
+                builder.Services.AddSingleton(Failure);
+                builder.Services.AddTransient<IPipelineBehavior<MutateJournalCommand, ExperienceMutationResult>, JournalFixtureFailureBehavior>();
+                if (!UseTransactionBoundary)
+                {
+                    builder.Services.RemoveAll<Platform.Outbox.IPlatformOutboxTransactionEnlister>();
+                }
             })
             .AddPlatformGrpc(grpc =>
             {
@@ -724,13 +750,98 @@ public sealed class JournalHostFixture : IAsyncLifetime
         => await Channel.CreateCallInvoker().AsyncUnaryCall(JournalOwnerFixtureRpc.LegacyMethod, null,
             new CallOptions(new Metadata { { "authorization", "Bearer " + token } }),
             new StringValue { Value = storefront + ":" + profile });
+
+    public async Task<ExperienceMutationResult> MutateAsync(MutateJournalCommand command, string? token)
+    {
+        var id = _commands.Register(command);
+        var headers = new Metadata();
+        if (token is not null)
+        {
+            headers.Add("authorization", "Bearer " + token);
+        }
+
+        var response = await Channel.CreateCallInvoker().AsyncUnaryCall(JournalOwnerFixtureRpc.MutationMethod, null,
+            new CallOptions(headers), new StringValue { Value = id.ToString("N") });
+        var parts = response.Value.Split(':');
+        return new ExperienceMutationResult(Guid.Parse(parts[0]), long.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public async Task<T> QueryAsync<T>(IRequest<T> query, string? token)
+    {
+        var id = _queries.Register(query);
+        var headers = new Metadata();
+        if (token is not null)
+        {
+            headers.Add("authorization", "Bearer " + token);
+        }
+
+        var response = await Channel.CreateCallInvoker().AsyncUnaryCall(JournalOwnerFixtureRpc.ReadMethod, null,
+            new CallOptions(headers), new StringValue { Value = id.ToString("N") });
+        return JsonSerializer.Deserialize<T>(response.Value)!;
+    }
+}
+
+public sealed class JournalFixtureQueries
+{
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, object> _queries = new();
+    public Guid Register<T>(IRequest<T> query)
+    {
+        var id = Guid.NewGuid();
+        _queries[id] = query;
+        return id;
+    }
+
+    public object Take(Guid id) => _queries.TryRemove(id, out var query)
+        ? query : throw new JournalResourceNotFoundException();
+}
+
+public sealed class JournalFixtureFailure
+{
+    public Guid? Key { get; set; }
+    public bool SawSavedReceipt { get; set; }
+}
+
+// Inject a failure after the real producer saved, inside the shared outer
+// transaction. This is not a replacement transaction or persistence adapter.
+public sealed class JournalFixtureFailureBehavior(JournalFixtureFailure failure, AppDbContext db)
+    : IPipelineBehavior<MutateJournalCommand, ExperienceMutationResult>
+{
+    public async Task<ExperienceMutationResult> Handle(MutateJournalCommand request,
+        RequestHandlerDelegate<ExperienceMutationResult> next, CancellationToken cancellationToken)
+    {
+        var result = await next(cancellationToken);
+        if (failure.Key == request.IdempotencyKey)
+        {
+            failure.SawSavedReceipt = await db.ExperienceMutationReceipts.AnyAsync(
+                row => row.IdempotencyKey == request.IdempotencyKey, cancellationToken);
+            throw new InvalidOperationException("Injected failure after journal SaveChanges.");
+        }
+
+        return result;
+    }
+}
+
+public sealed class JournalFixtureCommands
+{
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, MutateJournalCommand> _commands = new();
+    public Guid OriginStorefrontId { get; } = Guid.NewGuid();
+    public Guid Register(MutateJournalCommand command)
+    {
+        var id = Guid.NewGuid();
+        _commands[id] = command;
+        return id;
+    }
+
+    public MutateJournalCommand Take(Guid id) => _commands.TryRemove(id, out var command)
+        ? command : throw new JournalResourceNotFoundException();
 }
 
 // Test-only RPC binding invokes the production adapter over real HTTP/2,
 // authorization and PostgreSQL. It does not introduce or claim EJ03 diary RPCs.
 [Authorize]
 [BindServiceMethod(typeof(JournalOwnerFixtureRpc), nameof(BindService))]
-public class JournalOwnerFixtureRpc(CustomerJournalOwnerResolver resolver)
+public class JournalOwnerFixtureRpc(CustomerJournalOwnerResolver resolver, IMediator mediator, JournalFixtureCommands commands,
+    JournalFixtureQueries queries)
 {
     private static readonly Marshaller<StringValue> Payload = Marshallers.Create(
         value => value.ToByteArray(), bytes => StringValue.Parser.ParseFrom(bytes));
@@ -738,11 +849,86 @@ public class JournalOwnerFixtureRpc(CustomerJournalOwnerResolver resolver)
         "fixture.JournalOwner", "ResolveAsync", Payload, Payload);
     public static readonly Method<StringValue, StringValue> LegacyMethod = new(MethodType.Unary,
         "fixture.JournalOwner", "LegacyAsync", Payload, Payload);
+    public static readonly Method<StringValue, StringValue> MutationMethod = new(MethodType.Unary,
+        "fixture.JournalOwner", "MutateAsync", Payload, Payload);
+    public static readonly Method<StringValue, StringValue> ReadMethod = new(MethodType.Unary,
+        "fixture.JournalOwner", "ReadAsync", Payload, Payload);
 
     public static void BindService(ServiceBinderBase binder, JournalOwnerFixtureRpc? service)
     {
         binder.AddMethod(ResolveMethod, service is null ? null : service.ResolveAsync);
         binder.AddMethod(LegacyMethod, service is null ? null : service.LegacyAsync);
+        binder.AddMethod(MutationMethod, service is null ? null : service.MutateAsync);
+        binder.AddMethod(ReadMethod, service is null ? null : service.ReadAsync);
+    }
+
+    public virtual async Task<StringValue> ReadAsync(StringValue request, ServerCallContext context)
+    {
+        var identity = resolver.RequireIdentity(context);
+        try
+        {
+            object query = queries.Take(Guid.Parse(request.Value)) switch
+            {
+                ListJournalEntriesQuery value => value with { Identity = identity },
+                GetJournalEntryQuery value => value with { Identity = identity },
+                ListJournalHistoryQuery value => value with { Identity = identity },
+                GetJournalUnknownQuery value => value with { Identity = identity },
+                _ => throw new ArgumentException("Unsupported fixture query."),
+            };
+            var result = await mediator.Send(query, context.CancellationToken);
+            return new StringValue { Value = JsonSerializer.Serialize(result, result!.GetType()) };
+        }
+        catch (Exception exception) when (exception is JournalResourceNotFoundException or CustomerAccountNotFoundException)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Personal resource was not found."));
+        }
+        catch (CustomerAccountAccessException)
+        {
+            throw new RpcException(new Status(StatusCode.PermissionDenied, "Personal account is unavailable."));
+        }
+        catch (ArgumentException)
+        {
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid journal query."));
+        }
+        catch (InvalidOperationException)
+        {
+            throw new RpcException(new Status(StatusCode.FailedPrecondition, "Retained journal state is unavailable."));
+        }
+    }
+
+    public virtual async Task<StringValue> MutateAsync(StringValue request, ServerCallContext context)
+    {
+        var identity = resolver.RequireIdentity(context);
+        try
+        {
+            var template = commands.Take(Guid.Parse(request.Value));
+            var result = await mediator.Send(template with { Identity = identity, OriginStorefrontId = commands.OriginStorefrontId }, context.CancellationToken);
+            return new StringValue { Value = result.EntryId.ToString("N") + ":" + result.Revision.ToString(System.Globalization.CultureInfo.InvariantCulture) };
+        }
+        catch (JournalMutationConflictException)
+        {
+            throw new RpcException(new Status(StatusCode.Aborted, "Mutation conflict."));
+        }
+        catch (JournalResourceNotFoundException)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Personal resource was not found."));
+        }
+        catch (CustomerAccountNotFoundException)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Personal resource was not found."));
+        }
+        catch (CustomerAccountAccessException)
+        {
+            throw new RpcException(new Status(StatusCode.PermissionDenied, "Personal account is unavailable."));
+        }
+        catch (ArgumentException)
+        {
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid journal mutation."));
+        }
+        catch (InvalidOperationException)
+        {
+            throw new RpcException(new Status(StatusCode.FailedPrecondition, "Journal mutation boundary is unavailable."));
+        }
     }
 
     public virtual async Task<StringValue> ResolveAsync(StringValue request, ServerCallContext context)

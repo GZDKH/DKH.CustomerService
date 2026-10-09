@@ -6,6 +6,9 @@ namespace DKH.CustomerService.Api.Journal;
 /// <summary>Server-owned adapter for the additive journal RPCs; legacy APIs retain their own policies.</summary>
 public sealed class CustomerJournalOwnerResolver(CustomerJournalAccounts accounts, IConfiguration configuration)
 {
+    public CustomerAccountIdentity RequireIdentity(ServerCallContext context)
+        => CustomerJournalPrincipal.Require(context.GetHttpContext(), configuration);
+
     public Task<CustomerJournalOwner> ResolveAsync(ServerCallContext context)
         => ResolveAsync(context.GetHttpContext(), context.CancellationToken);
 

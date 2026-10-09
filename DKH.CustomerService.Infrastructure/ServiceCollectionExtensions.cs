@@ -1,10 +1,12 @@
 using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Application.ExperienceJournal;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.CustomerService.Infrastructure.Persistence.Repositories;
 using DKH.CustomerService.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DKH.CustomerService.Infrastructure;
 
@@ -18,6 +20,8 @@ public static class ServiceCollectionExtensions
         // BaselineRoleGrantsSeeder can resolve a DbContext via DI.
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IExperienceJournalStore, ExperienceJournalStore>();
+        services.TryAddSingleton(TimeProvider.System);
         services.AddScoped<IVerificationService, UnavailableVerificationService>();
         return services;
     }
