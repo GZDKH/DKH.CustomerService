@@ -13,10 +13,10 @@ public sealed record JournalUnknownView(Guid ReferenceId, string OwnerLabel, str
 
 // Owner-internal reads retain the shared transaction boundary so the locked
 // lifecycle decision remains valid until the bounded result has been read.
-public sealed record ListJournalEntriesQuery(CustomerAccountIdentity Identity, int PageSize,
+public sealed record ListJournalEntriesQuery(CustomerAccountIdentity Identity, int PageSize = 25,
     JournalEntryCursor? Cursor = null, Guid? ProductId = null) : IRequest<JournalEntryPage>;
 public sealed record GetJournalEntryQuery(CustomerAccountIdentity Identity, Guid EntryId) : IRequest<JournalRevisionView>;
-public sealed record ListJournalHistoryQuery(CustomerAccountIdentity Identity, Guid EntryId, int PageSize,
+public sealed record ListJournalHistoryQuery(CustomerAccountIdentity Identity, Guid EntryId, int PageSize = 25,
     long? BeforeRevision = null) : IRequest<JournalHistoryPage>;
 public sealed record GetJournalUnknownQuery(CustomerAccountIdentity Identity, Guid ReferenceId) : IRequest<JournalUnknownView>;
 

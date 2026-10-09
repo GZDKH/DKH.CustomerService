@@ -59,8 +59,9 @@ public sealed partial class ExperienceJournalStore
         }
 
         var owner = await ResolveLockedOwnerAsync(query.Identity, false, cancellationToken);
-        // Owner history includes the retained tombstone after an explicit delete.
-        if (!await db.ExperienceEntries.IgnoreQueryFilters().AsNoTracking().AnyAsync(row => row.AccountId == owner
+        // Retention is not permission to serve a deleted entry's private body.
+        // Purpose-limited purge remains separate from ordinary owner history.
+        if (!await db.ExperienceEntries.AsNoTracking().AnyAsync(row => row.AccountId == owner
                 && row.Id == query.EntryId, cancellationToken))
         {
             throw new JournalResourceNotFoundException();
@@ -119,9 +120,9 @@ public sealed partial class ExperienceJournalStore
 
     private static void ValidatePageSize(int size)
     {
-        if (size is < 1 or > 50)
+        if (size is < 1 or > 100)
         {
-            throw new ArgumentException("Journal reads require a page size from 1 through 50.");
+            throw new ArgumentException("Journal reads require a page size from 1 through 100.");
         }
     }
 }

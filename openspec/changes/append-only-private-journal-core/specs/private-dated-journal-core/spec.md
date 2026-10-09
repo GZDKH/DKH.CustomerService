@@ -77,6 +77,16 @@ Create and Update MUST atomically persist the entry/header, complete new revisio
 ### Requirement: Owner and lifecycle isolation
 All mutations and entry, history, unknown and receipt access MUST use the independently resolved canonical account and current account lifecycle status. Browser identifiers MUST NOT establish ownership. Service credentials alone MUST NOT grant personal access. Foreign and missing personal resources MUST have the same NotFound response; blocked/deleted accounts MUST be denied, including cached receipt replay.
 
+Ordinary current, list and history reads MUST exclude deleted entries. Retaining immutable revisions for the purpose-limited purge path MUST NOT expose deleted private bodies as reversible trash. Owner list and history pages SHALL default to 25 with a maximum of 100.
+
+#### Scenario: Deleted entry denies historical serving
+- **WHEN** an owner deletes an entry and then requests current data, list or history
+- **THEN** normal serving denies the deleted entry while retained database revisions remain available only to their separately authorized lifecycle path
+
+#### Scenario: Contract pagination bounds
+- **WHEN** an owner uses the default, requests a page of 100, or supplies a size outside 1 through 100
+- **THEN** the default is 25, a page of 100 is accepted, and invalid sizes are rejected without scanning unbounded history
+
 #### Scenario: Different owner and lifecycle change
 - **WHEN** a second account attempts access or mutation, or the owning account becomes blocked/deleted
 - **THEN** private entry/history/unknown/receipt access is denied without disclosing another account's data

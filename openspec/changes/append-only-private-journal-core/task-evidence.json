@@ -88,7 +88,7 @@
     },
     "4.1": {
       "state": "pending",
-      "reason": "Owner docs, targeted security review and local Release/build/format/full317/EF checks passed. Draft MR publication, clean CI and independent current-head review remain pending."
+      "reason": "Owner docs, targeted security review and local Release/build/format/full320/EF checks passed. DraftMR159 is published; clean current-head CI and independently authorized current-head review remain pending."
     },
     "4.2": {
       "state": "pending",

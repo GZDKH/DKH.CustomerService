@@ -464,9 +464,10 @@ removal is limited to the same locked owner/operation/key and expiry predicate.
 
 Current, keyset list, bounded history and private-unknown reads reuse the same
 owner resolver and hold a shared lifecycle lock through their transaction.
-History includes retained deletion revisions; current/list exclude deleted
-entries. Missing and foreign resources share an error. Payload/schema hashes
-and their frozen binding are checked before returning historical content.
+Ordinary current/list/history access excludes deleted entries; retained
+revisions are not served as reversible trash. List/history pages default to 25
+and are bounded to 100. Missing and foreign resources share an error.
+Payload/schema hashes and their frozen binding are checked before returning historical content.
 These producers have no public journal RPC binding; EJ-03 supplies that contract.
 
 The explicitly required C2 `Down` guard is added ahead of the generated table

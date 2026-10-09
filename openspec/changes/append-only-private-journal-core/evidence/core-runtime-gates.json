@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-09T18:14:57.905149+00:00",
+  "observed_at": "2026-10-09T18:34:45.911990+00:00",
   "base_sha": "16d4c0ecbb3eb74f3da577c38bfa6f21ccdc6854",
   "foundation_commit": "28ac1c9845084003c7118139f901477fa88cc451",
   "workspace_state": "owner-local implementation, delivery pending",
@@ -22,7 +22,7 @@
     },
     {
       "path": "DKH.CustomerService.Application/ExperienceJournal/JournalReads.cs",
-      "sha256": "30913e61d375ff8a05cbf584a4887490d9082dcc31b8f1c1b51a1bb00c2d8c5e"
+      "sha256": "bd8a705e65ce309fa0d705994aed7cdf828a9b0e0d92aae75e9cdebf0d4acc7d"
     },
     {
       "path": "DKH.CustomerService.Application/ExperienceJournal/JournalRequests.cs",
@@ -118,7 +118,7 @@
     },
     {
       "path": "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.Reads.cs",
-      "sha256": "3e96ee786b3285e52b5401287127434fa4676c626b2578dfd87ce2f2a63b6f46"
+      "sha256": "6f6b40e815e9282b145c0ea8411cb48915a53f8cd6a9d9ac9ced0cb2e8158492"
     },
     {
       "path": "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.cs",
@@ -178,18 +178,18 @@
     },
     {
       "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalReadHostTests.cs",
-      "sha256": "32d644ec4c82006902d0219d33439f8b23f602a8cab958a3dd829dbc75db105d"
+      "sha256": "4ff524bb2cb4ee3e83080436a6f9d2201f7e32c8085110843701c579dee91ab4"
     }
   ],
   "tests": {
     "command": "DKH_JOURNAL_PG_FIXTURE_RECEIPT=<owned server receipt> dotnet test DKH.CustomerService.slnx -c Release --no-restore",
     "exit": 0,
     "application_passed": 105,
-    "integration_passed": 212,
-    "total_passed": 317,
+    "integration_passed": 215,
+    "total_passed": 320,
     "failed": 0,
     "skipped": 0,
-    "execution_log_sha256": "a65f56d9ea81ab320283de4edb8913ba359988344d6fd0b9ce6a8b1ac9dd1fc6",
+    "execution_log_sha256": "5b0735e9d766cfa86a86f6150cd713f819539c45aa008d340f379e752e527e53",
     "postgresql_version": "17.8",
     "backend": "owned socket-only upstream PostgreSQL, fresh per-host fixture database"
   },
@@ -221,10 +221,12 @@
     ],
     "reads": [
       "KeysetReadsKeepSameDateEntriesAndProductFilterWithinOwnerAsync",
-      "CurrentAndHistoryReturnFrozenPayloadsIncludingRetainedTombstoneAsync",
+      "CurrentAndHistoryReturnFrozenPayloadsUntilDeletionDeniesServingAsync",
       "ForeignHistoryAndUnknownAreIndistinguishableFromMissingAsync",
       "LifecycleAndServicePurposeGuardEveryReadAsync",
-      "CorruptRetainedPayloadFailsClosedWithoutReturningPrivateBodyAsync"
+      "CorruptRetainedPayloadFailsClosedWithoutReturningPrivateBodyAsync",
+      "PageSizeOutsideContractBoundIsRejectedAsync",
+      "DefaultAndMaximumPageSizesMatchTheAcceptedContractAsync"
     ],
     "rollback": [
       "DataBearingMigrationDownRefusesAndRetainsCoreAsync",
@@ -257,7 +259,16 @@
     "shared_transaction_fail_closed": true,
     "immutable_history_and_hash_checks": true,
     "service_purpose_denied_in_real_signed_jwt_host": true,
-    "independent_review": "pending"
+    "independent_review": "pending",
+    "deleted_history_serving_denied_in_real_signed_jwt_host": true
   },
-  "limits": "Local C2 implementation evidence only. Independent current-head review, owner MR/CI/merge/main/cleanup and exact original child/parent acceptance remain pending. No production schema application, public RPC, catalog/media/UI or pilot delivery."
+  "limits": "Local C2 implementation evidence only. Independent current-head review, owner MR/CI/merge/main/cleanup and exact original child/parent acceptance remain pending. No production schema application, public RPC, catalog/media/UI or pilot delivery.",
+  "superseded_source_commit": "8855deb10c8f262ddbad9e20330f88c37dc3b8dc",
+  "contract_correction": {
+    "accepted_contract": "Product Experience Journal Revision2 C2/C10",
+    "contract_sha256": "eea38c2dc0cbde98b4bc1c69051f7780a8df1978d558ddf90170364c1badefb7",
+    "pagination": "default25/max100 for internal list/history",
+    "deleted_private_serving": "current/list/history deny deleted entry; database history retained for purpose-limited purge",
+    "future_transport_gate": "EJ03 RT03-N supplies signed/account/filter-bound opaque wire cursors; current core accepts only internal sort keys and trusted identity."
+  }
 }
