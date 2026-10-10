@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "scope": "EJ-02.01-Customer",
+  "bead": "dkh-rzx95f.1",
+  "owner_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/9",
+  "task_mirror": "https://gitlab.xnata.com/gzdkh/agents/DKH.Beads/-/issues/12196",
+  "source_owner": "01a117e3-8606-7e53-a0fb-9f1b5aeb8095",
+  "delivery_recorder": "01a10fd2-563e-7703-ad5b-80b90a80902c",
+  "status": "source_delivery_verified_child_acceptance_pending",
+  "source_sha": "c21da1ddec4e45609cb189c0bd9c6208d3a4e4b5",
+  "merge_sha": "250dd3896f99666b5d1ec14ca992f71a3da8cd57",
+  "owner_ledger": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/9#note_96593",
+  "merge_request": {
+    "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/merge_requests/159",
+    "state": "merged",
+    "merged_at": "2026-10-10T02:57:08.601Z"
+  },
+  "source_validation": {
+    "source_sha": "c21da1ddec4e45609cb189c0bd9c6208d3a4e4b5",
+    "evidence": "openspec/changes/append-only-private-journal-core/evidence/core-runtime-gates.json",
+    "owner_reported_application_passed": 116,
+    "owner_reported_integration_passed": 216,
+    "owner_reported_total_passed": 332,
+    "failed": 0,
+    "skipped": 0,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "format_exit": 0,
+    "strict_openspec_passed": 3,
+    "source_files_verified": 44,
+    "postgresql_fixture_version": "17.8",
+    "fixture_databases_remaining_at_handoff": 0,
+    "full_suite_rerun_by_reviewer_or_delivery_recorder": false
+  },
+  "independent_review": {
+    "source_sha": "c21da1ddec4e45609cb189c0bd9c6208d3a4e4b5",
+    "reviewer": "/root/diary_c2_exact_boundary_review",
+    "verdict": "PASS",
+    "p1": 0,
+    "p2": 0,
+    "receipt_sha256": "90481d5eb66b1007066e066674fbcf81a637421e9efce6f51a18d29d41c8dd97",
+    "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/merge_requests/159#note_96596",
+    "isolated_arithmetic_checks_passed": 8,
+    "resolved_finding": "C2-NUMERIC-01"
+  },
+  "source_ci": {
+    "id": 42827,
+    "sha": "c21da1ddec4e45609cb189c0bd9c6208d3a4e4b5",
+    "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/pipelines/42827",
+    "status": "success",
+    "finished_at": "2026-10-10T02:57:03.222Z",
+    "mandatory_jobs": [
+      { "id": 159286, "name": "openspec:validate", "status": "success", "allow_failure": false },
+      { "id": 159287, "name": "build-test", "status": "success", "allow_failure": false },
+      { "id": 159288, "name": "integration-test", "status": "success", "allow_failure": false },
+      { "id": 159289, "name": "validate-config", "status": "success", "allow_failure": false }
+    ]
+  },
+  "authoritative_main_ci": {
+    "id": 42829,
+    "sha": "250dd3896f99666b5d1ec14ca992f71a3da8cd57",
+    "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/pipelines/42829",
+    "status": "success",
+    "finished_at": "2026-10-10T03:02:10.879Z",
+    "observed_at": "2026-10-10T03:04:57.291197+00:00",
+    "mandatory_jobs": [
+      { "id": 159294, "name": "openspec:validate", "status": "success", "allow_failure": false },
+      { "id": 159295, "name": "publish-contracts", "status": "success", "allow_failure": false },
+      { "id": 159296, "name": "publish-image", "status": "success", "allow_failure": false },
+      { "id": 159297, "name": "deploy", "status": "success", "allow_failure": false },
+      { "id": 159298, "name": "verify-deploy", "status": "success", "allow_failure": false }
+    ]
+  },
+  "remaining_delivery": {
+    "openspec_task": "4.2",
+    "state": "pending",
+    "verified_subcriteria": ["owner MR merge", "exact authoritative main pipeline", "mandatory deploy and verify-deploy jobs"],
+    "unverified_subcriteria": ["original-owner cleanup", "registered EJ-02.01 child acceptance and plan reconciliation", "separate original EJ-02 parent gate reconciliation"],
+    "cleanup": "Not performed. Original source worktree and socket-only PostgreSQL fixture runtime are retained under the explicit instruction not to delete worktrees or data.",
+    "archive": "Not attempted while task 4.2 and child acceptance remain pending.",
+    "child_status": "in_progress",
+    "parent_status": "open"
+  },
+  "preserved_boundaries": {
+    "original_master_tasks": 49,
+    "displayed_projection_rows": 51,
+    "already_projected_owner_children": 2,
+    "original_stages": 24,
+    "integration_gates": 39,
+    "ordered_owner_scopes": 87,
+    "new_public_journal_rpc_or_ui_claim": false,
+    "feature_or_intake_enabled_by_this_record": false,
+    "manual_production_ddl_or_data_cleanup_by_this_record": false,
+    "p02_p06_enablement_gates_completed": false,
+    "original_parent_or_full_journal_closed": false
+  }
+}
