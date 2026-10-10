@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "delivery_owner": "01a1245f-1514-7179-bf80-a11f9714c0a7",
+  "stage": "draft",
+  "task_file": "tasks.md",
+  "next_action": "Parent independently reviews exact docs MR boundary decisions; coordinator admits only original EJ-03.01 runtime child after G1-G4/P1 and version/release gates. No runtime or stage closure now.",
+  "tasks": {
+    "1.1": {
+      "state": "pending",
+      "reason": "Missing authenticated origin producer; docs only, no runtime/config grant."
+    },
+    "1.2": {
+      "state": "pending",
+      "reason": "Customer persisted protection registration is absent and not admitted."
+    },
+    "1.3": {
+      "state": "pending",
+      "reason": "No new producer/ingress code is admitted."
+    },
+    "1.4": {
+      "state": "pending",
+      "reason": "Explicit observable retry/deletion policy needs parent independent review."
+    },
+    "1.5": {
+      "state": "pending",
+      "reason": "This support issue permits only docs Draft MR; no runtime, version or release admission."
+    },
+    "2.1": {
+      "state": "pending",
+      "reason": "No proto/generated/version writes or builds performed."
+    },
+    "2.2": {
+      "state": "pending",
+      "reason": "Typed handlers/host execution remain pending."
+    },
+    "2.3": {
+      "state": "pending",
+      "reason": "Signed cursor serving and runtime evidence not implemented."
+    },
+    "2.4": {
+      "state": "pending",
+      "reason": "No Copy/replay producer extension or runtime tests performed."
+    },
+    "2.5": {
+      "state": "pending",
+      "reason": "No Product adapter/handler is implemented or admitted."
+    },
+    "3.1": {
+      "state": "pending",
+      "reason": "All16 RT03 rows remain not-executed; RT02 receipt is input only."
+    },
+    "3.2": {
+      "state": "pending",
+      "reason": "No publish, merge, deploy, main-delivery or stage closure admitted here."
+    }
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "decision": "extend",
+  "source_sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+  "accepted_plan_sha": "95725ff6400d85c74a331c52e33250529082abac",
+  "provenance": {
+    "kind": "compact projection of completed discovery, not repeated crawl",
+    "original_artifact_root": "/Users/itprodavets/Documents/Codex/2026-10-10/task-3",
+    "original_artifacts_available_in_current_environment": false,
+    "coordinator_verified_manifest_files": 181,
+    "coordinator_verified_at": "2026-10-10T06:08:08.830703+00:00",
+    "original_artifact_hashes": {
+      "EJ03-discovery.md": "1eb4956c7ce983c793014604536958304212e224d6e23db9b959aa12e7c76275",
+      "registration-inputs.json": "18ce7bda8f0ac13b32f30366f4e02d4787dd224bc1cea7e0f2c4c02e8957ea8e",
+      "RT03-matrix.json": "e879b22bf645f9c0fcc9aa4651f3664687780cd3d145f1fefa9486e240ae7028",
+      "evidence-inventory.json": "14654c980989ac5fa3b2636366587b59ee1feda3bdded59d4c87bccde932c2ec",
+      "evidence-manifest.json": "33ce5e46eb0c2382dd9b8f3f255e9a5510df234dc063be2166e66d2027cca13a"
+    },
+    "byte_identical_copy_claim": false
+  },
+  "allocation": {
+    "executor": "01a1245f-1514-7179-bf80-a11f9714c0a7",
+    "issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/10",
+    "stage": "https://gitlab.xnata.com/gzdkh/agents/DKH.Beads/-/issues/12177",
+    "branch": "docs/12177-ej03-readonly-discovery-01a1245f",
+    "lease_expiry_utc": "2026-10-11T06:12:29+00:00",
+    "runtime_admitted": false
+  },
+  "source_evidence": [
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Api/Journal/CustomerJournalOwnerResolver.cs",
+      "symbol": "CustomerJournalOwnerResolver",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Api/Journal/CustomerJournalOwnerResolver.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Api/Journal/CustomerJournalPrincipal.cs",
+      "symbol": "CustomerJournalPrincipal",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Api/Journal/CustomerJournalPrincipal.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Application/CustomerAccounts/CustomerJournalAccounts.cs",
+      "symbol": "CustomerJournalAccounts",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Application/CustomerAccounts/CustomerJournalAccounts.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Application/ExperienceJournal/JournalRequests.cs",
+      "symbol": "MutateJournalCommand",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Application/ExperienceJournal/JournalRequests.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Application/ExperienceJournal/JournalReads.cs",
+      "symbol": "JournalEntryCursor",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Application/ExperienceJournal/JournalReads.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.cs",
+      "symbol": "MutateCoreAsync / ResolveDraftAsync",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.Reads.cs",
+      "symbol": "ListAsync / HistoryAsync",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.Reads.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceObservationValue.cs",
+      "symbol": "ValidateDecimal",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Domain/ValueObjects/ExperienceObservationValue.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceOccurrence.cs",
+      "symbol": "Create / UtcOffsetMinutes",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Domain/ValueObjects/ExperienceOccurrence.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceProfileSnapshotEntity.cs",
+      "symbol": "GeneralV1Id / GeneralV1SchemaHash",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceProfileSnapshotEntity.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceMutationReceiptEntity.cs",
+      "symbol": "OriginalResult / ExperienceMutationOperation",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceMutationReceiptEntity.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection_experience.proto",
+      "symbol": "double decimal_value = 5",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection_experience.proto"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Api/Services/ProductCollectionGrpcService.cs",
+      "symbol": "ProductCollectionGrpcService",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Api/Services/ProductCollectionGrpcService.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/CustomerJournalHostTests.cs",
+      "symbol": "JournalOwnerFixtureRpc (test-only binding)",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/tests/DKH.CustomerService.IntegrationTests/Integration/Journal/CustomerJournalHostTests.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalProducerHostTests.cs",
+      "symbol": "ConcurrentMatchingReceiptRequestsCommitOneEntryAsync",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalProducerHostTests.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalReadHostTests.cs",
+      "symbol": "ForeignHistoryAndUnknownAreIndistinguishableFromMissingAsync",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalReadHostTests.cs"
+    },
+    {
+      "repo": "gzdkh/services/DKH.CustomerService",
+      "sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Configurations/ExperienceJournalConfiguration.cs",
+      "symbol": "ExperienceJournalMapping",
+      "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/blob/324b97e2594e8a5cb788f6bfa8b08b5f34777a0a/DKH.CustomerService.Infrastructure/Persistence/Configurations/ExperienceJournalConfiguration.cs"
+    }
+  ],
+  "plan_references": {
+    "contracts": "https://gitlab.xnata.com/gzdkh/agents/DKH.AgentRules/-/blob/95725ff6400d85c74a331c52e33250529082abac/plans/product-experience-journal/package/readiness/CONTRACTS.en.md",
+    "ej03": "https://gitlab.xnata.com/gzdkh/agents/DKH.AgentRules/-/blob/95725ff6400d85c74a331c52e33250529082abac/plans/product-experience-journal/package/readiness/publication/task-bodies/EJ-03.md",
+    "ej02_acceptance": "https://gitlab.xnata.com/gzdkh/agents/DKH.AgentRules/-/blob/95725ff6400d85c74a331c52e33250529082abac/plans/product-experience-journal/evidence/ej02-stage-acceptance.json"
+  },
+  "related_pins": {
+    "DKH.Platform": "d84be6840c7a46e9cf72ad148db8f2eec38182dd",
+    "DKH.StorefrontGateway": "ed5e6210fef135be28d3bb79dca51bb60fe7194f",
+    "DKH.AdminGateway": "4779a0673c055370402cb8fe5a1e4e131cbe1823",
+    "DKH.Infrastructure": "e926e848b7712e9031750bc34735d276f497bb9d"
+  },
+  "current_package_version": "1.10.0",
+  "candidate_version": "1.11.0 (unapproved)",
+  "verification_boundary": "Existing accepted RT02 receipts only; zero new runtime tests, generated builds or package publishing. All RT03 rows not-executed."
+}
