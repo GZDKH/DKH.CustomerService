@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "source_sha": "324b97e2594e8a5cb788f6bfa8b08b5f34777a0a",
+  "status": "proposed; no runtime execution",
+  "rows": [
+    {
+      "id": "RT03-P01",
+      "scenario": "Unknown/General generated-client create/get/update/list/history/copy/delete",
+      "expected": "Owner-only typed CRUD; copy has chosen date and source revision; deletion denies ordinary serving",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-P02",
+      "scenario": "Optional date/score/time roundtrip",
+      "expected": "DateOnly time/zone/offset null; nullable score distinct from zero; both DST offsets and tick precision preserved",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-P03",
+      "scenario": "Frozen typed observation fixture",
+      "expected": "Exact decimal18,6 string; null/zero/false/option/row presence; General empty definitions unchanged",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-P04",
+      "scenario": "Matching mutation retry after edit",
+      "expected": "Original EntryId/revision and frozen result; no extra rows; stable replay applies within accepted24h receipt lifetime",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-P05",
+      "scenario": "Same-date list/history keyset pages",
+      "expected": "Default25/max100; authenticated account/filter/schema/entry cursors; no gaps",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-P06",
+      "scenario": "Old ProductCollection client",
+      "expected": "Old tags/double/date/text7000/separate rating/replace-persist-clear behavior unchanged",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-P07",
+      "scenario": "Generated owner/client compatibility and future package",
+      "expected": "Approved additive version, exact package artifact, owner release before later consumers",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N01",
+      "scenario": "Anonymous/service-only/forged/duplicate principal",
+      "expected": "Unauthenticated or PermissionDenied; AccountId/context never selects authority",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N02",
+      "scenario": "Foreign/missing/current/history/unknown/copy source and inactive owner",
+      "expected": "Uniform NotFound; lifecycle rechecked before receipt replay",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N03",
+      "scenario": "Cursor tamper,account/filter/version/entry mismatch,expiry",
+      "expected": "InvalidArgument before store query; no private page",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N04",
+      "scenario": "Malformed known protobuf fields and additive unknown fields",
+      "expected": "Known invalid shape rejected; benign future unknown tags accepted; no blanket unknown-tag ban",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N05",
+      "scenario": "Decimal/date/DST/score/limits violations",
+      "expected": "InvalidArgument without rounding, coercion or partial persistence",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N06",
+      "scenario": "Product create/map/rebind/context with unavailable EJ04 adapter",
+      "expected": "FailedPrecondition before journal or Catalog mutation; no passthrough",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N07",
+      "scenario": "Body-key conflict and stale/parallel CAS",
+      "expected": "Aborted and exactly one result; transaction rollback remains atomic",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N08",
+      "scenario": "Missing/forged/conflicting origin provenance",
+      "expected": "Fail closed before personal write; header parsing is insufficient",
+      "status": "not-executed"
+    },
+    {
+      "id": "RT03-N09",
+      "scenario": "Copy changed-source/date key reuse; destination deleted before retry",
+      "expected": "Aborted for changed request; NotFound without deleted body on destination replay; source deletion cannot create fresh copy; expired receipt gives no permanent deduplication guarantee",
+      "status": "not-executed"
+    }
+  ]
+}
