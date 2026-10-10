@@ -1,6 +1,7 @@
 using DKH.CustomerService.Domain.Entities.CustomerAccount;
 using DKH.CustomerService.Domain.Entities.CustomerAddress;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Domain.Entities.ExperienceJournal;
 using DKH.CustomerService.Domain.Entities.ExternalIdentity;
 using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.Entities.StorefrontMembership;
@@ -31,6 +32,13 @@ public interface IAppDbContext
     DbSet<ProductExperienceObservationEntity> ProductExperienceObservations { get; }
 
     DbSet<ProductExperienceTagEntity> ProductExperienceTags { get; }
+
+    DbSet<ExperienceEntryEntity> ExperienceEntries { get; }
+    DbSet<ExperienceRevisionEntity> ExperienceRevisions { get; }
+    DbSet<ExperienceUnknownReferenceEntity> ExperienceUnknownReferences { get; }
+    DbSet<ExperienceProfileSnapshotEntity> ExperienceProfileSnapshots { get; }
+    DbSet<ExperienceRevisionObservationEntity> ExperienceRevisionObservations { get; }
+    DbSet<ExperienceMutationReceiptEntity> ExperienceMutationReceipts { get; }
 
     void ClearTrackedChanges();
 

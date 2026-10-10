@@ -7,6 +7,15 @@ public sealed record CustomerJournalOwner(Guid AccountId);
 /// <summary>Account-wide journal ownership and read-only, verified legacy linkage.</summary>
 public sealed class CustomerJournalAccounts(IAppDbContext dbContext)
 {
+    public static void RequireActiveOwner(Domain.Entities.CustomerAccount.CustomerAccountEntity account)
+    {
+        EnsureCustomerAccountCommandHandler.EnsureAccountCanAuthenticate(account);
+        if (account.Status != CustomerAccountStatusType.Active)
+        {
+            throw new CustomerAccountAccessException("Personal account is unavailable.");
+        }
+    }
+
     public async Task<CustomerJournalOwner> ResolveAsync(
         CustomerAccountIdentity identity,
         CancellationToken cancellationToken = default)

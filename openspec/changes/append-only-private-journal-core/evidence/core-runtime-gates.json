@@ -1,0 +1,304 @@
+{
+  "observed_at": "2026-10-10T02:47:54.955058+00:00",
+  "base_sha": "16d4c0ecbb3eb74f3da577c38bfa6f21ccdc6854",
+  "foundation_commit": "28ac1c9845084003c7118139f901477fa88cc451",
+  "workspace_state": "owner-local implementation, delivery pending",
+  "source_files": [
+    {
+      "path": ".editorconfig",
+      "sha256": "b6598110acac6ba0d0c7554946f03c7e728be03ddf87c292f05ff9e280aad6b7"
+    },
+    {
+      "path": "DKH.CustomerService.Api/Journal/CustomerJournalOwnerResolver.cs",
+      "sha256": "f2306a131e0b8308ac019b639d374a7eb2814295b025bb934108c7c97f84a51f"
+    },
+    {
+      "path": "DKH.CustomerService.Application/Abstractions/IAppDbContext.cs",
+      "sha256": "80e56a2e28bab0d16bc27f3e085b99df9a0dafac3f98325fc862287764ed3c40"
+    },
+    {
+      "path": "DKH.CustomerService.Application/CustomerAccounts/CustomerJournalAccounts.cs",
+      "sha256": "fe2585d9a6793cb9582426751e72906a4aeafc2fe9e51c90a19d51c1ff6a7d0c"
+    },
+    {
+      "path": "DKH.CustomerService.Application/ExperienceJournal/JournalReads.cs",
+      "sha256": "bd8a705e65ce309fa0d705994aed7cdf828a9b0e0d92aae75e9cdebf0d4acc7d"
+    },
+    {
+      "path": "DKH.CustomerService.Application/ExperienceJournal/JournalRequests.cs",
+      "sha256": "a973d11ca210a87bc395fd35483dd7637398936df8680229f43351a3399f883c"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceEntryEntity.cs",
+      "sha256": "9f9018b092836d1a650664ddec1a7bab169dc1333cea92b8e74e412a12d23541"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceMutationReceiptEntity.cs",
+      "sha256": "c5a3e194e3fcb3a7942d42f7a88e583483ca8e70552fbc0719b781a765a0c0a5"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceProfileSnapshotEntity.cs",
+      "sha256": "0c8e042bd0a262aed0a08c616ee66d6569e6b67a4e71d81fb893a2b0e19fe8cc"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceRevisionEntity.cs",
+      "sha256": "1e794d1ef36eb893d75a6c3c452cd76e3363ebb5bc5e611bbd249637cf82cc77"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceRevisionObservationEntity.cs",
+      "sha256": "d2286d374abc727c29d29985f851399c8a2123b1dac1395395f1b56bafefcf0c"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ExperienceJournal/ExperienceUnknownReferenceEntity.cs",
+      "sha256": "683719977e40c6f8afbf32c90a62b9757c355e39510f2e62957f4a49e359da34"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceObservationEntity.cs",
+      "sha256": "2514367aa71f0b1336ec341301a84fc41ec135c67f7c6a94819fa17a56e5f63c"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/Entities/ProductCollection/ProductExperienceObservationRules.cs",
+      "sha256": "e286f74580bfe5c59af293756ce4efe0d9ba50e217a37bdae122ba934600f154"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceCanonicalJson.cs",
+      "sha256": "72e24f5a235600d92b24fabe8029c0421db6d9fe0bc2edc1b898e0ef5e683f62"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceContent.cs",
+      "sha256": "b1961a437c197d39f8b608162d4d1833c48167d1dd736c17073129751f7ce701"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceFrozenDefinition.cs",
+      "sha256": "4de1681555c6a402b3a78ff302bd5d0b94ea99789377c7684c201a8323d431da"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceFrozenOption.cs",
+      "sha256": "258f42b583d7af165b2d0a8545bace0be000b4202b80f16224d5d44f237f86ce"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceFrozenUnit.cs",
+      "sha256": "f9b626c48f216695fc5131275a048cb2e1c7f10454489c4e2fcf8e3dc3da5bb2"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceObservationValue.cs",
+      "sha256": "1387b1265c2a7726372f3fe0afb3bbacd9119fbadaa8079e39821fa774a356ef"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceOccurrence.cs",
+      "sha256": "3a94d224a2f6179490b131199d2b91b81b26639329dbbf82d2e9c65340a0fbce"
+    },
+    {
+      "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceTarget.cs",
+      "sha256": "4390195d90bd9c44f6df27676ef0af0294520c165001a38de14eede5ecd617f6"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/AppDbContext.Journal.cs",
+      "sha256": "0127fb836206331f7c74448c010d0ce9f0935bbd7a4baecbec679dd56d524be2"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/AppDbContext.cs",
+      "sha256": "8020bf22870595278934a4428af3d158bb0339cfe6177fef88905d50fe971122"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Configurations/ExperienceJournalConfiguration.cs",
+      "sha256": "9d73aeeaa7218912a6e70e360bbd6733d5ad77c9f95e2b164483655d4d3d7918"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261009170132_AddPrivateDatedExperienceJournal.Designer.cs",
+      "sha256": "15015a62d6ab8220c691e0c0741adc9b08269147bdd6a738c0f04db5a6fac868"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261009170132_AddPrivateDatedExperienceJournal.cs",
+      "sha256": "a53fb15a9bfaeb11834260ba644c09d417100f4fdf6c2145350967a45ebec178"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Migrations/AppDbContextModelSnapshot.cs",
+      "sha256": "ef78e5f0a0d848292d427e45adb211d936a6f1e1b7b515a4dac2c68bf281d873"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.Reads.cs",
+      "sha256": "6f6b40e815e9282b145c0ea8411cb48915a53f8cd6a9d9ac9ced0cb2e8158492"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.cs",
+      "sha256": "8d8326ad2957bb62081979c7ab50b0515560d026669ebaaa6cc684672382a1ef"
+    },
+    {
+      "path": "DKH.CustomerService.Infrastructure/ServiceCollectionExtensions.cs",
+      "sha256": "47eb528e95c15d888f4ef87ab1f30cac0faf47851aab8a4f636e60dceaff9f87"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceCanonicalJsonTests.cs",
+      "sha256": "1ab297d9b0f35d81514ec087dfe00687c1f48ddf5c81c17c5711caef158e303a"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceContentTests.cs",
+      "sha256": "9f2b51d32cce27c79a125701f8c083787e93c9c581510199cbbc2c6d9045b590"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceEntryTests.cs",
+      "sha256": "f1be567292df0623736854d7de5247f05aa4559ef1b4a5de1e23cada3bbccd57"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceFrozenProfileTests.cs",
+      "sha256": "7ee47cf882f3f48e02cb98712732c75107b8cb8f2690160b59785b9f00e61433"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceJournalBootstrapTests.cs",
+      "sha256": "4555b54ea8354fbf6e7c945288a930872db365c37a8591da204094cd4ff38a3f"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceMutationReceiptTests.cs",
+      "sha256": "6806a01ede104e0ff4d81e4be16867560373e4c090a107c4d16d6df91cb3947c"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceObservationValueTests.cs",
+      "sha256": "725d9b4c2724ef8ac1bfe10fa83a8a608f14290ffb24f833cde046f950c70a66"
+    },
+    {
+      "path": "tests/DKH.CustomerService.Application.Tests/ExperienceOccurrenceTests.cs",
+      "sha256": "b3e25b3bec99b79c80c73c07bd47b39f2c40c9584a640e533f66cc5aec50ea6d"
+    },
+    {
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/CustomerJournalHostTests.cs",
+      "sha256": "02328c56c325007dd9d4ba6fff25cb7b781e0079286d8c15d1c8f3d818715e3e"
+    },
+    {
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalLocalPostgres.cs",
+      "sha256": "da7db9fbecb1b6bebe7e8eef41f8da71b907d91d5f8b9aa3db0bf45db0be59f8"
+    },
+    {
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalPersistenceTests.cs",
+      "sha256": "a6d616d6666a2d234b634e0846e0466cfce63415d6ec5d8c67f448028640946d"
+    },
+    {
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalProducerHostTests.cs",
+      "sha256": "a8497a8c02a15c48336e2f724b5745e7f69306274925ddcf6c0ace266d29ba5f"
+    },
+    {
+      "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalReadHostTests.cs",
+      "sha256": "4ff524bb2cb4ee3e83080436a6f9d2201f7e32c8085110843701c579dee91ab4"
+    }
+  ],
+  "tests": {
+    "command": "DKH_JOURNAL_PG_FIXTURE_RECEIPT=<owned server receipt> dotnet test DKH.CustomerService.slnx -c Release --no-restore",
+    "exit": 0,
+    "application_passed": 116,
+    "integration_passed": 216,
+    "total_passed": 332,
+    "failed": 0,
+    "skipped": 0,
+    "execution_log_sha256": "c23707ed4d412b50e3e2901ab6ccf86164694cd03b4a89b221fe4af29ca4881a",
+    "postgresql_version": "17.8",
+    "backend": "owned socket-only upstream PostgreSQL, fresh per-host fixture database"
+  },
+  "named_acceptance": {
+    "immutability": [
+      "OrdinaryHistoricalAndUnpairedHeaderWritesAreRefusedAsync"
+    ],
+    "temporal_numeric": [
+      "FrozenNumericAndTickPrecisionRoundTripAndDeleteWithoutLoadedObservationsAsync",
+      "PostgreSqlRejectsUnrepresentableNumericBeforeRoundingAsync",
+      "InexactMultiplyOrAddCannotBeMaskedByUnboundedProfilesBoundsOrOptions",
+      "LosslessDecimalConversionsRetainExactValuesAcrossScalesAndSigns"
+    ],
+    "schema": [
+      "ActualPostgreSqlSchemaHasRestrictedOwnerRelationsExactTypesAndKeysetIndexesAsync",
+      "ActualPostgreSqlRejectsInvalidHeaderValuesAsync",
+      "PostgreSqlRejectsCrossOwnerReferenceAndDuplicateNullRowAsync"
+    ],
+    "transaction": [
+      "FailureAfterSaveChangesRollsBackHeaderRevisionUnknownAndReceiptAsync",
+      "MissingSharedTransactionBoundaryRejectsRealHostMutationAsync"
+    ],
+    "races": [
+      "ConcurrentMatchingReceiptRequestsCommitOneEntryAsync",
+      "ConcurrentExpectedRevisionEditsHaveOneWinnerAndOneConflictAsync",
+      "LifecycleLockRecheckDeniesMutationAfterConcurrentBlockAsync"
+    ],
+    "mutation": [
+      "ExplicitTargetMappingRetainsUnknownHistoryAndRejectsImplicitUpdateAsync",
+      "ExpiredReceiptKeyHasExactlyTwentyFourHoursOfReplayProtectionAsync"
+    ],
+    "reads": [
+      "KeysetReadsKeepSameDateEntriesAndProductFilterWithinOwnerAsync",
+      "CurrentAndHistoryReturnFrozenPayloadsUntilDeletionDeniesServingAsync",
+      "ForeignHistoryAndUnknownAreIndistinguishableFromMissingAsync",
+      "LifecycleAndServicePurposeGuardEveryReadAsync",
+      "CorruptRetainedPayloadFailsClosedWithoutReturningPrivateBodyAsync",
+      "PageSizeOutsideContractBoundIsRejectedAsync",
+      "DefaultAndMaximumPageSizesMatchTheAcceptedContractAsync"
+    ],
+    "rollback": [
+      "DataBearingMigrationDownRefusesAndRetainsCoreAsync",
+      "JournalHostFixture generated empty Down/Up before any account seeding"
+    ],
+    "compatibility": [
+      "CustomerJournalHostTests retained actual signed-JWT owner and old-client collection-summary fixtures"
+    ]
+  },
+  "build": {
+    "configuration": "Release",
+    "exit": 0,
+    "warnings": 0,
+    "errors": 0,
+    "execution_log_sha256": "3d27119e4588fd83da47f82d432443cc4e49c33e1cc8bbdb688f467fd289f2f1"
+  },
+  "format": {
+    "command": "dotnet format DKH.CustomerService.slnx --verify-no-changes --no-restore",
+    "exit": 0,
+    "execution_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "ef_model_check": {
+    "exit": 0,
+    "pending_changes": false,
+    "existing_tool_version_warning": "10.0.10 tools / 10.0.12 runtime",
+    "retained_unchanged_model_evidence_from": "6dc3265580a0095739bc1d715f5ed169a1cd4fbd; no entity/configuration/DbContext/migration changes in correction"
+  },
+  "security_review": {
+    "kind": "targeted owner-auth and diff review by implementation holder",
+    "no_public_journal_route": true,
+    "no_browser_account_authority": true,
+    "owner_lifecycle_lock_before_replay_or_lookup": true,
+    "shared_transaction_fail_closed": true,
+    "immutable_history_and_hash_checks": true,
+    "service_purpose_denied_in_real_signed_jwt_host": true,
+    "independent_review": "C2-NUMERIC-01 CHANGES_NEEDED at6dc; correction awaits same independent reviewer.",
+    "deleted_history_serving_denied_in_real_signed_jwt_host": true
+  },
+  "limits": "Owner-local correction evidence only. Current-head independent review and mandatory CI/merge/main/cleanup and exact original child/parent acceptance remain pending. No production, public RPC/UI, graph/status or plan projection change.",
+  "superseded_source_commit": "6dc3265580a0095739bc1d715f5ed169a1cd4fbd",
+  "contract_correction": {
+    "accepted_contract": "Product Experience Journal Revision2 C2/C10",
+    "contract_sha256": "eea38c2dc0cbde98b4bc1c69051f7780a8df1978d558ddf90170364c1badefb7",
+    "pagination": "default25/max100 for internal list/history",
+    "deleted_private_serving": "current/list/history deny deleted entry; database history retained for purpose-limited purge",
+    "future_transport_gate": "EJ03 RT03-N supplies signed/account/filter-bound opaque wire cursors; current core accepts only internal sort keys and trusted identity."
+  },
+  "numeric_precision_correction": {
+    "finding": "C2-NUMERIC-01",
+    "reviewed_source_sha": "6dc3265580a0095739bc1d715f5ed169a1cd4fbd",
+    "baseline_regressions": {
+      "failed": 6,
+      "passed": 0,
+      "log_sha256": "2254a190ef4ef4a745d655f4d46e359fefae8f621bd2d69897614bd4b6cd6504"
+    },
+    "behavior": "Reject inexact decimal multiplication and addition through exact signed integer coefficient/scale comparison before canonical precision, bounds and options; preserve exact conversions and overflow handling.",
+    "focused_profile_tests": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "cce6f0fa06fd05287c3d1179a1a0e7cf269be66fca705b84c2c67824685fafa8"
+    },
+    "ci42737_failure": "integration158626 had214passed/1failed/0skipped; expiry test compared100ns UtcNow deadline against persisted microseconds. Read stored expiry and check1microsecond before/exactly at expiry with residual clock0/7ticks; production receipt logic unchanged.",
+    "ci_trace_sha256": "314faa70ce499549ddf518bf7cb6a4b46aaa0708e7fd280b25ca248b10792b27",
+    "independent_review": "Resulting correction source awaits the same coordinator-retained independent reviewer; prior CHANGES_NEEDED is not approval."
+  },
+  "strict_openspec": {
+    "exit": 0,
+    "passed": 3,
+    "failed": 0,
+    "execution_log_sha256": "4e2fdebda5dc526d22701ec53962cfd556211a72a6537699851e0b734ca4a36c"
+  }
+}
