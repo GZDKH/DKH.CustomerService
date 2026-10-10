@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_owner": "01a117e3-8606-7e53-a0fb-9f1b5aeb8095",
-  "stage": "implementation",
+  "stage": "review",
   "task_file": "tasks.md",
-  "next_action": "Publish the checked correction to SAME Ready MR159 with auto-mergeOFF; freeze source and return exactSHA/gates to coordinator for SAME independent reviewer and mandatory current-head CI. Do not merge/close/archive or change plan projection.",
+  "next_action": "Retain source worktree/data. Original-owner cleanup and registered EJ-02.01 acceptance/plan reconciliation remain pending; separately verify the original EJ-02 parent gate. Do not declare delivered/archived or close from MR159 alone.",
   "tasks": {
     "1.1": {
       "state": "verified",
@@ -87,12 +87,26 @@
       ]
     },
     "4.1": {
-      "state": "pending",
-      "reason": "Owner docs/security diff and Release332tests/build/format/strictOpenSpec3 passed for correction. Same ReadyMR159 publication/current-head CI and same independent reviewer remain delivery gates; previous source6dc review CHANGES_NEEDED."
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "documentation",
+          "path": "docs/database.md"
+        },
+        {
+          "kind": "runtime",
+          "path": "openspec/changes/append-only-private-journal-core/evidence/delivery-gates.json"
+        },
+        {
+          "kind": "review",
+          "url": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/merge_requests/159#note_96596"
+        }
+      ]
     },
     "4.2": {
       "state": "pending",
-      "reason": "No merge/main/deploy delivery, own cleanup or original child/parent reconciliation has occurred."
+      "reason": "MR159 merge250dd389 and exact mainCI42829/all5mandatory success are verified in evidence/delivery-gates.json. Original-owner cleanup is unperformed under the explicit no-worktree/data-deletion instruction; registered child acceptance/plan reconciliation and separate EJ02 parent gate remain unreconciled. No archive or child/parent closure is claimed."
     }
-  }
+  },
+  "delivery_recorder": "01a10fd2-563e-7703-ad5b-80b90a80902c"
 }

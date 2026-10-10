@@ -18,5 +18,5 @@
 
 ## 4. Delivery and exact acceptance
 
-- [ ] 4.1 Update owner schema/behavior/runbook documentation, pass the repository's required Release/build/format/security/strict-OpenSpec gates, publish one coherent owner MR and obtain independent current-head review.
+- [x] 4.1 Update owner schema/behavior/runbook documentation, pass the repository's required Release/build/format/security/strict-OpenSpec gates, publish one coherent owner MR and obtain independent current-head review.
 - [ ] 4.2 Verify authorized merge, authoritative main/deploy evidence as applicable and own cleanup; reconcile only the registered EJ-02.01 step and child, then separately verify the original EJ-02 parent gate before closure.
