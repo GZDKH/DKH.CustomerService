@@ -77,10 +77,12 @@ public sealed class JournalProducerHostTests(JournalHostFixture fixture) : IClas
         (await fixture.ReadAsync(db => db.ExperienceUnknownReferences.CountAsync(row => row.AccountId == account.Id))).Should().Be(1);
     }
 
-    [Fact]
-    public async Task ExpiredReceiptKeyHasExactlyTwentyFourHoursOfReplayProtectionAsync()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(7)]
+    public async Task ExpiredReceiptKeyHasExactlyTwentyFourHoursOfReplayProtectionAsync(int subMicrosecondTicks)
     {
-        var clock = new JournalFixtureClock(DateTimeOffset.UtcNow);
+        var clock = new JournalFixtureClock(new DateTimeOffset(2026, 10, 10, 0, 0, 0, TimeSpan.Zero).AddTicks(subMicrosecondTicks));
         var timed = new JournalHostFixture { Clock = clock };
         try
         {
@@ -89,11 +91,13 @@ public sealed class JournalProducerHostTests(JournalHostFixture fixture) : IClas
             var token = timed.Token(account.IdentitySubject);
             var request = Create(Draft(null, 1, "retained"));
             var first = await timed.MutateAsync(request, token);
-            clock.Now += TimeSpan.FromHours(24) - TimeSpan.FromTicks(1);
+            var receipt = await timed.ReadAsync(db => db.ExperienceMutationReceipts.SingleAsync(row => row.AccountId == account.Id));
+            receipt.ExpiresAtUtc.Should().Be(receipt.CreatedAtUtc.AddHours(24));
+            // Assert against the persisted microsecond deadline, including a
+            // clock whose original time had a sub-microsecond remainder.
+            clock.Now = receipt.ExpiresAtUtc - TimeSpan.FromMicroseconds(1);
             (await timed.MutateAsync(request, token)).Should().Be(first);
-            // PostgreSQL audit timestamps use microseconds; cross the exact
-            // expiry safely rather than depending on sub-microsecond coercion.
-            clock.Now += TimeSpan.FromSeconds(1);
+            clock.Now = receipt.ExpiresAtUtc;
             var second = await timed.MutateAsync(request, token);
             second.EntryId.Should().NotBe(first.EntryId);
             (await timed.ReadAsync(db => db.ExperienceEntries.CountAsync(row => row.AccountId == account.Id))).Should().Be(2);

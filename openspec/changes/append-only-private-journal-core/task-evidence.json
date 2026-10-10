@@ -3,7 +3,7 @@
   "delivery_owner": "01a117e3-8606-7e53-a0fb-9f1b5aeb8095",
   "stage": "implementation",
   "task_file": "tasks.md",
-  "next_action": "Publish the coherent owner Draft MR, obtain independently authorized current-head review and CI, then authorized merge/main/cleanup before exact original child and parent reconciliation.",
+  "next_action": "Publish the checked correction to SAME Ready MR159 with auto-mergeOFF; freeze source and return exactSHA/gates to coordinator for SAME independent reviewer and mandatory current-head CI. Do not merge/close/archive or change plan projection.",
   "tasks": {
     "1.1": {
       "state": "verified",
@@ -88,7 +88,7 @@
     },
     "4.1": {
       "state": "pending",
-      "reason": "Owner docs, targeted security review and local Release/build/format/full320/EF checks passed. DraftMR159 is published; clean current-head CI and independently authorized current-head review remain pending."
+      "reason": "Owner docs/security diff and Release332tests/build/format/strictOpenSpec3 passed for correction. Same ReadyMR159 publication/current-head CI and same independent reviewer remain delivery gates; previous source6dc review CHANGES_NEEDED."
     },
     "4.2": {
       "state": "pending",

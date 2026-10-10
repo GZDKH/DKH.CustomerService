@@ -441,6 +441,9 @@ equality-to-`round(value,6)` CHECK. This rejects excess fractional precision bef
 coercion: declared `numeric(18,6)` would round it before a CHECK sees the value.
 See [PostgreSQL numeric semantics](https://www.postgresql.org/docs/17/datatype-numeric.html).
 Legacy `double precision` observations retain their existing behavior and storage.
+Frozen unit conversion also rejects any precision lost by decimal multiplication
+or addition before validating canonical bounds and options. Exact integer
+coefficient/scale comparisons detect underflow and rounded offsets without tolerance.
 
 OccurredDate is `date`. Optional local time uses its exact seven-digit fractional
 text representation; DateOnly has null time, zone and offset. Domain validation

@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-09T18:34:45.911990+00:00",
+  "observed_at": "2026-10-10T02:47:54.955058+00:00",
   "base_sha": "16d4c0ecbb3eb74f3da577c38bfa6f21ccdc6854",
   "foundation_commit": "28ac1c9845084003c7118139f901477fa88cc451",
   "workspace_state": "owner-local implementation, delivery pending",
@@ -78,7 +78,7 @@
     },
     {
       "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceFrozenUnit.cs",
-      "sha256": "09a911aa73c6ad88e70fc45868e43e04a61977957b49b1f3b41bb3c5a1c1837f"
+      "sha256": "f9b626c48f216695fc5131275a048cb2e1c7f10454489c4e2fcf8e3dc3da5bb2"
     },
     {
       "path": "DKH.CustomerService.Domain/ValueObjects/ExperienceObservationValue.cs",
@@ -142,7 +142,7 @@
     },
     {
       "path": "tests/DKH.CustomerService.Application.Tests/ExperienceFrozenProfileTests.cs",
-      "sha256": "5ab85acb937df358fd31393deb8c0a1d41f1101db14eae12f519a545166a4689"
+      "sha256": "7ee47cf882f3f48e02cb98712732c75107b8cb8f2690160b59785b9f00e61433"
     },
     {
       "path": "tests/DKH.CustomerService.Application.Tests/ExperienceJournalBootstrapTests.cs",
@@ -174,7 +174,7 @@
     },
     {
       "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalProducerHostTests.cs",
-      "sha256": "eec89d8ca5732562cbd65a6370fba875599d1486d6270e34ea67ffe250004613"
+      "sha256": "a8497a8c02a15c48336e2f724b5745e7f69306274925ddcf6c0ace266d29ba5f"
     },
     {
       "path": "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalReadHostTests.cs",
@@ -184,12 +184,12 @@
   "tests": {
     "command": "DKH_JOURNAL_PG_FIXTURE_RECEIPT=<owned server receipt> dotnet test DKH.CustomerService.slnx -c Release --no-restore",
     "exit": 0,
-    "application_passed": 105,
-    "integration_passed": 215,
-    "total_passed": 320,
+    "application_passed": 116,
+    "integration_passed": 216,
+    "total_passed": 332,
     "failed": 0,
     "skipped": 0,
-    "execution_log_sha256": "5b0735e9d766cfa86a86f6150cd713f819539c45aa008d340f379e752e527e53",
+    "execution_log_sha256": "c23707ed4d412b50e3e2901ab6ccf86164694cd03b4a89b221fe4af29ca4881a",
     "postgresql_version": "17.8",
     "backend": "owned socket-only upstream PostgreSQL, fresh per-host fixture database"
   },
@@ -199,7 +199,9 @@
     ],
     "temporal_numeric": [
       "FrozenNumericAndTickPrecisionRoundTripAndDeleteWithoutLoadedObservationsAsync",
-      "PostgreSqlRejectsUnrepresentableNumericBeforeRoundingAsync"
+      "PostgreSqlRejectsUnrepresentableNumericBeforeRoundingAsync",
+      "InexactMultiplyOrAddCannotBeMaskedByUnboundedProfilesBoundsOrOptions",
+      "LosslessDecimalConversionsRetainExactValuesAcrossScalesAndSigns"
     ],
     "schema": [
       "ActualPostgreSqlSchemaHasRestrictedOwnerRelationsExactTypesAndKeysetIndexesAsync",
@@ -240,16 +242,19 @@
     "configuration": "Release",
     "exit": 0,
     "warnings": 0,
-    "errors": 0
+    "errors": 0,
+    "execution_log_sha256": "3d27119e4588fd83da47f82d432443cc4e49c33e1cc8bbdb688f467fd289f2f1"
   },
   "format": {
     "command": "dotnet format DKH.CustomerService.slnx --verify-no-changes --no-restore",
-    "exit": 0
+    "exit": 0,
+    "execution_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "ef_model_check": {
     "exit": 0,
     "pending_changes": false,
-    "existing_tool_version_warning": "10.0.10 tools / 10.0.12 runtime"
+    "existing_tool_version_warning": "10.0.10 tools / 10.0.12 runtime",
+    "retained_unchanged_model_evidence_from": "6dc3265580a0095739bc1d715f5ed169a1cd4fbd; no entity/configuration/DbContext/migration changes in correction"
   },
   "security_review": {
     "kind": "targeted owner-auth and diff review by implementation holder",
@@ -259,16 +264,41 @@
     "shared_transaction_fail_closed": true,
     "immutable_history_and_hash_checks": true,
     "service_purpose_denied_in_real_signed_jwt_host": true,
-    "independent_review": "pending",
+    "independent_review": "C2-NUMERIC-01 CHANGES_NEEDED at6dc; correction awaits same independent reviewer.",
     "deleted_history_serving_denied_in_real_signed_jwt_host": true
   },
-  "limits": "Local C2 implementation evidence only. Independent current-head review, owner MR/CI/merge/main/cleanup and exact original child/parent acceptance remain pending. No production schema application, public RPC, catalog/media/UI or pilot delivery.",
-  "superseded_source_commit": "8855deb10c8f262ddbad9e20330f88c37dc3b8dc",
+  "limits": "Owner-local correction evidence only. Current-head independent review and mandatory CI/merge/main/cleanup and exact original child/parent acceptance remain pending. No production, public RPC/UI, graph/status or plan projection change.",
+  "superseded_source_commit": "6dc3265580a0095739bc1d715f5ed169a1cd4fbd",
   "contract_correction": {
     "accepted_contract": "Product Experience Journal Revision2 C2/C10",
     "contract_sha256": "eea38c2dc0cbde98b4bc1c69051f7780a8df1978d558ddf90170364c1badefb7",
     "pagination": "default25/max100 for internal list/history",
     "deleted_private_serving": "current/list/history deny deleted entry; database history retained for purpose-limited purge",
     "future_transport_gate": "EJ03 RT03-N supplies signed/account/filter-bound opaque wire cursors; current core accepts only internal sort keys and trusted identity."
+  },
+  "numeric_precision_correction": {
+    "finding": "C2-NUMERIC-01",
+    "reviewed_source_sha": "6dc3265580a0095739bc1d715f5ed169a1cd4fbd",
+    "baseline_regressions": {
+      "failed": 6,
+      "passed": 0,
+      "log_sha256": "2254a190ef4ef4a745d655f4d46e359fefae8f621bd2d69897614bd4b6cd6504"
+    },
+    "behavior": "Reject inexact decimal multiplication and addition through exact signed integer coefficient/scale comparison before canonical precision, bounds and options; preserve exact conversions and overflow handling.",
+    "focused_profile_tests": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "cce6f0fa06fd05287c3d1179a1a0e7cf269be66fca705b84c2c67824685fafa8"
+    },
+    "ci42737_failure": "integration158626 had214passed/1failed/0skipped; expiry test compared100ns UtcNow deadline against persisted microseconds. Read stored expiry and check1microsecond before/exactly at expiry with residual clock0/7ticks; production receipt logic unchanged.",
+    "ci_trace_sha256": "314faa70ce499549ddf518bf7cb6a4b46aaa0708e7fd280b25ca248b10792b27",
+    "independent_review": "Resulting correction source awaits the same coordinator-retained independent reviewer; prior CHANGES_NEEDED is not approval."
+  },
+  "strict_openspec": {
+    "exit": 0,
+    "passed": 3,
+    "failed": 0,
+    "execution_log_sha256": "4e2fdebda5dc526d22701ec53962cfd556211a72a6537699851e0b734ca4a36c"
   }
 }

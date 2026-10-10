@@ -1,3 +1,4 @@
+using System.Globalization;
 using DKH.CustomerService.Domain.Entities.ExperienceJournal;
 using DKH.CustomerService.Domain.Entities.ProductCollection;
 using DKH.CustomerService.Domain.ValueObjects;
@@ -89,6 +90,43 @@ public sealed class ExperienceFrozenProfileTests
         var overflowing = new ExperienceFrozenUnit("overflow", "overflow", decimal.MaxValue, 0);
         var overflow = () => overflowing.ToCanonical(2m);
         overflow.Should().Throw<ArgumentException>();
+    }
+
+    [Theory]
+    [InlineData("0.0000000000000000000000000001", 0, "unbounded")]
+    [InlineData("0.0000000000000000000000000001", 0, "maximum")]
+    [InlineData("0.0000000000000000000000000001", 0, "option")]
+    [InlineData("0.0000000000000000000001", 8, "unbounded")]
+    [InlineData("0.0000000000000000000001", 8, "maximum")]
+    [InlineData("0.0000000000000000000001", 8, "option")]
+    public void InexactMultiplyOrAddCannotBeMaskedByUnboundedProfilesBoundsOrOptions(string multiplier, int offset, string constraint)
+    {
+        var option = new ExperienceFrozenOption(Guid.NewGuid(), "rounded value", ProductExperienceObservationValueType.Decimal,
+            null, offset, null, null);
+        var profile = Profile(Numeric(
+            [new("kg", "canonical", 1, 0), new("tiny", "tiny", decimal.Parse(multiplier, CultureInfo.InvariantCulture), offset)],
+            constraint == "option" ? [option] : [], null, constraint == "maximum" ? offset : null));
+        var observation = Number(0.000001m, "tiny", constraint == "option" ? option.Id : null);
+
+        var act = () => profile.ValidateObservations([observation], Catalog, Category);
+
+        act.Should().Throw<ArgumentException>();
+        observation.DecimalValue.Should().Be(0.000001m);
+    }
+
+    [Theory]
+    [InlineData("1.00", "1.0000000000000000000000000000", "0", "1")]
+    [InlineData("-1500", "0.001", "0", "-1.5")]
+    [InlineData("0.000001", "0.0000000000000000000001", "0", "0.0000000000000000000000000001")]
+    [InlineData("8", "1", "-8", "0")]
+    [InlineData("0", "0.0000000000000000000000000001", "8", "8")]
+    public void LosslessDecimalConversionsRetainExactValuesAcrossScalesAndSigns(string value, string multiplier, string offset, string expected)
+    {
+        var unit = new ExperienceFrozenUnit("unit", "unit", decimal.Parse(multiplier, CultureInfo.InvariantCulture),
+            decimal.Parse(offset, CultureInfo.InvariantCulture));
+
+        unit.ToCanonical(decimal.Parse(value, CultureInfo.InvariantCulture))
+            .Should().Be(decimal.Parse(expected, CultureInfo.InvariantCulture));
     }
 
     [Fact]
