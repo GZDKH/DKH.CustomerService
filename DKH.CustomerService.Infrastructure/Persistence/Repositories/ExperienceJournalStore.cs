@@ -43,19 +43,34 @@ public sealed partial class ExperienceJournalStore(AppDbContext db, CustomerJour
         // producer clock before computing/comparing the exact 24-hour receipt
         // lifetime; local occurrence time keeps its independent seven ticks.
         now = now.AddTicks(-(now.Ticks % 10));
-        var requestHash = ExperienceCanonicalJson.Hash(ExperienceCanonicalJson.Serialize(new
-        {
-            command.Operation,
-            OriginStorefrontId = command.Operation == ExperienceMutationOperation.Create ? command.OriginStorefrontId : (Guid?)null,
-            command.EntryId,
-            command.ExpectedRevision,
-            command.Draft,
-        }));
+        // Preserve the existing Create identity byte-for-byte. Copy shares its
+        // operation/lock/receipt namespace, but hashes intent before source lookup.
+        var requestHash = command.Copy is { } copy
+            ? ExperienceCanonicalJson.Hash(ExperienceCanonicalJson.Serialize(new
+            {
+                command.Operation,
+                command.OriginStorefrontId,
+                Intent = "Copy",
+                Copy = copy,
+            }))
+            : ExperienceCanonicalJson.Hash(ExperienceCanonicalJson.Serialize(new
+            {
+                command.Operation,
+                OriginStorefrontId = command.Operation == ExperienceMutationOperation.Create ? command.OriginStorefrontId : (Guid?)null,
+                command.EntryId,
+                command.ExpectedRevision,
+                command.Draft,
+            }));
         var receipt = await db.ExperienceMutationReceipts.AsNoTracking().SingleOrDefaultAsync(row => row.AccountId == owner.AccountId
             && row.Operation == command.Operation && row.IdempotencyKey == command.IdempotencyKey, cancellationToken);
         if (receipt is not null && receipt.IsReplayable(now))
         {
             return receipt.MatchesRequest(requestHash) ? receipt.OriginalResult : throw new JournalMutationConflictException();
+        }
+
+        if (command.Copy is not null)
+        {
+            command = command with { Draft = await ResolveCopyDraftAsync(owner.AccountId, command.Copy, cancellationToken) };
         }
 
         return await ApplyMutationAsync(command, owner, now, requestHash, receipt, cancellationToken);
@@ -201,10 +216,13 @@ public sealed partial class ExperienceJournalStore(AppDbContext db, CustomerJour
         if (!Enum.IsDefined(command.Operation) || command.IdempotencyKey == Guid.Empty
             || (command.Operation == ExperienceMutationOperation.Create && (command.EntryId.HasValue || command.ExpectedRevision.HasValue || command.OriginStorefrontId == Guid.Empty))
             || (command.Operation != ExperienceMutationOperation.Create && (command.EntryId is null || command.EntryId == Guid.Empty || command.ExpectedRevision is null or < 1))
-            || (command.Operation == ExperienceMutationOperation.Delete ? command.Draft is not null : command.Draft is null))
+            || (command.Copy is not null && (command.Operation != ExperienceMutationOperation.Create || command.Draft is not null))
+            || (command.Operation == ExperienceMutationOperation.Delete ? command.Draft is not null : command.Draft is null && command.Copy is null))
         {
             throw new ArgumentException("A valid owner mutation, idempotency key and expected revision are required.");
         }
+
+        command.Copy?.Validate();
     }
 
     private sealed record ResolvedDraft(ExperienceTarget Target, ExperienceProfileSnapshotEntity Profile, ExperienceUnknownReferenceEntity? Unknown);

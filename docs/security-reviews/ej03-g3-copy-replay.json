@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "method": "focused-review",
+  "result": "passed",
+  "capability_unavailable": true,
+  "base_sha": "106e18e6cf5fd259ef28715c26a124da328544b7",
+  "reviewed_blobs": {
+    "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.Reads.cs": "8d03cf2d5bcdd45fe36d82118d563a560d36b864",
+    "DKH.CustomerService.Infrastructure/Persistence/Repositories/ExperienceJournalStore.cs": "b8faf4766e41b9580fe8f149665ea65f9c7a5da2",
+    "openspec/changes/typed-journal-owner-transport/evidence/g3-producer-tests.json": "60c65560d90c139fdbd7b3514a7f29b3e16a3c22",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Journal/JournalCopyReplayHostTests.cs": "92be6f5e999dfa219da94672055b7c9268a451f2"
+  },
+  "checks": [
+    {
+      "name": "Owner/lifecycle and source/destination confidentiality",
+      "result": "passed",
+      "evidence": "JournalCopyReplayHostTests.ForeignMissingRevisionLifecycleAndServicePurposeAreDeniedAsync and SavedCreateOrCopyBodyIgnoresLaterTargetDateScoreEditsAndDeniesDeletedDestinationAsync; full Release test receipt openspec/changes/typed-journal-owner-transport/evidence/g3-producer-tests.json"
+    },
+    {
+      "name": "Source replay integrity and no new Product grants",
+      "result": "passed",
+      "evidence": "ConcurrentCopyRetriesAndSourceEditDeleteRetainOneOriginalDestinationAsync, CorruptSourceFailsWithoutWritesAndCompletedReplayDoesNotReadItAsync, ProductRetainingCopyFailsClosedAndExplicitFallbackCopiesOnlyPrivateUnknownAsync; same committed G3 test receipt"
+    },
+    {
+      "name": "Shared atomic transaction and receipt namespace",
+      "result": "passed",
+      "evidence": "ChangedIntentAndCreateCopyCollisionConflictWithoutWritesAsync, CopyReceiptExpiresAtExactlyTwentyFourHoursAndFailedFreshSourceReadPreservesItAsync and FailureAfterCopySaveRollsBackDestinationRevisionFallbackAndReceiptAsync; exact source diff and G3 test receipt"
+    }
+  ],
+  "independent_review": "pending; author focused review only"
+}
