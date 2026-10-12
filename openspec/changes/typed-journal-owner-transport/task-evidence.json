@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "delivery_owner": "01a1245f-1514-7179-bf80-a11f9714c0a7",
-  "stage": "draft",
+  "delivery_owner": "01a12f83-8c4b-7c02-8ea7-7ec6b5b998fa",
+  "stage": "review",
   "task_file": "tasks.md",
-  "next_action": "Parent independently reviews exact docs MR boundary decisions; coordinator admits only original EJ-03.01 runtime child after G1-G4/P1 and version/release gates. No runtime or stage closure now.",
+  "next_action": "Publish G3 producer MR and verify mandatory source CI; independent review/integration remain separate. Preserve G1/G2/G4, typed transport and package gates.",
   "tasks": {
     "1.1": {
       "state": "pending",
@@ -15,15 +15,15 @@
     },
     "1.3": {
       "state": "pending",
-      "reason": "No new producer/ingress code is admitted."
+      "reason": "G3 owner-internal producer admitted and tested under Customer#14; G4 known-field ingress remains pending."
     },
     "1.4": {
       "state": "pending",
-      "reason": "Explicit observable retry/deletion policy needs parent independent review."
+      "reason": "P1 accepted and tested in owner-internal saved revision producer; public typed response binding remains pending."
     },
     "1.5": {
       "state": "pending",
-      "reason": "This support issue permits only docs Draft MR; no runtime, version or release admission."
+      "reason": "Fresh G3 source lease admitted only for four production files/tests/evidence; full transport/proto/version/package scope remains pending."
     },
     "2.1": {
       "state": "pending",
@@ -39,7 +39,7 @@
     },
     "2.4": {
       "state": "pending",
-      "reason": "No Copy/replay producer extension or runtime tests performed."
+      "reason": "Owner-internal G3 producer verified by 2.4.1; future typed committed response/RT03 transport remains pending."
     },
     "2.5": {
       "state": "pending",
@@ -52,6 +52,19 @@
     "3.2": {
       "state": "pending",
       "reason": "No publish, merge, deploy, main-delivery or stage closure admitted here."
+    },
+    "2.4.1": {
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "path": "DKH.CustomerService.Application/ExperienceJournal/JournalRequests.cs"
+        },
+        {
+          "kind": "test",
+          "path": "openspec/changes/typed-journal-owner-transport/evidence/g3-producer-tests.json"
+        }
+      ]
     }
   }
 }

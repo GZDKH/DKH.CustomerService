@@ -15,7 +15,9 @@ public sealed record JournalUnknownView(Guid ReferenceId, string OwnerLabel, str
 // lifecycle decision remains valid until the bounded result has been read.
 public sealed record ListJournalEntriesQuery(CustomerAccountIdentity Identity, int PageSize = 25,
     JournalEntryCursor? Cursor = null, Guid? ProductId = null) : IRequest<JournalEntryPage>;
-public sealed record GetJournalEntryQuery(CustomerAccountIdentity Identity, Guid EntryId) : IRequest<JournalRevisionView>;
+// A saved mutation's EntryId+Revision selects that immutable body, after current
+// destination readability is checked. Omission retains the ordinary current read.
+public sealed record GetJournalEntryQuery(CustomerAccountIdentity Identity, Guid EntryId, long? Revision = null) : IRequest<JournalRevisionView>;
 public sealed record ListJournalHistoryQuery(CustomerAccountIdentity Identity, Guid EntryId, int PageSize = 25,
     long? BeforeRevision = null) : IRequest<JournalHistoryPage>;
 public sealed record GetJournalUnknownQuery(CustomerAccountIdentity Identity, Guid ReferenceId) : IRequest<JournalUnknownView>;
