@@ -65,6 +65,7 @@
     <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Telemetry" Version="1.1.1" />
+    <PackageVersion Include="DKH.DeliveryService.Contracts" Version="1.14.0" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.6.0" />
   </ItemGroup>
   <ItemGroup>

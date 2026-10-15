@@ -25,6 +25,12 @@ The system SHALL bind self-issued consent to the exact contact, group, allocatio
 ### Requirement: Current independent Delivery authority
 The system SHALL require fresh genuine Delivery-owner authorization under the same human bearer before recipient contact access or revalidation. It SHALL compare the echoed exact scope and actual profile binding. Caller selectors SHALL NOT become authority.
 
+#### Scenario: Actual owner refs and typed callback context
+- **WHEN** the verified personal actor requests or revalidates a recipient contact
+- **THEN** the same human bearer SHALL reach the Delivery owner and its entire typed scope SHALL match
+- **AND** the returned current consent and private-contact references SHALL equal Customer's exact consent and contact before any disclosure or receipt
+- **AND** missing endpoint, unsupported callback, changed scope, absent profile/workspace/refs, expired decision or denied owner SHALL fail closed
+
 #### Scenario: Missing producer boundary
 - **WHEN** genuine callback or recipient identity binding is unavailable
 - **THEN** access SHALL fail AUTHORITY_UNAVAILABLE without returning contact data

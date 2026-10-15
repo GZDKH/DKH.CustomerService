@@ -1,4 +1,5 @@
 using DKH.CustomerService.Api;
+using DKH.CustomerService.Api.DeliveryContacts;
 using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Api.Journal;
 using DKH.CustomerService.Api.Services;
@@ -22,6 +23,7 @@ using DKH.Platform.Domain.Events;
 using DKH.Platform.EntityFrameworkCore.PostgreSQL;
 using DKH.Platform.EntityFrameworkCore.Repositories;
 using DKH.Platform.Grpc;
+using DKH.Platform.Grpc.Client;
 using DKH.Platform.Http.Extensions;
 using DKH.Platform.Identity;
 using DKH.Platform.Localization;
@@ -37,6 +39,7 @@ await Platform
     {
         builder.ConfigurePlatformStandardConfiguration();
         builder.Services.AddCustomerInfrastructure(builder.Configuration);
+        builder.Services.AddCustomerDeliveryContactAuthority(builder.Configuration);
         builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddCustomerJournalOwnership();
     })
@@ -98,6 +101,8 @@ await Platform
     .AddPlatformRepositories<AppDbContext>()
     .AddGrpcStorefrontContext()
     .AddGrpcCurrentUser()
+    .AddCurrentUserPropagation(options => options.ForwardAuthorizationHeader = true)
+    .AddPlatformGrpcEndpoints(DeliveryContactAuthorityRegistration.ConfigureEndpoint)
     .AddPlatformGrpc(grpc =>
     {
         grpc.AddInterceptor<RequireCallerMatchesClaimInterceptor>();

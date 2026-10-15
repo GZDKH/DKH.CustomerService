@@ -3,10 +3,10 @@
   "delivery_owner": "01a13ae1-5fc5-7940-8d8d-3dbeb8105027",
   "stage": "review",
   "task_file": "tasks.md",
-  "next_action": "Publish one Draft Customer52 MR for actual source/native CI; consume genuine Delivery complete-cohort SDK and qualify actual callback adapter in SAME MR before merge/publisher. Native13 currently UNEXECUTED; full V6.7 OPEN.",
+  "next_action": "Current independentwhole-source0f1b plus selectorincrement193842 PASS0P1/P2;175composedCPU (36current,139unchangedretained). Normal Customer52 continuationMR/sourceCI pending; native19UNEXECUTED/full52/original83OPEN.",
   "handoff": {
     "owner": "01a13ae1-5fc5-7940-8d8d-3dbeb8105027",
-    "next_action": "Publish one Draft Customer52 MR for actual source/native CI; consume genuine Delivery complete-cohort SDK and qualify actual callback adapter in SAME MR before merge/publisher. Native13 currently UNEXECUTED; full V6.7 OPEN."
+    "next_action": "Current independentwhole-source0f1b plus selectorincrement193842 PASS0P1/P2;175composedCPU (36current,139unchangedretained). Normal Customer52 continuationMR/sourceCI pending; native19UNEXECUTED/full52/original83OPEN."
   },
   "tasks": {
     "1.1": {
@@ -59,23 +59,36 @@
     },
     "1.4": {
       "state": "pending",
-      "reason": "Native13 migration/immutability/concurrent writer/changed-target replay cases are compiled/discovered, not executed locally."
+      "reason": "Current19 native persistence/ref/replay/migration cases compiled/discovered only; old13 on sourcef83e are retained historical evidence."
     },
     "2.2": {
       "state": "pending",
-      "reason": "Ordinary source CI has not run."
+      "reason": "Current callback-continuation source native19 ordinaryCI not run."
     },
     "2.3": {
       "state": "pending",
-      "reason": "Current independent source/security review PASS0P1/P2, normal Draft publication pending; keep this same MR for genuine Delivery SDK/callback integration."
+      "reason": "Whole-source0f1b and exactselectorincrement193842 PASS0P1/P2; normal publication and current sourceCI pending."
     },
     "2.4": {
       "state": "pending",
-      "reason": "No MR/main/SDK/runtime delivery yet."
+      "reason": "Current continuation has no mergedmain/runtime delivery; baselineMR172/main44889/SDK1.11 is historical, not newadapter acceptance."
     },
     "3.1": {
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "code",
+          "path": "DKH.CustomerService.Api/DeliveryContacts/DeliveryContactScopeAuthorizer.cs"
+        },
+        {
+          "kind": "test",
+          "path": "openspec/changes/authorize-delivery-contact/evidence/source-verification.json"
+        }
+      ]
+    },
+    "3.2": {
       "state": "pending",
-      "reason": "Genuine Delivery same-human callback and actual group participant identity producer are absent; production shipping remains unavailable."
+      "reason": "Actual Delivery current callback, participant identity producer and normal configured runtime end-to-end acceptance required; unsupported owner remainsUnavailable."
     }
   }
 }

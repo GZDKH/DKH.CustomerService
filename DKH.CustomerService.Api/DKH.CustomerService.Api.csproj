@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DKH.DeliveryService.Contracts"/>
     <PackageReference Include="DKH.Platform"/>
     <PackageReference Include="DKH.Platform.Core"/>
     <PackageReference Include="DKH.Platform.Localization"/>
