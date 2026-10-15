@@ -126,7 +126,8 @@ public sealed partial class DeliveryContactStore(AppDbContext db, IDeliveryConta
         // Its production default fails closed while that genuine boundary is absent.
         var decision = await authorizer.RevalidateAsync(owner, actor.StorefrontId, scope, cancellationToken);
         if (decision.StorefrontId != actor.StorefrontId || decision.Scope != scope ||
-            decision.RecipientProfileId == Guid.Empty || decision.WorkspaceId == Guid.Empty || decision.ExpiresAtUtc <= Now())
+            decision.RecipientProfileId == Guid.Empty || decision.WorkspaceId == Guid.Empty || decision.ExpiresAtUtc <= Now() ||
+            decision.RecipientConsentId != consentId || decision.PrivateContactId != authority.ResourceId)
         {
             throw Unavailable();
         }

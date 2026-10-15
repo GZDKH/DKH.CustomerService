@@ -198,6 +198,80 @@ public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) 
         (await fixture.ReadAsync(db => db.Set<DeliveryContactRevisionEntity>().CountAsync(row => row.OperationId == operation))).Should().Be(0);
     }
 
+    [Fact]
+    public async Task SyntheticOwnerBoundaryStillRequiresCurrentConsentAndReplayNeverRenewsAsync()
+    {
+        // Explicit synthetic Delivery port, NOT genuine participant runtime proof.
+        var seed = await SeedAsync();
+        var contact = await ActAsync(seed.Actor, store => store.SealAsync(seed.Actor, seed.Address.Id, Guid.NewGuid(), Digest, default));
+        var scope = new DeliveryContactScope(Guid.NewGuid(), "opaque allocation", Guid.NewGuid(), 3, Guid.NewGuid(),
+            new DeliveryContactAuthority("delivery.duty.v2", Guid.NewGuid(), 2, Digest));
+        var consent = await ActAsync(seed.Actor, store => store.ConsentAsync(seed.Actor, contact.Authority, scope,
+            DateTimeOffset.UtcNow.AddMinutes(2), Guid.NewGuid(), Digest, default));
+        var owner = new SyntheticOwner(new(scope, seed.Address.CustomerId, seed.Actor.StorefrontId, Guid.NewGuid(),
+            false, DateTimeOffset.UtcNow.AddMinutes(2), consent.Id, contact.Authority.ResourceId));
+        var operation = Guid.NewGuid();
+        var first = await ActAsync(seed.Actor, store => store.ResolveRecipientAsync(seed.Actor, contact.Authority, consent.Id,
+            scope, operation, null, Digest, default), owner);
+        first.Phone.Should().BeNull();
+        first.Access.ExpiresAtUtc.Should().BeOnOrBefore(consent.ValidUntilUtc);
+        var replay = await ActAsync(seed.Actor, store => store.ResolveRecipientAsync(seed.Actor, contact.Authority, consent.Id,
+            scope, operation, first.Access.Id, Digest, default), owner);
+        replay.Should().Be(first);
+        owner.Calls.Should().Be(2);
+        await ActAsync(seed.Actor, store => store.RevokeAsync(seed.Actor, consent.Id, 1, Guid.NewGuid(), Digest, default));
+        await Assert.ThrowsAsync<DeliveryContactFailureException>(() => ActAsync(seed.Actor,
+            store => store.ResolveRecipientAsync(seed.Actor, contact.Authority, consent.Id, scope, operation, first.Access.Id, Digest, default), owner));
+        owner.Calls.Should().Be(3);
+        (await fixture.ReadAsync(db => db.Set<DeliveryContactLeaseEntity>().CountAsync(row => row.ActorAccountId == seed.AccountId))).Should().Be(1);
+    }
+
+    [Theory]
+    [InlineData("consent")]
+    [InlineData("contact")]
+    [InlineData("profile")]
+    [InlineData("workspace")]
+    [InlineData("scope")]
+    public async Task DifferentActualOwnerRefsNeverDiscloseOrCreateLeaseAsync(string changed)
+    {
+        var seed = await SeedAsync();
+        var contact = await ActAsync(seed.Actor, store => store.SealAsync(seed.Actor, seed.Address.Id, Guid.NewGuid(), Digest, default));
+        var scope = new DeliveryContactScope(Guid.NewGuid(), "opaque allocation", Guid.NewGuid(), 3, Guid.NewGuid(),
+            new DeliveryContactAuthority("delivery.duty.v2", Guid.NewGuid(), 2, Digest));
+        var consent = await ActAsync(seed.Actor, store => store.ConsentAsync(seed.Actor, contact.Authority, scope,
+            DateTimeOffset.UtcNow.AddMinutes(2), Guid.NewGuid(), Digest, default));
+        var decision = new DeliveryContactScopeDecision(scope, seed.Address.CustomerId, seed.Actor.StorefrontId,
+            Guid.NewGuid(), false, DateTimeOffset.UtcNow.AddMinutes(2), consent.Id, contact.Authority.ResourceId);
+        decision = changed switch
+        {
+            "consent" => decision with { RecipientConsentId = Guid.NewGuid() },
+            "contact" => decision with { PrivateContactId = Guid.NewGuid() },
+            "profile" => decision with { RecipientProfileId = Guid.NewGuid() },
+            "workspace" => decision with { WorkspaceId = Guid.Empty },
+            "scope" => decision with { Scope = scope with { ScopeRevision = scope.ScopeRevision + 1 } },
+            _ => throw new ArgumentException("Unknown theory input."),
+        };
+        var owner = new SyntheticOwner(decision);
+        await Assert.ThrowsAsync<DeliveryContactFailureException>(() => ActAsync(seed.Actor,
+            store => store.ResolveRecipientAsync(seed.Actor, contact.Authority, consent.Id, scope, Guid.NewGuid(), null, Digest, default), owner));
+        (await fixture.ReadAsync(db => db.Set<DeliveryContactLeaseEntity>().CountAsync(row => row.ActorAccountId == seed.AccountId))).Should().Be(0);
+        (await fixture.ReadAsync(db => db.Set<DeliveryContactConsentEntity>().SingleAsync(row => row.Id == consent.Id))).Revision.Should().Be(1);
+    }
+
+    private sealed class SyntheticOwner(DeliveryContactScopeDecision decision) : IDeliveryContactScopeAuthorizer
+    {
+        public int Calls { get; private set; }
+        public Task<DeliveryContactScopeDecision> RevalidateAsync(Guid actorAccountId, Guid storefrontId,
+            DeliveryContactScope scope, CancellationToken cancellationToken)
+        {
+            actorAccountId.Should().NotBeEmpty();
+            storefrontId.Should().Be(decision.StorefrontId);
+            scope.Validate();
+            Calls++;
+            return Task.FromResult(decision);
+        }
+    }
+
     private async Task<(DeliveryContactActor Actor, Guid AccountId, CustomerAddressEntity Address)> SeedAsync()
     {
         await fixture.ReadAsync(async db =>
@@ -220,13 +294,13 @@ public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) 
         return (new(new CustomerAccountIdentity(JournalHostFixture.Issuer, account.IdentitySubject), storefront), account.Id, address);
     }
 
-    private Task<T> ActAsync<T>(DeliveryContactActor actor, Func<DeliveryContactStore, Task<T>> action)
+    private Task<T> ActAsync<T>(DeliveryContactActor actor, Func<DeliveryContactStore, Task<T>> action, IDeliveryContactScopeAuthorizer? ownerAuthorizer = null)
     {
         _ = actor;
         return fixture.ReadAsync(async db =>
         {
             await using var transaction = await db.Database.BeginTransactionAsync();
-            var result = await action(Store(db));
+            var result = await action(new DeliveryContactStore(db, ownerAuthorizer ?? new UnavailableDeliveryContactScopeAuthorizer(), TimeProvider.System));
             await transaction.CommitAsync();
             return result;
         });

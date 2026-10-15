@@ -1,63 +1,59 @@
 {
   "schema_version": 1,
-  "status": "R2_INDEPENDENT_SOURCE_REVIEW_PASS_NATIVE_UNEXECUTED_DRAFT_PUBLICATION_PENDING",
+  "status": "CALLBACK_SELECTOR_TRANSPORT_SOURCE_OTHER_PASS_175_COMPOSED_NATIVE19_UNEXECUTED",
   "actor_thread": "01a13ae1-5fc5-7940-8d8d-3dbeb8105027",
-  "base_sha": "42c6abb97bccda9bf4e4bfc77a1e6c0e8110e5b8",
-  "issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/52",
-  "original": "Original140 plan row83 (V6.7), DeliveryService#2 companion; NOT AgentRules issue83",
-  "cpu": [
+  "base_sha": "6fd839d08ac78ddfd1c08a3a4f94cb4dbff82bf4",
+  "owning_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/52",
+  "original": "Original140 row83 V6.7 / DeliveryService#2; no new originaltask",
+  "genuine_delivery_sdk": {
+    "version": "1.14.0",
+    "package_id": 30461,
+    "main_commit": "5c5f76d7275c001e4c9a60582c7926f1a6e9691b",
+    "proof_path": "/tmp/delivery152-main-sdk114-01a13ad2/genuine-sdk114-proof.json",
+    "proof_sha256": "a2de5e29069080ff2a149f324e5f7cf8f8ab2123b4d7c1acd4168adfa1882329",
+    "restored_and_built_DLL_sha256": "5a0fb77cbd8d44bf8811beae3398151bcfa300ee73e76bc2f9da3b137086aec4"
+  },
+  "actual_cpu": [
     {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/test-results/customer52-r2-application.trx",
-      "sha256": "531a711aadd9dbfd6d38d45f11dbdf07b1886c2e48dc26f77486f99e2e0874cf",
-      "total": 133,
+      "path": "/tmp/customer52-delivery114-adapter-01a13ae1/test-results/customer52-delivery114-application.trx",
+      "sha256": "d8515cc4ed2b43c1e3cf39be21b53b6365043bce2e78dfd944d24a27f4bcd4f0",
       "passed": 133,
       "failed": 0,
-      "not_executed": 0
+      "skipped": 0,
+      "reuse": "Unchanged Application source and exact DLL/PDB; retained133PASS, not rerun"
     },
     {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/test-results/customer52-r2-metadata-green.trx",
-      "sha256": "7f515f3f7ffd45a103dca41b5bdcaa08c7bae71eeed55aaa39457da79a6a6f09",
-      "total": 2,
-      "passed": 2,
+      "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/green-results/selector-green.trx",
+      "sha256": "49d61cb47a03765eec99348be9e2d2ab255a19aeae912123facad6703eab3755",
+      "bytes": 69190,
+      "passed": 36,
       "failed": 0,
-      "not_executed": 0
+      "skipped": 0,
+      "scope": "CURRENT callback source with exact selectors and real generated client/interceptor"
+    },
+    {
+      "path": "/tmp/customer52-delivery114-adapter-01a13ae1/test-results/customer52-delivery114-retained-cpu.trx",
+      "sha256": "a0d5a6de46f04e5cfa2d69b7f88f3bc3762bc7173e8923f17d513838269764de",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "reuse": "Unchanged retained boundary source; retained6PASS, not rerun"
     }
   ],
-  "gates": [
-    {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/build-release-r2.log",
-      "sha256": "1a072fc2ba26812bf30f3ac95bc562ca1a2673884ed0d18ada2658614913921e",
-      "result": "passed"
-    },
-    {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/format-whole.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "result": "passed"
-    },
-    {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/model-parity.log",
-      "sha256": "6358b4d61eb45273b0ebac516de5a902313d2e870a02fc39b5903777d5b577fb",
-      "result": "passed"
-    },
-    {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/api-naming.log",
-      "sha256": "dac95807a40f28832a8d18b3cd31bcb8c8261254128f348c0c3ba8033b22e66e",
-      "result": "passed"
-    },
-    {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/openspec-strict.log",
-      "sha256": "cbfbc78a8b6cb9a8899a69e96ef17d2767fa96b5687808fc7f6dafbb05eb3c14",
-      "result": "passed"
-    },
-    {
-      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/task-consistency.log",
-      "sha256": "74a5038b5b0bdd1d930c9e707ac8e2afde5c199dd1c5c6b1c1fc58b063df058f",
-      "result": "passed"
-    }
-  ],
+  "current_gates": {
+    "audited_restore": "PASS",
+    "Release": "PASS_0_WARNINGS_0_ERRORS",
+    "whole_format_verify": "PASS",
+    "EF_model_parity": "PASS_NO_MODEL_CHANGES_TOOL10.0.10_RUNTIME10.0.13_NOTICE",
+    "API_version_naming": "PASS",
+    "OpenSpec_strict": "PASS",
+    "task_consistency": "PASS"
+  },
   "native": {
-    "discovered": 13,
-    "names": [
+    "discovered": 19,
+    "executed_locally": 0,
+    "status": "UNEXECUTED_ORDINARY_CI_REQUIRED",
+    "actual_names": [
       "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactDownConcurrencyTests.WriterCommittedWhileDownWaitsIsRetainedAndDowngradeRefusesBeforeDdlAsync",
       "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.ActualOwnerProfileLinkSealsCurrentObservationAndReplayKeepsOriginalVerificationAsync",
       "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.WrongOwnerAndWrongStorefrontCannotSealAnotherAddressAsync",
@@ -70,80 +66,170 @@
       "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"delivery_contact_consents\")",
       "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"delivery_contact_leases\")",
       "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"all\")",
-      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.RollbackAfterSaveDoesNotLeaveContactOrOperationReceiptAsync"
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.RollbackAfterSaveDoesNotLeaveContactOrOperationReceiptAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.SyntheticOwnerBoundaryStillRequiresCurrentConsentAndReplayNeverRenewsAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.DifferentActualOwnerRefsNeverDiscloseOrCreateLeaseAsync(changed: \"consent\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.DifferentActualOwnerRefsNeverDiscloseOrCreateLeaseAsync(changed: \"contact\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.DifferentActualOwnerRefsNeverDiscloseOrCreateLeaseAsync(changed: \"profile\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.DifferentActualOwnerRefsNeverDiscloseOrCreateLeaseAsync(changed: \"workspace\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.DifferentActualOwnerRefsNeverDiscloseOrCreateLeaseAsync(changed: \"scope\")"
     ],
-    "executed": 0,
-    "status": "UNEXECUTED_ORDINARY_CI_REQUIRED"
+    "new_cases": 6,
+    "old13_source_CI": "HISTORICAL_F83E_CI44886_PASS_NOT_CURRENT_SOURCE_CREDIT"
   },
-  "contracts": {
-    "source_version": "1.11.0",
-    "classification": "additive-new-v2-service",
-    "old_published_version": "1.10.0",
-    "old_proto_baseline_files": 35,
-    "all_old_proto_source_bytes_unchanged": true,
-    "published_old_package": "/Users/itprodavets/.nuget/packages/dkh.customerservice.contracts/1.10.0/dkh.customerservice.contracts.1.10.0.nupkg",
-    "published_old_package_sha256": "5abb32eef834056248e8052eb98f1a01fb34c1605d3852d4e072e704ce539e71",
-    "clr_abi_comparison": "NOT_RUN_NO_CLAIM",
-    "publication": "NOT_PUBLISHED_NORMAL_MAIN_ONLY"
+  "source_conservation": {
+    "unchanged_paths_count": 67,
+    "paths": [
+      "DKH.CustomerService.Contracts/proto/customer/api/contact_verification/v1/contact_verification_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/customer_account/v1/customer_account_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/customer_account_admin/v1/customer_account_admin_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/customer_address_management/v1/customer_address_management_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/customer_crud/v1/customers_crud_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/customer_management/v1/customer_management_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/customer_preferences_management/v1/customer_preferences_management_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/data_exchange/v1/data_exchange_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/delivery_contact/v2/delivery_contact_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/identity_linking/v1/identity_linking_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/product_collection/v1/product_collection_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/v1/contact_verification_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/v1/customer_address_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/v1/customer_admin_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/v1/customer_preferences_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/v1/customer_profile_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/v1/wishlist_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/api/wishlist_management/v1/wishlist_management_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/account_status/v1/account_status.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/contact_verification/v1/contact_verification.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/customer_account/v1/customer_account.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/customer_address/v1/customer_address.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/customer_preferences/v1/customer_preferences.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/customer_profile/v1/customer_profile.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/external_identity/v1/external_identity.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/product_collection/v1/product_collection_experience.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/v1/account_status.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/v1/contact_verification.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/v1/customer_address.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/v1/customer_preferences.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/v1/customer_profile.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/v1/wishlist_item.proto",
+      "DKH.CustomerService.Contracts/proto/customer/models/wishlist_item/v1/wishlist_item.proto",
+      "DKH.CustomerService.Contracts/proto/customer/services/v1/customer_crud_service.proto",
+      "DKH.CustomerService.Contracts/proto/customer/services/v1/customer_management_service.proto",
+      "DKH.CustomerService.Contracts/version.json",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260205083533_InitialCreate.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260205083533_InitialCreate.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260216010139_AddProviderTypeRenameUserId.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260216010139_AddProviderTypeRenameUserId.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260216070533_202602161200_AddIsPremium.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260216070533_202602161200_AddIsPremium.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260220024701_AddExternalIdentities.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260220024701_AddExternalIdentities.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260315165032_AddOutboxMessages.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260315165032_AddOutboxMessages.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260328032957_20260328_AddProductCollection.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260328032957_20260328_AddProductCollection.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260406082057_20260406_AddAllowsWriteToPm.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260406082057_20260406_AddAllowsWriteToPm.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260509104241_AddOlacGrants.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260509104241_AddOlacGrants.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260521000000_AddResourceTypesCatalogue.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260625174224_AddAddressNameCompanyProvince.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260625174224_AddAddressNameCompanyProvince.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260804131014_AddGlobalCustomerAccounts.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260804131014_AddGlobalCustomerAccounts.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260921012532_AddPrivateStructuredProductExperience.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20260921012532_AddPrivateStructuredProductExperience.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261008115437_LimitActiveProductExperienceSummary.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261008115437_LimitActiveProductExperienceSummary.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261009170132_AddPrivateDatedExperienceJournal.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261009170132_AddPrivateDatedExperienceJournal.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261015121242_AddDeliveryContactAuthority.Designer.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261015121242_AddDeliveryContactAuthority.cs",
+      "DKH.CustomerService.Infrastructure/Persistence/Migrations/AppDbContextModelSnapshot.cs"
+    ],
+    "no_proto_version_or_schema_changes": true
   },
-  "delivery_boundary": {
-    "same_human_bearer_callback": "ACCEPTED_DESIGN_NOT_PUBLISHED",
-    "genuine_group_recipient_producer": "ABSENT_SOURCE_CONFIRMED_BY_DELIVERY_OWNER",
-    "production_recipient_resolution": "AUTHORITY_UNAVAILABLE_NO_CONTACT_DISCLOSURE",
-    "future_validity": "NO_FUTURE_AVAILABILITY_PROMISE_VERIFICATION_EXPIRY_NOT_DUTY_EXPIRY"
+  "test_authority_limit": "Current36CPU uses genuine generatedSDK/actual Platform interceptor/actual signedJWT. Remote owner is explicit synthetic; no realDeliverypositive/participant authority. Native19 remainUNEXECUTED.",
+  "runtime_prerequisites": {
+    "endpoint_key": "Platform__Grpc__Endpoints__GroupContactAuthorityServiceClient__Url",
+    "absent": "UnavailableDeliveryContactScopeAuthorizer",
+    "service_identity": false,
+    "retry": false,
+    "real_callback_and_participant_binding": "OPEN_UNAVAILABLE_UNTIL_GENUINE_OWNER_SUPPORT",
+    "Infrastructure_owner": "Separate Infra142/MR892 normalmerged178d per integration owner; main sync observed by its sole owner, no currentparticipant producer/activation inferred"
   },
-  "no_local_native_or_production_access": true,
-  "journal_source_edited": false,
-  "full_V67": "OPEN",
-  "prior_R1": {
-    "handoff_sha256": "69e1dab37d59841d4463b52c4cf44d2df3df72d9c22aa13263f11d21362671b1",
-    "review": "/tmp/customer52-independent-review-r1-01a13ae0/review-final.json",
-    "review_sha256": "7ad2e299a702409ed69d5ae40bf772a997ee4b90973bdc04353b675d3a4cf346",
-    "verdict": "HOLD_0P1_3P2_RETAINED",
-    "retention": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/r1-retention-proof.json",
-    "retention_sha256": "63bc7eba6f942027383c745f00ac8b3ecbdb571a67c12029c49d307165a6c2e6"
-  },
-  "unchanged_boundary_cpu_reuse": {
-    "status": "R1_4_PASS_REUSED_UNCHANGED_AUTH_BOUNDARY_SOURCE_NOT_RERUN",
-    "trx": "/tmp/customer-delivery-contact-companion-01a13ae1/source-freeze-r1/artifacts/test-results/contact-boundary-r1.trx",
-    "sha256": "a4265f036d41e5bea4b2e32de32d9c78e129159e16476751ad4ebb623ff32f77"
-  },
-  "cpu_red_green": {
-    "scope": "Compiled migration metadata only, not PostgreSQL execution",
-    "red_trx": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/test-results/customer52-r1-migration-guard-red.trx",
-    "red_sha256": "653899a3ae6b2311c71093adcc5b2ebab35f028e2cadd1685dfa65fc5a7b5d42",
-    "red_passed": 0,
-    "red_failed": 2,
-    "green_passed": 2,
-    "green_failed": 0
-  },
-  "corrections": [
-    "ACCESS EXCLUSIVE locks on all3 tables BEFORE Down emptiness predicate, retained through DDL by same migration transaction",
-    "BEFORE TRUNCATE FOR EACH STATEMENT guards on all3 retained tables, row UPDATE/DELETE guards preserved",
-    "Owner-scoped revocation-operation lookup/exact target-body-expected revision replay check plus partial unique database index; no extra receipt table/framework"
-  ],
-  "foreign_resource_identity": {
-    "linked_journal_index": "/Users/itprodavets/projects/GZDKH/services/DKH.CustomerService/.git/worktrees/feat-14-journal-typed-read-01a12f83/index",
-    "sha256": "066e347f375f9871e696f9e4389cb77b4a3a94cc5e9542cdd51630a0e0204064",
-    "actual_matches_original": true,
-    "reviewer_primary_index_comparison_was_different_resource_not_drift": true
-  },
-  "original_plan_mapping": {
-    "plan_row": 83,
-    "step": "V6.7",
-    "owning_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.DeliveryService/-/issues/2",
-    "helper_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/52",
-    "not_AgentRules_issue83": true
-  },
-  "independent_source_security_review": {
-    "path": "/tmp/customer52-independent-review-r2-01a13ae0/review-final.json",
-    "sha256": "0f5297924798ffdaad72efc503eba3b60dce234e829a3a44abd722d8387dc0df",
-    "reviewer_thread": "01a13ae0-994e-7193-b23d-99e637b60f44",
-    "verdict": "PASS",
+  "independent_review": {
+    "result": "PASS",
     "P1": 0,
     "P2": 0,
-    "native_status": "UNEXECUTED",
-    "no_runtime_admission": true
+    "reviewer": "01a13db6-eea2-7b62-87cf-c2fb285940df",
+    "path": "/tmp/customer52-delivery114-selector-independent-other-r2-01a13db6/review-final.json",
+    "sha256": "193842b1c91716527650530f4af1b5548d14b75786065a67c0f0a3fe4f9aa417",
+    "bytes": 4474,
+    "scope": "Exact2source correction; prior0f1b whole-source review conserved for remaining source, final3metadata completion only"
   },
-  "publication_gate": "One Draft Customer52 MR; actual genuine Delivery complete-cohort SDK and actual callback adapter must be qualified in SAME MR before merge/main publisher. Source1.11 remains UNPUBLISHED."
+  "full52_V67": "OPEN",
+  "publication": "NORMAL_COMMIT_MR_PENDING_NO_NATIVE_OR_PRODUCTION_ACTION",
+  "retained_historical_callback_cpu_before_selector_correction": {
+    "path": "/tmp/customer52-delivery114-adapter-01a13ae1/test-results/customer52-delivery114-callback-cpu.trx",
+    "sha256": "4b51fbc05c8f325d6acd1871a11e00e290fd971739a161e884ebbe893aa884cf",
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0
+  },
+  "composed_cpu": {
+    "total_passed": 175,
+    "current_callback": 36,
+    "reused_unchanged_application": 133,
+    "reused_unchanged_boundary": 6,
+    "whole_suite_rerun": false
+  },
+  "selector_transport_correction": {
+    "handoff": {
+      "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/handoff.json",
+      "sha256": "e246d4b707e360c5a61049b5c1ce94fe0ea1bd6c87a7c4dabf5580a7a95a1def",
+      "bytes": 4915
+    },
+    "actual_red": "36total/6failed/30passed/0skip before fix",
+    "actual_green": "36passed/0failed/0skip after fix",
+    "selectors": "Exact-one nonzero GUID X-Workspace-Id and previously resolved storefront forwarded explicitly; response workspace must match. Selectors are scope assertions only, never permissions. SAME verified HUMAN interceptor remains.",
+    "affected_build": "Release0warnings0errors",
+    "affected_format_verify": "PASS",
+    "artifacts": [
+      {
+        "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/build-affected.log",
+        "sha256": "13727b9e887146c00cd132689cc2a7cc00576fb53f3a048520214ed1e5431f38",
+        "bytes": 9278
+      },
+      {
+        "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/format-verify.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/red.log",
+        "sha256": "52858caa5e0bcc1f40e1f6b652699db225b3e77985340d79bb5b3444ce6b6beb",
+        "bytes": 17632
+      },
+      {
+        "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/green.log",
+        "sha256": "8d0ac5d5aae5415a67506405d34e0f9926c8940fd45d4dbff51ff497962d84c3",
+        "bytes": 9778
+      }
+    ],
+    "current_compiled": {
+      "path": "/tmp/customer52-delivery114-adapter-01a13ae1/transport-correction-r2/current-compiled-14-manifest.json",
+      "sha256": "5ab17504554e0ee284942f3cabd97607f01c45c8c0db118ea0c3d49e14a9dd73",
+      "bytes": 8153
+    }
+  },
+  "prior_source_independent_review": {
+    "result": "PASS",
+    "P1": 0,
+    "P2": 0,
+    "reviewer": "01a13db6-eea2-7b62-87cf-c2fb285940df",
+    "path": "/tmp/customer52-delivery114-independent-other-r1-01a13db6/review-final.json",
+    "sha256": "0f1b9295e6f26d5d287fca1e4d54d13be93d786fd18eb882ef4e169517333057"
+  }
 }

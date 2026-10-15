@@ -3,54 +3,31 @@
   "method": "focused-review",
   "result": "passed",
   "capability_unavailable": true,
-  "capability_unavailable_reason": "No supported scoped local GitLab source-diff security scan is available in this workflow; independent source/security review and exact committed-blob fallback are used. No security-cloud scan is claimed.",
-  "base_sha": "42c6abb97bccda9bf4e4bfc77a1e6c0e8110e5b8",
+  "capability_unavailable_reason": "A supported scoped local GitLab source-diff security scan is unavailable in this workflow. Independent current-source/spec/security review and exact committed-blob fallback are used; no security-cloud scan is claimed.",
+  "base_sha": "6fd839d08ac78ddfd1c08a3a4f94cb4dbff82bf4",
   "reviewed_blobs": {
-    "DKH.CustomerService.Api/Services/DeliveryContactGrpcService.cs": "196889698e5dea8ed5bdb66de53f02e1eba83621",
-    "DKH.CustomerService.Application/DeliveryContacts/DeliveryContactRequest.cs": "d0f5673bfe5199c7023ad8bb65990b9ffc032502",
-    "DKH.CustomerService.Application/DeliveryContacts/DeliveryContactRequestHandler.cs": "9852130a1db863bc4fe895629e6d261b69eb872a",
-    "DKH.CustomerService.Application/DeliveryContacts/DeliveryContactScopeDecision.cs": "66c20beea57febee733619ef9c102f7e334cfa99",
-    "DKH.CustomerService.Application/DeliveryContacts/DeliveryContactView.cs": "fa5f7613198313c5bb886abbe9d1fb30486b984a",
-    "DKH.CustomerService.Application/DeliveryContacts/IDeliveryContactScopeAuthorizer.cs": "c7b3e69aaa778a0e270ea7d1a91f7dd6d2d863fb",
-    "DKH.CustomerService.Application/DeliveryContacts/IDeliveryContactStore.cs": "0e8625c8516ec907a8f555df04153d6cbe6cb6a8",
-    "DKH.CustomerService.Contracts/proto/customer/api/delivery_contact/v2/delivery_contact_service.proto": "920713f22b95b7aab4c71d5f7fce7091690fc4fc",
-    "DKH.CustomerService.Domain/Entities/DeliveryContact/DeliveryContactAuthority.cs": "48aadb85a0fdaf0ed974b9ea1c8251930f40b775",
-    "DKH.CustomerService.Domain/Entities/DeliveryContact/DeliveryContactConsentEntity.cs": "47f923af7273414e090cfcfab13e1a45830cc24c",
-    "DKH.CustomerService.Domain/Entities/DeliveryContact/DeliveryContactLeaseEntity.cs": "7d588f5068d8959ff316d7d85272671a5284099b",
-    "DKH.CustomerService.Domain/Entities/DeliveryContact/DeliveryContactRevisionEntity.cs": "23a263ca6fb4e775a1c709a766585b9d8ac05885",
-    "DKH.CustomerService.Domain/Entities/DeliveryContact/DeliveryContactScope.cs": "eece0793502058c527a02361d6658a07a59d0748",
-    "DKH.CustomerService.Infrastructure/DeliveryContacts/DeliveryContactAuthoritySql.cs": "94eaac250f2a995c07ea91727d5f53344eaa6aff",
-    "DKH.CustomerService.Infrastructure/DeliveryContacts/DeliveryContactStore.Ownership.cs": "ca83698f670649e711895d9329025b4f817644f2",
-    "DKH.CustomerService.Infrastructure/DeliveryContacts/DeliveryContactStore.cs": "7908fac0f6719e46a8302c6baafd1aaabe074918",
-    "DKH.CustomerService.Infrastructure/DeliveryContacts/UnavailableDeliveryContactScopeAuthorizer.cs": "70ebb389b7e6c69a90612d65c235d2539b757a9d",
-    "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261015121242_AddDeliveryContactAuthority.Designer.cs": "67f37bcf96714260bf0c4e0ef13e3e81cb238d64",
-    "DKH.CustomerService.Infrastructure/Persistence/Migrations/20261015121242_AddDeliveryContactAuthority.cs": "aca89ddee31f34212ff011672a093ca69f61b270",
-    "DKH.CustomerService.Infrastructure/ServiceCollectionExtensions.cs": "5b7f53fdd6c32bd9e825240bdbba81148ba98fab",
-    "openspec/changes/authorize-delivery-contact/.openspec.yaml": "a216797d5b2ca3a9bddca73bedbd48c96fea9aec",
-    "openspec/changes/authorize-delivery-contact/evidence/source-verification.json": "e7d08054ae05e656f8a64d3d287bdee99244dc03",
-    "openspec/changes/authorize-delivery-contact/task-evidence.json": "3180798267f6b5c96c24f4b42f43930053f230e8",
-    "tests/DKH.CustomerService.Application.Tests/DeliveryContactAuthorityTests.cs": "1cd18bdaf638bc2e57ff03d502d459b80a34504e",
-    "tests/DKH.CustomerService.IntegrationTests/Integration/DeliveryContacts/DeliveryContactBoundaryUnitTests.cs": "a692670f4215fcaff4328c6fb594d2830ecc64c5",
-    "tests/DKH.CustomerService.IntegrationTests/Integration/DeliveryContacts/DeliveryContactDownConcurrencyTests.cs": "3b4055fa0bdf41e1f176e8862c0443de6b6b12a4",
-    "tests/DKH.CustomerService.IntegrationTests/Integration/DeliveryContacts/DeliveryContactMigrationMetadataTests.cs": "2e12a19a1d3b359aee00e8d6e02bc753b739a722",
-    "tests/DKH.CustomerService.IntegrationTests/Integration/DeliveryContacts/DeliveryContactPersistenceTests.cs": "ef195447664efbcee5c65c520e6c81d32b47b59f"
+    "DKH.CustomerService.Api/DeliveryContacts/DeliveryContactAuthorityRegistration.cs": "7e2a70f9d1a4fcced36b65592ac3de9911ddcffd",
+    "DKH.CustomerService.Api/DeliveryContacts/DeliveryContactScopeAuthorizer.cs": "afb5dda89b60dea67a78223e61dbe7b06e168831",
+    "DKH.CustomerService.Api/Program.cs": "4451c2d9a478cf8bdb1a92df456ef70bb88d3c0a",
+    "DKH.CustomerService.Application/DeliveryContacts/DeliveryContactScopeDecision.cs": "b8fd23ad90ceee65cfb3a6765f6c9020ed857a9b",
+    "DKH.CustomerService.Infrastructure/DeliveryContacts/DeliveryContactStore.cs": "fa9d1296cba0e74aa8f7874972c2acd03182c058",
+    "openspec/changes/authorize-delivery-contact/evidence/source-verification.json": "8372dc3af2a15794ef8b2b5d54510cc6bf01b002",
+    "openspec/changes/authorize-delivery-contact/task-evidence.json": "b9fd607c36a2ff5257a195ea91fd14fc3baf68aa",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/DeliveryContacts/DeliveryContactOwnerCallbackUnitTests.cs": "a757888d15813207bc312cee293871ef8fd84d21",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/DeliveryContacts/DeliveryContactPersistenceTests.cs": "0040d9607599f4777b3fac557efc46b75550f240"
   },
   "checks": [
     {
       "result": "passed",
-      "evidence": "Independent current R2 source/security review by OTHER01a13ae0: /tmp/customer52-independent-review-r2-01a13ae0/review-final.json SHA2560f5297924798ffdaad72efc503eba3b60dce234e829a3a44abd722d8387dc0df;0P1/0P2. Existing25 prospective source/test sensitive blobs reviewed. Source/native boundary remains failclosed."
+      "evidence": "Whole-source/spec/security independent0f1b9295 PASS0P1/P2; exactselectortransport incremental193842b1 PASS0P1/P2. Two implementation/test blobs reviewed; actual current9blob map includes final2JSONevidence annotations."
     },
     {
       "result": "passed",
-      "evidence": "Final authorized metadata readback: original plan row83=V6.7/DeliveryService#2, NOT AgentRules issue83; current peer exact, native13UNEXECUTED, no package/runtime/positive shipping claim. Canonical classifier also includes .openspec.yaml, source-verification.json and task-evidence.json, so final scope28 (25 code/test plus3 metadata). No behavioral source bytes changed from frozen R2."
+      "evidence": "Same verified HUMAN bearer and explicit exact-one nonzero workspace/resolvedstorefront selectors. Returnedworkspace/fullscope/storefront/actualconsent/contact/profile/expiry checked. Headers select scope only; genuine Delivery owner still authorizes. No serviceidentity/retry/grant inference."
     },
     {
       "result": "passed",
-      "evidence": "Three-table prepredicate ACCESS EXCLUSIVE lock, row+TRUNCATE immutability, owner-scoped revoke replay/DBunique; actual App133+compiled-metadata2PASS/0skip and real R1metadataRED2 retained. Current13 native cases remain UNEXECUTED and ordinary CI required."
-    },
-    {
-      "result": "passed",
-      "evidence": "Named validated HUMAN personal Bearer/current account-profile-storefront ownership, least-data responses, no request grant/account inference; missing real Delivery SDK/callback/participant binding returns AUTHORITY_UNAVAILABLE. Existing35 proto files unchanged."
+      "evidence": "Current36callbackCPU PASS after6precise RED failures; unchanged133App+6boundary retained =>175COMPOSED, not175 rerun. AffectedRelease0W0E/formatPASS. Native19UNEXECUTED; full52/original83 and genuineparticipant/runtime acceptanceOPEN. No securitycloud scan or precommit canonicalPASS claimed."
     }
   ]
 }

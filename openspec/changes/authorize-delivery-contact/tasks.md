@@ -14,4 +14,5 @@
 
 ## 3. Whole V6.7 dependencies
 
-- [ ] 3.1 Bind genuine Delivery same-human callback and actual group participant producer; verify real recipient integration without request-authority fallback.
+- [x] 3.1 Integrate genuine published Delivery1.14 same-human callback client and exact owner-ref checks; verify CPU fail-closed behavior.
+- [ ] 3.2 Verify genuine Delivery runtime callback, actual group participant mapping and configured end-to-end recipient access without request-authority fallback.
