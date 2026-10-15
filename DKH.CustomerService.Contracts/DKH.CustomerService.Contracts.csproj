@@ -8,6 +8,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="proto/customer/api/delivery_contact/v2/delivery_contact_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
     <Protobuf Include="proto/customer/api/customer_crud/v1/customers_crud_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
     <Protobuf Include="proto/customer/api/customer_management/v1/customer_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
     <Protobuf Include="proto/customer/api/customer_address_management/v1/customer_address_management_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>

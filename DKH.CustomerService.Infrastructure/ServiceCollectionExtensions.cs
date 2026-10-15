@@ -1,5 +1,7 @@
 using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Application.DeliveryContacts;
 using DKH.CustomerService.Application.ExperienceJournal;
+using DKH.CustomerService.Infrastructure.DeliveryContacts;
 using DKH.CustomerService.Infrastructure.Persistence;
 using DKH.CustomerService.Infrastructure.Persistence.Repositories;
 using DKH.CustomerService.Infrastructure.Services;
@@ -21,6 +23,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IExperienceJournalStore, ExperienceJournalStore>();
+        services.AddScoped<IDeliveryContactStore, DeliveryContactStore>();
+        services.TryAddScoped<IDeliveryContactScopeAuthorizer, UnavailableDeliveryContactScopeAuthorizer>();
         services.TryAddSingleton(TimeProvider.System);
         services.AddScoped<IVerificationService, UnavailableVerificationService>();
         return services;

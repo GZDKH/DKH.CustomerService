@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "status": "R2_INDEPENDENT_SOURCE_REVIEW_PASS_NATIVE_UNEXECUTED_DRAFT_PUBLICATION_PENDING",
+  "actor_thread": "01a13ae1-5fc5-7940-8d8d-3dbeb8105027",
+  "base_sha": "42c6abb97bccda9bf4e4bfc77a1e6c0e8110e5b8",
+  "issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/52",
+  "original": "Original140 plan row83 (V6.7), DeliveryService#2 companion; NOT AgentRules issue83",
+  "cpu": [
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/test-results/customer52-r2-application.trx",
+      "sha256": "531a711aadd9dbfd6d38d45f11dbdf07b1886c2e48dc26f77486f99e2e0874cf",
+      "total": 133,
+      "passed": 133,
+      "failed": 0,
+      "not_executed": 0
+    },
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/test-results/customer52-r2-metadata-green.trx",
+      "sha256": "7f515f3f7ffd45a103dca41b5bdcaa08c7bae71eeed55aaa39457da79a6a6f09",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "not_executed": 0
+    }
+  ],
+  "gates": [
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/build-release-r2.log",
+      "sha256": "1a072fc2ba26812bf30f3ac95bc562ca1a2673884ed0d18ada2658614913921e",
+      "result": "passed"
+    },
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/format-whole.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "passed"
+    },
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/model-parity.log",
+      "sha256": "6358b4d61eb45273b0ebac516de5a902313d2e870a02fc39b5903777d5b577fb",
+      "result": "passed"
+    },
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/api-naming.log",
+      "sha256": "dac95807a40f28832a8d18b3cd31bcb8c8261254128f348c0c3ba8033b22e66e",
+      "result": "passed"
+    },
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/openspec-strict.log",
+      "sha256": "cbfbc78a8b6cb9a8899a69e96ef17d2767fa96b5687808fc7f6dafbb05eb3c14",
+      "result": "passed"
+    },
+    {
+      "path": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/task-consistency.log",
+      "sha256": "74a5038b5b0bdd1d930c9e707ac8e2afde5c199dd1c5c6b1c1fc58b063df058f",
+      "result": "passed"
+    }
+  ],
+  "native": {
+    "discovered": 13,
+    "names": [
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactDownConcurrencyTests.WriterCommittedWhileDownWaitsIsRetainedAndDowngradeRefusesBeforeDdlAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.ActualOwnerProfileLinkSealsCurrentObservationAndReplayKeepsOriginalVerificationAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.WrongOwnerAndWrongStorefrontCannotSealAnotherAddressAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.ChangedOrDeletedSourceRefusesReplayAndRetainsImmutableMetadataAsync(purge: False)",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.ChangedOrDeletedSourceRefusesReplayAndRetainsImmutableMetadataAsync(purge: True)",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.ConsentCanBeRevokedAndMissingGenuineDeliveryBoundaryNeverDisclosesRecipientAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.PersistedRevisionCannotBeMutatedAndPopulatedDownRefusesBeforeDdlAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.RevocationOperationCannotBeReusedForAnotherConsentOrChangedBodyAsync",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"delivery_contact_revisions\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"delivery_contact_consents\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"delivery_contact_leases\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.StatementTruncateCannotEraseAnyRetainedHistoryAsync(table: \"all\")",
+      "DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts.DeliveryContactPersistenceTests.RollbackAfterSaveDoesNotLeaveContactOrOperationReceiptAsync"
+    ],
+    "executed": 0,
+    "status": "UNEXECUTED_ORDINARY_CI_REQUIRED"
+  },
+  "contracts": {
+    "source_version": "1.11.0",
+    "classification": "additive-new-v2-service",
+    "old_published_version": "1.10.0",
+    "old_proto_baseline_files": 35,
+    "all_old_proto_source_bytes_unchanged": true,
+    "published_old_package": "/Users/itprodavets/.nuget/packages/dkh.customerservice.contracts/1.10.0/dkh.customerservice.contracts.1.10.0.nupkg",
+    "published_old_package_sha256": "5abb32eef834056248e8052eb98f1a01fb34c1605d3852d4e072e704ce539e71",
+    "clr_abi_comparison": "NOT_RUN_NO_CLAIM",
+    "publication": "NOT_PUBLISHED_NORMAL_MAIN_ONLY"
+  },
+  "delivery_boundary": {
+    "same_human_bearer_callback": "ACCEPTED_DESIGN_NOT_PUBLISHED",
+    "genuine_group_recipient_producer": "ABSENT_SOURCE_CONFIRMED_BY_DELIVERY_OWNER",
+    "production_recipient_resolution": "AUTHORITY_UNAVAILABLE_NO_CONTACT_DISCLOSURE",
+    "future_validity": "NO_FUTURE_AVAILABILITY_PROMISE_VERIFICATION_EXPIRY_NOT_DUTY_EXPIRY"
+  },
+  "no_local_native_or_production_access": true,
+  "journal_source_edited": false,
+  "full_V67": "OPEN",
+  "prior_R1": {
+    "handoff_sha256": "69e1dab37d59841d4463b52c4cf44d2df3df72d9c22aa13263f11d21362671b1",
+    "review": "/tmp/customer52-independent-review-r1-01a13ae0/review-final.json",
+    "review_sha256": "7ad2e299a702409ed69d5ae40bf772a997ee4b90973bdc04353b675d3a4cf346",
+    "verdict": "HOLD_0P1_3P2_RETAINED",
+    "retention": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/r1-retention-proof.json",
+    "retention_sha256": "63bc7eba6f942027383c745f00ac8b3ecbdb571a67c12029c49d307165a6c2e6"
+  },
+  "unchanged_boundary_cpu_reuse": {
+    "status": "R1_4_PASS_REUSED_UNCHANGED_AUTH_BOUNDARY_SOURCE_NOT_RERUN",
+    "trx": "/tmp/customer-delivery-contact-companion-01a13ae1/source-freeze-r1/artifacts/test-results/contact-boundary-r1.trx",
+    "sha256": "a4265f036d41e5bea4b2e32de32d9c78e129159e16476751ad4ebb623ff32f77"
+  },
+  "cpu_red_green": {
+    "scope": "Compiled migration metadata only, not PostgreSQL execution",
+    "red_trx": "/tmp/customer-delivery-contact-companion-01a13ae1/correction-r2/test-results/customer52-r1-migration-guard-red.trx",
+    "red_sha256": "653899a3ae6b2311c71093adcc5b2ebab35f028e2cadd1685dfa65fc5a7b5d42",
+    "red_passed": 0,
+    "red_failed": 2,
+    "green_passed": 2,
+    "green_failed": 0
+  },
+  "corrections": [
+    "ACCESS EXCLUSIVE locks on all3 tables BEFORE Down emptiness predicate, retained through DDL by same migration transaction",
+    "BEFORE TRUNCATE FOR EACH STATEMENT guards on all3 retained tables, row UPDATE/DELETE guards preserved",
+    "Owner-scoped revocation-operation lookup/exact target-body-expected revision replay check plus partial unique database index; no extra receipt table/framework"
+  ],
+  "foreign_resource_identity": {
+    "linked_journal_index": "/Users/itprodavets/projects/GZDKH/services/DKH.CustomerService/.git/worktrees/feat-14-journal-typed-read-01a12f83/index",
+    "sha256": "066e347f375f9871e696f9e4389cb77b4a3a94cc5e9542cdd51630a0e0204064",
+    "actual_matches_original": true,
+    "reviewer_primary_index_comparison_was_different_resource_not_drift": true
+  },
+  "original_plan_mapping": {
+    "plan_row": 83,
+    "step": "V6.7",
+    "owning_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.DeliveryService/-/issues/2",
+    "helper_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/52",
+    "not_AgentRules_issue83": true
+  },
+  "independent_source_security_review": {
+    "path": "/tmp/customer52-independent-review-r2-01a13ae0/review-final.json",
+    "sha256": "0f5297924798ffdaad72efc503eba3b60dce234e829a3a44abd722d8387dc0df",
+    "reviewer_thread": "01a13ae0-994e-7193-b23d-99e637b60f44",
+    "verdict": "PASS",
+    "P1": 0,
+    "P2": 0,
+    "native_status": "UNEXECUTED",
+    "no_runtime_admission": true
+  },
+  "publication_gate": "One Draft Customer52 MR; actual genuine Delivery complete-cohort SDK and actual callback adapter must be qualified in SAME MR before merge/main publisher. Source1.11 remains UNPUBLISHED."
+}

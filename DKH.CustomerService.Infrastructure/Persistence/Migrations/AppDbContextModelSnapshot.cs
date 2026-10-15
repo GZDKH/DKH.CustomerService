@@ -17,7 +17,7 @@ namespace DKH.CustomerService.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -473,6 +473,260 @@ namespace DKH.CustomerService.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("customer_profiles", (string)null);
+                });
+
+            modelBuilder.Entity("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactConsentEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ContactDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("ContactRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("ContactRevisionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OwnerAccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RequestDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("RevokeOperationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RevokeRequestDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTimeOffset?>("RevokedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ScopeDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("ScopeJson")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("StorefrontId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ValidUntilUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactRevisionId");
+
+                    b.HasIndex("OwnerAccountId", "OperationId")
+                        .IsUnique();
+
+                    b.HasIndex("OwnerAccountId", "RevokeOperationId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_delivery_contact_owner_revoke_operation")
+                        .HasFilter("\"RevokeOperationId\" IS NOT NULL");
+
+                    b.ToTable("delivery_contact_consents", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_delivery_contact_consent", "\"Revision\" > 0 AND \"ValidUntilUtc\" > \"CreatedAtUtc\" AND \"ValidUntilUtc\" <= \"CreatedAtUtc\" + interval '5 minutes' AND ((\"RevokedAtUtc\" IS NULL AND \"RevokeOperationId\" IS NULL AND \"Revision\" = 1) OR (\"RevokedAtUtc\" IS NOT NULL AND \"RevokeOperationId\" IS NOT NULL AND \"Revision\" = 2))");
+                        });
+                });
+
+            modelBuilder.Entity("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactLeaseEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ActorAccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ConsentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long?>("ConsentRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("ContactRevisionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ContextDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("IssuedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Purpose")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RequestDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("StorefrontId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("WorkspaceId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsentId");
+
+                    b.HasIndex("ContactRevisionId");
+
+                    b.HasIndex("ActorAccountId", "OperationId")
+                        .IsUnique();
+
+                    b.ToTable("delivery_contact_leases", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_delivery_contact_lease", "\"ExpiresAtUtc\" > \"IssuedAtUtc\" AND \"ExpiresAtUtc\" <= \"IssuedAtUtc\" + interval '5 minutes' AND ((\"Purpose\" = 1 AND \"ConsentId\" IS NULL AND \"ConsentRevision\" IS NULL AND \"WorkspaceId\" IS NULL) OR (\"Purpose\" = 5 AND \"ConsentId\" IS NOT NULL AND \"ConsentRevision\" > 0 AND \"WorkspaceId\" IS NOT NULL))");
+                        });
+                });
+
+            modelBuilder.Entity("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactRevisionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Digest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LegacyProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ObservedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OwnerAccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RequestDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SourceDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("StorefrontId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerAccountId", "OperationId")
+                        .IsUnique();
+
+                    b.HasIndex("OwnerAccountId", "StorefrontId", "AddressId", "Revision")
+                        .IsUnique();
+
+                    b.ToTable("delivery_contact_revisions", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_delivery_contact_revision", "\"Revision\" > 0 AND \"Digest\" ~ '^[0-9a-f]{64}$' AND \"SourceDigest\" ~ '^[0-9a-f]{64}$'");
+                        });
                 });
 
             modelBuilder.Entity("DKH.CustomerService.Domain.Entities.ExperienceJournal.ExperienceEntryEntity", b =>
@@ -1644,6 +1898,29 @@ namespace DKH.CustomerService.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Preferences")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactConsentEntity", b =>
+                {
+                    b.HasOne("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactRevisionEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ContactRevisionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactLeaseEntity", b =>
+                {
+                    b.HasOne("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactConsentEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ConsentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DKH.CustomerService.Domain.Entities.DeliveryContact.DeliveryContactRevisionEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ContactRevisionId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
