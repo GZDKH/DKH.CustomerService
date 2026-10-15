@@ -103,6 +103,7 @@ await Platform
         grpc.AddInterceptor<RequireCallerMatchesClaimInterceptor>();
         grpc.AddInterceptor<ResourceAccessGrpcInterceptor>();
         grpc.MapService<CustomerAddressGrpcService>();
+        grpc.MapService<DeliveryContactGrpcService>();
         grpc.MapService<WishlistGrpcService>();
         grpc.MapService<CustomerPreferencesGrpcService>();
         grpc.MapService<ContactVerificationGrpcService>();

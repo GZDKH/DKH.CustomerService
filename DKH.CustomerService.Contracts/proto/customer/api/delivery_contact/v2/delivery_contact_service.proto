@@ -1,0 +1,112 @@
+syntax = "proto3";
+package proto.customer.api.delivery_contact.v2;
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.DeliveryContact.v2";
+import "types/guid.proto";
+import "google/protobuf/timestamp.proto";
+
+// Private authenticated Customer-owner operations. Existing v1 contracts are unchanged.
+// No operation accepts an owner account/profile, verified grant or consent as authority.
+service DeliveryContactService {
+  rpc SealDeliveryContact(SealDeliveryContactRequest) returns (DeliveryContactRevisionModel);
+  rpc ResolveLiabilityContact(ResolveLiabilityContactRequest) returns (LiabilityContactVerificationModel);
+  rpc RevalidateLiabilityContact(ResolveLiabilityContactRequest) returns (LiabilityContactVerificationModel);
+  rpc RecordDeliveryContactConsent(RecordDeliveryContactConsentRequest) returns (DeliveryContactConsentModel);
+  rpc RevokeDeliveryContactConsent(RevokeDeliveryContactConsentRequest) returns (DeliveryContactConsentModel);
+  rpc ResolveRecipientContact(ResolveRecipientContactRequest) returns (RecipientContactAccessModel);
+  rpc RevalidateRecipientContact(ResolveRecipientContactRequest) returns (RecipientContactAccessModel);
+}
+
+message DeliveryContactAuthorityRefModel {
+  string authority = 1;
+  proto.platform.grpc.common.types.GuidValue resource_id = 2;
+  int64 revision = 3;
+  string digest = 4;
+}
+message DeliveryContactCommandContextModel {
+  proto.platform.grpc.common.types.GuidValue operation_id = 1;
+  int64 expected_revision = 2;
+  optional string reason = 3;
+}
+enum DeliveryContactPurpose {
+  DELIVERY_CONTACT_PURPOSE_UNSPECIFIED = 0;
+  DELIVERY_CONTACT_PURPOSE_OWN_LIABILITY_COORDINATION = 1;
+  DELIVERY_CONTACT_PURPOSE_LOCAL_SHIPMENT = 5;
+}
+message DeliveryContactScopeModel {
+  proto.platform.grpc.common.types.GuidValue group_id = 1;
+  string allocation_public_ref = 2;
+  proto.platform.grpc.common.types.GuidValue plan_revision_id = 3;
+  int64 scope_revision = 4;
+  proto.platform.grpc.common.types.GuidValue choice_revision_id = 5;
+  DeliveryContactAuthorityRefModel duty_acceptance = 6;
+  DeliveryContactPurpose purpose = 7;
+}
+message SealDeliveryContactRequest {
+  proto.platform.grpc.common.types.GuidValue address_id = 1;
+  DeliveryContactCommandContextModel command = 15;
+}
+message DeliveryContactRevisionModel {
+  DeliveryContactAuthorityRefModel contact = 1;
+  // Explicit CustomerProfile.Id binding; not Account.Id, LinkedIdentity.Id,
+  // Membership.Id, JWT sub or an inferred Delivery participant identity.
+  proto.platform.grpc.common.types.GuidValue owner_profile_binding = 2;
+}
+message ResolveLiabilityContactRequest {
+  DeliveryContactAuthorityRefModel contact = 1;
+  proto.platform.grpc.common.types.GuidValue intended_plan_revision_id = 2;
+  proto.platform.grpc.common.types.GuidValue leg_id = 3;
+  // Required only for Revalidate; reuse the original command operation_id.
+  proto.platform.grpc.common.types.GuidValue verification_id = 4;
+  DeliveryContactCommandContextModel command = 15;
+}
+message LiabilityContactVerificationModel {
+  DeliveryContactAuthorityRefModel contact = 1;
+  proto.platform.grpc.common.types.GuidValue verification_id = 2;
+  // Short current-state observation, NOT underlying contact authority validity
+  // or Delivery duty expiry. Future availability is never guaranteed.
+  google.protobuf.Timestamp verification_expires_at = 3;
+}
+message RecordDeliveryContactConsentRequest {
+  DeliveryContactAuthorityRefModel contact = 1;
+  DeliveryContactScopeModel scope = 2;
+  google.protobuf.Timestamp valid_until = 3;
+  DeliveryContactCommandContextModel command = 15;
+}
+message RevokeDeliveryContactConsentRequest {
+  proto.platform.grpc.common.types.GuidValue consent_id = 1;
+  DeliveryContactCommandContextModel command = 15;
+}
+message DeliveryContactConsentModel {
+  proto.platform.grpc.common.types.GuidValue consent_id = 1;
+  int64 revision = 2;
+  google.protobuf.Timestamp valid_until = 3;
+  bool revoked = 4;
+}
+message ResolveRecipientContactRequest {
+  DeliveryContactAuthorityRefModel contact = 1;
+  proto.platform.grpc.common.types.GuidValue consent_id = 2;
+  DeliveryContactScopeModel scope = 3;
+  // Required only for Revalidate; reuse the original command operation_id.
+  proto.platform.grpc.common.types.GuidValue contact_access_id = 4;
+  DeliveryContactCommandContextModel command = 15;
+}
+message DeliveryPostalAddressModel {
+  string country = 1;
+  string city = 2;
+  optional string province = 3;
+  optional string street = 4;
+  optional string building = 5;
+  optional string apartment = 6;
+  optional string postal_code = 7;
+}
+// Least-data private API70 companion. No email, billing, customer/order IDs.
+// Production fails AUTHORITY_UNAVAILABLE until a genuine Delivery authorizer
+// binds actual current participant identity, duty, plan, choice and workspace.
+message RecipientContactAccessModel {
+  proto.platform.grpc.common.types.GuidValue contact_access_id = 1;
+  string recipient_name = 2;
+  DeliveryPostalAddressModel postal_address = 3;
+  optional string phone = 4;
+  google.protobuf.Timestamp expires_at = 5;
+  int64 scope_revision = 6;
+}

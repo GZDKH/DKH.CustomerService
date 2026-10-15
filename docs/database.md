@@ -518,3 +518,11 @@ dotnet ef migrations script \
 - **Additive migration** -- Legacy storefront profiles and their child data remain the rollback-safe source of truth until reconciliation completes.
 
 *Last updated: August 2026*
+
+## Delivery contact authority companion
+
+| Migration | Date | Change |
+|---|---|---|
+| AddDeliveryContactAuthority | 2026-10-15 | Three additive metadata tables: delivery_contact_revisions, delivery_contact_consents and delivery_contact_leases; no legacy backfill or source-content copies. |
+
+Observations bind actual account/storefront/profile/address references and canonical source hashes. Consent binds one exact intended local-shipment scope; leases are private short verification receipts. Source account/address purges do not cascade retained authority metadata. Current access still requires active linkage and matching current source; retained hashes do not restore PII. Native row and statement-level TRUNCATE guards preserve history except explicit consent revocation; owner+revoke-operation uniqueness prevents changed-target replay. Populated Down locks all three tables before checking emptiness and retains the locks through DDL, refusing55000 on history; empty Down reverses only these objects. See [private contact behavior](delivery-contact-authority.md).
