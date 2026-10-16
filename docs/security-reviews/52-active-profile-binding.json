@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "method": "focused-review",
+  "result": "passed",
+  "capability_unavailable": true,
+  "base_sha": "781e1aa52d9502ce228d94ce49fd0c00a69209e7",
+  "reviewed_blobs": {
+    "DKH.CustomerService.Api/Grpc/Services/CurrentProfileBinding/v2/CurrentProfileBindingGrpcService.cs": "45a0e7118beb0311b4477e27513fc4c640d8db23",
+    "DKH.CustomerService.Application/CustomerAccounts/ActiveProfileBinding.cs": "68833310f1b0e55868d1859c5a19422dd92d8d23",
+    "DKH.CustomerService.Application/CustomerAccounts/CurrentActiveProfileBinding.cs": "ed15551939f69ee1a42f5fcb82d010d58f8114d1",
+    "DKH.CustomerService.Contracts/proto/customer/api/current_profile_binding/v2/current_profile_binding_service.proto": "ca530137cf99eb24d8638ceeba1f308fca68b92e",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/CustomerAccounts/CurrentProfileBindingBoundaryTests.cs": "caf67f31f5183f4bc7ba2d9a735263d65bec499d"
+  },
+  "checks": [
+    {
+      "result": "passed",
+      "evidence": "Actual existing named Bearer token-validation callback captures validated issuer/opaque-sub/personal:v1; API uses RequireIdentity and existing CustomerSelfAccess policy. 11 new boundary cases pass, including forged/service/missing/duplicate/conflicting selectors."
+    },
+    {
+      "result": "passed",
+      "evidence": "Existing unique account resolver reused. One fresh untracked final projection rechecks full identity candidate uniqueness/current alias and active account, unique active membership and exact linked active profile. 25 new query cases pass, including fresh externally revoked state despite tracked old owner."
+    },
+    {
+      "result": "passed",
+      "evidence": "Read path has no SaveChanges/Ensure/reconcile/contact callback, PII, new schema, grants, timestamps-as-revision or UUID aliases. Actual profile/storefront only in two-field model; request has no selectors."
+    },
+    {
+      "result": "passed",
+      "evidence": "All36 existing proto files byte-conserved; genuine1.11 to candidate1.12 APICompat PASS without suppressions. Existing version.json serialized normal publisher retained; no package published or profile activated."
+    },
+    {
+      "result": "passed",
+      "evidence": "Whole Release0warnings0errors/fullformat; actual133Application+105non-native PASS0skip;5 new PostgreSQL tests compiled/listed not executed; normal sourceCI/main/runtime gates remain pending."
+    },
+    {
+      "result": "passed",
+      "evidence": "Independent exact25path source/spec/standards/security review564ede40 PASS0P1/P2; all8authored C# physical PDB source bindings and5canonicalblobs matched. Predecessor173 successor781/main45049/runtime28411 separately accepted by Root. No newprofile native/SDK/runtime authority claim; normal committed5blob gate/sourceCI remain required."
+    }
+  ],
+  "reviewer": "Author01a13db6 focused review +independent exact-source reviewer01a13ae0",
+  "classification": "Prospective exact source blobs using unchanged canonical sensitive_files logic; actual committed HEAD gate still required",
+  "canonical_classifier": {
+    "path": "/Users/itprodavets/projects/GZDKH/agents/DKH.AgentRules/hooks/require-security-scan.sh",
+    "sha256": "9b3503660f1ec7edf795ac6600bba6755c238a251f992b679c7e1d1b077d4a50"
+  },
+  "manual_sensitive_scope": [
+    "DKH.CustomerService.Api/Program.cs",
+    "DKH.CustomerService.Application/ConfigureServices.cs",
+    "DKH.CustomerService.Application/CustomerAccounts/ActiveProfileBinding.cs",
+    "DKH.CustomerService.Application/CustomerAccounts/CurrentActiveProfileBinding.cs",
+    "DKH.CustomerService.Api/Grpc/Services/CurrentProfileBinding/v2/CurrentProfileBindingGrpcService.cs",
+    "DKH.CustomerService.Contracts/proto/customer/api/current_profile_binding/v2/current_profile_binding_service.proto"
+  ],
+  "limits": [
+    "Native PostgreSQL UNEXECUTED",
+    "No new sourceCI/merge/main/SDK/runtime accepted",
+    "Full original83 remains OPEN"
+  ],
+  "independent_review": {
+    "path": "/tmp/customer52-current-profile-independent-other-01a13ae0/review-final.json",
+    "sha256": "564ede40a8ac118fa823f0f70b524df96039b63852443a3f4905171902fbf428",
+    "bytes": 9783
+  }
+}

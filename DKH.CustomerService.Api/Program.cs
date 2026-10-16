@@ -115,6 +115,7 @@ await Platform
         grpc.MapService<CustomerCrudGrpcService>();
         grpc.MapService<CustomerManagementGrpcService>();
         grpc.MapService<CustomerAccountGrpcService>();
+        grpc.MapService<DKH.CustomerService.Api.Grpc.Services.CurrentProfileBinding.v2.CurrentProfileBindingGrpcService>();
         grpc.MapService<CustomerAccountAdminGrpcService>();
         grpc.MapService<IdentityLinkingGrpcService>();
         grpc.MapService<ProductCollectionGrpcService>();

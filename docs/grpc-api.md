@@ -690,3 +690,7 @@ Protocol: HTTP/2 (gRPC)
 ```
 
 *Last updated: February 2026*
+
+## Current active profile binding (v2)
+
+Additive `CurrentProfileBindingService.GetMyActiveProfileBinding` returns actual active CustomerProfile and storefront identifiers for the verified personal caller only. See [identity, freshness and privacy boundaries](current-active-profile-binding.md). No account/profile selector or new authority grant. Candidate Contracts1.12 is not yet published.

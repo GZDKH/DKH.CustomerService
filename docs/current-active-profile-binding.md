@@ -1,0 +1,11 @@
+# Current active profile binding
+
+`proto.customer.api.current_profile_binding.v2.CurrentProfileBindingService/GetMyActiveProfileBinding` is an additive private self-read. Its empty request accepts no account, profile, subject or user selector. `ActiveProfileBindingModel.customer_profile_id` is the actual stored CustomerProfile.Id; `storefront_id` is its selected storefront. Neither value is a CustomerAccount.Id, membership or linked identity alias.
+
+The existing named Bearer validator must establish a trusted issuer, opaque subject and `dkh_principal_purpose=personal:v1`. The existing CustomerSelfAccess policy also applies. One valid nonzero storefront header must agree with any resolved Platform context; duplicates, comma lists, malformed and conflicting selectors are refused. A resolved context alone is supported. The selector supplies scope, never permission.
+
+Customer reuses existing unique primary/verified-alias resolution, then rechecks the full current identity set, active nondeleted account, unique active membership and exact active Linked profile in one untracked projection. Missing, ambiguous, blocked, deleted, revoked, unlinked and foreign rows fail closed. No Ensure, reconciliation, update, outbox event, address lookup or Delivery callback runs. Subsequent reads observe current revocation even when an earlier account is tracked.
+
+Only actual profile and storefront identifiers are returned. There is no PII, AuthorityRef, manufactured revision, digest, expiry or grant. A successful read is an observation; consumers must freshly revalidate and independently prove group participation, recipient identity, duty, consent and other authorization. It does not create those permissions.
+
+The contract source minor transition is 1.11.0 → 1.12.0 through the existing version.json publisher. 1.12 is a candidate until normal main publication and genuine package verification. Existing contact/journal contracts and schema stay unchanged. Source CPU checks and five new ordinary PostgreSQL cases cover the current projection; PostgreSQL cases are compiled/discovered locally, not executed. Source/main/SDK/runtime acceptance follows prerequisite45038 qualification. Full Customer52/original83 remains open.

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto.customer.api.current_profile_binding.v2;
+
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.CurrentProfileBinding.v2";
+
+import "types/guid.proto";
+
+// Private self-only read. Identity comes exclusively from the verified personal
+// bearer; the selected storefront is scope, not a permission or participant grant.
+service CurrentProfileBindingService {
+  rpc GetMyActiveProfileBinding(GetMyActiveProfileBindingRequest)
+      returns (ActiveProfileBindingModel);
+}
+
+// No caller-selected account/profile/user identifier.
+message GetMyActiveProfileBindingRequest {}
+
+// Current owner observation only. Re-read before dependent authorization.
+// This is NOT an AuthorityRef, future permission, contact consent or group role.
+message ActiveProfileBindingModel {
+  // Actual CustomerProfile.Id; never Account.Id, Membership.Id, alias ID or sub.
+  proto.platform.grpc.common.types.GuidValue customer_profile_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 2;
+}

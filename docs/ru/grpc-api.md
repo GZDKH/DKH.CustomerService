@@ -49,3 +49,7 @@ Email, телефон, имя, адрес, Keycloak/provider subject, customer/a
 platform metrics retention policy.
 
 *Последнее обновление: апрель 2026*
+
+## Текущая связь активного профиля (v2)
+
+Новый `CurrentProfileBindingService.GetMyActiveProfileBinding` возвращает настоящий профиль и витрину проверенного персонального пользователя. [Границы полномочий и актуальности](current-active-profile-binding.md). Контракт1.12 пока не опубликован.

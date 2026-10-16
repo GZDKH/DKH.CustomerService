@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <Protobuf Include="proto/customer/api/current_profile_binding/v2/current_profile_binding_service.proto" ProtoRoot="proto" AdditionalProtocArguments="--proto_path=$(DKHPlatformGrpcCommonProtoDir)"/>
     <PackageReference Include="Grpc.Tools">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
