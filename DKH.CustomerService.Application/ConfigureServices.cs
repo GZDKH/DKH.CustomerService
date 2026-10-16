@@ -13,5 +13,6 @@ public static class ConfigureServices
 
         services.AddValidatorsFromAssembly(assembly);
         services.AddScoped<CustomerAccounts.CustomerJournalAccounts>();
+        services.AddScoped<CustomerAccounts.CurrentActiveProfileBinding>();
     }
 }

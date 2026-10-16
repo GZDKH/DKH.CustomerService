@@ -1,0 +1,229 @@
+{
+  "created_at": "2026-10-15T19:16:01.227723+00:00",
+  "base_sha": "781e1aa52d9502ce228d94ce49fd0c00a69209e7",
+  "status": "SOURCE_LOCAL_CPU_AND_INDEPENDENT_REVIEW_PASS_NATIVE_UNEXECUTED",
+  "sdk": {
+    "source": "official dotnet 10.0 release-metadata",
+    "sdk": "10.0.402",
+    "rid": "osx-arm64",
+    "artifact": {
+      "name": "dotnet-sdk-osx-arm64.tar.gz",
+      "rid": "osx-arm64",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.402/dotnet-sdk-10.0.402-osx-arm64.tar.gz",
+      "hash": "ee0d379c144ebddef6efe851e1514883d1b695430d13b3fb13e8153f8476e1e5ac7abc42c08668471aaf4d738ff367cf53009845f94d224ba126febe74d00b75"
+    },
+    "bytes": 230833757,
+    "sha512_verified": true,
+    "path": "/tmp/customer52-current-profile-01a13db6/sdk/runtime/dotnet"
+  },
+  "gates": {
+    "red": {
+      "path": "/tmp/customer52-current-profile-01a13db6/red/profile-red.trx",
+      "sha256": "f767bba848e58decbd6edb65b73ed07a8767d44302e436c76d6a6f4fbc30b008",
+      "bytes": 6834,
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "owner_boundary": {
+      "path": "/tmp/customer52-current-profile-01a13db6/owner-boundary/profile-owner-boundary.trx",
+      "sha256": "e3fa79d49d6f4c640e81a66aec4f175f960d8a4505977add7384f72c5e75a69a",
+      "bytes": 67427,
+      "counters": {
+        "total": "36",
+        "executed": "36",
+        "passed": "36",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "whole_application": {
+      "path": "/tmp/customer52-current-profile-01a13db6/application/application.trx",
+      "sha256": "b02302efa46ed511230bd84426da0d0e7332f46eda385f9c045ce2710b5f0c19",
+      "bytes": 229090,
+      "counters": {
+        "total": "133",
+        "executed": "133",
+        "passed": "133",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "whole_non_native": {
+      "path": "/tmp/customer52-current-profile-01a13db6/cpu/cpu.trx",
+      "sha256": "a467306644d5f6934de6e027e16d83bbc7f8f57cf13c00011a006c9216c9b261",
+      "bytes": 194387,
+      "counters": {
+        "total": "105",
+        "executed": "105",
+        "passed": "105",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "release": {
+      "path": "/tmp/customer52-current-profile-01a13db6/release.log",
+      "sha256": "6023290d772e1565bf98a7d0d0dd294ebca6881590f87b5e7b22b0ab76e3f0ee",
+      "bytes": 10179
+    },
+    "whole_format": {
+      "path": "/tmp/customer52-current-profile-01a13db6/format.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "api_naming": {
+      "path": "/tmp/customer52-current-profile-01a13db6/api-naming.log",
+      "sha256": "dac95807a40f28832a8d18b3cd31bcb8c8261254128f348c0c3ba8033b22e66e",
+      "bytes": 56
+    },
+    "new_proto_repo_conventions": {
+      "path": "/tmp/customer52-current-profile-01a13db6/buf-new-repo-conventions.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "native_discovery": {
+      "path": "/tmp/customer52-current-profile-01a13db6/native-list.log",
+      "sha256": "1920e57eae6a05b46a82056123e401e7df8d44d7dd25262c75cb8da2e217ef2f",
+      "bytes": 41376
+    },
+    "legacy_proto_conservation": {
+      "path": "/tmp/customer52-current-profile-01a13db6/existing-proto-conservation.json",
+      "sha256": "1c744e243b5f037cc272e7ef7a81c22a2b3d0529ce4f471dce537aa9f7b42ffd",
+      "bytes": 9835
+    }
+  },
+  "native_execution_count": 0,
+  "genuine_package_publication": "Candidate1.12 source only; no package publication/consumer activation.",
+  "limits": [
+    "Independent source review PASS, actual committed security/current HEAD gate and new sourceCI still required",
+    "Ordinary sourceCI/newnative5 (whole224) UNEXECUTED",
+    "Old173 successor781 main45049 +bounded runtime accepted as predecessor only",
+    "New merge/main/genuineSDK1.12/runtime and full companionoriginal83 acceptance remain OPEN"
+  ],
+  "buf_standard_limit": "Unmodified stock STANDARD reports existing repository conventions PACKAGE_DIRECTORY_MATCH and RPC_RESPONSE_STANDARD_NAME. Scoped STANDARD minus those two explicit repository-convention conflicts passes; checked-in buf.yaml unchanged. Initial missing external import resolved solely in temporary lint input using genuinePlatform1.2.1 guid.proto.",
+  "api_compatibility": {
+    "status": "PASS",
+    "tool": "Microsoft.DotNet.ApiCompat.Tool10.0.402",
+    "comparison": "genuine1.11 old published DLL \u2192 source-built candidateVersion1.12 output, no suppressions",
+    "log": {
+      "path": "/private/tmp/customer52-current-profile-01a13db6/apicompat-candidate.log",
+      "sha256": "8028060817bd04eafb22ad125db5c7094817849dda3617c098fe28e69dffae02",
+      "bytes": 65
+    },
+    "candidate_build": {
+      "path": "/private/tmp/customer52-current-profile-01a13db6/candidate-build.log",
+      "sha256": "6e906e18cc41a73c858a8f736a9bd96a6a1dc89b1904effbafbc37de3b7c014f",
+      "bytes": 8317
+    },
+    "left": {
+      "path": "/Users/itprodavets/.nuget/packages/dkh.customerservice.contracts/1.11.0/lib/net10.0/DKH.CustomerService.Contracts.dll",
+      "sha256": "48d815bc2522f1d6633039ea94956d81c4ca4847c3752215049779a58ce3ad60",
+      "bytes": 674816
+    },
+    "right": {
+      "path": "/private/tmp/customer52-current-profile-01a13db6/candidate-contracts/DKH.CustomerService.Contracts.dll",
+      "sha256": "4cb147570958dfb5e320b94effc45aed5a68a2060c3ec859b86779a5ebdd8d50",
+      "bytes": 682496
+    },
+    "not_published": true
+  },
+  "publisher_ownership": {
+    "source": {
+      "path": "/private/tmp/customer52-current-profile-01a13db6/live-contracts-policy.json",
+      "sha256": "df6af65d435151468618a475b12623a21ea4e90dcd9664f7e8b0cc155b831816",
+      "bytes": 478
+    },
+    "source_body": {
+      "path": "/private/tmp/customer52-current-profile-01a13db6/live-contracts.yml",
+      "sha256": "0189bb99071d9d5e2d2df9e2d7e9ac989169cd885aebbbd71b88a53500dff8d6",
+      "bytes": 13140
+    },
+    "registry": {
+      "path": "/private/tmp/customer52-current-profile-01a13db6/registry-before.json",
+      "sha256": "782ed77d46380619282fabdd76d425acfc72a88e970ef6729ba4bce4d2d1a1ab",
+      "bytes": 1678
+    },
+    "candidate": "1.12.0",
+    "prior_genuine": "1.11.0",
+    "main_ref": "ac9e062ef8618bb3f73fb87a7ac4a5a6049d25ae",
+    "version_source": "existing Contracts/version.json, same resource_group serialized publisher, no new writer"
+  },
+  "native_new_cases": 5,
+  "native_current_ordinary_total_listed": 224,
+  "independent_review": {
+    "result": "PASS",
+    "P1": 0,
+    "P2": 0,
+    "receipt": {
+      "path": "/tmp/customer52-current-profile-independent-other-01a13ae0/review-final.json",
+      "sha256": "564ede40a8ac118fa823f0f70b524df96039b63852443a3f4905171902fbf428",
+      "bytes": 9783
+    },
+    "scope": "Exact25paths/8CS self-profile producer; all5canonical current source blobs,4core/36protos/21selected outputs/physicalPDBs verified. No source findings or rebuild required."
+  },
+  "prerequisite": {
+    "status": "ROOT_ACCEPTED_OLD173_CURRENT_MAIN781_45049_ALL5_AND_RUNTIME",
+    "receipt": {
+      "path": "/tmp/customer52-delivery114-adapter-01a13ae1/main-781e1/current-main-runtime-bounded-composite.json",
+      "sha256": "28411e2c40162d9e2037d83bcf79042c1b33743172878a3b8bac56ffb436802a",
+      "bytes": 6927
+    },
+    "limits": "Old45038 is not relabeled success. Sourcee365/44977 and actual successor781/45049/runtime proof qualify predecessor only; new profile source/native5/SDK1.12/runtime still pending. Schema version at runtime UNKNOWN."
+  },
+  "identity_mapping": {
+    "owning_issue": "gzdkh/services/DKH.CustomerService#52",
+    "original_ordinal": "83",
+    "original_step": "V6.7 companion",
+    "not_original_ordinal52": true,
+    "dependency_consumer": "Commerce original88/V6.2; no additional original credit",
+    "first_production_edit_timestamp": "NOT_RETAINED"
+  }
+}
