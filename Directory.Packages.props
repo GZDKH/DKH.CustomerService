@@ -61,7 +61,7 @@
     <PackageVersion Include="DKH.Platform.Messaging.MediatR" Version="1.2.1" />
     <PackageVersion Include="DKH.Platform.Outbox" Version="1.6.3" />
     <PackageVersion Include="DKH.Platform.Outbox.PostgreSql" Version="1.1.5" />
-    <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.1.13" />
+    <PackageVersion Include="DKH.Platform.RabbitMq" Version="1.2.0" />
     <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Telemetry" Version="1.1.1" />
