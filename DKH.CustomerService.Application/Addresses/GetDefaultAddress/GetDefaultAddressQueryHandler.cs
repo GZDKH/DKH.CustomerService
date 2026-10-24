@@ -3,24 +3,16 @@ using DKH.CustomerService.Contracts.Customer.Api.CustomerAddressManagement.v1;
 
 namespace DKH.CustomerService.Application.Addresses.GetDefaultAddress;
 
-public class GetDefaultAddressQueryHandler(ICustomerRepository repository, IAppDbContext dbContext)
+public class GetDefaultAddressQueryHandler(IAppDbContext dbContext)
     : IRequestHandler<GetDefaultAddressQuery, GetDefaultAddressResponse>
 {
     public async Task<GetDefaultAddressResponse> Handle(GetDefaultAddressQuery request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByUserIdAsync(
-            request.StorefrontId,
-            request.UserId,
-            cancellationToken);
-
-        if (profile is null)
-        {
-            return new GetDefaultAddressResponse { Found = false };
-        }
-
-        var address = await dbContext.CustomerAddresses
-            .Where(a => a.CustomerId == profile.Id && a.IsDefault)
+        var address = await CustomerAddressOwnership.OwnedAddresses(dbContext, request.StorefrontId, request.UserId)
+            .AsNoTracking()
+            .Where(a => !a.IsDeleted && a.IsDefault)
             .FirstOrDefaultAsync(cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         if (address is null)
         {

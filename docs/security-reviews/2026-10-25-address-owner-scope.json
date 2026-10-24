@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "method": "focused-review",
+  "result": "passed",
+  "capability_unavailable": true,
+  "capability_note": "No applicable local unpublished-diff specialized scan capability; independent focused SPEC and standards/security reviews passed for all 12 exact sensitive blobs. No specialized scan or full native/runtime acceptance claimed.",
+  "base_sha": "38502250120371371671d373c35556408f3bfff0",
+  "reviewed_blobs": {
+    "DKH.CustomerService.Api/Services/CustomerAddressGrpcService.cs": "cdb1affb0661e5c9e5edccce9fdbf0c09cf49ada",
+    "DKH.CustomerService.Application/Addresses/CreateAddress/CreateAddressCommandHandler.cs": "e5b06095bfeb862a5b9d9c3e7e3f5293b00c0a1d",
+    "DKH.CustomerService.Application/Addresses/DeleteAddress/DeleteAddressCommandHandler.cs": "6887debea2af2d42cc4f68823cd0794f5d8923c9",
+    "DKH.CustomerService.Application/Addresses/GetAddress/GetAddressQueryHandler.cs": "ab829be7da6d1692c5a3db60cea381b42521b326",
+    "DKH.CustomerService.Application/Addresses/GetDefaultAddress/GetDefaultAddressQueryHandler.cs": "b6a6ad0b726ff7793fc25153f90697397f13c151",
+    "DKH.CustomerService.Application/Addresses/ListAddresses/ListAddressesQueryHandler.cs": "89044e5b688c541efbe728f9bdb68623187e30ac",
+    "DKH.CustomerService.Application/Addresses/SetDefaultAddress/SetDefaultAddressCommandHandler.cs": "73815a4e15f017045f53ab3d2819adec414d0063",
+    "DKH.CustomerService.Application/Addresses/UpdateAddress/UpdateAddressCommandHandler.cs": "6ecc95eefa2e5117ecd2ff7f7a46c83c0dc20bd8",
+    "openspec/changes/enforce-address-owner-scope/evidence/source-verification.json": "2e967da05b7d8c19d7aa6c6602491da734ba2c2c",
+    "openspec/changes/enforce-address-owner-scope/task-evidence.json": "9ad14ef6a7cb95091d123e0f12302ceb0251be02",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressCallerFenceTests.cs": "d8fd5f153334ebc72bbbfddb26d192637c02a697",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressOwnershipPersistenceTests.cs": "f6e28e20e17d0735d3bb7f72c6fb4138a4b6a7ab",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressOwnershipTests.cs": "e79a2cc2485e7b78ed354ad8ef9cc5d15f8b0f2d"
+  },
+  "checks": [
+    {
+      "result": "passed",
+      "evidence": "Independent Root SPEC and separate standards/security source reviews found no actionable findings; all12 sensitive blobs match frozen source. Current133Application+121affected strict TRX joins verified. Three PostgreSQL cases and full mandatory gate remain pending."
+    },
+    {
+      "result": "passed",
+      "evidence": "Mandatory classifier exact map includes 11 keyword-sensitive C# files plus two OpenSpec JSON evidence records. Independent review covers all12 C# including the extra pure ownership helper; the two JSON records truthfully pin those source-only reviews/current scoped tests and leave native/full gate/main/runtime pending. No executable source changes after reviewed freeze."
+    }
+  ],
+  "scope": "Customer53 wholeaddressfamily privacy/ownership correction; parent136/broader51 remainseparate. Existingcallerclaims/rolepolicy/adminroutes retained. No new authority/profile/SDK/schema/keys and no livePII/prod writes.",
+  "independent_reviews": [
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/commerce-whole-service-20261022-01a152b1/customer53-spec-review-r1.json",
+      "sha256": "2479f6e44e08b2299c77b618cc52ab890c487519e7461f4ce912ed1a1f93810b",
+      "verdict": "PASS_SOURCE_ONLY"
+    },
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/commerce-whole-service-20261022-01a152b1/customer53-standards-security-review-r1.json",
+      "sha256": "2aa29221d9bcd792bf78363d18f0524e4401042e1d95c834f1038a8e22c3d38a",
+      "verdict": "PASS_SOURCE_SCOPED"
+    }
+  ],
+  "independently_reviewed_sensitive_code_blobs": {
+    "DKH.CustomerService.Application/Addresses/CustomerAddressOwnership.cs": "04ee6d2ca48acede60134d25e983997ccec35d46",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressCallerFenceTests.cs": "d8fd5f153334ebc72bbbfddb26d192637c02a697",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressOwnershipPersistenceTests.cs": "f6e28e20e17d0735d3bb7f72c6fb4138a4b6a7ab",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressOwnershipTests.cs": "e79a2cc2485e7b78ed354ad8ef9cc5d15f8b0f2d",
+    "DKH.CustomerService.Api/Services/CustomerAddressGrpcService.cs": "cdb1affb0661e5c9e5edccce9fdbf0c09cf49ada",
+    "DKH.CustomerService.Application/Addresses/CreateAddress/CreateAddressCommandHandler.cs": "e5b06095bfeb862a5b9d9c3e7e3f5293b00c0a1d",
+    "DKH.CustomerService.Application/Addresses/DeleteAddress/DeleteAddressCommandHandler.cs": "6887debea2af2d42cc4f68823cd0794f5d8923c9",
+    "DKH.CustomerService.Application/Addresses/GetAddress/GetAddressQueryHandler.cs": "ab829be7da6d1692c5a3db60cea381b42521b326",
+    "DKH.CustomerService.Application/Addresses/GetDefaultAddress/GetDefaultAddressQueryHandler.cs": "b6a6ad0b726ff7793fc25153f90697397f13c151",
+    "DKH.CustomerService.Application/Addresses/ListAddresses/ListAddressesQueryHandler.cs": "89044e5b688c541efbe728f9bdb68623187e30ac",
+    "DKH.CustomerService.Application/Addresses/SetDefaultAddress/SetDefaultAddressCommandHandler.cs": "73815a4e15f017045f53ab3d2819adec414d0063",
+    "DKH.CustomerService.Application/Addresses/UpdateAddress/UpdateAddressCommandHandler.cs": "6ecc95eefa2e5117ecd2ff7f7a46c83c0dc20bd8"
+  }
+}

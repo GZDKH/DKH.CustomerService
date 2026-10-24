@@ -8,7 +8,10 @@ public class GetAddressQueryHandler(IAppDbContext dbContext)
 {
     public async Task<GetAddressResponse> Handle(GetAddressQuery request, CancellationToken cancellationToken)
     {
-        var address = await dbContext.CustomerAddresses.FindAsync([request.AddressId], cancellationToken);
+        var address = await CustomerAddressOwnership.OwnedAddresses(dbContext, request.StorefrontId, request.UserId)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(value => value.Id == request.AddressId && !value.IsDeleted, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         if (address is null)
         {

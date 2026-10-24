@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Text;
 using DKH.CustomerService.Application.Addresses.CreateAddress;
 using DKH.CustomerService.Application.Addresses.DeleteAddress;
 using DKH.CustomerService.Application.Addresses.GetAddress;
@@ -29,14 +31,14 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
     public override async Task<ListAddressesResponse> ListAddresses(ListAddressesRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(
+        return await SendForOwnerAsync(
             new ListAddressesQuery(
                 storefrontId,
                 request.UserId,
                 request.HasSoftDeleteFilter
                     ? request.SoftDeleteFilter.ToDomain()
                     : Platform.Domain.Enums.PlatformSoftDeleteFilter.ActiveOnly),
-            context.CancellationToken);
+            context);
     }
 
     [RequireCallerMatchesClaim("UserId")]
@@ -46,14 +48,14 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(new GetAddressQuery(storefrontId, request.UserId, addressId), context.CancellationToken);
+        return await SendForOwnerAsync(new GetAddressQuery(storefrontId, request.UserId, addressId), context);
     }
 
     [RequireCallerMatchesClaim("UserId")]
     public override async Task<CreateAddressResponse> CreateAddress(CreateAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(
+        return await SendForOwnerAsync(
             new CreateAddressCommand(
                 storefrontId,
                 request.UserId,
@@ -70,7 +72,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
                 string.IsNullOrEmpty(request.LastName) ? null : request.LastName,
                 string.IsNullOrEmpty(request.Province) ? null : request.Province,
                 string.IsNullOrEmpty(request.Company) ? null : request.Company),
-            context.CancellationToken);
+            context);
     }
 
     [RequireCallerMatchesClaim("UserId")]
@@ -80,7 +82,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(
+        return await SendForOwnerAsync(
             new UpdateAddressCommand(
                 storefrontId,
                 request.UserId,
@@ -97,7 +99,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
                 request.HasLastName ? request.LastName : null,
                 request.HasProvince ? request.Province : null,
                 request.HasCompany ? request.Company : null),
-            context.CancellationToken);
+            context);
     }
 
     [RequireCallerMatchesClaim("UserId")]
@@ -107,7 +109,7 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(new DeleteAddressCommand(storefrontId, request.UserId, addressId), context.CancellationToken);
+        return await SendForOwnerAsync(new DeleteAddressCommand(storefrontId, request.UserId, addressId), context);
     }
 
     [RequireCallerMatchesClaim("UserId")]
@@ -117,14 +119,14 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
         var addressId = request.AddressId?.ToGuid()
             ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Address ID is required"));
 
-        return await mediator.Send(new SetDefaultAddressCommand(storefrontId, request.UserId, addressId), context.CancellationToken);
+        return await SendForOwnerAsync(new SetDefaultAddressCommand(storefrontId, request.UserId, addressId), context);
     }
 
     [RequireCallerMatchesClaim("UserId")]
     public override async Task<GetDefaultAddressResponse> GetDefaultAddress(GetDefaultAddressRequest request, ServerCallContext context)
     {
         var storefrontId = ResolveStorefrontId(request.StorefrontId);
-        return await mediator.Send(new GetDefaultAddressQuery(storefrontId, request.UserId), context.CancellationToken);
+        return await SendForOwnerAsync(new GetDefaultAddressQuery(storefrontId, request.UserId), context);
     }
 
     [Authorize(Policy = CustomerServiceAuthorizationPolicies.CustomerAccess)]
@@ -149,12 +151,61 @@ public class CustomerAddressGrpcService(IMediator mediator, IPlatformStorefrontC
 
     private Guid ResolveStorefrontId(GuidValue? requestStorefrontId)
     {
-        if (requestStorefrontId is not null)
+        var current = storefrontContext.StorefrontId;
+        var selected = requestStorefrontId is not null && Guid.TryParse(requestStorefrontId.Value, out var supplied)
+            ? supplied : requestStorefrontId is null ? current : null;
+        if (selected is null || selected == Guid.Empty || current is not null && current != selected)
         {
-            return requestStorefrontId.ToGuid();
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "A single current storefront is required."));
         }
 
-        return storefrontContext.StorefrontId
-               ?? throw new RpcException(new Status(StatusCode.InvalidArgument, "Storefront ID is required"));
+        return selected.Value;
+    }
+
+    private async Task<T> SendForOwnerAsync<T>(IRequest<T> request, ServerCallContext context)
+    {
+        // Existing authorization and RequireCallerMatchesClaim establish the caller.
+        // Keep that exact request-local caller through dispatch, including errors.
+        var http = context.GetHttpContext();
+        var principal = http.User;
+        var identity = principal.Identity;
+        var caller = SnapshotCaller(principal);
+        var authorization = http.Request.Headers.Authorization.ToArray();
+        var path = http.Request.Path;
+        var storefront = storefrontContext.StorefrontId;
+        void RequireCurrent()
+        {
+            context.CancellationToken.ThrowIfCancellationRequested();
+            http.RequestAborted.ThrowIfCancellationRequested();
+            var current = context.GetHttpContext();
+            if (!ReferenceEquals(http, current) || !ReferenceEquals(principal, current.User)
+                || !ReferenceEquals(identity, current.User.Identity) || current.User.Identity?.IsAuthenticated != true
+                || !caller.AsSpan().SequenceEqual(SnapshotCaller(current.User)) || current.Request.Path != path
+                || !authorization.SequenceEqual(current.Request.Headers.Authorization.ToArray(), StringComparer.Ordinal)
+                || storefrontContext.StorefrontId != storefront)
+            {
+                throw new RpcException(new Status(StatusCode.PermissionDenied, "ADDRESS_CALLER_CHANGED"));
+            }
+        }
+
+        RequireCurrent();
+        try
+        {
+            return await mediator.Send(request, context.CancellationToken);
+        }
+        finally
+        {
+            // A late disclosure refusal does not undo an already committed mutation.
+            RequireCurrent();
+        }
+    }
+
+    private static byte[] SnapshotCaller(ClaimsPrincipal principal)
+    {
+        using var buffer = new MemoryStream();
+        using var writer = new BinaryWriter(buffer, Encoding.UTF8, leaveOpen: true);
+        principal.WriteTo(writer);
+        writer.Flush();
+        return buffer.ToArray();
     }
 }

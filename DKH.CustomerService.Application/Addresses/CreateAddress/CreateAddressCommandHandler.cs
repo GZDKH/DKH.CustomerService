@@ -5,20 +5,20 @@ using Grpc.Core;
 
 namespace DKH.CustomerService.Application.Addresses.CreateAddress;
 
-public class CreateAddressCommandHandler(ICustomerRepository repository, IAppDbContext dbContext)
+public class CreateAddressCommandHandler(IAppDbContext dbContext)
     : IRequestHandler<CreateAddressCommand, CreateAddressResponse>
 {
     public async Task<CreateAddressResponse> Handle(CreateAddressCommand request, CancellationToken cancellationToken)
     {
-        var profile = await repository.GetByUserIdAsync(
-            request.StorefrontId,
-            request.UserId,
-            cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+        var profile = await CustomerAddressOwnership.ActiveProfiles(dbContext, request.StorefrontId, request.UserId)
+            .SingleOrDefaultAsync(cancellationToken)
+            ?? throw new RpcException(new Status(StatusCode.NotFound, "Customer profile not found"));
+        cancellationToken.ThrowIfCancellationRequested();
 
         if (request.IsDefault)
         {
             var existingDefault = await dbContext.CustomerAddresses
-                .Where(a => a.CustomerId == profile.Id && a.IsDefault)
+                .Where(a => a.CustomerId == profile.Id && !a.IsDeleted && a.IsDefault)
                 .FirstOrDefaultAsync(cancellationToken);
 
             existingDefault?.SetDefault(false);
@@ -42,6 +42,7 @@ public class CreateAddressCommandHandler(ICustomerRepository repository, IAppDbC
 
         dbContext.CustomerAddresses.Add(address);
         await dbContext.SaveChangesAsync(cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         return new CreateAddressResponse
         {

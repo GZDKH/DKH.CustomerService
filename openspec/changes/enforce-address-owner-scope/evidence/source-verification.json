@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "owner": "01a166de-f7f3-7c23-b84b-97d31dee8c01",
+  "base": "38502250120371371671d373c35556408f3bfff0",
+  "issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/53",
+  "decision": "fix",
+  "scope": "All7 ordinary address handlers and same currentcaller/storefront disclosure boundary; existingadminRestore/Purge unchanged. No SDK/RPC/schema/globalfilter/IAM/grant/key/config changes.",
+  "source_git_blobs": {
+    "DKH.CustomerService.Application/Addresses/CustomerAddressOwnership.cs": "04ee6d2ca48acede60134d25e983997ccec35d46",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressCallerFenceTests.cs": "d8fd5f153334ebc72bbbfddb26d192637c02a697",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressOwnershipPersistenceTests.cs": "f6e28e20e17d0735d3bb7f72c6fb4138a4b6a7ab",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Addresses/CustomerAddressOwnershipTests.cs": "e79a2cc2485e7b78ed354ad8ef9cc5d15f8b0f2d",
+    "DKH.CustomerService.Api/Services/CustomerAddressGrpcService.cs": "cdb1affb0661e5c9e5edccce9fdbf0c09cf49ada",
+    "DKH.CustomerService.Application/Addresses/CreateAddress/CreateAddressCommandHandler.cs": "e5b06095bfeb862a5b9d9c3e7e3f5293b00c0a1d",
+    "DKH.CustomerService.Application/Addresses/DeleteAddress/DeleteAddressCommandHandler.cs": "6887debea2af2d42cc4f68823cd0794f5d8923c9",
+    "DKH.CustomerService.Application/Addresses/GetAddress/GetAddressQueryHandler.cs": "ab829be7da6d1692c5a3db60cea381b42521b326",
+    "DKH.CustomerService.Application/Addresses/GetDefaultAddress/GetDefaultAddressQueryHandler.cs": "b6a6ad0b726ff7793fc25153f90697397f13c151",
+    "DKH.CustomerService.Application/Addresses/ListAddresses/ListAddressesQueryHandler.cs": "89044e5b688c541efbe728f9bdb68623187e30ac",
+    "DKH.CustomerService.Application/Addresses/SetDefaultAddress/SetDefaultAddressCommandHandler.cs": "73815a4e15f017045f53ab3d2819adec414d0063",
+    "DKH.CustomerService.Application/Addresses/UpdateAddress/UpdateAddressCommandHandler.cs": "6ecc95eefa2e5117ecd2ff7f7a46c83c0dc20bd8"
+  },
+  "discovery": {
+    "path": "/private/tmp/customer-address-discovery-01a166de.json",
+    "sha256": "734f730cd7cc1ae2205fb868ddcb879ca424d8898211c7f8f908375c909aa0ea",
+    "freshMain": true,
+    "noMatchingActiveMr": true,
+    "foreign52JournalLeasesAndDirtyPrimaryPreserved": true
+  },
+  "current": {
+    "application": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/application/application.trx",
+      "sha256": "7c61913388e99fe7d9b97f1f63294383beaf7468fc5909bb2cc9d7a949a651b4",
+      "results": 133,
+      "definitions": 133,
+      "passed": 133,
+      "failed": 0,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "affected": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/current-address-affected/address-affected.trx",
+      "sha256": "68df174c345d496d860df2cd88a0fc6dbb7d21fa446e0fce3d99a3cfd3811d8f",
+      "results": 121,
+      "definitions": 121,
+      "passed": 121,
+      "failed": 0,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "normalRestoreExit": 0,
+    "releaseExit": 0,
+    "releaseWarnings": 0,
+    "releaseErrors": 0,
+    "fullFormatVerifyExit": 0,
+    "nativeThree": "COMPILED_AND_LISTED_ONLY_NOT_EXECUTED",
+    "nativeListSha256": "6554188c9dff8ce70d515795919d44796fb6fa328eec3763db4a1cf24b93213a"
+  },
+  "causal": {
+    "get": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/get-owner-active-red/get-owner-red.trx",
+      "sha256": "cdfc59d7f74c29280561fb4ca0c3eb5e2c47ada7dac8c472a4e239f3f214e3dd",
+      "results": 8,
+      "definitions": 8,
+      "passed": 1,
+      "failed": 7,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "getGreen": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/get-owner-green/get-owner-green.trx",
+      "sha256": "d4adb45d83e2b9a4110ae16e8907578745183c7be35442f5a5787999b4144911",
+      "results": 8,
+      "definitions": 8,
+      "passed": 8,
+      "failed": 0,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "list": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/list-owner-runtime-red/list-owner-red.trx",
+      "sha256": "57ffaf4e2324684eb1ec18dc021e422dd3b392cd7ce638724a90f368d41433e7",
+      "results": 7,
+      "definitions": 7,
+      "passed": 4,
+      "failed": 3,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "getListUpdateDeleteOldMutation": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/mutation-owner-runtime-red/address-family-red.trx",
+      "sha256": "4aec236ad12098d8ef710ad786bf2384364d6e3c3db0e5e664378c39427c4a28",
+      "results": 29,
+      "definitions": 29,
+      "passed": 17,
+      "failed": 12,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "getListUpdateDeleteGreen": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/mutation-owner-green/address-family-green.trx",
+      "sha256": "558d31ef259e0630a9db0ebc9e0100a45b5d09af5316b6c7f8fd39b74040d060",
+      "results": 29,
+      "definitions": 29,
+      "passed": 29,
+      "failed": 0,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "createDefault": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/default-owner-red/default-owner-red.trx",
+      "sha256": "cd78e25f08bf8d2fc49f251c89c83bf29a1beab984528363b3e082293d22b9a1",
+      "results": 12,
+      "definitions": 12,
+      "passed": 6,
+      "failed": 6,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "handlerFamilyGreen": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/full-handler-family-green/address-family-green.trx",
+      "sha256": "fca0c6926c556742e97577b903b01ca5c06ce86a6f0535252f83ad2c8dcb2ffb",
+      "results": 41,
+      "definitions": 41,
+      "passed": 41,
+      "failed": 0,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "callerFence": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/caller-fence-runtime-red/caller-fence-red.trx",
+      "sha256": "4dda900c165da475d4f7300cae6666df176b95e818a910692c9a23db1cc157ca",
+      "results": 7,
+      "definitions": 7,
+      "passed": 0,
+      "failed": 7,
+      "other": 0,
+      "strictExecutionJoins": true
+    },
+    "callerAndHandlerGreen": {
+      "path": "/private/tmp/customer-address-owner-01a166de-20261025/address-current-green/address-current-green.trx",
+      "sha256": "3cfd6ac44a6718015f7a739c88ce158a38624ee081562d0aed0d722d44e395da",
+      "results": 48,
+      "definitions": 48,
+      "passed": 48,
+      "failed": 0,
+      "other": 0,
+      "strictExecutionJoins": true
+    }
+  },
+  "limits": {
+    "redCompilationAndStyleFailuresExcludedAsCausal": true,
+    "listConstructorWiringChangedWhenUnusedRepositoryWasRemoved": "Test cases/expected owner states preserved; not claimed exactentiretestfilebyteequivalence.",
+    "currentFullIntegration": false,
+    "nativeResourcesIntentionallyNotStarted": true,
+    "independentSourceReviews": "PENDING RootSPEC and existingSTD",
+    "fullInstalledNormalSourceCiMainRuntimeCleanup": "PENDING",
+    "original140Acceptance": false,
+    "livePiiOrProductionWrites": false
+  },
+  "independent_source_reviews": [
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/commerce-whole-service-20261022-01a152b1/customer53-spec-review-r1.json",
+      "sha256": "2479f6e44e08b2299c77b618cc52ab890c487519e7461f4ce912ed1a1f93810b",
+      "verdict": "PASS_SOURCE_ONLY"
+    },
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/commerce-whole-service-20261022-01a152b1/customer53-standards-security-review-r1.json",
+      "sha256": "2aa29221d9bcd792bf78363d18f0524e4401042e1d95c834f1038a8e22c3d38a",
+      "verdict": "PASS_SOURCE_SCOPED"
+    }
+  ],
+  "delivery_boundary": "Source review passed only; full installed normal gate, three actual PostgreSQL cases, source CI, main/deploy/runtime and owned cleanup remain pending."
+}
