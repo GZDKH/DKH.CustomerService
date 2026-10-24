@@ -9,7 +9,10 @@ public class UpdateAddressCommandHandler(IAppDbContext dbContext)
 {
     public async Task<UpdateAddressResponse> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
     {
-        var address = await dbContext.CustomerAddresses.FindAsync([request.AddressId], cancellationToken) ?? throw new RpcException(new Status(StatusCode.NotFound, "Address not found"));
+        var address = await CustomerAddressOwnership.OwnedAddresses(dbContext, request.StorefrontId, request.UserId)
+            .SingleOrDefaultAsync(value => value.Id == request.AddressId && !value.IsDeleted, cancellationToken)
+            ?? throw new RpcException(new Status(StatusCode.NotFound, "Address not found"));
+        cancellationToken.ThrowIfCancellationRequested();
 
         address.Update(
             request.Label,
@@ -26,6 +29,7 @@ public class UpdateAddressCommandHandler(IAppDbContext dbContext)
             request.Company);
 
         await dbContext.SaveChangesAsync(cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         return new UpdateAddressResponse
         {

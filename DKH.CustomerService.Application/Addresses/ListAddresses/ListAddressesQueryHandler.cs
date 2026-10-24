@@ -5,44 +5,26 @@ using DKH.Platform.EntityFrameworkCore;
 
 namespace DKH.CustomerService.Application.Addresses.ListAddresses;
 
-public class ListAddressesQueryHandler(ICustomerRepository repository, IAppDbContext dbContext)
+public class ListAddressesQueryHandler(IAppDbContext dbContext)
     : IRequestHandler<ListAddressesQuery, ListAddressesResponse>
 {
     public async Task<ListAddressesResponse> Handle(ListAddressesQuery request, CancellationToken cancellationToken)
     {
         var response = new ListAddressesResponse();
 
-        if (request.SoftDeleteFilter != PlatformSoftDeleteFilter.ActiveOnly)
+        var query = CustomerAddressOwnership.OwnedAddresses(dbContext, request.StorefrontId, request.UserId)
+            .AsNoTracking()
+            .ApplySoftDeleteFilter(request.SoftDeleteFilter);
+        // Platform ActiveOnly preserves the normal query; this Address model has
+        // no automatic filter, so its ordinary active predicate must be explicit.
+        if (request.SoftDeleteFilter == PlatformSoftDeleteFilter.ActiveOnly)
         {
-            var profile = await dbContext.CustomerProfiles
-                .AsNoTracking()
-                .SingleOrDefaultAsync(
-                    p => p.StorefrontId == request.StorefrontId && p.UserId == request.UserId,
-                    cancellationToken);
-
-            if (profile is not null)
-            {
-                var addresses = await dbContext.CustomerAddresses
-                    .AsNoTracking()
-                    .ApplySoftDeleteFilter(request.SoftDeleteFilter)
-                    .Where(a => a.CustomerId == profile.Id)
-                    .ToListAsync(cancellationToken);
-
-                response.Addresses.AddRange(addresses.Select(a => a.ToContractModel()));
-            }
+            query = query.Where(address => !address.IsDeleted);
         }
-        else
-        {
-            var profile = await repository.GetByUserIdWithAddressesAsync(
-                request.StorefrontId,
-                request.UserId,
-                cancellationToken);
 
-            if (profile is not null)
-            {
-                response.Addresses.AddRange(profile.Addresses.Select(a => a.ToContractModel()));
-            }
-        }
+        var addresses = await query.ToListAsync(cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
+        response.Addresses.AddRange(addresses.Select(address => address.ToContractModel()));
 
         return response;
     }

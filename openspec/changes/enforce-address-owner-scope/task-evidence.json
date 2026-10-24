@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "delivery_owner": "01a166de-f7f3-7c23-b84b-97d31dee8c01",
+  "stage": "review",
+  "task_file": "tasks.md",
+  "next_action": "One coherent Customer53 commit and ordinary installed full prepush gate, then one functional MR/source CI/authorized merge/main/deploy/runtime and owned cleanup.",
+  "tasks": {
+    "1.1": {
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "test",
+          "path": "openspec/changes/enforce-address-owner-scope/evidence/source-verification.json"
+        }
+      ]
+    },
+    "1.2": {
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "test",
+          "path": "openspec/changes/enforce-address-owner-scope/evidence/source-verification.json"
+        }
+      ]
+    },
+    "1.3": {
+      "state": "pending",
+      "reason": "Current133Application+121affected passed; three PostgreSQL cases compiled/listed, actual execution required in mandatory full normal gate."
+    },
+    "2.1": {
+      "state": "verified",
+      "evidence": [
+        {
+          "kind": "test",
+          "path": "docs/security-reviews/2026-10-25-address-owner-scope.json"
+        }
+      ]
+    },
+    "2.2": {
+      "state": "pending",
+      "reason": "Mandatory installed fullnormal includingnative/migrationchecks asapplicable and sourceCI pending afterreview/slot."
+    },
+    "2.3": {
+      "state": "pending",
+      "reason": "Merge, authoritative main/deploy/runtime and exactownedcleanup pending; no productionPII requests orwrites."
+    }
+  }
+}
