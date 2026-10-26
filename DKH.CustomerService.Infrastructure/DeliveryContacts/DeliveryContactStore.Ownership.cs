@@ -10,6 +10,9 @@ namespace DKH.CustomerService.Infrastructure.DeliveryContacts;
 public sealed partial class DeliveryContactStore
 {
     private async Task<Guid> ResolveActorAsync(DeliveryContactActor actor, CancellationToken ct)
+        => (await ResolveActorBindingAsync(actor, ct)).AccountId;
+
+    private async Task<(Guid AccountId, Guid ProfileId)> ResolveActorBindingAsync(DeliveryContactActor actor, CancellationToken ct)
     {
         if (!db.Database.IsRelational() || db.Database.CurrentTransaction is null)
         {
@@ -54,8 +57,8 @@ public sealed partial class DeliveryContactStore
             throw Unavailable();
         }
 
-        await RequireProfileAsync(id, actor.StorefrontId, ct);
-        return id;
+        var profileId = await RequireProfileAsync(id, actor.StorefrontId, ct);
+        return (id, profileId);
     }
 
     private async Task<Guid> RequireProfileAsync(Guid ownerId, Guid storefrontId, CancellationToken ct)

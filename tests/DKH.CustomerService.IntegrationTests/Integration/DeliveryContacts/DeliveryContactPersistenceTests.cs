@@ -18,7 +18,7 @@ namespace DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts;
 // Reuses the existing disposable PostgreSQL lifecycle without changing journal
 // source, RPCs or fixtures. These tests are compiled locally and run by normal CI.
 [Trait("Category", "Integration")]
-public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) : IClassFixture<JournalHostFixture>
+public sealed partial class DeliveryContactPersistenceTests(JournalHostFixture fixture) : IClassFixture<JournalHostFixture>
 {
     private const string Digest = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
@@ -209,7 +209,8 @@ public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) 
         var consent = await ActAsync(seed.Actor, store => store.ConsentAsync(seed.Actor, contact.Authority, scope,
             DateTimeOffset.UtcNow.AddMinutes(2), Guid.NewGuid(), Digest, default));
         var owner = new SyntheticOwner(new(scope, seed.Address.CustomerId, seed.Actor.StorefrontId, Guid.NewGuid(),
-            false, DateTimeOffset.UtcNow.AddMinutes(2), consent.Id, contact.Authority.ResourceId));
+            false, DateTimeOffset.UtcNow.AddMinutes(2), consent.Id, contact.Authority.ResourceId,
+            new(seed.Address.CustomerId, null)));
         var operation = Guid.NewGuid();
         var first = await ActAsync(seed.Actor, store => store.ResolveRecipientAsync(seed.Actor, contact.Authority, consent.Id,
             scope, operation, null, Digest, default), owner);
@@ -241,7 +242,8 @@ public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) 
         var consent = await ActAsync(seed.Actor, store => store.ConsentAsync(seed.Actor, contact.Authority, scope,
             DateTimeOffset.UtcNow.AddMinutes(2), Guid.NewGuid(), Digest, default));
         var decision = new DeliveryContactScopeDecision(scope, seed.Address.CustomerId, seed.Actor.StorefrontId,
-            Guid.NewGuid(), false, DateTimeOffset.UtcNow.AddMinutes(2), consent.Id, contact.Authority.ResourceId);
+            Guid.NewGuid(), false, DateTimeOffset.UtcNow.AddMinutes(2), consent.Id, contact.Authority.ResourceId,
+            new(seed.Address.CustomerId, null));
         decision = changed switch
         {
             "consent" => decision with { RecipientConsentId = Guid.NewGuid() },
@@ -272,7 +274,7 @@ public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) 
         }
     }
 
-    private async Task<(DeliveryContactActor Actor, Guid AccountId, CustomerAddressEntity Address)> SeedAsync()
+    private async Task<(DeliveryContactActor Actor, Guid AccountId, CustomerAddressEntity Address)> SeedAsync(Guid? storefrontId = null)
     {
         await fixture.ReadAsync(async db =>
         {
@@ -280,7 +282,7 @@ public sealed class DeliveryContactPersistenceTests(JournalHostFixture fixture) 
             return true;
         });
         var account = await fixture.SeedAccountAsync();
-        var storefront = Guid.NewGuid();
+        var storefront = storefrontId ?? Guid.NewGuid();
         var profile = CustomerProfileEntity.Create(storefront, "legacy:" + Guid.NewGuid().ToString("N"), "Recipient");
         profile.BeginAccountReconciliation(DateTime.UtcNow);
         profile.CompleteAccountReconciliation(account.Id, DateTime.UtcNow);

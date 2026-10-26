@@ -1,4 +1,3 @@
-using DKH.CustomerService.Api.Journal;
 using DKH.CustomerService.Application.DeliveryContacts;
 using DKH.CustomerService.Domain.Entities.DeliveryContact;
 using DKH.DeliveryService.Contracts.Delivery.Api.GroupContactAuthority.v2;
@@ -17,6 +16,7 @@ public sealed class DeliveryContactScopeAuthorizer(
     public async Task<DeliveryContactScopeDecision> RevalidateAsync(Guid actorAccountId, Guid storefrontId,
         DeliveryContactScope scope, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         scope.Validate();
         if (actorAccountId == Guid.Empty || storefrontId == Guid.Empty || httpContextAccessor.HttpContext is not { } context)
         {
@@ -26,7 +26,7 @@ public sealed class DeliveryContactScopeAuthorizer(
         // ResolveActorAsync already bound this account to the authenticated
         // Customer identity. Delivery independently derives its caller from the
         // SAME human bearer; no account, grant or recipient selector is sent.
-        _ = CustomerJournalPrincipal.Require(context, configuration);
+        var caller = new DeliveryContactCallerFence(context, () => httpContextAccessor.HttpContext, configuration, clock);
         var authorization = context.Request.Headers.Authorization;
         if (authorization.Count != 1 || authorization[0] is not { } bearer ||
             !bearer.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(bearer[7..]))
@@ -50,14 +50,23 @@ public sealed class DeliveryContactScopeAuthorizer(
         RecipientContactScopeAuthorizationModel response;
         try
         {
-            response = await client.RevalidateRecipientContactScopeAsync(new() { Scope = Map(scope) }, headers: selectors,
-                deadline: clock.GetUtcNow().AddSeconds(10).UtcDateTime, cancellationToken: cancellationToken);
+            using var call = client.RevalidateRecipientContactScopeAsync(new() { Scope = Map(scope) }, headers: selectors,
+                deadline: DateTimeOffset.Compare(caller.OriginalTokenExpiry, clock.GetUtcNow().AddSeconds(10)) < 0
+                    ? caller.OriginalTokenExpiry.UtcDateTime : clock.GetUtcNow().AddSeconds(10).UtcDateTime,
+                cancellationToken: cancellationToken);
+            response = await call.ResponseAsync;
         }
         catch (RpcException) when (!cancellationToken.IsCancellationRequested)
         {
             // Unimplemented (current producer), revoked, denied, malformed or
             // unavailable owner responses never permit private contact access.
             throw Unavailable();
+        }
+        finally
+        {
+            // Includes RPC failure and disposal. Caller changes cannot disclose
+            // either positive DATA or a stale owner-specific refusal.
+            caller.RequireCurrent(cancellationToken);
         }
 
         try
@@ -70,13 +79,13 @@ public sealed class DeliveryContactScopeAuthorizer(
 
             var expires = response.ExpiresAt?.ToDateTimeOffset() ?? throw Unavailable();
             var now = clock.GetUtcNow();
-            if (expires <= now || expires > now.AddMinutes(5))
+            if (expires <= now || expires > now.AddMinutes(5) || expires > caller.OriginalTokenExpiry)
             {
                 throw Unavailable();
             }
 
             return new(scope, Id(response.RecipientProfileBinding), storefrontId, Id(response.WorkspaceId),
-                response.CarrierRequiresPhone, expires, Id(response.RecipientConsentRef), Id(response.PrivateContactRef));
+                response.CarrierRequiresPhone, expires, Id(response.RecipientConsentRef), Id(response.PrivateContactRef), ReadActor(response.ActingActorRef));
         }
         catch (ArgumentException)
         {
@@ -86,6 +95,30 @@ public sealed class DeliveryContactScopeAuthorizer(
         {
             throw Unavailable();
         }
+    }
+
+    private static DeliveryContactActingActor ReadActor(ActorRefModel? value)
+    {
+        if (value?.IdentityCase == ActorRefModel.IdentityOneofCase.CustomerIdentityId)
+        {
+            return new(Id(value.CustomerIdentityId), null);
+        }
+
+        if (value?.IdentityCase != ActorRefModel.IdentityOneofCase.CounterpartyAuthorityRef || value.CounterpartyAuthorityRef is not { } party)
+        {
+            // Legacy absent tag9, unknown and service actor variants cannot
+            // turn absence into represented-company authority.
+            throw Unavailable();
+        }
+
+        var authority = new DeliveryContactAuthority(party.Authority, Id(party.ResourceId), party.Revision, party.Digest);
+        authority.Validate();
+        if (authority.Authority != "counterparty.party")
+        {
+            throw Unavailable();
+        }
+
+        return new(null, authority);
     }
 
     private static GroupContactScopeModel Map(DeliveryContactScope value) => new()

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "stage": "implementation",
+  "owning_issue": "https://gitlab.xnata.com/gzdkh/services/DKH.CustomerService/-/issues/54",
+  "base_sha": "2497f8f1a08a12a6d20047110d0832435cde2e2d",
+  "executor": "01a166de-f7f3-7c23-b84b-97d31dee8c01",
+  "lease_holder": "01a152b1-28f3-74d0-9c2b-3af845928217",
+  "status": "INDEPENDENT_SOURCE_REVIEWS_PASS_GENUINE_DELIVERY118_AND_FULL_NORMAL_PENDING",
+  "current_genuine_delivery_sdk": "Base genuine1.16.0; selected1.18 is owner DEVELOPMENT only, normal genuine source delivery pending.",
+  "evidence": [
+    {
+      "kind": "CPU real generated client/interceptor; explicit synthetic remote DATA",
+      "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/caller-lifetime-causal/qualification.json",
+      "sha256": "0ed324f63639f2aea746af406543e920c66b1521454eeac3eae245aab3f0f245",
+      "red": {
+        "failed": 19,
+        "passed": 0
+      },
+      "green": {
+        "passed": 19,
+        "failed": 0,
+        "skipped": 0
+      },
+      "same_case_ids_names": true
+    },
+    {
+      "kind": "REAL PostgreSQL/migrations; explicit synthetic Delivery DATA authorizer, not genuine producer workflow",
+      "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/accepted-actor-causal/qualification.json",
+      "sha256": "db6a035f24cd02a6ffc3f1154a944aa8ab8202a4d68bdf0b4334cb97ba7045d3",
+      "red": {
+        "failed": 9,
+        "passed": 3
+      },
+      "green": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      "same_case_ids_names": true,
+      "own_fixture_containers_absent": true
+    }
+  ],
+  "current_cpu": {
+    "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/contact-cpu-current.trx",
+    "sha256": "8416f67bb11cd71deb4a44ad8fe69356537adfc68056b858f268fd64263b0092",
+    "passed": 69,
+    "failed": 0,
+    "skipped": 0,
+    "overlaps_prior_19": true
+  },
+  "gaps": [
+    "Both independent coherent25 source reviews passed; full ordinary delivery remains pending, not source review.",
+    "Genuine Delivery1.18 publication and fresh normal receiving required before Customer normal installed full gate and publication.",
+    "Delivery actual CNS accepted responsibility/contact-grant/carrier source still separate whole-V6.7 gaps; no SQL-seeded full workflow proof.",
+    "Current mandatory full gate/sourceCI/MR/merge/main/runtime/cleanup pending."
+  ],
+  "claims": {
+    "original140_acceptance": false,
+    "financial_activation": false,
+    "genuine_whole_delivery_callback_native_proof": false,
+    "current_full_normal_gate": false,
+    "runtime": false
+  },
+  "development_receiving": {
+    "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/delivery118-dev-26c7f13e8f8c/qualification.json",
+    "sha256": "183a60d016b40f3c38897c62603807cfcd4b2a4e8320a7a36c693931dd165b77",
+    "passed": 112,
+    "failed": 0,
+    "skipped": 0,
+    "CPU": 81,
+    "realPostgres": 31,
+    "overlaps_prior_cpu_and_native": true,
+    "normalRelease": "0 warnings / 0 errors",
+    "wholeFormatVerify": "exit0",
+    "genuineRegistry": false
+  },
+  "selected_delivery_version": "1.18.0",
+  "independent_reviews": [
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/coherent-source-r1/spec-review.json",
+      "sha256": "8a72a1f70928297293e13b139f7c2947fd0a8350a5cd9765324df0ed21ce7359",
+      "verdict": "PASS_SOURCE_ONLY"
+    },
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/coherent-source-r1/standards-review.json",
+      "sha256": "33035bf9de60388548acd2c05f6f13b8fdbfdf70d1b65684c72406f413b5c3d5",
+      "verdict": null
+    }
+  ]
+}

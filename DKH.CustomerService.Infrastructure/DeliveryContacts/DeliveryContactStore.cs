@@ -120,12 +120,12 @@ public sealed partial class DeliveryContactStore(AppDbContext db, IDeliveryConta
         Guid consentId, DeliveryContactScope scope, Guid operationId, Guid? accessId, string requestDigest, CancellationToken cancellationToken)
     {
         scope.Validate();
-        var owner = await ResolveActorAsync(actor, cancellationToken);
+        var (owner, actorProfileId) = await ResolveActorBindingAsync(actor, cancellationToken);
         // This owner call must freshly bind actor, current duty/choice/scope,
         // actual recipient account/profile, workspace, purpose and expiry.
         // Its production default fails closed while that genuine boundary is absent.
         var decision = await authorizer.RevalidateAsync(owner, actor.StorefrontId, scope, cancellationToken);
-        if (decision.StorefrontId != actor.StorefrontId || decision.Scope != scope ||
+        if (!MatchesActor(decision.ActingActor, actorProfileId) || decision.StorefrontId != actor.StorefrontId || decision.Scope != scope ||
             decision.RecipientProfileId == Guid.Empty || decision.WorkspaceId == Guid.Empty || decision.ExpiresAtUtc <= Now() ||
             decision.RecipientConsentId != consentId || decision.PrivateContactId != authority.ResourceId)
         {
@@ -159,9 +159,40 @@ public sealed partial class DeliveryContactStore(AppDbContext db, IDeliveryConta
         var lease = await AccessAsync(owner, contact, DeliveryContactPurpose.LocalShipment, scope.Digest(),
             requestDigest, operationId, accessId,
             decision.ExpiresAtUtc, consent, decision.WorkspaceId, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (decision.ExpiresAtUtc <= Now() || lease.ExpiresAtUtc <= Now())
+        {
+            throw Unavailable();
+        }
+
         return new(new(lease.Id, lease.ExpiresAtUtc, scope.ScopeRevision), name,
             address.Country, address.City, address.Province, address.Street, address.Building, address.Apartment,
             address.PostalCode, decision.CarrierRequiresPhone ? address.Phone : null);
+    }
+
+    private static bool MatchesActor(DeliveryContactActingActor? actor, Guid actualProfileId)
+    {
+        if (actor is null || (actor.CustomerProfileId is null) == (actor.CounterpartyAuthority is null))
+        {
+            return false;
+        }
+
+        if (actor.CustomerProfileId is { } profileId)
+        {
+            return profileId != Guid.Empty && profileId == actualProfileId;
+        }
+
+        try
+        {
+            // Delivery independently binds this native accepted company tuple
+            // to the same original human and current duty. It is not a profile.
+            actor.CounterpartyAuthority!.Validate();
+            return actor.CounterpartyAuthority.Authority == "counterparty.party";
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
     }
 
     private async Task<DeliveryContactLeaseEntity> AccessAsync(Guid actorId, DeliveryContactRevisionEntity contact,

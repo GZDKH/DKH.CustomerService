@@ -1,5 +1,15 @@
 # DKH.CustomerService -- gRPC API
 
+## Recipient contact callback binding (Customer#54)
+
+The existing private `DeliveryContactService` recipient Resolve/Revalidate methods retain Customer's normal active account, membership and linked profile locks. The Delivery callback must authorize from its own accepted duty/assignment and same original human without calling Customer again; the physical execution authority remains a separate operation. Customer never releases its ownership locks to make the callback succeed.
+
+The additive Delivery response `acting_actor_ref` (tag9, Contracts1.18) is private accepted actor DATA. A self actor must equal the actually locked actor `CustomerProfile.Id`, not CustomerAccount.Id, JWT subject or recipient profile. A represented company is the exact native `counterparty.party` resource/revision/digest independently authorized by Delivery. Missing, service, unknown or malformed actors deny. The recipient profile, contact, consent and entire typed delivery scope are checked separately; a company reference is not converted to a customer profile or a new grant.
+
+Original validated human, bearer, workspace, storefront and token/owner horizons remain bound through the owner call, its disposal and local transaction completion. Late caller change, cancellation or expiry refuses the body; this does not compensate an already committed receipt or extend its expiry. Current source/address/consent, exact replay and revocation checks remain mandatory.
+
+Source qualification on 2026-10-26 uses an isolated whole-owner Delivery1.18 DEVELOPMENT artifact. Genuine package delivery, independent reviews, mandatory full gate, authoritative main/deploy and integrated V6.7 remain distinct acceptance gates. No runtime activation, grant or complete delivery workflow is implied. See [scoped requirements](../openspec/changes/break-recipient-contact-callback-cycle/specs/recipient-contact-callback/spec.md).
+
 ## Overview
 
 DKH.CustomerService exposes 10 gRPC services on port **5010** (HTTP/2). The services are organized into versioned proto packages:
