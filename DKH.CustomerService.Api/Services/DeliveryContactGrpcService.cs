@@ -1,3 +1,4 @@
+using DKH.CustomerService.Api.DeliveryContacts;
 using DKH.CustomerService.Api.Journal;
 using DKH.CustomerService.Application.DeliveryContacts;
 using DKH.CustomerService.Contracts.Customer.Api.DeliveryContact.v2;
@@ -15,7 +16,7 @@ namespace DKH.CustomerService.Api.Services;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = CustomerServiceAuthorizationPolicies.CustomerSelfAccess)]
 public sealed class DeliveryContactGrpcService(IMediator mediator, IPlatformStorefrontContext storefrontContext,
-    IOptions<PlatformStorefrontContextOptions> storefrontOptions, IConfiguration configuration)
+    IOptions<PlatformStorefrontContextOptions> storefrontOptions, IConfiguration configuration, TimeProvider clock)
     : DeliveryContactService.DeliveryContactServiceBase
 {
     public override Task<DeliveryContactRevisionModel> SealDeliveryContact(SealDeliveryContactRequest request, ServerCallContext context)
@@ -114,7 +115,7 @@ public sealed class DeliveryContactGrpcService(IMediator mediator, IPlatformStor
             return model;
         });
 
-    private Task<object> SendAsync(ServerCallContext context, DeliveryContactCommandContextModel? command, DeliveryContactOperation operation,
+    private async Task<object> SendAsync(ServerCallContext context, DeliveryContactCommandContextModel? command, DeliveryContactOperation operation,
         Guid? addressId = null, DeliveryContactAuthority? contact = null, DeliveryContactScope? scope = null,
         Guid? consentId = null, DateTimeOffset? until = null, Guid? planId = null, Guid? legId = null, Guid? accessId = null)
     {
@@ -125,9 +126,35 @@ public sealed class DeliveryContactGrpcService(IMediator mediator, IPlatformStor
             throw new ArgumentException("A valid operation and expected revision are required.");
         }
 
-        var actor = new DeliveryContactActor(CustomerJournalPrincipal.Require(context.GetHttpContext(), configuration), Storefront(context));
-        return mediator.Send(new DeliveryContactRequest(actor, operation, Id(command.OperationId), addressId, contact, scope, consentId,
-            operation == DeliveryContactOperation.Revoke ? command.ExpectedRevision : null, until, planId, legId, accessId, command.Reason), context.CancellationToken);
+        var http = context.GetHttpContext();
+        var caller = new DeliveryContactCallerFence(http, () => context.GetHttpContext(), configuration, clock);
+        var actor = new DeliveryContactActor(CustomerJournalPrincipal.Require(http, configuration), Storefront(context));
+        void RequireCurrent()
+        {
+            caller.RequireCurrent(context.CancellationToken);
+            if (Storefront(context) != actor.StorefrontId)
+            {
+                throw new DeliveryContactFailureException("AUTHORITY_UNAVAILABLE");
+            }
+        }
+
+        try
+        {
+            var result = await mediator.Send(new DeliveryContactRequest(actor, operation, Id(command.OperationId), addressId, contact, scope, consentId,
+                operation == DeliveryContactOperation.Revoke ? command.ExpectedRevision : null, until, planId, legId, accessId, command.Reason), context.CancellationToken);
+            if (result is DeliveryRecipientContactView recipient && recipient.Access.ExpiresAtUtc <= clock.GetUtcNow())
+            {
+                // The transaction may already have committed. Refusing this
+                // response neither rolls it back nor renews its original lease.
+                throw new DeliveryContactFailureException("AUTHORITY_UNAVAILABLE");
+            }
+
+            return result;
+        }
+        finally
+        {
+            RequireCurrent();
+        }
     }
 
     private Guid Storefront(ServerCallContext context)

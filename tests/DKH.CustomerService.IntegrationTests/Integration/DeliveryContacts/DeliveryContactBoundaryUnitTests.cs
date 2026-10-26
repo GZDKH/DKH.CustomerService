@@ -74,6 +74,6 @@ public sealed class DeliveryContactBoundaryUnitTests
             {
                 ["Platform:Auth:Keycloak:AuthServerUrl"] = "https://identity.fixture.invalid",
                 ["Platform:Auth:Keycloak:Realm"] = "test",
-            }).Build());
+            }).Build(), TimeProvider.System);
     private static GuidValue Id() => new() { Value = Guid.NewGuid().ToString("D") };
 }

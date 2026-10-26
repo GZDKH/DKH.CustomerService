@@ -30,11 +30,11 @@ using NSubstitute;
 
 namespace DKH.CustomerService.IntegrationTests.Integration.DeliveryContacts;
 
-// Real published1.14 generated client + actual Platform human interceptor;
+// Real generated Delivery client + actual Platform human interceptor;
 // the remote owner response below is an EXPLICIT synthetic boundary, not a
 // claim that the Delivery runtime already has a valid participant producer.
 [Trait("Category", "Unit")]
-public sealed class DeliveryContactOwnerCallbackUnitTests
+public sealed partial class DeliveryContactOwnerCallbackUnitTests
 {
     [Fact]
     public async Task EveryReadUsesSameVerifiedHumanAndExactTypedOwnerTupleAsync()
@@ -55,6 +55,7 @@ public sealed class DeliveryContactOwnerCallbackUnitTests
         first.PrivateContactId.Should().Be(Id(f.Response.PrivateContactRef));
         first.WorkspaceId.Should().Be(Id(f.Response.WorkspaceId));
         first.CarrierRequiresPhone.Should().BeTrue();
+        first.ActingActor.Should().Be(new DeliveryContactActingActor(Id(f.Response.ActingActorRef.CustomerIdentityId), null));
     }
 
     [Theory]
@@ -268,9 +269,10 @@ public sealed class DeliveryContactOwnerCallbackUnitTests
         public Guid ActorAccountId { get; } = Guid.NewGuid();
         public required Guid StorefrontId { get; init; }
         public required DeliveryContactScopeAuthorizer Authorizer { get; init; }
+        public required IConfiguration Configuration { get; init; }
         public Task<DeliveryContactScopeDecision> ReadAsync() => Authorizer.RevalidateAsync(ActorAccountId, StorefrontId, Scope, default);
 
-        public static async Task<Fixture> CreateAsync()
+        public static async Task<Fixture> CreateAsync(TimeProvider? clock = null)
         {
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
@@ -323,6 +325,7 @@ public sealed class DeliveryContactOwnerCallbackUnitTests
                 RecipientProfileBinding = NewId(),
                 RecipientConsentRef = NewId(),
                 PrivateContactRef = NewId(),
+                ActingActorRef = new() { CustomerIdentityId = NewId() },
                 ExpiresAt = Timestamp.FromDateTimeOffset(DateTimeOffset.UtcNow.AddMinutes(2)),
                 CarrierRequiresPhone = true,
             };
@@ -339,8 +342,9 @@ public sealed class DeliveryContactOwnerCallbackUnitTests
                 Scope = scope,
                 Response = response,
                 Invoker = invoker,
+                Configuration = configuration,
                 StorefrontId = Id(response.StorefrontId),
-                Authorizer = new DeliveryContactScopeAuthorizer(client, accessor, configuration, TimeProvider.System)
+                Authorizer = new DeliveryContactScopeAuthorizer(client, accessor, configuration, clock ?? TimeProvider.System)
             };
         }
     }
@@ -357,14 +361,17 @@ public sealed class DeliveryContactOwnerCallbackUnitTests
         public int Calls { get; private set; }
         public Metadata? Headers { get; private set; }
         public RevalidateRecipientContactScopeRequest? Request { get; private set; }
+        public Action? Completing { get; set; }
+        public Action? Disposing { get; set; }
 
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string? host, CallOptions options, TRequest request)
         {
             Calls++;
             Headers = options.Headers;
             Request = (RevalidateRecipientContactScopeRequest)(object)request;
+            Completing?.Invoke();
             var result = Error is null ? Task.FromResult((TResponse)(object)Response.Clone()) : Task.FromException<TResponse>(Error);
-            return new(result, Task.FromResult(new Metadata()), () => Status.DefaultSuccess, () => [], () => { });
+            return new(result, Task.FromResult(new Metadata()), () => Status.DefaultSuccess, () => [], () => Disposing?.Invoke());
         }
 
         public override TResponse BlockingUnaryCall<TRequest, TResponse>(Method<TRequest, TResponse> method, string? host, CallOptions options, TRequest request) => throw new NotSupportedException();

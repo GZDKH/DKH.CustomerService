@@ -6,4 +6,4 @@ namespace DKH.CustomerService.Application.DeliveryContacts;
 public sealed record DeliveryContactScopeDecision(
     Domain.Entities.DeliveryContact.DeliveryContactScope Scope, Guid RecipientProfileId,
     Guid StorefrontId, Guid WorkspaceId, bool CarrierRequiresPhone, DateTimeOffset ExpiresAtUtc,
-    Guid RecipientConsentId, Guid PrivateContactId);
+    Guid RecipientConsentId, Guid PrivateContactId, DeliveryContactActingActor? ActingActor = null);
