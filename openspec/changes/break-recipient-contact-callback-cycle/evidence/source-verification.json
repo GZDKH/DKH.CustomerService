@@ -5,8 +5,8 @@
   "base_sha": "2497f8f1a08a12a6d20047110d0832435cde2e2d",
   "executor": "01a166de-f7f3-7c23-b84b-97d31dee8c01",
   "lease_holder": "01a152b1-28f3-74d0-9c2b-3af845928217",
-  "status": "INDEPENDENT_SOURCE_REVIEWS_PASS_GENUINE_DELIVERY118_AND_FULL_NORMAL_PENDING",
-  "current_genuine_delivery_sdk": "Base genuine1.16.0; selected1.18 is owner DEVELOPMENT only, normal genuine source delivery pending.",
+  "status": "CURRENT_SOURCE_REVIEWS_AND_GENUINE118_RECEIVING_PASS_FULL_NORMAL_PENDING",
+  "current_genuine_delivery_sdk": "1.18.0-mr.182.p.48051.sefae87e02e8a993dd3bb46ae5a002c016a7c1138",
   "evidence": [
     {
       "kind": "CPU real generated client/interceptor; explicit synthetic remote DATA",
@@ -49,10 +49,9 @@
     "overlaps_prior_19": true
   },
   "gaps": [
-    "Both independent coherent25 source reviews passed; full ordinary delivery remains pending, not source review.",
-    "Genuine Delivery1.18 publication and fresh normal receiving required before Customer normal installed full gate and publication.",
-    "Delivery actual CNS accepted responsibility/contact-grant/carrier source still separate whole-V6.7 gaps; no SQL-seeded full workflow proof.",
-    "Current mandatory full gate/sourceCI/MR/merge/main/runtime/cleanup pending."
+    "Prior coherent25 and current finite4 independent SPEC/standards-security reviews passed. Mandatory full delivery remains pending.",
+    "Current installed full gate/sourceCI/MR/merge/main/runtime/cleanup pending.",
+    "Delivery actual CNS accepted responsibility/contact-grant/carrier source remain separate whole-V6.7 gaps; synthetic Delivery DATA ports in Customer tests do not prove whole business flow."
   ],
   "claims": {
     "original140_acceptance": false,
@@ -74,7 +73,7 @@
     "wholeFormatVerify": "exit0",
     "genuineRegistry": false
   },
-  "selected_delivery_version": "1.18.0",
+  "selected_delivery_version": "1.18.0-mr.182.p.48051.sefae87e02e8a993dd3bb46ae5a002c016a7c1138",
   "independent_reviews": [
     {
       "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/coherent-source-r1/spec-review.json",
@@ -85,6 +84,33 @@
       "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/coherent-source-r1/standards-review.json",
       "sha256": "33035bf9de60388548acd2c05f6f13b8fdbfdf70d1b65684c72406f413b5c3d5",
       "verdict": null
+    }
+  ],
+  "genuine_candidate_receiving": {
+    "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/delivery118-genuine-candidate/qualification.json",
+    "sha256": "9cb6445a5631eaa654ea10735af68a97cb63e81766fd7d6b7370a6914977c635",
+    "version": "1.18.0-mr.182.p.48051.sefae87e02e8a993dd3bb46ae5a002c016a7c1138",
+    "passed": 112,
+    "failed": 0,
+    "skipped": 0,
+    "CPU": 81,
+    "realPostgres": 31,
+    "sameOriginal112IdsAndNames": true,
+    "normalRelease": "0 warnings / 0 errors",
+    "wholeFormatVerify": "exit0",
+    "genuineRegistry": true,
+    "sourceBoundCandidateNotStableRuntime": true
+  },
+  "current_finite_reviews": [
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/delivery118-genuine-candidate/finite-source-review/root-spec-review.json",
+      "sha256": "5fe9767faf64957c9150c10613e8c3cc22ee055d2de0f9f7a09fa5e34cda2f4d",
+      "verdict": "PASS_FINITE_SOURCE_ONLY"
+    },
+    {
+      "path": "/Users/itprodavets/.local/state/gzdkh/customer-contact-callback-01a166de-20261026/delivery118-genuine-candidate/finite-source-review/root-standards-review.json",
+      "sha256": "facc50b1fad1c68e5ce01af14ac58069aea70974543d713566590a4be4a48d6e",
+      "verdict": "PASS_SOURCE_ONLY"
     }
   ]
 }
