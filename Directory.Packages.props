@@ -65,7 +65,7 @@
     <PackageVersion Include="DKH.Platform.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Grpc.IntegrationTesting" Version="1.0.2" />
     <PackageVersion Include="DKH.Platform.Telemetry" Version="1.1.1" />
-    <PackageVersion Include="DKH.DeliveryService.Contracts" Version="1.18.0-mr.182.p.48051.sefae87e02e8a993dd3bb46ae5a002c016a7c1138" />
+    <PackageVersion Include="DKH.DeliveryService.Contracts" Version="1.18.0-mr.182.p.48070.s6a61372d15546724e6dd03aee97f26c39a82eee1" />
     <PackageVersion Include="DKH.NotificationService.Contracts" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
