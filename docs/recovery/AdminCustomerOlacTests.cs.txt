@@ -1,0 +1,89 @@
+using System.Security.Claims;
+using DKH.CustomerService.Application.Admin.ListCustomers;
+using DKH.CustomerService.Domain.Authorization;
+using DKH.CustomerService.Domain.Entities.CustomerProfile;
+using DKH.CustomerService.Infrastructure.Persistence;
+using DKH.Platform.Authorization.ResourceAccess;
+using DKH.Platform.Identity;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace DKH.CustomerService.IntegrationTests.Integration.Application;
+
+public sealed class AdminCustomerOlacTests
+{
+    [Fact]
+    public async Task ListCustomers_filters_active_customers_by_customer_and_storefront_grants_Async()
+    {
+        var userId = Guid.NewGuid();
+        await using var db = CreateDb(new TestCurrentUser(userId));
+
+        var directCustomer = CustomerProfileEntity.Create(Guid.NewGuid(), "direct-user", "Direct");
+        var scopedStorefrontId = Guid.NewGuid();
+        var scopedCustomer = CustomerProfileEntity.Create(scopedStorefrontId, "scoped-user", "Scoped");
+        var hiddenCustomer = CustomerProfileEntity.Create(Guid.NewGuid(), "hidden-user", "Hidden");
+
+        db.CustomerProfiles.AddRange(directCustomer, scopedCustomer, hiddenCustomer);
+        db.CustomerAccessGrants.AddRange(
+            UserGrant("customer", directCustomer.Id, userId),
+            UserGrant("storefront", scopedStorefrontId, userId));
+        await db.SaveChangesAsync();
+
+        var handler = new ListCustomersQueryHandler(db, new TestCurrentUser(userId));
+
+        var response = await handler.Handle(
+            new ListCustomersQuery(null, Page: 1, PageSize: 50, SortBy: null, SortDescending: false),
+            CancellationToken.None);
+
+        response.Customers.Select(c => c.Id.ToGuid())
+            .Should()
+            .BeEquivalentTo([directCustomer.Id, scopedCustomer.Id]);
+        response.Pagination.TotalCount.Should().Be(2);
+    }
+
+    private static AppDbContext CreateDb(IPlatformCurrentUser currentUser)
+    {
+        var services = new ServiceCollection()
+            .AddEntityFrameworkInMemoryDatabase()
+            .AddSingleton(currentUser)
+            .BuildServiceProvider();
+
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .UseInternalServiceProvider(services)
+            .Options;
+
+        return new AppDbContext(options);
+    }
+
+    private static CustomerAccessGrantEntity UserGrant(string resourceType, Guid resourceId, Guid userId)
+    {
+        return new CustomerAccessGrantEntity(
+            Guid.NewGuid(),
+            resourceType,
+            resourceId,
+            ResourceAccessSubjectType.User,
+            userId.ToString(),
+            ResourceAccessPermissions.Read,
+            expiresAt: null,
+            grantReason: "test");
+    }
+
+    private sealed class TestCurrentUser(Guid? userId) : IPlatformCurrentUser
+    {
+        public Guid? UserId { get; } = userId;
+
+        public string? Name => null;
+
+        public IEnumerable<Claim> Claims => [];
+
+        public IReadOnlyCollection<string> Groups => [];
+
+        public bool IsAuthenticated => UserId.HasValue;
+
+        public string? GetClaim(string claimType) => null;
+
+        public bool IsInRole(string role) => false;
+    }
+}
