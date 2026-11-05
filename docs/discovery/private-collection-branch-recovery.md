@@ -21,3 +21,13 @@ Its SHA-256 is `ad1b9f11503ac986c9835c29e3b7bdf4b90e22454ab4688d4de039bc47009a5d
 This historical source is not an executable test or evidence that the
 associated authorization behavior is implemented. The original file remains in
 the primary checkout.
+
+## Additional historical stashes
+
+- `9bed2889a3e95682419adde60f6bee5985310f20` preserves an older Codex rules
+  migration, including its index and untracked-file parents.
+- `8caea2bc89c8e190c3b935c3c37d3853605a0c6b` preserves two untracked prompt
+  documents and their original stash parents.
+
+Both snapshots remain historical parents only. Their rules and prompts are not
+applied to the current checkout and are not current operating guidance.
