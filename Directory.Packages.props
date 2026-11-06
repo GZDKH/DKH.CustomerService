@@ -71,6 +71,6 @@
   <ItemGroup>
     <PackageVersion Include="Grpc.Tools" Version="2.85.0" />
     <PackageVersion Include="Grpc.AspNetCore" Version="2.85.0" />
-    <PackageVersion Include="MediatR" Version="14.2.0" />
+    <PackageVersion Include="MediatR" Version="14.3.0" />
   </ItemGroup>
 </Project>
