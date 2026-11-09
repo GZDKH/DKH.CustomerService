@@ -704,3 +704,13 @@ Protocol: HTTP/2 (gRPC)
 ## Current active profile binding (v2)
 
 Additive `CurrentProfileBindingService.GetMyActiveProfileBinding` returns actual active CustomerProfile and storefront identifiers for the verified personal caller only. See [identity, freshness and privacy boundaries](current-active-profile-binding.md). No account/profile selector or new authority grant. Candidate Contracts1.12 is not yet published.
+
+## Private Notification recipient DATA (v2)
+
+`proto.customer.api.notification_recipient.v2.NotificationRecipientService/GetBudgetChangeRecipient`
+returns `NotificationRecipientModel` directly. Request selectors are exact
+storefront/profile and original actor issuer/opaque subject. Only the actual
+validated Notification service principal is admitted. Canonical account email,
+profile preferences and short current read time are DATA, not buyer delegation
+or provider success. Disabled/unverified override returns no email; scope or
+caller rejection reveals no contact. [Contract, source and rollout](notification-recipient-authority.md).

@@ -18,3 +18,5 @@
 - [Russian (RU)](ru/) -- *Translation pending*
 
 *Last updated: February 2026*
+
+- [Purpose-scoped notification recipient authority](notification-recipient-authority.md) — current private Customer source for original V6.2; actual Notification receiving and provider outcomes remain required.

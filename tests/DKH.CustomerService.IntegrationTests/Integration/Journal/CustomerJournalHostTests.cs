@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.Journal;
+using DKH.CustomerService.Api.NotificationRecipients;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerAccounts;
@@ -631,6 +632,7 @@ public sealed class JournalHostFixture : IAsyncLifetime
                     };
                 });
                 builder.Services.AddCustomerJournalOwnership();
+                builder.Services.AddCustomerNotificationRecipients();
                 builder.Services.AddSingleton(Failure);
                 builder.Services.AddTransient<IPipelineBehavior<MutateJournalCommand, ExperienceMutationResult>, JournalFixtureFailureBehavior>();
                 if (!UseTransactionBoundary)
@@ -642,6 +644,7 @@ public sealed class JournalHostFixture : IAsyncLifetime
             {
                 grpc.MapService<JournalOwnerFixtureRpc>();
                 grpc.MapService<CustomerAccountGrpcService>();
+                grpc.MapService<Api.Grpc.Services.NotificationRecipient.v2.NotificationRecipientGrpcService>();
                 grpc.MapService<ProductCollectionGrpcService>();
             })
             .Build();
