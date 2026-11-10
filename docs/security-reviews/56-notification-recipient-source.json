@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "method": "focused-review",
+  "result": "passed",
+  "capability_unavailable": true,
+  "base_sha": "f80c0d6fd019eaa9abfa56b66013d5a4c87e30d6",
+  "reviewed_blobs": {
+    "DKH.CustomerService.Api/Grpc/Services/NotificationRecipient/v2/NotificationRecipientGrpcService.cs": "2a72fe8a6666450d0ee5fbc9028abe81deec91c2",
+    "DKH.CustomerService.Api/NotificationRecipients/NotificationRecipientCaller.cs": "c3c2bfea83ea1e3f135356598b4ebcefae0a6499",
+    "DKH.CustomerService.Application/NotificationRecipients/CurrentNotificationRecipient.cs": "1a28a2bec7a38a71a18af2f0dbc096ac0b9356b4",
+    "DKH.CustomerService.Contracts/proto/customer/api/notification_recipient/v2/notification_recipient_service.proto": "5e6fd35ed822e987ec430681fe24df24115d86bb",
+    "openspec/changes/add-purpose-scoped-notification-recipient/evidence/source-authoring.json": "e5148c5e5386c767d32c879c2e29e2f17e6bf655",
+    "openspec/changes/add-purpose-scoped-notification-recipient/task-evidence.json": "a7ada869d15528e660c55a786577ca237a5f1199",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/NotificationRecipients/NotificationRecipientPersistenceTests.cs": "b9f54fccf0acc1539d6be6a4a1284da6abf54657"
+  },
+  "checks": [
+    {
+      "result": "passed",
+      "evidence": "Private v2 current DATA only for the actual authenticated dkh-notification-service principal; Platform owns JWT signatures/issuer/audience. Shape captured only in successful validation chain, exact service:v1/client/username/subject/exp and trusted configured realm; original context/header/principal and expiry rechecked around native source waits. No HUMAN impersonation or self/admin/DeliveryContact broadening.131distinct authoring controls pass including27new real PostgreSQL/HTTP2 negative/positive cases,2existing real owner/issuer cases and102compatibility controls. Exact existing native active primary/verified-alias account and unique profile/storefront/membership binding reused before private projection; source/current binding/prefs rechecked, no provision/reconciliation/write or contact discovery list. Canonical verified CustomerAccount email/native time and exact profile preferences; legacy profile verified flag cannot approve a different explicit email override and no silent substitution occurs. Canonical primary identity is not legacy profile.UserId or a guessed UUID.5second/original token read horizon is DATA only; dispatch must re-resolve source/current Notification preferences/devices. New contract additive1.12\u21921.13; old proto fields/names untouched; no secret, server config key, new port/outbound client, schema or real provider send. Current scoped format/API naming/strictOpenSpec pass and exact10tested source blobs retained. Actual SDK/consumer config/private route/provider outcomes/consumer-first rollout and full qualification/current review/CI/main/runtime/original acceptance remain open. Specialized scanner unavailable; focused current indexed source review."
+    }
+  ]
+}

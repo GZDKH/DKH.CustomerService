@@ -2,6 +2,7 @@ using DKH.CustomerService.Api;
 using DKH.CustomerService.Api.DeliveryContacts;
 using DKH.CustomerService.Api.Grpc.Services;
 using DKH.CustomerService.Api.Journal;
+using DKH.CustomerService.Api.NotificationRecipients;
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application;
 using DKH.CustomerService.Application.CustomerProfiles.DataExchange;
@@ -42,6 +43,7 @@ await Platform
         builder.Services.AddCustomerDeliveryContactAuthority(builder.Configuration);
         builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddCustomerJournalOwnership();
+        builder.Services.AddCustomerNotificationRecipients();
     })
     .AddPlatformMessaging(messaging =>
     {
@@ -116,6 +118,7 @@ await Platform
         grpc.MapService<CustomerManagementGrpcService>();
         grpc.MapService<CustomerAccountGrpcService>();
         grpc.MapService<DKH.CustomerService.Api.Grpc.Services.CurrentProfileBinding.v2.CurrentProfileBindingGrpcService>();
+        grpc.MapService<DKH.CustomerService.Api.Grpc.Services.NotificationRecipient.v2.NotificationRecipientGrpcService>();
         grpc.MapService<CustomerAccountAdminGrpcService>();
         grpc.MapService<IdentityLinkingGrpcService>();
         grpc.MapService<ProductCollectionGrpcService>();

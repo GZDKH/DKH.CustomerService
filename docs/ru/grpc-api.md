@@ -63,3 +63,7 @@ platform metrics retention policy.
 ## Текущая связь активного профиля (v2)
 
 Новый `CurrentProfileBindingService.GetMyActiveProfileBinding` возвращает настоящий профиль и витрину проверенного персонального пользователя. [Границы полномочий и актуальности](current-active-profile-binding.md). Контракт1.12 пока не опубликован.
+
+## Частные данные получателя Notification (v2)
+
+RPC `NotificationRecipientService/GetBudgetChangeRecipient` принимает точные storefront/profile/issuer/opaque subject и возвращает модель напрямую только настоящему служебному клиенту Notification. [Контракт и условия интеграции](notification-recipient-authority.md).

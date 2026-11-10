@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto.customer.api.notification_recipient.v2;
+option csharp_namespace = "DKH.CustomerService.Contracts.Customer.Api.NotificationRecipient.v2";
+import "types/guid.proto";
+import "google/protobuf/timestamp.proto";
+
+// Private current DATA for the actual authenticated Notification service only.
+// Selectors grant no human/financial authority. Re-resolve at actual dispatch.
+service NotificationRecipientService {
+  rpc GetBudgetChangeRecipient(GetBudgetChangeRecipientRequest) returns (NotificationRecipientModel);
+}
+
+message GetBudgetChangeRecipientRequest {
+  proto.platform.grpc.common.types.GuidValue storefront_id = 1;
+  proto.platform.grpc.common.types.GuidValue customer_profile_id = 2;
+  string original_actor_issuer = 3;
+  string original_actor_subject = 4;
+}
+
+enum NotificationEmailEligibility {
+  NOTIFICATION_EMAIL_ELIGIBILITY_UNSPECIFIED = 0;
+  NOTIFICATION_EMAIL_ELIGIBILITY_AVAILABLE = 1;
+  NOTIFICATION_EMAIL_ELIGIBILITY_DISABLED = 2;
+  NOTIFICATION_EMAIL_ELIGIBILITY_UNVERIFIED_PROFILE_OVERRIDE = 3;
+  NOTIFICATION_EMAIL_ELIGIBILITY_VERIFIED_CONTACT_UNAVAILABLE = 4;
+}
+
+message NotificationRecipientModel {
+  proto.platform.grpc.common.types.GuidValue customer_profile_id = 1;
+  proto.platform.grpc.common.types.GuidValue storefront_id = 2;
+  // Actual canonical primary identity, not profile.UserId or a fabricated UUID.
+  string canonical_identity_issuer = 3;
+  string canonical_identity_subject = 4;
+  // Empty unless eligible; no fallback past an explicit unverified profile override.
+  string email = 5;
+  NotificationEmailEligibility email_eligibility = 6;
+  google.protobuf.Timestamp email_verified_at = 7;
+  bool email_notifications_enabled = 8;
+  bool telegram_notifications_enabled = 9;
+  bool sms_notifications_enabled = 10;
+  string preferred_language = 11;
+  google.protobuf.Timestamp observed_at = 12;
+  // Short data read horizon only, never a queued-send permission or provider outcome.
+  google.protobuf.Timestamp read_valid_until = 13;
+}
