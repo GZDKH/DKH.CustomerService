@@ -525,6 +525,8 @@ scope; it cannot call this platform-global service.
 **Package:** `customer.api.v1`
 **Description:** Email and phone verification via OTP codes.
 
+The current transport delegates profile lookup, contact matching, provider calls and successful verified-state persistence to the Application contact-verification use cases. Existing caller authorization, storefront resolution, replies and cancellation are preserved. Verification continues through the existing provider port, including its unavailable-provider failure replies.
+
 ### RPC Methods
 
 | Method | Request | Response | Description |

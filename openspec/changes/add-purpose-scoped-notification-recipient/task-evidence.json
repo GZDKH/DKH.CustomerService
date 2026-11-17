@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_owner": "01a1a77e-90a4-7592-a67f-99af7f538103",
-  "stage": "authoring",
+  "stage": "draft",
   "task_file": "tasks.md",
   "next_action": "Publish coherent Customer56/originalV6.2 source to one common Draft after exact security evidence; full qualification/current review/CI/main/runtime/official SDK and actual Notification receiving remain required.",
   "tasks": {

@@ -65,6 +65,12 @@ Dependencies flow inward: Api -> Application -> Domain. Infrastructure implement
 
 Commands and queries are separated into distinct handler classes under `Application/Features/<Entity>/Commands/` and `Application/Features/<Entity>/Queries/`.
 
+### Contact verification use cases
+
+The verification transport retains self-access authorization, caller matching and storefront resolution, then delegates its four methods to `Application/ContactVerification/IContactVerificationUseCases`. The scoped implementation owns profile lookup, stored-contact comparison, the existing verification-provider call and success-only persistence. Email comparison ignores case, phone comparison is ordinal, and both compare trimmed values while forwarding the stored contact to the provider.
+
+This direct Application port preserves the existing provider/transaction boundary. The Platform MediatR relational outbox pipeline wraps handlers in a transaction; contact verification keeps provider effects at their previous position and uses the existing repository save behavior. Provider failures/unavailability, status/error/expiry mapping and caller cancellation remain unchanged.
+
 ### DDD with Aggregate Root
 
 `CustomerProfileEntity` is the single aggregate root. All mutations to child entities (addresses, wishlist items, external identities) go through the aggregate or are scoped to the aggregate boundary.

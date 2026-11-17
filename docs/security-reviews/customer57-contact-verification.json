@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "method": "focused-review",
+  "result": "passed",
+  "capability_unavailable": true,
+  "base_sha": "983e84f7379cf6b646410fea4c867583418d5b6c",
+  "reviewed_blobs": {
+    "DKH.CustomerService.Api/Services/ContactVerificationGrpcService.cs": "aab40706cbbff868b63614bf6569b4f68591f4ad",
+    "DKH.CustomerService.Application/ContactVerification/ContactVerificationUseCases.cs": "f21f3c3c9169e25d1bacdae16a1dc7b14489eaf4",
+    "DKH.CustomerService.Application/ContactVerification/IContactVerificationUseCases.cs": "7465b57db967924d78bd16e81e8e8100bb69a7e8",
+    "openspec/changes/add-purpose-scoped-notification-recipient/task-evidence.json": "6b154aded0f29300f92843680c2c21b510404190",
+    "openspec/changes/enforce-customer-transport-boundaries/evidence/runtime-authoring.json": "21b783353bffe98ecb6495df28d272c28bb381ef",
+    "openspec/changes/enforce-customer-transport-boundaries/task-evidence.json": "f5f5264c1ed29a13f25cf35c005a8a5b4768c16b",
+    "tests/DKH.CustomerService.Application.Tests/ContactVerificationUseCasesTests.cs": "22615d63e72b6cbac43ccddf3dc7c9718776a21a",
+    "tests/DKH.CustomerService.IntegrationTests/Integration/Grpc/ContactVerificationPersistenceTests.cs": "546e390530af30cb09cb72c4437b091950676693"
+  },
+  "checks": [
+    {
+      "result": "passed",
+      "evidence": "ContactVerificationGrpcService retains CustomerSelfAccess, all four RequireCallerMatchesClaim attributes and existing storefront resolution. Application preserves stored-contact/provider identity and success-only update; full151 Application/464 Integration tests pass, including mismatch, unavailable-provider, cancellation and four real PostgreSQL persistence cases. See openspec/changes/enforce-customer-transport-boundaries/evidence/runtime-authoring.json."
+    },
+    {
+      "result": "passed",
+      "evidence": "No provider activation, secret/config/schema/contract change. CI evidence include uses delivered exact801a8ee. Recipient56 metadata changes only unsupported authoring stage to draft, preserving ownership/tasks/acceptance."
+    }
+  ]
+}

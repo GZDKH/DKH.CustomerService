@@ -1,5 +1,6 @@
 using DKH.CustomerService.Api.Services;
 using DKH.CustomerService.Application.Abstractions;
+using DKH.CustomerService.Application.ContactVerification;
 using DKH.CustomerService.Contracts.Customer.Api.ContactVerification.v1;
 using DKH.CustomerService.Domain.Entities.CustomerProfile;
 using DKH.CustomerService.Infrastructure.Services;
@@ -164,7 +165,7 @@ public sealed class ContactVerificationGrpcServiceTests
         storefrontContext.StorefrontId.Returns(StorefrontId);
 
         return (
-            new ContactVerificationGrpcService(verificationService, customerRepository, storefrontContext),
+            new ContactVerificationGrpcService(new ContactVerificationUseCases(verificationService, customerRepository), storefrontContext),
             profile,
             verificationService,
             customerRepository);

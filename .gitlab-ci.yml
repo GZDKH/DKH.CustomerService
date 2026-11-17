@@ -1,4 +1,7 @@
 include:
+  - project: 'gzdkh/agents/DKH.AgentRules'
+    ref: '801a8ee546c6e34549f2cb035b9326a05aa9d41b'
+    file: '/ci/openspec-evidence.gitlab-ci.yml'
   - project: 'gzdkh/infra/DKH.Infrastructure'
     file: '/ci-cd/gitlab/openspec-validation.gitlab-ci.yml'
   - project: 'gzdkh/infra/DKH.Infrastructure'

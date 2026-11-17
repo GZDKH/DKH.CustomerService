@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "scope": "Customer57 runtime relocation authoring only; not complete owner enforcement, merge, maintained-runner or production acceptance",
+  "source_base": "983e84f7379cf6b646410fea4c867583418d5b6c",
+  "sdk": "10.0.404",
+  "checks": [
+    {
+      "command": "dotnet build DKH.CustomerService.slnx -c Release --no-restore",
+      "exit_code": 0,
+      "log_name": "customer57-complete-runtime-release-build-final.log",
+      "log_sha256": "d7a73c1db14440868c6a193733ebb61b29830720e1498e510734b962626b9a11"
+    },
+    {
+      "command": "dotnet test tests/DKH.CustomerService.Application.Tests/DKH.CustomerService.Application.Tests.csproj -c Release --no-build --no-restore",
+      "exit_code": 0,
+      "log_name": "customer57-application-full.log",
+      "log_sha256": "b6081a6b1deba674ed3d199c9b881f3cd3a4f7739fcc977c66302f8ae3346fd1",
+      "passed": 151,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "dotnet test tests/DKH.CustomerService.IntegrationTests/DKH.CustomerService.IntegrationTests.csproj -c Release --no-build --no-restore",
+      "exit_code": 0,
+      "log_name": "customer57-integration-full.log",
+      "log_sha256": "2f6620416a28631042551a1c38d3082853d87e41b5b2c2d7c816f6facb83e395",
+      "passed": 464,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "dotnet format DKH.CustomerService.slnx --verify-no-changes --no-restore",
+      "exit_code": 0,
+      "log_name": "customer57-format-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runtime_source_blobs": {
+    "DKH.CustomerService.Api/Services/ContactVerificationGrpcService.cs": "aab40706cbbff868b63614bf6569b4f68591f4ad",
+    "DKH.CustomerService.Application/ConfigureServices.cs": "2850ed13adf0b2266dc4c3a3f72b3490d32479c4",
+    "DKH.CustomerService.Application/ContactVerification/ContactVerificationUseCases.cs": "f21f3c3c9169e25d1bacdae16a1dc7b14489eaf4",
+    "DKH.CustomerService.Application/ContactVerification/IContactVerificationUseCases.cs": "7465b57db967924d78bd16e81e8e8100bb69a7e8"
+  }
+}

@@ -12,6 +12,7 @@ public static class ConfigureServices
         var assembly = Assembly.GetExecutingAssembly();
 
         services.AddValidatorsFromAssembly(assembly);
+        services.AddScoped<ContactVerification.IContactVerificationUseCases, ContactVerification.ContactVerificationUseCases>();
         services.AddScoped<CustomerAccounts.CustomerJournalAccounts>();
         services.AddScoped<CustomerAccounts.CurrentActiveProfileBinding>();
         services.AddScoped<NotificationRecipients.CurrentNotificationRecipient>();
